@@ -7,7 +7,6 @@ export default function Buttons() {
 
 
     const handlePress = () => {
-        console.log('button pressed');
         setIsPressed(true);
         setTimeout(() => {
           setIsPressed(false);

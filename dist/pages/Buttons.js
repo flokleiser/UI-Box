@@ -28,7 +28,6 @@ const react_1 = __importStar(require("react"));
 function Buttons() {
     const [isPressed, setIsPressed] = (0, react_1.useState)(false);
     const handlePress = () => {
-        console.log('button pressed');
         setIsPressed(true);
         setTimeout(() => {
             setIsPressed(false);

@@ -162,8 +162,7 @@ export default function Particles(){
           let animationFrameId: number;
 
           function render() {
-            // requestAnimationFrame(render)
-            // animationFrameId = requestAnimationFrame(render);
+            animationFrameId = requestAnimationFrame(render);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < amount; i++) {
               particles[i].render();
@@ -177,7 +176,6 @@ export default function Particles(){
           window.addEventListener("mouseup", onMouseUp);
           window.addEventListener("touchend", onTouchEnd);
           initScene();
-          // requestAnimationFrame(render);
           animationFrameId = requestAnimationFrame(render);
 
           return () => {
@@ -200,8 +198,6 @@ export default function Particles(){
                     position:'absolute',
                     top:0,
                     left:0,
-                    // width:'100vw',
-                    // height:'100vh',
                     overflow:'hidden',
                     zIndex:-10
                     }} 

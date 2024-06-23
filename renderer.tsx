@@ -108,25 +108,17 @@ const attachEventListeners = () => {
     }
 }
 
-// document.addEventListener('DOMContentLoaded', attachEventListeners);
-document.addEventListener('DOMContentLoaded', () => {
- attachEventListeners();
+document.addEventListener('DOMContentLoaded', attachEventListeners);
+// document.addEventListener('DOMContentLoaded', () => {
+//  attachEventListeners();
 
 const container = document.getElementById('root');
-if (container) {
-    const root = createRoot(container!);
-    root.render(<App />);
-}
-else {
-    console.log('app root not found')
-}
+const root = createRoot(container!);
+root.render(<App />);
 
 const navbarContainer = document.getElementById('navbarRoot');
 if (navbarContainer) {
     const navbarRoot = createRoot(navbarContainer)
     navbarRoot.render(<Navbar/>)
 }
-else {
-    console.log('navbar root not found')
-}
-});
+// });

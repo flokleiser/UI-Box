@@ -112,8 +112,7 @@ function Particles() {
         }
         let animationFrameId;
         function render() {
-            // requestAnimationFrame(render)
-            // animationFrameId = requestAnimationFrame(render);
+            animationFrameId = requestAnimationFrame(render);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < amount; i++) {
                 particles[i].render();
@@ -127,7 +126,6 @@ function Particles() {
         window.addEventListener("mouseup", onMouseUp);
         window.addEventListener("touchend", onTouchEnd);
         initScene();
-        // requestAnimationFrame(render);
         animationFrameId = requestAnimationFrame(render);
         return () => {
             window.removeEventListener("resize", initScene);
@@ -147,8 +145,6 @@ function Particles() {
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                // width:'100vw',
-                // height:'100vh',
                 overflow: 'hidden',
                 zIndex: -10
             }, id: "scene" })));
