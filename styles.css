@@ -87,6 +87,14 @@ nav{
   margin-bottom: 10px;
 }
 
+.buttonColumn{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
 .button1 {
   width: 100px;
   height: 100px;
@@ -96,6 +104,18 @@ nav{
   border: 2px solid white;
 
   /* background-color:rgba(255, 255, 255, 0.5); */
+  background:rgba(255, 255, 255, 0.5);
+  transition: transform 0.3s ease, background 0.2s;
+}
+
+.button2 {
+  width: 105px;
+  height: 105px;
+  padding: 20px; 
+  border-radius: 40px;
+  margin:0.5rem;
+  border: 2px solid white;
+
   background:rgba(255, 255, 255, 0.5);
   transition: transform 0.3s ease, background 0.2s;
 }
@@ -110,10 +130,18 @@ nav{
   background: white;
 }
 
+.button2:hover {
+  transform: scale(1.05);
+}
+
+.button2:active{
+  --scale-factor:0.95;
+  transform: scale(var(--scale-factor));
+  background: white;
+}
+
 .buttonInSettings{
   margin-right: 0.25rem;
-  /* display:flex;
-  gap:10px; */
 }
 
 .logo{

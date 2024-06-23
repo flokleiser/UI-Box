@@ -9,8 +9,9 @@ import Particles from './pages/Particles';
 import Tether from './pages/Tether';
 import Switches from './pages/Switches'
 import Ball from './pages/Ball';
+import Keyboard from './pages/Keyboard'
 
-type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Tether' | 'Switches' | 'Ball';
+type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Tether' | 'Switches' | 'Ball' | 'Keyboard';
 
 declare global {
   interface Window {
@@ -24,7 +25,7 @@ declare global {
 }
 
 const App: FC = () => {
-    const [page, setPage] = useState<Page>('Home');
+    const [page, setPage] = useState<Page>('Buttons');
 
     let CurrentPage: React.ComponentType;
 
@@ -53,6 +54,9 @@ const App: FC = () => {
             case 'Ball':
             CurrentPage = Ball;
             break;
+            case 'Keyboard':
+            CurrentPage = Keyboard;
+            break;
             default:
                 CurrentPage = Home;
     }
@@ -75,6 +79,7 @@ const attachEventListeners = () => {
     const tetherPageButton = document.getElementById('tetherpageButton');
     const switchesPageButton = document.getElementById('switchespageButton');
     const ballPageButton = document.getElementById('ballpageButton');
+    const keyboardPageButton= document.getElementById('keyboardpageButton');
 
     if (homeButton) {
         homeButton.addEventListener(clickType, () => window.loadPage('Home'));
@@ -105,6 +110,9 @@ const attachEventListeners = () => {
     }
     if (ballPageButton) {
         ballPageButton.addEventListener(clickType, () => window.loadPage('Ball'));
+    }
+    if (keyboardPageButton) {
+        keyboardPageButton.addEventListener(clickType, () => window.loadPage('Keyboard'));
     }
 }
 

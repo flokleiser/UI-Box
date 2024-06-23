@@ -21,7 +21,9 @@ function Navbar() {
             react_1.default.createElement("button", { id: "tetherpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "linked_services")),
             react_1.default.createElement("button", { id: "ballpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "sports_basketball"))),
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "sports_basketball")),
+            react_1.default.createElement("button", { id: "keyboardpageButton" },
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "keyboard_keys"))),
         react_1.default.createElement("div", { className: "settingsButton" },
             react_1.default.createElement("button", { id: "settingsButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "settings")))));

@@ -33459,7 +33459,9 @@ function Navbar() {
             react_1.default.createElement("button", { id: "tetherpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "linked_services")),
             react_1.default.createElement("button", { id: "ballpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "sports_basketball"))),
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "sports_basketball")),
+            react_1.default.createElement("button", { id: "keyboardpageButton" },
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "keyboard_keys"))),
         react_1.default.createElement("div", { className: "settingsButton" },
             react_1.default.createElement("button", { id: "settingsButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "settings")))));
@@ -33475,7 +33477,6 @@ function Navbar() {
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-//https://playcode.io/slingshot
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -33503,7 +33504,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Ball;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Ball() {
-    // const Ball: React.FC = () => {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     (0, react_1.useEffect)(() => {
         const canvasBall = document.querySelector("#sceneBall");
@@ -33514,17 +33514,17 @@ function Ball() {
         let isReleased = false;
         let ww = window.innerWidth;
         let wh = window.innerHeight;
-        let centerX = ww / 4;
-        let centerY = (wh / 3) * 2;
+        let hoopX = (canvasBall.width / 4) * 3;
+        let hoopY = canvasBall.height / 3;
+        let centerX = (ww / 4);
+        let centerY = (wh / 5) * 3;
         let ballX = centerX;
         let ballY = centerY;
         let vx = 0;
         let vy = 0;
         const damping = 0.7;
-        // const stiffness = 0.1; 
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
-        // const gravity = 0.5; 
         const gravity = 0.3;
         const onMouseMove = (e) => {
             if (isDragging) {
@@ -33545,10 +33545,6 @@ function Ball() {
         const onTouchEnd = () => {
             if (isDragging) {
                 isDragging = false;
-                // const dx = centerX - ballX;
-                // const dy = centerY - ballY;
-                // vx = -dx * 0.1; 
-                // vy = -dy * 0.1; 
             }
         };
         const onMouseDown = (e) => {
@@ -33560,10 +33556,6 @@ function Ball() {
         const onMouseUp = () => {
             if (isDragging) {
                 isDragging = false;
-                // const dx = centerX - ballX;
-                // const dy = centerY - ballY;
-                // vx = -dx * 0.1;
-                // vy = -dy * 0.1; 
                 const dx = ballX - centerX;
                 const dy = ballY - centerY;
                 vx = -dx * 0.1;
@@ -33578,9 +33570,11 @@ function Ball() {
             isDragging = false;
             isReleased = false;
             centerX = ww / 4;
-            centerY = (wh / 3) * 2;
+            centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
+            hoopX = (ww / 4) * 3;
+            hoopY = wh / 3;
             vx = 0;
             vy = 0;
             render();
@@ -33589,9 +33583,11 @@ function Ball() {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
             centerX = ww / 4;
-            centerY = (wh / 3) * 2;
+            centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
+            hoopX = (ww / 4) * 3;
+            hoopY = wh / 3;
             vx = 0;
             vy = 0;
         };
@@ -33613,6 +33609,11 @@ function Ball() {
                 }
                 ballX += vx;
                 ballY += vy;
+                if (ballX + radius > hoopX && ballX - radius < hoopX &&
+                    ballY + radius > hoopY && ballY - radius < hoopY) {
+                    vx *= -damping;
+                    vy *= -damping;
+                }
                 if (ballY + radius > wh || ballY - radius < 0) {
                     vy *= -damping;
                     if (ballY + radius > wh)
@@ -33633,6 +33634,26 @@ function Ball() {
                 }
             }
             else {
+                if (isDragging) {
+                    if (ballY + radius > wh || ballY - radius < 0) {
+                        vy *= -damping;
+                        if (ballY + radius > wh)
+                            ballY = wh - radius;
+                        if (ballY - radius < 0) {
+                            ballY = radius;
+                            console.log('y direction change');
+                        }
+                    }
+                    if (ballX + radius > ww || ballX - radius < 0) {
+                        vx *= -damping;
+                        if (ballX + radius > ww)
+                            ballX = canvasBall.width - radius;
+                        if (ballX - radius < 0) {
+                            console.log('x direction change');
+                            ballX = radius;
+                        }
+                    }
+                }
                 vx = 0;
                 vy = 0;
             }
@@ -33645,13 +33666,27 @@ function Ball() {
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(ballX, ballY);
                 ctx.stroke();
+                // if (isDragging) {
+                //     ctx.strokeStyle = color;
+                //     ctx.lineWidth = 2;
+                //     // ctx.setLineDash([3,5]);
+                //     ctx.lineCap = "round";
+                //     let mirroredX = 2 * centerX - ballX;
+                //     let mirroredY = 2 * centerY - ballY;
+                //     ctx.beginPath();
+                //     ctx.moveTo(centerX, centerY);
+                //     ctx.lineTo(mirroredX,mirroredY);
+                //     ctx.stroke();
+                // }
             }
-            //ball
             ctx.fillStyle = color;
             ctx.beginPath();
             ctx.arc(ballX, ballY, radius, 0, Math.PI * 2);
             ctx.fill();
-            // requestAnimationFrame(render);
+            ctx.fillStyle = color;
+            ctx.beginPath;
+            ctx.rect(hoopX, hoopY, radius * 2, radius / 2);
+            ctx.fill();
             animationFrameId = requestAnimationFrame(render);
         };
         window.addEventListener("resize", resizeScene);
@@ -33668,11 +33703,9 @@ function Ball() {
             window.removeEventListener("mousedown", onMouseDown);
             window.removeEventListener("mouseup", onMouseUp);
             window.removeEventListener("touchend", onTouchEnd);
-            // cancelAnimationFrame(render);
             cancelAnimationFrame(animationFrameId);
         };
     }, [resetTrigger]);
-    // }, [initscene]);
     function resetScene() {
         setResetTrigger(prev => prev + 1);
         // window.location.reload();
@@ -33729,27 +33762,38 @@ exports["default"] = Buttons;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Buttons() {
     const [isPressed, setIsPressed] = (0, react_1.useState)(false);
+    const [isToggled, setIsToggled] = (0, react_1.useState)([false, false, false]);
     const handlePress = () => {
         setIsPressed(true);
         setTimeout(() => {
             setIsPressed(false);
         }, 50);
     };
+    const handleToggle = (index) => {
+        const updateToggle = isToggled.map((state, i) => i === index ? !state : state);
+        setIsToggled(updateToggle);
+        console.log('toggled', isToggled);
+    };
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, " Buttons "),
-        react_1.default.createElement("div", { className: "buttonContainer" },
-            react_1.default.createElement("div", { className: "buttonRow" },
-                react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " ")),
-            react_1.default.createElement("div", { className: "buttonRow" },
-                react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " ")),
-            react_1.default.createElement("div", { className: "buttonRow" },
-                react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " ")))));
+        react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' } },
+            react_1.default.createElement("div", { className: "buttonContainer" },
+                react_1.default.createElement("div", { className: "buttonRow" },
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " ")),
+                react_1.default.createElement("div", { className: "buttonRow" },
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " ")),
+                react_1.default.createElement("div", { className: "buttonRow" },
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "))),
+            react_1.default.createElement("div", { className: "buttonColumn" },
+                react_1.default.createElement("button", { className: `button2 ${isToggled[0] ? 'button2toggled' : ''}`, id: "buttonToggle1", onMouseDown: () => handleToggle(0) }),
+                react_1.default.createElement("button", { className: `button2 ${isToggled[1] ? 'button2toggled' : ''}`, id: "buttonToggle2", onMouseDown: () => handleToggle(1) }),
+                react_1.default.createElement("button", { className: `button2 ${isToggled[2] ? 'button2toggled' : ''}`, id: "buttonToggle3", onMouseDown: () => handleToggle(2) })))));
 }
 
 
@@ -33773,6 +33817,27 @@ function Home() {
         react_1.default.createElement("h1", null, " UI-Box "),
         react_1.default.createElement("div", { className: "logo" },
             react_1.default.createElement("img", { className: "logoImg", src: "./media/icon.png" }))));
+}
+
+
+/***/ }),
+
+/***/ "./src/pages/Keyboard.tsx":
+/*!********************************!*\
+  !*** ./src/pages/Keyboard.tsx ***!
+  \********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports["default"] = Keyboard;
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+function Keyboard() {
+    return (react_1.default.createElement("div", null,
+        react_1.default.createElement("h1", null, " Keyboard")));
 }
 
 
@@ -34266,8 +34331,10 @@ function Tether() {
         let particleY2 = centerY2;
         let vx2 = 0;
         let vy2 = 0;
-        const damping = 0.9;
-        const stiffness = 0.1;
+        // const damping = 0.9; 
+        // const stiffness = 0.1; 
+        const damping = 0.8;
+        const stiffness = 0.05;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const onMouseMove = (e) => {
             if (isDragging) {
@@ -34523,8 +34590,9 @@ const Particles_1 = __importDefault(__webpack_require__(/*! ./pages/Particles */
 const Tether_1 = __importDefault(__webpack_require__(/*! ./pages/Tether */ "./src/pages/Tether.tsx"));
 const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "./src/pages/Switches.tsx"));
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
+const Keyboard_1 = __importDefault(__webpack_require__(/*! ./pages/Keyboard */ "./src/pages/Keyboard.tsx"));
 const App = () => {
-    const [page, setPage] = (0, react_1.useState)('Home');
+    const [page, setPage] = (0, react_1.useState)('Buttons');
     let CurrentPage;
     switch (page) {
         case 'Home':
@@ -34551,6 +34619,9 @@ const App = () => {
         case 'Ball':
             CurrentPage = Ball_1.default;
             break;
+        case 'Keyboard':
+            CurrentPage = Keyboard_1.default;
+            break;
         default:
             CurrentPage = Home_1.default;
     }
@@ -34569,6 +34640,7 @@ const attachEventListeners = () => {
     const tetherPageButton = document.getElementById('tetherpageButton');
     const switchesPageButton = document.getElementById('switchespageButton');
     const ballPageButton = document.getElementById('ballpageButton');
+    const keyboardPageButton = document.getElementById('keyboardpageButton');
     if (homeButton) {
         homeButton.addEventListener(clickType, () => window.loadPage('Home'));
     }
@@ -34592,6 +34664,9 @@ const attachEventListeners = () => {
     }
     if (ballPageButton) {
         ballPageButton.addEventListener(clickType, () => window.loadPage('Ball'));
+    }
+    if (keyboardPageButton) {
+        keyboardPageButton.addEventListener(clickType, () => window.loadPage('Keyboard'));
     }
 };
 document.addEventListener('DOMContentLoaded', attachEventListeners);

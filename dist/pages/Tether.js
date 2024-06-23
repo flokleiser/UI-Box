@@ -47,8 +47,10 @@ function Tether() {
         let particleY2 = centerY2;
         let vx2 = 0;
         let vy2 = 0;
-        const damping = 0.9;
-        const stiffness = 0.1;
+        // const damping = 0.9; 
+        // const stiffness = 0.1; 
+        const damping = 0.8;
+        const stiffness = 0.05;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const onMouseMove = (e) => {
             if (isDragging) {

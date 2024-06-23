@@ -1,5 +1,4 @@
 "use strict";
-//https://playcode.io/slingshot
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -27,7 +26,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Ball;
 const react_1 = __importStar(require("react"));
 function Ball() {
-    // const Ball: React.FC = () => {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     (0, react_1.useEffect)(() => {
         const canvasBall = document.querySelector("#sceneBall");
@@ -38,17 +36,17 @@ function Ball() {
         let isReleased = false;
         let ww = window.innerWidth;
         let wh = window.innerHeight;
-        let centerX = ww / 4;
-        let centerY = (wh / 3) * 2;
+        let hoopX = (canvasBall.width / 4) * 3;
+        let hoopY = canvasBall.height / 3;
+        let centerX = (ww / 4);
+        let centerY = (wh / 5) * 3;
         let ballX = centerX;
         let ballY = centerY;
         let vx = 0;
         let vy = 0;
         const damping = 0.7;
-        // const stiffness = 0.1; 
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
-        // const gravity = 0.5; 
         const gravity = 0.3;
         const onMouseMove = (e) => {
             if (isDragging) {
@@ -69,10 +67,6 @@ function Ball() {
         const onTouchEnd = () => {
             if (isDragging) {
                 isDragging = false;
-                // const dx = centerX - ballX;
-                // const dy = centerY - ballY;
-                // vx = -dx * 0.1; 
-                // vy = -dy * 0.1; 
             }
         };
         const onMouseDown = (e) => {
@@ -84,10 +78,6 @@ function Ball() {
         const onMouseUp = () => {
             if (isDragging) {
                 isDragging = false;
-                // const dx = centerX - ballX;
-                // const dy = centerY - ballY;
-                // vx = -dx * 0.1;
-                // vy = -dy * 0.1; 
                 const dx = ballX - centerX;
                 const dy = ballY - centerY;
                 vx = -dx * 0.1;
@@ -102,9 +92,11 @@ function Ball() {
             isDragging = false;
             isReleased = false;
             centerX = ww / 4;
-            centerY = (wh / 3) * 2;
+            centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
+            hoopX = (ww / 4) * 3;
+            hoopY = wh / 3;
             vx = 0;
             vy = 0;
             render();
@@ -113,9 +105,11 @@ function Ball() {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
             centerX = ww / 4;
-            centerY = (wh / 3) * 2;
+            centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
+            hoopX = (ww / 4) * 3;
+            hoopY = wh / 3;
             vx = 0;
             vy = 0;
         };
@@ -137,6 +131,11 @@ function Ball() {
                 }
                 ballX += vx;
                 ballY += vy;
+                if (ballX + radius > hoopX && ballX - radius < hoopX &&
+                    ballY + radius > hoopY && ballY - radius < hoopY) {
+                    vx *= -damping;
+                    vy *= -damping;
+                }
                 if (ballY + radius > wh || ballY - radius < 0) {
                     vy *= -damping;
                     if (ballY + radius > wh)
@@ -157,6 +156,26 @@ function Ball() {
                 }
             }
             else {
+                if (isDragging) {
+                    if (ballY + radius > wh || ballY - radius < 0) {
+                        vy *= -damping;
+                        if (ballY + radius > wh)
+                            ballY = wh - radius;
+                        if (ballY - radius < 0) {
+                            ballY = radius;
+                            console.log('y direction change');
+                        }
+                    }
+                    if (ballX + radius > ww || ballX - radius < 0) {
+                        vx *= -damping;
+                        if (ballX + radius > ww)
+                            ballX = canvasBall.width - radius;
+                        if (ballX - radius < 0) {
+                            console.log('x direction change');
+                            ballX = radius;
+                        }
+                    }
+                }
                 vx = 0;
                 vy = 0;
             }
@@ -169,13 +188,27 @@ function Ball() {
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(ballX, ballY);
                 ctx.stroke();
+                // if (isDragging) {
+                //     ctx.strokeStyle = color;
+                //     ctx.lineWidth = 2;
+                //     // ctx.setLineDash([3,5]);
+                //     ctx.lineCap = "round";
+                //     let mirroredX = 2 * centerX - ballX;
+                //     let mirroredY = 2 * centerY - ballY;
+                //     ctx.beginPath();
+                //     ctx.moveTo(centerX, centerY);
+                //     ctx.lineTo(mirroredX,mirroredY);
+                //     ctx.stroke();
+                // }
             }
-            //ball
             ctx.fillStyle = color;
             ctx.beginPath();
             ctx.arc(ballX, ballY, radius, 0, Math.PI * 2);
             ctx.fill();
-            // requestAnimationFrame(render);
+            ctx.fillStyle = color;
+            ctx.beginPath;
+            ctx.rect(hoopX, hoopY, radius * 2, radius / 2);
+            ctx.fill();
             animationFrameId = requestAnimationFrame(render);
         };
         window.addEventListener("resize", resizeScene);
@@ -192,11 +225,9 @@ function Ball() {
             window.removeEventListener("mousedown", onMouseDown);
             window.removeEventListener("mouseup", onMouseUp);
             window.removeEventListener("touchend", onTouchEnd);
-            // cancelAnimationFrame(render);
             cancelAnimationFrame(animationFrameId);
         };
     }, [resetTrigger]);
-    // }, [initscene]);
     function resetScene() {
         setResetTrigger(prev => prev + 1);
         // window.location.reload();
