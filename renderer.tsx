@@ -75,11 +75,10 @@ const attachEventListeners = () => {
 
 document.addEventListener('DOMContentLoaded', attachEventListeners);
 
-const container = document.getElementById('root');
+const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container!);
 root.render(<App />);
-root.render(<Navbar/>);
 
-// const navbarContainer = document.getElementById('navbarRoot');
-// const navbarRoot = createRoot(navbarContainer!)
-// navbarRoot.render(<Navbar/>)
+const navbarContainer = document.getElementById('navbarRoot') as HTMLElement;
+const navbarRoot = createRoot(navbarContainer)
+navbarRoot.render(<Navbar/>)
