@@ -33829,7 +33829,7 @@ function Home() {
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-// //https://github.com/bobboteck/JoyStick?tab=readme-ov-file
+//https://github.com/bobboteck/JoyStick?tab=readme-ov-file
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -33855,153 +33855,218 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Keyboard;
-// import React, { useState, useRef, useEffect, useReducer } from 'react';
-// export default function Keyboard() {
-//     const [position, setPosition] = useState({ x: 50, y: 50 }); 
-//     const [initialPosition] = useState({ x: 50, y: 50 });
-//     // const step = 15; 
-//     const step = 0.5; 
-//     const [direction, setDirection] = useState({ x: 0, y: 0 }); // Direction vector
-//     const requestRef = useRef<number>();
-//     const handleKeyDown = (event: KeyboardEvent) => {
-//         const { key } = event;
-//         // setPosition((prevPosition) => {
-//         setDirection((prevDirection) => {
-//             // let newPosition = { ...prevPosition };
-//             let newDirection= { ...prevDirection};
-//             if (key === 'w') {
-//                 // newPosition.y = initialPosition.y - step;
-//                 newDirection.y = -1
-//             } else if (key === 'a') {
-//                 // newPosition.x = initialPosition.x - step;
-//                 newDirection.x = -1
-//             } else if (key === 's') {
-//                 // newPosition.y = initialPosition.y + step;
-//                 newDirection.y = 1
-//             } else if (key === 'd') {
-//                 // newPosition.x = initialPosition.x + step;
-//                 newDirection.x = 1
-//             }
-//             // return newPosition;
-//             return newDirection;
-//         });
-//     };
-//     const handleKeyUp = (event: KeyboardEvent) => {
-//         const { key } = event;
-//         setDirection((prevDirection) => {
-//         let newDirection = { ...prevDirection}
-//         if (key === 'w' || key === 's') {
-//             newDirection.y = 0;
-//         }
-//         if (key === 'a' || key === 'd') {
-//             newDirection.x = 0
-//         }
-//         return newDirection
-//         })
-//         // if (['w', 'a', 's', 'd'].includes(key)) {
-//         //     setPosition(initialPosition);
-//         // }
-//     };
-//     const animate = () => {
-//         setPosition((prevPosition) => {
-//             let newPosition = { ...prevPosition };
-//             newPosition.x += direction.x * step;
-//             newPosition.y += direction.y * step;
-//             return newPosition;
-//         });
-//         requestRef.current = requestAnimationFrame(animate);
-//     };
-//     useEffect(() => {
-//         window.addEventListener('keydown', handleKeyDown);
-//         window.addEventListener('keyup', handleKeyUp);
-//         requestRef.current = requestAnimationFrame(animate);
-//         return () => {
-//             window.removeEventListener('keydown', handleKeyDown);
-//             window.removeEventListener('keyup', handleKeyUp);
-//             cancelAnimationFrame(requestRef.current!)
-//         };
-//     }, [direction]);
-//     return (
-//         <div>
-//             <h1>Keyboard</h1>
-//             <div
-//                 style={{
-//                     position: 'absolute',
-//                     width: '100px',
-//                     height: '100px',
-//                     backgroundColor: 'white',
-//                     borderRadius: '50%',
-//                     transform: 'translate(-50%, -50%)',
-//                     transition: 'left 0.1s, top 0.1s',
-//                     left: `${position.x}%`,
-//                     top: `${position.y}%`,
-//                 }}
-//             />
-//                         <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-//                 <line
-//                         x1={`${initialPosition.x}%`}
-//                         y1={`${initialPosition.y}%`}
-//                         x2={`${position.x}%`}
-//                         y2={`${position.y}%`}
-//                         stroke="white"
-//                         strokeWidth="10"
-//                         strokeLinecap='round'
-//                     />
-//             </svg>
-//         </div>
-//     );
-// }
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Keyboard() {
     const [position, setPosition] = (0, react_1.useState)({ x: 50, y: 50 });
-    const [initialPosition] = (0, react_1.useState)({ x: 50, y: 50 });
-    const step = 15;
-    const handleKeyDown = (event) => {
-        const { key } = event;
-        setPosition((prevPosition) => {
-            let newPosition = Object.assign({}, prevPosition);
+    (0, react_1.useEffect)(() => {
+        const canvasKeyboard = document.querySelector("#canvasKeyboard");
+        const ctx = canvasKeyboard.getContext("2d", { willReadFrequently: true });
+        const mouse = { x: 0, y: 0 };
+        // const radius = 100;
+        const radius = 75;
+        let isDragging = false;
+        let maxDistance = 80;
+        let isMovingKeys = false;
+        let ww = window.innerWidth;
+        let wh = window.innerHeight;
+        let centerX = ww / 2;
+        let centerY = wh / 2;
+        let circleX = centerX;
+        let circleY = centerY;
+        let vx = 0;
+        let vy = 0;
+        const damping = 0.8;
+        const stiffness = 0.05;
+        const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
+        const onMouseMove = (e) => {
+            if (isDragging) {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                const dx = mouse.x - centerX;
+                const dy = mouse.y - centerY;
+                const dist = Math.hypot(dx, dy);
+                // circleX = mouse.x;
+                // circleY = mouse.y;
+                if (dist <= maxDistance) {
+                    circleX = mouse.x;
+                    circleY = mouse.y;
+                }
+                else {
+                    const angle = Math.atan2(dy, dx);
+                    circleX = centerX + maxDistance * Math.cos(angle);
+                    circleY = centerY + maxDistance * Math.sin(angle);
+                }
+            }
+        };
+        const onTouchMove = (e) => {
+            if (e.touches.length > 0 && isDragging) {
+                // circleX = mouse.x;
+                // circleY = mouse.y;
+                mouse.x = e.touches[0].clientX;
+                mouse.y = e.touches[0].clientY;
+                const dx = mouse.x - centerX;
+                const dy = mouse.y - centerY;
+                const dist = Math.hypot(dx, dy);
+                if (dist <= maxDistance) {
+                    circleX = mouse.x;
+                    circleY = mouse.y;
+                }
+                else {
+                    const angle = Math.atan2(dy, dx);
+                    circleX = centerX + maxDistance * Math.cos(angle);
+                    circleY = centerY + maxDistance * Math.sin(angle);
+                }
+            }
+        };
+        const onTouchEnd = () => {
+            if (isDragging) {
+                isDragging = false;
+            }
+        };
+        const onMouseDown = (e) => {
+            const dist = Math.hypot(e.clientX - circleX, e.clientY - circleY);
+            if (dist < radius) {
+                isDragging = true;
+            }
+        };
+        const onMouseUp = () => {
+            if (isDragging) {
+                isDragging = false;
+            }
+        };
+        const handleKeyDown = (event) => {
+            isMovingKeys = true;
+            const { key } = event;
+            // setPosition((prevPosition) => {
+            //     let newPosition = { ...prevPosition };
             if (key === 'w') {
-                newPosition.y = initialPosition.y - step;
+                console.log('w');
+                circleY -= 20;
+                // newPosition.y = initialPosition.y - step;
             }
             else if (key === 'a') {
-                newPosition.x = initialPosition.x - step;
+                console.log('a');
+                circleX -= 20;
+                // newPosition.x = initialPosition.x - step;
             }
             else if (key === 's') {
-                newPosition.y = initialPosition.y + step;
+                console.log('s');
+                circleY += 20;
+                // newPosition.y = initialPosition.y + step;
             }
             else if (key === 'd') {
-                newPosition.x = initialPosition.x + step;
+                console.log('d');
+                circleX += 20;
+                // newPosition.x = initialPosition.x + step;
             }
-            return newPosition;
-        });
-    };
-    const handleKeyUp = (event) => {
-        const { key } = event;
-        if (['w', 'a', 's', 'd'].includes(key)) {
-            setPosition(initialPosition);
-        }
-    };
-    (0, react_1.useEffect)(() => {
+        };
+        const handleKeyUp = (event) => {
+            isMovingKeys = false;
+            const { key } = event;
+            if (['w', 'a', 's', 'd'].includes(key)) {
+                // setPosition(initialPosition);
+                console.log('reset key');
+            }
+        };
+        const initscene = () => {
+            ww = canvasKeyboard.width = window.innerWidth;
+            wh = canvasKeyboard.height = window.innerHeight;
+            centerX = ww / 2;
+            centerY = wh / 2;
+            circleX = centerX;
+            circleY = centerY;
+            vx = 0;
+            vy = 0;
+            render();
+        };
+        const resizeScene = () => {
+            ww = canvasKeyboard.width = window.innerWidth;
+            wh = canvasKeyboard.height = window.innerHeight;
+            centerX = ww / 2;
+            centerY = wh / 2;
+            circleX = centerX;
+            circleY = centerY;
+            vx = 0;
+            vy = 0;
+        };
+        let animationFrameId;
+        const render = () => {
+            const distToCenter = Math.hypot(circleX - centerX, circleY - centerY);
+            if (!isDragging && !isMovingKeys) {
+                const dx = centerX - circleX;
+                const dy = centerY - circleY;
+                const ax = dx * stiffness;
+                const ay = dy * stiffness;
+                vx += ax;
+                vy += ay;
+                vx *= damping;
+                vy *= damping;
+                circleX += vx;
+                circleY += vy;
+            }
+            if (distToCenter > maxDistance) {
+                const angle = Math.atan2(circleY - centerY, circleX - centerX);
+                circleX = centerX + maxDistance * Math.cos(angle);
+                circleY = centerY + maxDistance * Math.sin(angle);
+            }
+            else {
+                vx = 0;
+                vy = 0;
+            }
+            ctx.clearRect(0, 0, canvasKeyboard.width, canvasKeyboard.height);
+            //tether
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 10;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(circleX, circleY);
+            ctx.stroke();
+            //ball
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(circleX, circleY, radius, 0, Math.PI * 2);
+            ctx.fill();
+            //big circle
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, maxDistance + radius, 0, Math.PI * 2);
+            ctx.stroke(),
+                animationFrameId = requestAnimationFrame(render);
+        };
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
+        window.addEventListener("resize", resizeScene);
+        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("touchmove", onTouchMove);
+        window.addEventListener("mousedown", onMouseDown);
+        window.addEventListener("mouseup", onMouseUp);
+        window.addEventListener("touchend", onTouchEnd);
+        initscene();
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('keyup', handleKeyUp);
+            window.addEventListener('keydown', handleKeyDown);
+            window.removeEventListener("resize", resizeScene);
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("touchmove", onTouchMove);
+            window.removeEventListener("mousedown", onMouseDown);
+            window.removeEventListener("mouseup", onMouseUp);
+            window.removeEventListener("touchend", onTouchEnd);
+            cancelAnimationFrame(animationFrameId);
         };
     }, []);
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Keyboard"),
-        react_1.default.createElement("div", { style: {
+        react_1.default.createElement("canvas", { style: {
+                width: '100vw',
+                height: '100vh',
                 position: 'absolute',
-                left: `${position.x}%`,
-                top: `${position.y}%`,
-                width: '100px',
-                height: '100px',
-                backgroundColor: 'white',
-                borderRadius: '50%',
-                transform: 'translate(-50%, -50%)',
-                transition: 'left 0.1s, top 0.1s',
-            } })));
+                top: 0,
+                left: 0,
+                overflow: 'hidden',
+                zIndex: -10
+            }, id: "canvasKeyboard" })));
 }
 
 
