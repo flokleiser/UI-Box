@@ -68,14 +68,10 @@ function Tether() {
         };
         const onTouchMove = (e) => {
             if (e.touches.length > 0 && isDragging) {
-                // mouse.x = e.touches[0].clientX;
-                // mouse.y = e.touches[0].clientY;
                 particleX1 = mouse.x;
                 particleY1 = mouse.y;
             }
             if (e.touches.length > 0 && isDragging2) {
-                // mouse.x = e.touches[0].clientX;
-                // mouse.y = e.touches[0].clientY;
                 particleX2 = mouse.x;
                 particleY2 = mouse.y;
             }
@@ -189,30 +185,6 @@ function Tether() {
             ctx.moveTo(centerX2, centerY2);
             ctx.lineTo(particleX2, particleY2);
             ctx.stroke();
-            // const springSegments = 20;
-            // const springLength = Math.hypot(centerX - particleX1, centerY - particleY1);
-            // const segmentLength = springLength / springSegments;
-            // const angle = Math.atan2(particleY1 - centerY, particleX1 - centerX);
-            // ctx.strokeStyle = color;
-            // ctx.lineWidth = 2;
-            // ctx.beginPath();
-            // for (let i = 0; i <= springSegments; i++) {
-            //     const t = i / springSegments;
-            //     const offsetX = centerX + t * (particleX1 - centerX);
-            //     const offsetY = centerY + t * (particleY1 - centerY);
-            //     const wave = Math.sin(t * Math.PI * 2 * 5) * 5; 
-            //     const waveX = offsetX + Math.cos(angle + Math.PI / 2) * wave;
-            //     const waveY = offsetY + Math.sin(angle + Math.PI / 2) * wave;
-            //     if (i === 0) {
-            //         ctx.moveTo(waveX, waveY);
-            //     } else {
-            //         ctx.lineTo(waveX, waveY);
-            //     }
-            // }
-            // ctx.strokeStyle = color;
-            // ctx.lineWidth = 10;
-            // ctx.lineCap = "round";            
-            // ctx.stroke();
             //ball
             ctx.fillStyle = color;
             ctx.beginPath();
@@ -225,7 +197,6 @@ function Tether() {
             // requestAnimationFrame(render);
             animationFrameId = requestAnimationFrame(render);
         };
-        // window.addEventListener("resize", initscene);
         window.addEventListener("resize", resizeScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -234,14 +205,12 @@ function Tether() {
         window.addEventListener("touchend", onTouchEnd);
         initscene();
         return () => {
-            // window.removeEventListener("resize", initscene);
             window.removeEventListener("resize", resizeScene);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);
             window.removeEventListener("mouseup", onMouseUp);
             window.removeEventListener("touchend", onTouchEnd);
-            // cancelAnimationFrame(render);
             cancelAnimationFrame(animationFrameId);
         };
     }, []);

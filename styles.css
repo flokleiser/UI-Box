@@ -43,7 +43,31 @@ nav{
   margin-right:0.25rem;
 }
 
+/*NAVBAR ON THE SIDE */
+/* nav{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: white;
+}
+#settingsButton {
+  margin-top:auto;
+}
+.left-buttons {
+  display:flex;
+  flex-direction: column;
+  gap:10px;
+}
+.navbar button{
+  width: 100px;
+  margin-right:0.25rem;
+} */
+/*END NAVBAR ON THE SIDE */
+
+
 .material-icons {
+  /* font-size: 24px; */
   font-size: 20px;
 }
 
@@ -96,6 +120,18 @@ nav{
   transition: transform 0.3s ease, background 0.2s;
 }
 
+.button2toggled {
+  width: 105px;
+  height: 105px;
+  padding: 20px; 
+  border-radius: 40px;
+  margin:0.5rem;
+  border: 2px solid white;
+
+  background:white;
+  transition: transform 0.3s ease, background 0.2s;
+}
+
 .button1:hover {
   transform: scale(1.05);
 }
@@ -118,6 +154,8 @@ nav{
 
 .buttonInSettings{
   margin-right: 0.25rem;
+  /* display:flex;
+  gap:10px; */
 }
 
 .logo{
@@ -133,7 +171,7 @@ nav{
 
 .spinnerDiv {
   position:relative;
-  margin-top:5rem;
+  margin-top:6rem;
   margin-left:3rem;
   margin-right:3rem;
   display:flex;
@@ -204,6 +242,7 @@ nav{
   margin-left:5px;
   margin-right: 5px;
 }
+
   
   @media (prefers-color-scheme: dark) {
     body { background: #333; color: white; }

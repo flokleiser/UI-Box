@@ -9,9 +9,13 @@ const react_2 = require("react");
 function Particles() {
     // const Particles:React.FC = () => {
     (0, react_2.useEffect)(() => {
-        let canvas = document.querySelector("#scene"), ctx = canvas.getContext("2d", { willReadFrequently: true }), particles = [], amount = 0, mouse = { x: 0, y: 0 }, radius = 0.5;
+        let canvas = document.querySelector("#scene"), ctx = canvas.getContext("2d", {
+            willReadFrequently: true,
+        }), particles = [], amount = 0, mouse = { x: 0, y: 0 }, radius = 0.5;
         // let color = ["#ffffff"];
-        const color = [getComputedStyle(document.documentElement).getPropertyValue('--particle-color')];
+        const color = [
+            getComputedStyle(document.documentElement).getPropertyValue("--particle-color"),
+        ];
         let displayText = "O*";
         let ww = window.innerWidth;
         let wh = window.innerHeight;
@@ -21,7 +25,7 @@ function Particles() {
                 this.y = y;
                 this.dest = {
                     x: x,
-                    y: y
+                    y: y,
                 };
                 //   this.r = ww / 600;
                 // this.r = ww/50
@@ -50,13 +54,13 @@ function Particles() {
                 let a = this.x - mouse.x;
                 let b = this.y - mouse.y;
                 let distance = Math.sqrt(a * a + b * b);
-                if (distance < (radius * 60)) {
-                    this.accX = (this.x - mouse.x);
-                    this.accY = (this.y - mouse.y);
+                if (distance < radius * 60) {
+                    this.accX = this.x - mouse.x;
+                    this.accY = this.y - mouse.y;
                     this.vx += this.accX;
                     this.vy += this.accY;
                 }
-                if (distance > (radius * 250)) {
+                if (distance > radius * 250) {
                     this.accX = (this.dest.x - this.x) / 10;
                     this.accY = (this.dest.y - this.y) / 10;
                     this.vx += this.accX;
@@ -87,15 +91,23 @@ function Particles() {
         function initScene() {
             ww = canvas.width = window.innerWidth;
             wh = canvas.height = window.innerHeight;
-            if (ww < 500) {
+            // ctx.font = "400px Arial";
+            if (ww < 900) {
                 ctx.font = "400px Arial";
             }
             else {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.font = "400px Arial";
+                ctx.font = "650px Arial";
             }
             ctx.textAlign = "center";
-            ctx.fillText(displayText, ww / 2, wh / 1.2);
+            if (wh > 700) {
+                ctx.fillText(displayText, ww / 2, wh / 2);
+            }
+            else {
+                ctx.fillText(displayText, ww / 2, wh / 1.2);
+            }
+            // ctx.fillText(displayText, ww / 2, wh / 1.2);
+            // ctx.fillText(displayText, ww / 2, wh /2);
             let data = ctx.getImageData(0, 0, ww, wh).data;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.globalCompositeOperation = "screen";
@@ -103,7 +115,7 @@ function Particles() {
             particles = [];
             for (let i = 0; i < ww; i += Math.round(ww / divider)) {
                 for (let j = 0; j < wh; j += Math.round(ww / divider)) {
-                    if (data[((i + j * ww) * 4) + 3] > divider) {
+                    if (data[(i + j * ww) * 4 + 3] > divider) {
                         particles.push(new Particle(i, j));
                     }
                 }
@@ -118,7 +130,6 @@ function Particles() {
                 particles[i].render();
             }
         }
-        ;
         window.addEventListener("resize", initScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -142,10 +153,10 @@ function Particles() {
         react_1.default.createElement("canvas", { style: {
                 width: window.innerWidth,
                 height: window.innerHeight,
-                position: 'absolute',
+                position: "absolute",
                 top: 0,
                 left: 0,
-                overflow: 'hidden',
-                zIndex: -10
+                overflow: "hidden",
+                zIndex: -10,
             }, id: "scene" })));
 }

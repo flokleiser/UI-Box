@@ -34,8 +34,6 @@ function Settings() {
     function toggleSystemMode() {
         window.darkMode.system();
         window.darkMode.getThemeSource().then(setThemeSource);
-        // setDarkMode(false);
-        // setLightMode(true);
     }
     function themeSourceDisplay() {
         if (activeThemeSource === 'dark') {

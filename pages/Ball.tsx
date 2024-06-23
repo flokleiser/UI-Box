@@ -15,12 +15,10 @@ export default function Ball() {
         let ww = window.innerWidth;
         let wh = window.innerHeight;
 
-
-        let hoopX= (canvasBall.width/ 4)*3
-        let hoopY= canvasBall.height/3
-        let centerX = (ww / 4);
+        let hoopX1= (canvasBall.width/ 4)*3
+        let hoopY1= canvasBall.height/3
+        let centerX = (ww / 2);
         let centerY = (wh / 5) * 3;
-
 
         let ballX = centerX;
         let ballY = centerY;
@@ -81,12 +79,12 @@ export default function Ball() {
             wh = canvasBall.height = window.innerHeight;
             isDragging = false;
             isReleased = false; 
-            centerX = ww / 4;
+            centerX = ww / 2;
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            hoopX = (ww/ 4)*3
-            hoopY = wh/3
+            hoopX1 = (ww/ 4)*3
+            hoopY1 = wh/3
 
             vx = 0;
             vy = 0;
@@ -96,12 +94,12 @@ export default function Ball() {
         const resizeScene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
-            centerX = ww / 4;
+            centerX = ww / 2;
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            hoopX = (ww/ 4)*3
-            hoopY = wh/3
+            hoopX1 = (ww/ 4)*3
+            hoopY1 = wh/3
             vx = 0;
             vy = 0;
         }
@@ -131,8 +129,8 @@ export default function Ball() {
 
 
                 if (
-                    ballX + radius > hoopX && ballX - radius < hoopX &&
-                    ballY + radius > hoopY && ballY - radius < hoopY
+                    ballX + radius > hoopX1 && ballX - radius < hoopX1 &&
+                    ballY + radius > hoopY1 && ballY - radius < hoopY1
                 ) { 
                     vx *= -damping
                     vy *= -damping
@@ -212,13 +210,11 @@ export default function Ball() {
 
             ctx.fillStyle = color
             ctx.beginPath
-            ctx.rect(hoopX,hoopY, radius*2, radius/2)
+            ctx.rect(hoopX1,hoopY1, radius*2, radius/2)
             ctx.fill();
 
             animationFrameId = requestAnimationFrame(render);
         };
-
-
 
         window.addEventListener("resize", resizeScene);
         window.addEventListener("mousemove", onMouseMove);
@@ -268,4 +264,3 @@ export default function Ball() {
         </div>
     );
 }
-

@@ -33514,9 +33514,9 @@ function Ball() {
         let isReleased = false;
         let ww = window.innerWidth;
         let wh = window.innerHeight;
-        let hoopX = (canvasBall.width / 4) * 3;
-        let hoopY = canvasBall.height / 3;
-        let centerX = (ww / 4);
+        let hoopX1 = (canvasBall.width / 4) * 3;
+        let hoopY1 = canvasBall.height / 3;
+        let centerX = (ww / 2);
         let centerY = (wh / 5) * 3;
         let ballX = centerX;
         let ballY = centerY;
@@ -33569,12 +33569,12 @@ function Ball() {
             wh = canvasBall.height = window.innerHeight;
             isDragging = false;
             isReleased = false;
-            centerX = ww / 4;
+            centerX = ww / 2;
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            hoopX = (ww / 4) * 3;
-            hoopY = wh / 3;
+            hoopX1 = (ww / 4) * 3;
+            hoopY1 = wh / 3;
             vx = 0;
             vy = 0;
             render();
@@ -33582,12 +33582,12 @@ function Ball() {
         const resizeScene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
-            centerX = ww / 4;
+            centerX = ww / 2;
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            hoopX = (ww / 4) * 3;
-            hoopY = wh / 3;
+            hoopX1 = (ww / 4) * 3;
+            hoopY1 = wh / 3;
             vx = 0;
             vy = 0;
         };
@@ -33609,8 +33609,8 @@ function Ball() {
                 }
                 ballX += vx;
                 ballY += vy;
-                if (ballX + radius > hoopX && ballX - radius < hoopX &&
-                    ballY + radius > hoopY && ballY - radius < hoopY) {
+                if (ballX + radius > hoopX1 && ballX - radius < hoopX1 &&
+                    ballY + radius > hoopY1 && ballY - radius < hoopY1) {
                     vx *= -damping;
                     vy *= -damping;
                 }
@@ -33685,7 +33685,7 @@ function Ball() {
             ctx.fill();
             ctx.fillStyle = color;
             ctx.beginPath;
-            ctx.rect(hoopX, hoopY, radius * 2, radius / 2);
+            ctx.rect(hoopX1, hoopY1, radius * 2, radius / 2);
             ctx.fill();
             animationFrameId = requestAnimationFrame(render);
         };
@@ -33829,15 +33829,83 @@ function Home() {
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+//https://github.com/bobboteck/JoyStick?tab=readme-ov-file
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Keyboard;
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Keyboard() {
+    const [position, setPosition] = (0, react_1.useState)({ x: 50, y: 50 });
+    const [initialPosition] = (0, react_1.useState)({ x: 50, y: 50 });
+    const step = 15;
+    const handleKeyDown = (event) => {
+        const { key } = event;
+        setPosition((prevPosition) => {
+            let newPosition = Object.assign({}, prevPosition);
+            if (key === 'w') {
+                newPosition.y = initialPosition.y - step;
+            }
+            else if (key === 'a') {
+                newPosition.x = initialPosition.x - step;
+            }
+            else if (key === 's') {
+                newPosition.y = initialPosition.y + step;
+            }
+            else if (key === 'd') {
+                newPosition.x = initialPosition.x + step;
+            }
+            return newPosition;
+        });
+    };
+    const handleKeyUp = (event) => {
+        const { key } = event;
+        if (['w', 'a', 's', 'd'].includes(key)) {
+            setPosition(initialPosition);
+        }
+    };
+    (0, react_1.useEffect)(() => {
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+        };
+    }, []);
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, " Keyboard")));
+        react_1.default.createElement("h1", null, "Keyboard"),
+        react_1.default.createElement("div", { style: {
+                position: 'absolute',
+                width: '100px',
+                height: '100px',
+                backgroundColor: 'white',
+                borderRadius: '50%',
+                transform: 'translate(-50%, -50%)',
+                transition: 'left 0.1s, top 0.1s',
+                left: `${position.x}%`,
+                top: `${position.y}%`,
+            } })));
 }
 
 
@@ -33860,9 +33928,13 @@ const react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js"
 function Particles() {
     // const Particles:React.FC = () => {
     (0, react_2.useEffect)(() => {
-        let canvas = document.querySelector("#scene"), ctx = canvas.getContext("2d", { willReadFrequently: true }), particles = [], amount = 0, mouse = { x: 0, y: 0 }, radius = 0.5;
+        let canvas = document.querySelector("#scene"), ctx = canvas.getContext("2d", {
+            willReadFrequently: true,
+        }), particles = [], amount = 0, mouse = { x: 0, y: 0 }, radius = 0.5;
         // let color = ["#ffffff"];
-        const color = [getComputedStyle(document.documentElement).getPropertyValue('--particle-color')];
+        const color = [
+            getComputedStyle(document.documentElement).getPropertyValue("--particle-color"),
+        ];
         let displayText = "O*";
         let ww = window.innerWidth;
         let wh = window.innerHeight;
@@ -33872,7 +33944,7 @@ function Particles() {
                 this.y = y;
                 this.dest = {
                     x: x,
-                    y: y
+                    y: y,
                 };
                 //   this.r = ww / 600;
                 // this.r = ww/50
@@ -33901,13 +33973,13 @@ function Particles() {
                 let a = this.x - mouse.x;
                 let b = this.y - mouse.y;
                 let distance = Math.sqrt(a * a + b * b);
-                if (distance < (radius * 60)) {
-                    this.accX = (this.x - mouse.x);
-                    this.accY = (this.y - mouse.y);
+                if (distance < radius * 60) {
+                    this.accX = this.x - mouse.x;
+                    this.accY = this.y - mouse.y;
                     this.vx += this.accX;
                     this.vy += this.accY;
                 }
-                if (distance > (radius * 250)) {
+                if (distance > radius * 250) {
                     this.accX = (this.dest.x - this.x) / 10;
                     this.accY = (this.dest.y - this.y) / 10;
                     this.vx += this.accX;
@@ -33938,15 +34010,23 @@ function Particles() {
         function initScene() {
             ww = canvas.width = window.innerWidth;
             wh = canvas.height = window.innerHeight;
-            if (ww < 500) {
+            // ctx.font = "400px Arial";
+            if (ww < 900) {
                 ctx.font = "400px Arial";
             }
             else {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.font = "400px Arial";
+                ctx.font = "650px Arial";
             }
             ctx.textAlign = "center";
-            ctx.fillText(displayText, ww / 2, wh / 1.2);
+            if (wh > 700) {
+                ctx.fillText(displayText, ww / 2, wh / 2);
+            }
+            else {
+                ctx.fillText(displayText, ww / 2, wh / 1.2);
+            }
+            // ctx.fillText(displayText, ww / 2, wh / 1.2);
+            // ctx.fillText(displayText, ww / 2, wh /2);
             let data = ctx.getImageData(0, 0, ww, wh).data;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.globalCompositeOperation = "screen";
@@ -33954,7 +34034,7 @@ function Particles() {
             particles = [];
             for (let i = 0; i < ww; i += Math.round(ww / divider)) {
                 for (let j = 0; j < wh; j += Math.round(ww / divider)) {
-                    if (data[((i + j * ww) * 4) + 3] > divider) {
+                    if (data[(i + j * ww) * 4 + 3] > divider) {
                         particles.push(new Particle(i, j));
                     }
                 }
@@ -33969,7 +34049,6 @@ function Particles() {
                 particles[i].render();
             }
         }
-        ;
         window.addEventListener("resize", initScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -33993,11 +34072,11 @@ function Particles() {
         react_1.default.createElement("canvas", { style: {
                 width: window.innerWidth,
                 height: window.innerHeight,
-                position: 'absolute',
+                position: "absolute",
                 top: 0,
                 left: 0,
-                overflow: 'hidden',
-                zIndex: -10
+                overflow: "hidden",
+                zIndex: -10,
             }, id: "scene" })));
 }
 
@@ -34046,8 +34125,6 @@ function Settings() {
     function toggleSystemMode() {
         window.darkMode.system();
         window.darkMode.getThemeSource().then(setThemeSource);
-        // setDarkMode(false);
-        // setLightMode(true);
     }
     function themeSourceDisplay() {
         if (activeThemeSource === 'dark') {
@@ -34352,14 +34429,10 @@ function Tether() {
         };
         const onTouchMove = (e) => {
             if (e.touches.length > 0 && isDragging) {
-                // mouse.x = e.touches[0].clientX;
-                // mouse.y = e.touches[0].clientY;
                 particleX1 = mouse.x;
                 particleY1 = mouse.y;
             }
             if (e.touches.length > 0 && isDragging2) {
-                // mouse.x = e.touches[0].clientX;
-                // mouse.y = e.touches[0].clientY;
                 particleX2 = mouse.x;
                 particleY2 = mouse.y;
             }
@@ -34473,30 +34546,6 @@ function Tether() {
             ctx.moveTo(centerX2, centerY2);
             ctx.lineTo(particleX2, particleY2);
             ctx.stroke();
-            // const springSegments = 20;
-            // const springLength = Math.hypot(centerX - particleX1, centerY - particleY1);
-            // const segmentLength = springLength / springSegments;
-            // const angle = Math.atan2(particleY1 - centerY, particleX1 - centerX);
-            // ctx.strokeStyle = color;
-            // ctx.lineWidth = 2;
-            // ctx.beginPath();
-            // for (let i = 0; i <= springSegments; i++) {
-            //     const t = i / springSegments;
-            //     const offsetX = centerX + t * (particleX1 - centerX);
-            //     const offsetY = centerY + t * (particleY1 - centerY);
-            //     const wave = Math.sin(t * Math.PI * 2 * 5) * 5; 
-            //     const waveX = offsetX + Math.cos(angle + Math.PI / 2) * wave;
-            //     const waveY = offsetY + Math.sin(angle + Math.PI / 2) * wave;
-            //     if (i === 0) {
-            //         ctx.moveTo(waveX, waveY);
-            //     } else {
-            //         ctx.lineTo(waveX, waveY);
-            //     }
-            // }
-            // ctx.strokeStyle = color;
-            // ctx.lineWidth = 10;
-            // ctx.lineCap = "round";            
-            // ctx.stroke();
             //ball
             ctx.fillStyle = color;
             ctx.beginPath();
@@ -34509,7 +34558,6 @@ function Tether() {
             // requestAnimationFrame(render);
             animationFrameId = requestAnimationFrame(render);
         };
-        // window.addEventListener("resize", initscene);
         window.addEventListener("resize", resizeScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -34518,14 +34566,12 @@ function Tether() {
         window.addEventListener("touchend", onTouchEnd);
         initscene();
         return () => {
-            // window.removeEventListener("resize", initscene);
             window.removeEventListener("resize", resizeScene);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);
             window.removeEventListener("mouseup", onMouseUp);
             window.removeEventListener("touchend", onTouchEnd);
-            // cancelAnimationFrame(render);
             cancelAnimationFrame(animationFrameId);
         };
     }, []);
