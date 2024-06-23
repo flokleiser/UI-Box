@@ -34592,7 +34592,7 @@ const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
 const Keyboard_1 = __importDefault(__webpack_require__(/*! ./pages/Keyboard */ "./src/pages/Keyboard.tsx"));
 const App = () => {
-    const [page, setPage] = (0, react_1.useState)('Buttons');
+    const [page, setPage] = (0, react_1.useState)('Home');
     let CurrentPage;
     switch (page) {
         case 'Home':

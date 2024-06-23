@@ -25,7 +25,7 @@ declare global {
 }
 
 const App: FC = () => {
-    const [page, setPage] = useState<Page>('Buttons');
+    const [page, setPage] = useState<Page>('Home');
 
     let CurrentPage: React.ComponentType;
 
