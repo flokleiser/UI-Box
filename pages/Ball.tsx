@@ -135,10 +135,8 @@ export default function Ball() {
                 ballX += vx;
                 ballY += vy;
 
-                // if (ballY + radius > canvasBall.height || ballY - radius < 0) {
                 if (ballY + radius > wh || ballY - radius < 0) {
                     vy *= -damping;
-                    // if (ballY + radius > canvasBall.height) ballY = canvasBall.height - radius;
                     if (ballY + radius > wh ) ballY = wh - radius;
                     if (ballY - radius < 0) {
                         ballY = radius;
@@ -146,10 +144,8 @@ export default function Ball() {
                     }
                 }
 
-                // if (ballX + radius > canvasBall.width || ballX - radius < 0) {
                 if (ballX + radius > ww|| ballX - radius < 0) {
                     vx *= -damping;
-                    // if (ballX + radius > canvasBall.width) ballX = canvasBall.width - radius;
                     if (ballX + radius > ww) ballX = canvasBall.width - radius;
                     if (ballX - radius < 0) {
                         console.log('x direction change')
@@ -208,8 +204,8 @@ export default function Ball() {
 
 
     function resetScene() {
-        // setResetTrigger(prev => prev + 1);
-        window.location.reload();
+        setResetTrigger(prev => prev + 1);
+        // window.location.reload();
     }
 
     return (
