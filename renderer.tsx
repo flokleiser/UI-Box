@@ -15,6 +15,11 @@ type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Tether'
 declare global {
   interface Window {
       loadPage: (page: Page) => void;
+      darkMode: {
+            toggle: () => Promise<void>;
+            system: () => Promise<void>;
+            getThemeSource: () => Promise<string>;
+        }
   }
 }
 
@@ -103,12 +108,25 @@ const attachEventListeners = () => {
     }
 }
 
-document.addEventListener('DOMContentLoaded', attachEventListeners);
+// document.addEventListener('DOMContentLoaded', attachEventListeners);
+document.addEventListener('DOMContentLoaded', () => {
+ attachEventListeners();
 
-const container = document.getElementById('root') as HTMLElement;
-const root = createRoot(container!);
-root.render(<App />);
+const container = document.getElementById('root');
+if (container) {
+    const root = createRoot(container!);
+    root.render(<App />);
+}
+else {
+    console.log('app root not found')
+}
 
-const navbarContainer = document.getElementById('navbarRoot') as HTMLElement;
-const navbarRoot = createRoot(navbarContainer)
-navbarRoot.render(<Navbar/>)
+const navbarContainer = document.getElementById('navbarRoot');
+if (navbarContainer) {
+    const navbarRoot = createRoot(navbarContainer)
+    navbarRoot.render(<Navbar/>)
+}
+else {
+    console.log('navbar root not found')
+}
+});
