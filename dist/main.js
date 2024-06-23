@@ -1,24 +1,6 @@
-/*
- * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
-
-/***/ "./src/main.ts":
-/*!*********************!*\
-  !*** ./src/main.ts ***!
-  \*********************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-eval("\nconst { app, ipcMain, BrowserWindow, nativeTheme } = __webpack_require__(/*! electron */ \"electron\");\nconst path = __webpack_require__(/*! node:path */ \"node:path\");\nfunction createWindow() {\n    const mainWindow = new BrowserWindow({\n        width: 800,\n        height: 600,\n        webPreferences: {\n            preload: path.join(__dirname, 'preload.js')\n            //   preload: path.join(__dirname, 'preload.tsx')\n        }\n    });\n    mainWindow.loadFile('./src/index.html');\n    mainWindow.webContents.openDevTools();\n    // }\n    ipcMain.handle('dark-mode:toggle', () => {\n        if (nativeTheme.shouldUseDarkColors) {\n            nativeTheme.themeSource = 'light';\n        }\n        else {\n            nativeTheme.themeSource = 'dark';\n        }\n        return nativeTheme.shouldUseDarkColors;\n    });\n    ipcMain.handle('dark-mode:system', () => {\n        nativeTheme.themeSource = 'system';\n    });\n    ipcMain.handle('dark-mode:get-theme-source', () => {\n        return nativeTheme.themeSource;\n    });\n}\napp.whenReady().then(() => {\n    createWindow();\n    app.on('activate', function () {\n        if (BrowserWindow.getAllWindows().length === 0)\n            createWindow();\n    });\n});\napp.on('window-all-closed', function () {\n    app.quit();\n});\n\n\n//# sourceURL=webpack://ui-box-typescript/./src/main.ts?");
-
-/***/ }),
 
 /***/ "electron":
 /*!***************************!*\
@@ -67,11 +49,52 @@ module.exports = require("node:path");
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/main.ts");
-/******/ 	
+var __webpack_exports__ = {};
+/*!*********************!*\
+  !*** ./src/main.ts ***!
+  \*********************/
+
+const { app, ipcMain, BrowserWindow, nativeTheme } = __webpack_require__(/*! electron */ "electron");
+const path = __webpack_require__(/*! node:path */ "node:path");
+function createWindow() {
+    const mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+            //   preload: path.join(__dirname, 'preload.tsx')
+        }
+    });
+    mainWindow.loadFile('./src/index.html');
+    mainWindow.webContents.openDevTools();
+    // }
+    ipcMain.handle('dark-mode:toggle', () => {
+        if (nativeTheme.shouldUseDarkColors) {
+            nativeTheme.themeSource = 'light';
+        }
+        else {
+            nativeTheme.themeSource = 'dark';
+        }
+        return nativeTheme.shouldUseDarkColors;
+    });
+    ipcMain.handle('dark-mode:system', () => {
+        nativeTheme.themeSource = 'system';
+    });
+    ipcMain.handle('dark-mode:get-theme-source', () => {
+        return nativeTheme.themeSource;
+    });
+}
+app.whenReady().then(() => {
+    createWindow();
+    app.on('activate', function () {
+        if (BrowserWindow.getAllWindows().length === 0)
+            createWindow();
+    });
+});
+app.on('window-all-closed', function () {
+    app.quit();
+});
+
 /******/ })()
 ;
+//# sourceMappingURL=main.js.map
