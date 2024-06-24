@@ -31,70 +31,24 @@ export default function Keyboard() {
         const stiffness = 0.05; 
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
 
-        
-        const onMouseMove = (e:MouseEvent) => {
-            if (isDragging) {
-                mouse.x = e.clientX;
-                mouse.y = e.clientY;
-                const dx = mouse.x - centerX
-                const dy = mouse.y - centerY
-                const dist = Math.hypot(dx,dy)
-                // circleX = mouse.x;
-                // circleY = mouse.y;
-
-                if (dist <= maxDistance) {
-                    circleX = mouse.x;
-                    circleY = mouse.y;
-                } else {
-                    const angle = Math.atan2(dy, dx);
-                    circleX = centerX + maxDistance * Math.cos(angle);
-                    circleY = centerY + maxDistance * Math.sin(angle);
-                }
-            }
-        };
-
-        const onTouchMove = (e:TouchEvent) => {
-            if (e.touches.length > 0 && isDragging) {
-                // circleX = mouse.x;
-                // circleY = mouse.y;
-                mouse.x = e.touches[0].clientX;
-                mouse.y = e.touches[0].clientY;
-                const dx = mouse.x - centerX;
-                const dy = mouse.y - centerY;
-                const dist = Math.hypot(dx, dy);
-
-                if (dist <= maxDistance) {
-                    circleX = mouse.x;
-                    circleY = mouse.y;
-                } else {
-                    const angle = Math.atan2(dy, dx);
-                    circleX = centerX + maxDistance * Math.cos(angle);
-                    circleY = centerY + maxDistance * Math.sin(angle);
-                }
-            }
-        };
-
-        const onTouchEnd = () => {
-            if (isDragging) {
-                isDragging = false;
-            }
-        };
-
-        const onMouseDown = (e:MouseEvent) => {
-            const dist = Math.hypot(e.clientX - circleX, e.clientY - circleY);
-            if (dist < radius) {
-                isDragging = true;
-            }
-        };
-
-        const onMouseUp = () => {
-            if (isDragging) {
-                isDragging = false;
-            }
-        };
-
         const handleKeyDown = (event: KeyboardEvent) => {
             isMovingKeys = true;
+
+            const dx = circleX - centerX;
+            const dy = circleY - centerY;
+            const dist = Math.hypot(dx, dy);
+
+            const newX = circleX + dx
+            const newY = circleY + dy
+
+            if (dist <= maxDistance) {
+                circleX = circleX;
+                circleY = mouse.y;
+            } else {
+                const angle = Math.atan2(dy, dx);
+                circleX = centerX + maxDistance * Math.cos(angle);
+                circleY = centerY + maxDistance * Math.sin(angle);
+            }
             const { key } = event;
                 if (key === 'w') {
                     circleY -= 20 
@@ -157,11 +111,7 @@ export default function Keyboard() {
                 circleX += vx;
                 circleY += vy;
             }
-            // if (distToCenter > maxDistance) {
-            //     const angle = Math.atan2(circleY - centerY, circleX - centerX);
-            //     circleX = centerX + maxDistance * Math.cos(angle);
-            //     circleY = centerY + maxDistance * Math.sin(angle);
-            // }
+           
             else {
                 vx = 0;
                 vy = 0;
@@ -199,22 +149,13 @@ export default function Keyboard() {
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
         window.addEventListener("resize", resizeScene);
-        window.addEventListener("mousemove", onMouseMove);
-        window.addEventListener("touchmove", onTouchMove);
-        window.addEventListener("mousedown", onMouseDown);
-        window.addEventListener("mouseup", onMouseUp);
-        window.addEventListener("touchend", onTouchEnd);
+     
         initscene();
 
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
             window.addEventListener('keydown', handleKeyDown);
             window.removeEventListener("resize", resizeScene);
-            window.removeEventListener("mousemove", onMouseMove);
-            window.removeEventListener("touchmove", onTouchMove);
-            window.removeEventListener("mousedown", onMouseDown);
-            window.removeEventListener("mouseup", onMouseUp);
-            window.removeEventListener("touchend", onTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
     }, []);

@@ -33451,19 +33451,17 @@ function Navbar() {
             react_1.default.createElement("button", { id: "buttonspageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps")),
             react_1.default.createElement("button", { id: "spinnerpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "cycle")),
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node")),
             react_1.default.createElement("button", { id: "particlespageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur")),
             react_1.default.createElement("button", { id: "switchespageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "page_info")),
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
             react_1.default.createElement("button", { id: "tetherpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "linked_services")),
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
             react_1.default.createElement("button", { id: "ballpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "sports_basketball")),
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
             react_1.default.createElement("button", { id: "keyboardpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "keyboard_keys")),
-            react_1.default.createElement("button", { id: "lockpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "keyboard_keys"))),
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick"))),
         react_1.default.createElement("div", { className: "settingsButton" },
             react_1.default.createElement("button", { id: "settingsButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "settings")))));
@@ -33507,6 +33505,7 @@ exports["default"] = Ball;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Ball() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
+    const [buttonPosition, setButtonPosition] = (0, react_1.useState)({ x: 0, y: 0 });
     (0, react_1.useEffect)(() => {
         const canvasBall = document.querySelector("#sceneBall");
         const ctx = canvasBall.getContext("2d", { willReadFrequently: true });
@@ -33556,7 +33555,7 @@ function Ball() {
                 isDragging = true;
             }
         };
-        const onMouseUp = () => {
+        const onMouseUp = (e) => {
             if (isDragging) {
                 isDragging = false;
                 const dx = ballX - centerX;
@@ -33565,6 +33564,9 @@ function Ball() {
                 vy = -dy * 0.1;
                 isReleased = true;
                 console.log('Released', isReleased);
+            }
+            if (isReleased) {
+                setButtonPosition({ x: e.clientX, y: e.clientY });
             }
         };
         const initscene = () => {
@@ -33578,6 +33580,7 @@ function Ball() {
             ballY = centerY;
             hoopX1 = (ww / 4) * 3;
             hoopY1 = wh / 3;
+            setButtonPosition({ x: centerX, y: centerY + 75 });
             vx = 0;
             vy = 0;
             render();
@@ -33593,6 +33596,7 @@ function Ball() {
             hoopY1 = wh / 3;
             vx = 0;
             vy = 0;
+            setButtonPosition({ x: centerX, y: centerY + 75 });
         };
         let animationFrameId;
         const render = () => {
@@ -33703,8 +33707,13 @@ function Ball() {
     }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Ball"),
-        react_1.default.createElement("div", { className: "resetButton" },
-            react_1.default.createElement("button", { onMouseDown: resetScene }, "Reset")),
+        react_1.default.createElement("button", { className: "resetButton", style: {
+                // left: buttonPosition.x-35, 
+                // top: buttonPosition.y+70, 
+                left: buttonPosition.x - 35,
+                top: buttonPosition.y - 25,
+            }, onMouseDown: resetScene },
+            react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: '30px' } }, "refresh")),
         react_1.default.createElement("canvas", { style: {
                 width: '100vw',
                 height: '100vh',
@@ -33870,64 +33879,22 @@ function Keyboard() {
         const damping = 0.8;
         const stiffness = 0.05;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
-        const onMouseMove = (e) => {
-            if (isDragging) {
-                mouse.x = e.clientX;
-                mouse.y = e.clientY;
-                const dx = mouse.x - centerX;
-                const dy = mouse.y - centerY;
-                const dist = Math.hypot(dx, dy);
-                // circleX = mouse.x;
-                // circleY = mouse.y;
-                if (dist <= maxDistance) {
-                    circleX = mouse.x;
-                    circleY = mouse.y;
-                }
-                else {
-                    const angle = Math.atan2(dy, dx);
-                    circleX = centerX + maxDistance * Math.cos(angle);
-                    circleY = centerY + maxDistance * Math.sin(angle);
-                }
-            }
-        };
-        const onTouchMove = (e) => {
-            if (e.touches.length > 0 && isDragging) {
-                // circleX = mouse.x;
-                // circleY = mouse.y;
-                mouse.x = e.touches[0].clientX;
-                mouse.y = e.touches[0].clientY;
-                const dx = mouse.x - centerX;
-                const dy = mouse.y - centerY;
-                const dist = Math.hypot(dx, dy);
-                if (dist <= maxDistance) {
-                    circleX = mouse.x;
-                    circleY = mouse.y;
-                }
-                else {
-                    const angle = Math.atan2(dy, dx);
-                    circleX = centerX + maxDistance * Math.cos(angle);
-                    circleY = centerY + maxDistance * Math.sin(angle);
-                }
-            }
-        };
-        const onTouchEnd = () => {
-            if (isDragging) {
-                isDragging = false;
-            }
-        };
-        const onMouseDown = (e) => {
-            const dist = Math.hypot(e.clientX - circleX, e.clientY - circleY);
-            if (dist < radius) {
-                isDragging = true;
-            }
-        };
-        const onMouseUp = () => {
-            if (isDragging) {
-                isDragging = false;
-            }
-        };
         const handleKeyDown = (event) => {
             isMovingKeys = true;
+            const dx = circleX - centerX;
+            const dy = circleY - centerY;
+            const dist = Math.hypot(dx, dy);
+            const newX = circleX + dx;
+            const newY = circleY + dy;
+            if (dist <= maxDistance) {
+                circleX = circleX;
+                circleY = mouse.y;
+            }
+            else {
+                const angle = Math.atan2(dy, dx);
+                circleX = centerX + maxDistance * Math.cos(angle);
+                circleY = centerY + maxDistance * Math.sin(angle);
+            }
             const { key } = event;
             if (key === 'w') {
                 circleY -= 20;
@@ -33985,11 +33952,6 @@ function Keyboard() {
                 circleX += vx;
                 circleY += vy;
             }
-            // if (distToCenter > maxDistance) {
-            //     const angle = Math.atan2(circleY - centerY, circleX - centerX);
-            //     circleX = centerX + maxDistance * Math.cos(angle);
-            //     circleY = centerY + maxDistance * Math.sin(angle);
-            // }
             else {
                 vx = 0;
                 vy = 0;
@@ -34019,21 +33981,11 @@ function Keyboard() {
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
         window.addEventListener("resize", resizeScene);
-        window.addEventListener("mousemove", onMouseMove);
-        window.addEventListener("touchmove", onTouchMove);
-        window.addEventListener("mousedown", onMouseDown);
-        window.addEventListener("mouseup", onMouseUp);
-        window.addEventListener("touchend", onTouchEnd);
         initscene();
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
             window.addEventListener('keydown', handleKeyDown);
             window.removeEventListener("resize", resizeScene);
-            window.removeEventListener("mousemove", onMouseMove);
-            window.removeEventListener("touchmove", onTouchMove);
-            window.removeEventListener("mousedown", onMouseDown);
-            window.removeEventListener("mouseup", onMouseUp);
-            window.removeEventListener("touchend", onTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
     }, []);

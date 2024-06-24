@@ -20,7 +20,8 @@ export default function Navbar() {
 
       <button id="spinnerpageButton">
         <span className="material-symbols-outlined">
-          cycle
+          {/* spoke */}
+          network_node
         </span>
       </button>
 
@@ -32,33 +33,36 @@ export default function Navbar() {
 
       <button id="switchespageButton">
         <span className="material-symbols-outlined">
-          page_info
+          {/* page_info */}
+          toggle_on 
         </span>
       </button>
 
       <button id="tetherpageButton">
         <span className="material-symbols-outlined">
-          linked_services
+          {/* linked_services */}
+          tenancy
         </span>
       </button>
 
       <button id="ballpageButton">
         <span className="material-symbols-outlined">
-          sports_basketball
+          airline_stops
         </span>
       </button>
 
       <button id="keyboardpageButton">
         <span className="material-symbols-outlined">
-          keyboard_keys
+          {/* keyboard_keys */}
+          joystick 
         </span>
       </button>
 
-      <button id="lockpageButton">
+      {/* <button id="lockpageButton">
         <span className="material-symbols-outlined">
-          keyboard_keys
+            refresh
         </span>
-      </button>
+      </button> */}
 
       </div>
 

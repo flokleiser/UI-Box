@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 export default function Ball() {
 
     const [resetTrigger, setResetTrigger] = useState(0);
+    const [buttonPosition, setButtonPosition] = useState({x:0,y:0})
 
     useEffect(() => {
         const canvasBall = document.querySelector("#sceneBall") as HTMLCanvasElement;
@@ -31,6 +32,7 @@ export default function Ball() {
         const stiffness = 0.4; 
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3; 
+
 
         const onMouseMove = (e:MouseEvent) => {
             if (isDragging) {
@@ -64,7 +66,7 @@ export default function Ball() {
             }
         };
 
-        const onMouseUp = () => {
+        const onMouseUp = (e:MouseEvent) => {
             if (isDragging) {
                 isDragging = false;
                 const dx = ballX - centerX;
@@ -74,6 +76,11 @@ export default function Ball() {
                 isReleased = true;
                 console.log('Released', isReleased)
             }
+
+            if (isReleased) {
+                setButtonPosition({ x: e.clientX, y: e.clientY});                
+            }
+
         };
 
         const initscene = () => {
@@ -87,6 +94,8 @@ export default function Ball() {
             ballY = centerY;
             hoopX1 = (ww/ 4)*3
             hoopY1 = wh/3
+
+            setButtonPosition({ x: centerX, y: centerY+75});
 
             vx = 0;
             vy = 0;
@@ -104,6 +113,8 @@ export default function Ball() {
             hoopY1 = wh/3
             vx = 0;
             vy = 0;
+
+            setButtonPosition({ x: centerX, y: centerY+75});
         }
 
         let animationFrameId: number;
@@ -234,13 +245,23 @@ export default function Ball() {
     return (
         <div>
             <h1>Ball</h1>
-            <div className="resetButton">
-            <button 
+
+            <button className="resetButton"             
+                style={{
+                // left: buttonPosition.x-35, 
+                // top: buttonPosition.y+70, 
+                left: buttonPosition.x-35, 
+                top: buttonPosition.y-25, 
+                }}
             onMouseDown={resetScene}
             >
-                 Reset 
+                <span className="material-symbols-outlined"
+                style={{fontSize:'30px'}}
+                >
+                    refresh
+                </span>
             </button>
-            </div>
+
             <canvas
                 style={{
                     width: '100vw',

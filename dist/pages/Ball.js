@@ -27,6 +27,7 @@ exports.default = Ball;
 const react_1 = __importStar(require("react"));
 function Ball() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
+    const [buttonPosition, setButtonPosition] = (0, react_1.useState)({ x: 0, y: 0 });
     (0, react_1.useEffect)(() => {
         const canvasBall = document.querySelector("#sceneBall");
         const ctx = canvasBall.getContext("2d", { willReadFrequently: true });
@@ -76,7 +77,7 @@ function Ball() {
                 isDragging = true;
             }
         };
-        const onMouseUp = () => {
+        const onMouseUp = (e) => {
             if (isDragging) {
                 isDragging = false;
                 const dx = ballX - centerX;
@@ -85,6 +86,9 @@ function Ball() {
                 vy = -dy * 0.1;
                 isReleased = true;
                 console.log('Released', isReleased);
+            }
+            if (isReleased) {
+                setButtonPosition({ x: e.clientX, y: e.clientY });
             }
         };
         const initscene = () => {
@@ -98,6 +102,7 @@ function Ball() {
             ballY = centerY;
             hoopX1 = (ww / 4) * 3;
             hoopY1 = wh / 3;
+            setButtonPosition({ x: centerX, y: centerY + 75 });
             vx = 0;
             vy = 0;
             render();
@@ -113,6 +118,7 @@ function Ball() {
             hoopY1 = wh / 3;
             vx = 0;
             vy = 0;
+            setButtonPosition({ x: centerX, y: centerY + 75 });
         };
         let animationFrameId;
         const render = () => {
@@ -223,8 +229,13 @@ function Ball() {
     }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Ball"),
-        react_1.default.createElement("div", { className: "resetButton" },
-            react_1.default.createElement("button", { onMouseDown: resetScene }, "Reset")),
+        react_1.default.createElement("button", { className: "resetButton", style: {
+                // left: buttonPosition.x-35, 
+                // top: buttonPosition.y+70, 
+                left: buttonPosition.x - 35,
+                top: buttonPosition.y - 25,
+            }, onMouseDown: resetScene },
+            react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: '30px' } }, "refresh")),
         react_1.default.createElement("canvas", { style: {
                 width: '100vw',
                 height: '100vh',
