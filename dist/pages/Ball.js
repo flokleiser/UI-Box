@@ -85,7 +85,6 @@ function Ball() {
                 vx = -dx * 0.1;
                 vy = -dy * 0.1;
                 isReleased = true;
-                console.log('Released', isReleased);
             }
             if (isReleased) {
                 setButtonPosition({ x: e.clientX, y: e.clientY });
@@ -120,6 +119,23 @@ function Ball() {
             vy = 0;
             setButtonPosition({ x: centerX, y: centerY + 75 });
         };
+        const drawDottedLine = (ctx, startX, startY, endX, endY, dotSize, gap) => {
+            ctx.beginPath();
+            ctx.setLineDash([dotSize, gap]);
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+            ctx.setLineDash([]); // Reset to solid line
+        };
+        const calculateBounceAngle = (x, y, vx, vy) => {
+            if (x + radius > ww || x - radius < 0) {
+                vx = -vx;
+            }
+            if (y + radius > wh || y - radius < 0) {
+                vy = -vy;
+            }
+            return { vx, vy };
+        };
         let animationFrameId;
         const render = () => {
             if (!isDragging) {
@@ -138,10 +154,11 @@ function Ball() {
                 }
                 ballX += vx;
                 ballY += vy;
-                if (ballX + radius > hoopX1 && ballX - radius < hoopX1 &&
-                    ballY + radius > hoopY1 && ballY - radius < hoopY1) {
+                if (ballX + radius > hoopX1 - 40 && ballX - radius < hoopX1 + 40 &&
+                    ballY + radius > hoopY1 + 30 && ballY - radius < hoopY1 + 30) {
                     vx *= -damping;
                     vy *= -damping;
+                    console.log('hoop');
                 }
                 if (ballY + radius > wh || ballY - radius < 0) {
                     vy *= -damping;
@@ -149,7 +166,6 @@ function Ball() {
                         ballY = wh - radius;
                     if (ballY - radius < 0) {
                         ballY = radius;
-                        console.log('y direction change');
                     }
                 }
                 if (ballX + radius > ww || ballX - radius < 0) {
@@ -157,7 +173,6 @@ function Ball() {
                     if (ballX + radius > ww)
                         ballX = canvasBall.width - radius;
                     if (ballX - radius < 0) {
-                        console.log('x direction change');
                         ballX = radius;
                     }
                 }
@@ -170,7 +185,6 @@ function Ball() {
                             ballY = wh - radius;
                         if (ballY - radius < 0) {
                             ballY = radius;
-                            console.log('y direction change');
                         }
                     }
                     if (ballX + radius > ww || ballX - radius < 0) {
@@ -178,7 +192,6 @@ function Ball() {
                         if (ballX + radius > ww)
                             ballX = canvasBall.width - radius;
                         if (ballX - radius < 0) {
-                            console.log('x direction change');
                             ballX = radius;
                         }
                     }
@@ -195,15 +208,35 @@ function Ball() {
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(ballX, ballY);
                 ctx.stroke();
+                const mirroredX = centerX - (ballX - centerX);
+                const mirroredY = centerY - (ballY - centerY);
+                drawDottedLine(ctx, ballX, ballY, mirroredX, mirroredY, 5, 5);
+                const { vx: bounceVx, vy: bounceVy } = calculateBounceAngle(mirroredX, mirroredY, vx, vy);
+                const bounceEndX = mirroredX + bounceVx * 10;
+                const bounceEndY = mirroredY + bounceVy * 10;
+                drawDottedLine(ctx, mirroredX, mirroredY, bounceEndX, bounceEndY, 5, 5);
             }
             ctx.fillStyle = color;
             ctx.beginPath();
             ctx.arc(ballX, ballY, radius, 0, Math.PI * 2);
             ctx.fill();
-            ctx.fillStyle = color;
+            // ctx.fillStyle = color
+            // ctx.beginPath
+            // ctx.rect(hoopX1,hoopY1, radius*2, radius/2)
+            // ctx.fill();
+            ctx.strokeStyle = color;
             ctx.beginPath;
-            ctx.rect(hoopX1, hoopY1, radius * 2, radius / 2);
-            ctx.fill();
+            ctx.moveTo(hoopX1 + 40, hoopY1);
+            ctx.lineTo(hoopX1 + 40, hoopY1 + 30);
+            ctx.stroke();
+            ctx.beginPath;
+            ctx.moveTo(hoopX1 - 40, hoopY1);
+            ctx.lineTo(hoopX1 - 40, hoopY1 + 30);
+            ctx.stroke();
+            ctx.beginPath;
+            ctx.moveTo(hoopX1 - 40, hoopY1 + 30);
+            ctx.lineTo(hoopX1 + 40, hoopY1 + 30);
+            ctx.stroke();
             animationFrameId = requestAnimationFrame(render);
         };
         window.addEventListener("resize", resizeScene);

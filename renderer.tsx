@@ -26,7 +26,7 @@ declare global {
 }
 
 const App: FC = () => {
-    const [page, setPage] = useState<Page>('Home');
+    const [page, setPage] = useState<Page>('Ball');
 
     let CurrentPage: React.ComponentType;
 

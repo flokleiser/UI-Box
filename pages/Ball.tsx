@@ -74,7 +74,6 @@ export default function Ball() {
                 vx = -dx * 0.1;
                 vy = -dy * 0.1; 
                 isReleased = true;
-                console.log('Released', isReleased)
             }
 
             if (isReleased) {
@@ -117,6 +116,27 @@ export default function Ball() {
             setButtonPosition({ x: centerX, y: centerY+75});
         }
 
+        const drawDottedLine= (ctx: CanvasRenderingContext2D, startX: number, startY: number, endX: number, endY: number, dotSize: number, gap: number) => {
+            ctx.beginPath();
+            ctx.setLineDash([dotSize, gap]);
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+            ctx.setLineDash([]); // Reset to solid line
+        }
+
+
+        const calculateBounceAngle = (x: number, y: number, vx: number, vy: number) => {
+                if (x + radius > ww || x - radius < 0) {
+                vx = -vx;
+                }
+                if (y + radius > wh || y - radius < 0) {
+                vy = -vy;
+                }
+                return { vx, vy };
+            }
+        
+
         let animationFrameId: number;
 
         const render = () => {
@@ -142,11 +162,12 @@ export default function Ball() {
 
 
                 if (
-                    ballX + radius > hoopX1 && ballX - radius < hoopX1 &&
-                    ballY + radius > hoopY1 && ballY - radius < hoopY1
+                    ballX + radius > hoopX1-40 && ballX - radius < hoopX1+40 &&
+                    ballY + radius > hoopY1+30 && ballY - radius < hoopY1+30
                 ) { 
                     vx *= -damping
                     vy *= -damping
+                    console.log('hoop')
                 }
 
                 if (ballY + radius > wh || ballY - radius < 0) {
@@ -154,7 +175,6 @@ export default function Ball() {
                     if (ballY + radius > wh ) ballY = wh - radius;
                     if (ballY - radius < 0) {
                         ballY = radius;
-                        console.log('y direction change')
                     }
                 }
 
@@ -162,7 +182,6 @@ export default function Ball() {
                     vx *= -damping;
                     if (ballX + radius > ww) ballX = canvasBall.width - radius;
                     if (ballX - radius < 0) {
-                        console.log('x direction change')
                         ballX = radius;
                     }
                 }
@@ -173,7 +192,6 @@ export default function Ball() {
                         if (ballY + radius > wh ) ballY = wh - radius;
                         if (ballY - radius < 0) {
                             ballY = radius;
-                            console.log('y direction change')
                         }
                     }
     
@@ -181,7 +199,6 @@ export default function Ball() {
                         vx *= -damping;
                         if (ballX + radius > ww) ballX = canvasBall.width - radius;
                         if (ballX - radius < 0) {
-                            console.log('x direction change')
                             ballX = radius;
                         }
                     }
@@ -201,6 +218,15 @@ export default function Ball() {
                 ctx.lineTo(ballX, ballY);
                 ctx.stroke();
 
+
+            const mirroredX = centerX - (ballX - centerX);
+            const mirroredY = centerY - (ballY - centerY);
+            drawDottedLine(ctx, ballX, ballY, mirroredX, mirroredY, 5, 5);
+    
+            const { vx: bounceVx, vy: bounceVy } = calculateBounceAngle(mirroredX, mirroredY, vx, vy);
+            const bounceEndX = mirroredX + bounceVx * 10;
+            const bounceEndY = mirroredY + bounceVy * 10;
+            drawDottedLine(ctx, mirroredX, mirroredY, bounceEndX, bounceEndY, 5, 5);
             }
 
             ctx.fillStyle = color;
@@ -209,10 +235,26 @@ export default function Ball() {
             ctx.fill();
 
 
-            ctx.fillStyle = color
+            // ctx.fillStyle = color
+            // ctx.beginPath
+            // ctx.rect(hoopX1,hoopY1, radius*2, radius/2)
+            // ctx.fill();
+            ctx.strokeStyle = color;
             ctx.beginPath
-            ctx.rect(hoopX1,hoopY1, radius*2, radius/2)
-            ctx.fill();
+            ctx.moveTo(hoopX1+40,hoopY1)
+            ctx.lineTo(hoopX1+40,hoopY1+30)
+            ctx.stroke();
+
+            ctx.beginPath
+            ctx.moveTo(hoopX1-40,hoopY1)
+            ctx.lineTo(hoopX1-40,hoopY1+30)
+            ctx.stroke();
+
+            ctx.beginPath
+            ctx.moveTo(hoopX1-40,hoopY1+30)
+            ctx.lineTo(hoopX1+40,hoopY1+30)
+            ctx.stroke()
+
 
             animationFrameId = requestAnimationFrame(render);
         };
