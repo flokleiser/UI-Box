@@ -243,6 +243,15 @@ nav{
   margin-right: 5px;
 }
 
+.resetButton {
+  position:absolute;
+  display: flex;
+  /* top:50%;
+  left:50%; */
+  /* transform: translate(50%,50%); */
+  justify-self: center;
+}
+
   
   @media (prefers-color-scheme: dark) {
     body { background: #333; color: white; }

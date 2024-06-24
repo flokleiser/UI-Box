@@ -234,11 +234,13 @@ export default function Ball() {
     return (
         <div>
             <h1>Ball</h1>
+            <div className="resetButton">
             <button 
             onMouseDown={resetScene}
             >
                  Reset 
             </button>
+            </div>
             <canvas
                 style={{
                     width: '100vw',

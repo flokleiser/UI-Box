@@ -223,7 +223,8 @@ function Ball() {
     }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Ball"),
-        react_1.default.createElement("button", { onMouseDown: resetScene }, "Reset"),
+        react_1.default.createElement("div", { className: "resetButton" },
+            react_1.default.createElement("button", { onMouseDown: resetScene }, "Reset")),
         react_1.default.createElement("canvas", { style: {
                 width: '100vw',
                 height: '100vh',
