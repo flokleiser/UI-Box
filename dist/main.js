@@ -66,6 +66,7 @@ function createWindow() {
     });
     mainWindow.loadFile('./src/index.html');
     mainWindow.webContents.openDevTools();
+    mainWindow.removeMenu();
     // }
     ipcMain.handle('dark-mode:toggle', () => {
         if (nativeTheme.shouldUseDarkColors) {

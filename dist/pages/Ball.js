@@ -44,6 +44,7 @@ function Ball() {
         let ballY = centerY;
         let vx = 0;
         let vy = 0;
+        const fps = 25;
         const damping = 0.7;
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
@@ -188,18 +189,6 @@ function Ball() {
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(ballX, ballY);
                 ctx.stroke();
-                // if (isDragging) {
-                //     ctx.strokeStyle = color;
-                //     ctx.lineWidth = 2;
-                //     // ctx.setLineDash([3,5]);
-                //     ctx.lineCap = "round";
-                //     let mirroredX = 2 * centerX - ballX;
-                //     let mirroredY = 2 * centerY - ballY;
-                //     ctx.beginPath();
-                //     ctx.moveTo(centerX, centerY);
-                //     ctx.lineTo(mirroredX,mirroredY);
-                //     ctx.stroke();
-                // }
             }
             ctx.fillStyle = color;
             ctx.beginPath();

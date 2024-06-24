@@ -2,16 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 
-export default function Keyboard() {
+export default function Lock() {
 
-    const [position, setPosition] = useState({ x: 50, y: 50 });
 
     useEffect(() => {
-        const canvasKeyboard= document.querySelector("#canvasKeyboard") as HTMLCanvasElement;
-        const ctx = canvasKeyboard.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
+        const canvasLock= document.querySelector("#canvasLock") as HTMLCanvasElement;
+        const ctx = canvasLock.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
         const mouse = { x: 0, y: 0 };
-        // const radius = 100;
-        const radius = 75
+        const radius = 175
         let isDragging = false;
         let maxDistance = 80;
         let isMovingKeys = false;
@@ -39,8 +37,6 @@ export default function Keyboard() {
                 const dx = mouse.x - centerX
                 const dy = mouse.y - centerY
                 const dist = Math.hypot(dx,dy)
-                // circleX = mouse.x;
-                // circleY = mouse.y;
 
                 if (dist <= maxDistance) {
                     circleX = mouse.x;
@@ -55,8 +51,6 @@ export default function Keyboard() {
 
         const onTouchMove = (e:TouchEvent) => {
             if (e.touches.length > 0 && isDragging) {
-                // circleX = mouse.x;
-                // circleY = mouse.y;
                 mouse.x = e.touches[0].clientX;
                 mouse.y = e.touches[0].clientY;
                 const dx = mouse.x - centerX;
@@ -93,32 +87,9 @@ export default function Keyboard() {
             }
         };
 
-        const handleKeyDown = (event: KeyboardEvent) => {
-            isMovingKeys = true;
-            const { key } = event;
-                if (key === 'w') {
-                    circleY -= 20 
-                } else if (key === 'a') {
-                    circleX -= 20 
-                } else if (key === 's') {
-                    circleY += 20 
-                } else if (key === 'd') {
-                    circleX += 20
-                }
-            };
-
-            const handleKeyUp = (event: KeyboardEvent) => {
-                isMovingKeys = false;
-                    const { key } = event;
-                    if (['w', 'a', 's', 'd'].includes(key)) {
-                        console.log('reset key')
-                    }
-            };
-        
-
         const initscene = () => {
-            ww = canvasKeyboard.width = window.innerWidth;
-            wh = canvasKeyboard.height = window.innerHeight;
+            ww = canvasLock.width = window.innerWidth;
+            wh = canvasLock.height = window.innerHeight;
             centerX = ww / 2;
             centerY = wh / 2;
             circleX = centerX;
@@ -129,8 +100,8 @@ export default function Keyboard() {
         };
 
         const resizeScene = () => {
-            ww = canvasKeyboard.width = window.innerWidth;
-            wh = canvasKeyboard.height = window.innerHeight;
+            ww = canvasLock.width = window.innerWidth;
+            wh = canvasLock.height = window.innerHeight;
             centerX = ww / 2;
             centerY = wh / 2;
             circleX = centerX;
@@ -167,17 +138,7 @@ export default function Keyboard() {
                 vy = 0;
             }
 
-            ctx.clearRect(0, 0, canvasKeyboard.width, canvasKeyboard.height);
-
-            //tether
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 10;
-            ctx.lineCap = "round";
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY);
-            ctx.lineTo(circleX, circleY);
-            ctx.stroke();
-
+            ctx.clearRect(0, 0, canvasLock.width, canvasLock.height);
 
             //ball
             ctx.fillStyle = color;
@@ -185,19 +146,9 @@ export default function Keyboard() {
             ctx.arc(circleX, circleY, radius, 0, Math.PI * 2);
             ctx.fill();
 
-            //big circle
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 2
-            ctx.beginPath();
-            ctx.arc(centerX,centerY, maxDistance + radius, 0 , Math.PI*2)
-            ctx.stroke(),
-
-
             animationFrameId = requestAnimationFrame(render);
         };
 
-        window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('keyup', handleKeyUp);
         window.addEventListener("resize", resizeScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -207,8 +158,6 @@ export default function Keyboard() {
         initscene();
 
         return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-            window.addEventListener('keydown', handleKeyDown);
             window.removeEventListener("resize", resizeScene);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
@@ -222,7 +171,7 @@ export default function Keyboard() {
 
     return (
         <div>
-            <h1>Keyboard</h1>
+            <h1>Lock</h1>
             <canvas
                 style={{
                     width: '100vw',
@@ -233,7 +182,7 @@ export default function Keyboard() {
                     overflow: 'hidden',
                     zIndex: -10
                 }}
-                id="canvasKeyboard">
+                id="canvasLock">
             </canvas>
         </div>
     );

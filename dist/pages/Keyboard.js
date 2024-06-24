@@ -107,34 +107,23 @@ function Keyboard() {
         const handleKeyDown = (event) => {
             isMovingKeys = true;
             const { key } = event;
-            // setPosition((prevPosition) => {
-            //     let newPosition = { ...prevPosition };
             if (key === 'w') {
-                console.log('w');
                 circleY -= 20;
-                // newPosition.y = initialPosition.y - step;
             }
             else if (key === 'a') {
-                console.log('a');
                 circleX -= 20;
-                // newPosition.x = initialPosition.x - step;
             }
             else if (key === 's') {
-                console.log('s');
                 circleY += 20;
-                // newPosition.y = initialPosition.y + step;
             }
             else if (key === 'd') {
-                console.log('d');
                 circleX += 20;
-                // newPosition.x = initialPosition.x + step;
             }
         };
         const handleKeyUp = (event) => {
             isMovingKeys = false;
             const { key } = event;
             if (['w', 'a', 's', 'd'].includes(key)) {
-                // setPosition(initialPosition);
                 console.log('reset key');
             }
         };
@@ -174,11 +163,11 @@ function Keyboard() {
                 circleX += vx;
                 circleY += vy;
             }
-            if (distToCenter > maxDistance) {
-                const angle = Math.atan2(circleY - centerY, circleX - centerX);
-                circleX = centerX + maxDistance * Math.cos(angle);
-                circleY = centerY + maxDistance * Math.sin(angle);
-            }
+            // if (distToCenter > maxDistance) {
+            //     const angle = Math.atan2(circleY - centerY, circleX - centerX);
+            //     circleX = centerX + maxDistance * Math.cos(angle);
+            //     circleY = centerY + maxDistance * Math.sin(angle);
+            // }
             else {
                 vx = 0;
                 vy = 0;

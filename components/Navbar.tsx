@@ -54,6 +54,12 @@ export default function Navbar() {
         </span>
       </button>
 
+      <button id="lockpageButton">
+        <span className="material-symbols-outlined">
+          keyboard_keys
+        </span>
+      </button>
+
       </div>
 
       <div className="settingsButton">

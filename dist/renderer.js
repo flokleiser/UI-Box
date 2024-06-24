@@ -33461,6 +33461,8 @@ function Navbar() {
             react_1.default.createElement("button", { id: "ballpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "sports_basketball")),
             react_1.default.createElement("button", { id: "keyboardpageButton" },
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "keyboard_keys")),
+            react_1.default.createElement("button", { id: "lockpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "keyboard_keys"))),
         react_1.default.createElement("div", { className: "settingsButton" },
             react_1.default.createElement("button", { id: "settingsButton" },
@@ -33522,6 +33524,7 @@ function Ball() {
         let ballY = centerY;
         let vx = 0;
         let vy = 0;
+        const fps = 25;
         const damping = 0.7;
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
@@ -33666,18 +33669,6 @@ function Ball() {
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(ballX, ballY);
                 ctx.stroke();
-                // if (isDragging) {
-                //     ctx.strokeStyle = color;
-                //     ctx.lineWidth = 2;
-                //     // ctx.setLineDash([3,5]);
-                //     ctx.lineCap = "round";
-                //     let mirroredX = 2 * centerX - ballX;
-                //     let mirroredY = 2 * centerY - ballY;
-                //     ctx.beginPath();
-                //     ctx.moveTo(centerX, centerY);
-                //     ctx.lineTo(mirroredX,mirroredY);
-                //     ctx.stroke();
-                // }
             }
             ctx.fillStyle = color;
             ctx.beginPath();
@@ -33937,34 +33928,23 @@ function Keyboard() {
         const handleKeyDown = (event) => {
             isMovingKeys = true;
             const { key } = event;
-            // setPosition((prevPosition) => {
-            //     let newPosition = { ...prevPosition };
             if (key === 'w') {
-                console.log('w');
                 circleY -= 20;
-                // newPosition.y = initialPosition.y - step;
             }
             else if (key === 'a') {
-                console.log('a');
                 circleX -= 20;
-                // newPosition.x = initialPosition.x - step;
             }
             else if (key === 's') {
-                console.log('s');
                 circleY += 20;
-                // newPosition.y = initialPosition.y + step;
             }
             else if (key === 'd') {
-                console.log('d');
                 circleX += 20;
-                // newPosition.x = initialPosition.x + step;
             }
         };
         const handleKeyUp = (event) => {
             isMovingKeys = false;
             const { key } = event;
             if (['w', 'a', 's', 'd'].includes(key)) {
-                // setPosition(initialPosition);
                 console.log('reset key');
             }
         };
@@ -34004,11 +33984,11 @@ function Keyboard() {
                 circleX += vx;
                 circleY += vy;
             }
-            if (distToCenter > maxDistance) {
-                const angle = Math.atan2(circleY - centerY, circleX - centerX);
-                circleX = centerX + maxDistance * Math.cos(angle);
-                circleY = centerY + maxDistance * Math.sin(angle);
-            }
+            // if (distToCenter > maxDistance) {
+            //     const angle = Math.atan2(circleY - centerY, circleX - centerX);
+            //     circleX = centerX + maxDistance * Math.cos(angle);
+            //     circleY = centerY + maxDistance * Math.sin(angle);
+            // }
             else {
                 vx = 0;
                 vy = 0;
@@ -34067,6 +34047,198 @@ function Keyboard() {
                 overflow: 'hidden',
                 zIndex: -10
             }, id: "canvasKeyboard" })));
+}
+
+
+/***/ }),
+
+/***/ "./src/pages/Lock.tsx":
+/*!****************************!*\
+  !*** ./src/pages/Lock.tsx ***!
+  \****************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+//https://github.com/bobboteck/JoyStick?tab=readme-ov-file
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports["default"] = Lock;
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+function Lock() {
+    (0, react_1.useEffect)(() => {
+        const canvasLock = document.querySelector("#canvasLock");
+        const ctx = canvasLock.getContext("2d", { willReadFrequently: true });
+        const mouse = { x: 0, y: 0 };
+        const radius = 175;
+        let isDragging = false;
+        let maxDistance = 80;
+        let isMovingKeys = false;
+        let ww = window.innerWidth;
+        let wh = window.innerHeight;
+        let centerX = ww / 2;
+        let centerY = wh / 2;
+        let circleX = centerX;
+        let circleY = centerY;
+        let vx = 0;
+        let vy = 0;
+        const damping = 0.8;
+        const stiffness = 0.05;
+        const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
+        const onMouseMove = (e) => {
+            if (isDragging) {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                const dx = mouse.x - centerX;
+                const dy = mouse.y - centerY;
+                const dist = Math.hypot(dx, dy);
+                if (dist <= maxDistance) {
+                    circleX = mouse.x;
+                    circleY = mouse.y;
+                }
+                else {
+                    const angle = Math.atan2(dy, dx);
+                    circleX = centerX + maxDistance * Math.cos(angle);
+                    circleY = centerY + maxDistance * Math.sin(angle);
+                }
+            }
+        };
+        const onTouchMove = (e) => {
+            if (e.touches.length > 0 && isDragging) {
+                mouse.x = e.touches[0].clientX;
+                mouse.y = e.touches[0].clientY;
+                const dx = mouse.x - centerX;
+                const dy = mouse.y - centerY;
+                const dist = Math.hypot(dx, dy);
+                if (dist <= maxDistance) {
+                    circleX = mouse.x;
+                    circleY = mouse.y;
+                }
+                else {
+                    const angle = Math.atan2(dy, dx);
+                    circleX = centerX + maxDistance * Math.cos(angle);
+                    circleY = centerY + maxDistance * Math.sin(angle);
+                }
+            }
+        };
+        const onTouchEnd = () => {
+            if (isDragging) {
+                isDragging = false;
+            }
+        };
+        const onMouseDown = (e) => {
+            const dist = Math.hypot(e.clientX - circleX, e.clientY - circleY);
+            if (dist < radius) {
+                isDragging = true;
+            }
+        };
+        const onMouseUp = () => {
+            if (isDragging) {
+                isDragging = false;
+            }
+        };
+        const initscene = () => {
+            ww = canvasLock.width = window.innerWidth;
+            wh = canvasLock.height = window.innerHeight;
+            centerX = ww / 2;
+            centerY = wh / 2;
+            circleX = centerX;
+            circleY = centerY;
+            vx = 0;
+            vy = 0;
+            render();
+        };
+        const resizeScene = () => {
+            ww = canvasLock.width = window.innerWidth;
+            wh = canvasLock.height = window.innerHeight;
+            centerX = ww / 2;
+            centerY = wh / 2;
+            circleX = centerX;
+            circleY = centerY;
+            vx = 0;
+            vy = 0;
+        };
+        let animationFrameId;
+        const render = () => {
+            const distToCenter = Math.hypot(circleX - centerX, circleY - centerY);
+            if (!isDragging && !isMovingKeys) {
+                const dx = centerX - circleX;
+                const dy = centerY - circleY;
+                const ax = dx * stiffness;
+                const ay = dy * stiffness;
+                vx += ax;
+                vy += ay;
+                vx *= damping;
+                vy *= damping;
+                circleX += vx;
+                circleY += vy;
+            }
+            // if (distToCenter > maxDistance) {
+            //     const angle = Math.atan2(circleY - centerY, circleX - centerX);
+            //     circleX = centerX + maxDistance * Math.cos(angle);
+            //     circleY = centerY + maxDistance * Math.sin(angle);
+            // }
+            else {
+                vx = 0;
+                vy = 0;
+            }
+            ctx.clearRect(0, 0, canvasLock.width, canvasLock.height);
+            //ball
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(circleX, circleY, radius, 0, Math.PI * 2);
+            ctx.fill();
+            animationFrameId = requestAnimationFrame(render);
+        };
+        window.addEventListener("resize", resizeScene);
+        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("touchmove", onTouchMove);
+        window.addEventListener("mousedown", onMouseDown);
+        window.addEventListener("mouseup", onMouseUp);
+        window.addEventListener("touchend", onTouchEnd);
+        initscene();
+        return () => {
+            window.removeEventListener("resize", resizeScene);
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("touchmove", onTouchMove);
+            window.removeEventListener("mousedown", onMouseDown);
+            window.removeEventListener("mouseup", onMouseUp);
+            window.removeEventListener("touchend", onTouchEnd);
+            cancelAnimationFrame(animationFrameId);
+        };
+    }, []);
+    return (react_1.default.createElement("div", null,
+        react_1.default.createElement("h1", null, "Lock"),
+        react_1.default.createElement("canvas", { style: {
+                width: '100vw',
+                height: '100vh',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                overflow: 'hidden',
+                zIndex: -10
+            }, id: "canvasLock" })));
 }
 
 
@@ -34798,6 +34970,7 @@ const Tether_1 = __importDefault(__webpack_require__(/*! ./pages/Tether */ "./sr
 const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "./src/pages/Switches.tsx"));
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
 const Keyboard_1 = __importDefault(__webpack_require__(/*! ./pages/Keyboard */ "./src/pages/Keyboard.tsx"));
+const Lock_1 = __importDefault(__webpack_require__(/*! ./pages/Lock */ "./src/pages/Lock.tsx"));
 const App = () => {
     const [page, setPage] = (0, react_1.useState)('Home');
     let CurrentPage;
@@ -34829,6 +35002,9 @@ const App = () => {
         case 'Keyboard':
             CurrentPage = Keyboard_1.default;
             break;
+        case 'Lock':
+            CurrentPage = Lock_1.default;
+            break;
         default:
             CurrentPage = Home_1.default;
     }
@@ -34848,6 +35024,7 @@ const attachEventListeners = () => {
     const switchesPageButton = document.getElementById('switchespageButton');
     const ballPageButton = document.getElementById('ballpageButton');
     const keyboardPageButton = document.getElementById('keyboardpageButton');
+    const lockPageButton = document.getElementById('lockpageButton');
     if (homeButton) {
         homeButton.addEventListener(clickType, () => window.loadPage('Home'));
     }
@@ -34875,6 +35052,9 @@ const attachEventListeners = () => {
     if (keyboardPageButton) {
         keyboardPageButton.addEventListener(clickType, () => window.loadPage('Keyboard'));
     }
+    if (lockPageButton) {
+        lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
+    }
 };
 document.addEventListener('DOMContentLoaded', attachEventListeners);
 // document.addEventListener('DOMContentLoaded', () => {
@@ -34887,7 +35067,6 @@ if (navbarContainer) {
     const navbarRoot = (0, client_1.createRoot)(navbarContainer);
     navbarRoot.render(react_1.default.createElement(Navbar_1.default, null));
 }
-// });
 
 
 /***/ })

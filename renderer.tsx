@@ -10,8 +10,9 @@ import Tether from './pages/Tether';
 import Switches from './pages/Switches'
 import Ball from './pages/Ball';
 import Keyboard from './pages/Keyboard'
+import Lock from './pages/Lock'
 
-type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Tether' | 'Switches' | 'Ball' | 'Keyboard';
+type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Tether' | 'Switches' | 'Ball' | 'Keyboard' | 'Lock';
 
 declare global {
   interface Window {
@@ -57,6 +58,9 @@ const App: FC = () => {
             case 'Keyboard':
             CurrentPage = Keyboard;
             break;
+            case 'Lock':
+            CurrentPage = Lock;
+            break;
             default:
                 CurrentPage = Home;
     }
@@ -80,6 +84,7 @@ const attachEventListeners = () => {
     const switchesPageButton = document.getElementById('switchespageButton');
     const ballPageButton = document.getElementById('ballpageButton');
     const keyboardPageButton= document.getElementById('keyboardpageButton');
+    const lockPageButton= document.getElementById('lockpageButton');
 
     if (homeButton) {
         homeButton.addEventListener(clickType, () => window.loadPage('Home'));
@@ -114,6 +119,9 @@ const attachEventListeners = () => {
     if (keyboardPageButton) {
         keyboardPageButton.addEventListener(clickType, () => window.loadPage('Keyboard'));
     }
+    if (lockPageButton) {
+        lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
+    }
 }
 
 document.addEventListener('DOMContentLoaded', attachEventListeners);
@@ -129,4 +137,3 @@ if (navbarContainer) {
     const navbarRoot = createRoot(navbarContainer)
     navbarRoot.render(<Navbar/>)
 }
-// });
