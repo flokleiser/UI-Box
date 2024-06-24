@@ -2,9 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-export default function Keyboard() {
-
-    const [position, setPosition] = useState({ x: 50, y: 50 });
+export default function Joystick() {
 
     useEffect(() => {
         const canvasKeyboard= document.querySelector("#canvasKeyboard") as HTMLCanvasElement;
@@ -31,42 +29,80 @@ export default function Keyboard() {
         const stiffness = 0.05; 
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
 
+        const keyState: { [key: string]: boolean } = {
+            w: false,
+            a: false,
+            s: false,
+            d: false,
+        };
+
+        // const handleKeyDown = (event: KeyboardEvent) => {
+        //     isMovingKeys = true;
+
+        //     const dx = circleX - centerX;
+        //     const dy = circleY - centerY;
+        //     const dist = Math.hypot(dx, dy);
+
+        //     const newX = circleX + dx
+        //     const newY = circleY + dy
+
+        //     if (dist <= maxDistance) {
+        //         circleX = circleX;
+        //         circleY = circleY;
+        //     } else {
+        //         const angle = Math.atan2(dy, dx);
+        //         circleX = centerX + maxDistance * Math.cos(angle);
+        //         circleY = centerY + maxDistance * Math.sin(angle);
+        //     }
+        //     const { key } = event;
+        //         if (key === 'w') {
+        //             circleY -= 20 
+        //         } else if (key === 'a') {
+        //             circleX -= 20 
+        //         } else if (key === 's') {
+        //             circleY += 20 
+        //         } else if (key === 'd') {
+        //             circleX += 20
+        //         }
+        //     };
+
         const handleKeyDown = (event: KeyboardEvent) => {
-            isMovingKeys = true;
-
-            const dx = circleX - centerX;
-            const dy = circleY - centerY;
-            const dist = Math.hypot(dx, dy);
-
-            const newX = circleX + dx
-            const newY = circleY + dy
-
-            if (dist <= maxDistance) {
-                circleX = circleX;
-                circleY = mouse.y;
-            } else {
-                const angle = Math.atan2(dy, dx);
-                circleX = centerX + maxDistance * Math.cos(angle);
-                circleY = centerY + maxDistance * Math.sin(angle);
+            if (keyState[event.key] !== undefined) {
+                keyState[event.key] = true;
+                isMovingKeys = true;
             }
-            const { key } = event;
-                if (key === 'w') {
-                    circleY -= 20 
-                } else if (key === 'a') {
-                    circleX -= 20 
-                } else if (key === 's') {
-                    circleY += 20 
-                } else if (key === 'd') {
-                    circleX += 20
+        };
+
+            // const handleKeyUp = (event: KeyboardEvent) => {
+            //     isMovingKeys = false;
+            //         const { key } = event;
+            //         if (['w', 'a', 's', 'd'].includes(key)) {
+            //             console.log('reset key')
+            //         }
+            // };
+
+            const handleKeyUp = (event: KeyboardEvent) => {
+                if (keyState[event.key] !== undefined) {
+                    keyState[event.key] = false;
+                    isMovingKeys = Object.values(keyState).some(state => state);
                 }
             };
 
-            const handleKeyUp = (event: KeyboardEvent) => {
-                isMovingKeys = false;
-                    const { key } = event;
-                    if (['w', 'a', 's', 'd'].includes(key)) {
-                        console.log('reset key')
-                    }
+            const updatePosition = () => {
+                if (keyState.w) circleY -= 20;
+                if (keyState.a) circleX -= 20;
+                if (keyState.s) circleY += 20;
+                if (keyState.d) circleX += 20;
+    
+                const dx = circleX - centerX;
+                const dy = circleY - centerY;
+                const dist = Math.hypot(dx, dy);
+    
+                if (dist > maxDistance) {
+                    const angle = Math.atan2(dy, dx);
+                    circleX = centerX + maxDistance * Math.cos(angle);
+                    circleY = centerY + maxDistance * Math.sin(angle);
+                }
             };
         
 
@@ -99,7 +135,7 @@ export default function Keyboard() {
 
             const distToCenter = Math.hypot(circleX - centerX, circleY - centerY) 
 
-            if (!isDragging && !isMovingKeys) {
+            if (!isMovingKeys) {
                 const dx = centerX - circleX;
                 const dy = centerY - circleY;
                 const ax = dx * stiffness;
@@ -113,6 +149,7 @@ export default function Keyboard() {
             }
            
             else {
+                updatePosition();
                 vx = 0;
                 vy = 0;
             }
@@ -163,7 +200,7 @@ export default function Keyboard() {
 
     return (
         <div>
-            <h1>Keyboard</h1>
+            <h1>Joystick</h1>
             <canvas
                 style={{
                     width: '100vw',

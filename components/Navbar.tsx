@@ -51,7 +51,7 @@ export default function Navbar() {
         </span>
       </button>
 
-      <button id="keyboardpageButton">
+      <button id="joystickpageButton">
         <span className="material-symbols-outlined">
           {/* keyboard_keys */}
           joystick 

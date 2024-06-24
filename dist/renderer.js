@@ -33460,7 +33460,7 @@ function Navbar() {
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
             react_1.default.createElement("button", { id: "ballpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
-            react_1.default.createElement("button", { id: "keyboardpageButton" },
+            react_1.default.createElement("button", { id: "joystickpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick"))),
         react_1.default.createElement("div", { className: "settingsButton" },
             react_1.default.createElement("button", { id: "settingsButton" },
@@ -33823,9 +33823,9 @@ function Home() {
 
 /***/ }),
 
-/***/ "./src/pages/Keyboard.tsx":
+/***/ "./src/pages/Joystick.tsx":
 /*!********************************!*\
-  !*** ./src/pages/Keyboard.tsx ***!
+  !*** ./src/pages/Joystick.tsx ***!
   \********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -33855,10 +33855,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports["default"] = Keyboard;
+exports["default"] = Joystick;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-function Keyboard() {
-    const [position, setPosition] = (0, react_1.useState)({ x: 50, y: 50 });
+function Joystick() {
     (0, react_1.useEffect)(() => {
         const canvasKeyboard = document.querySelector("#canvasKeyboard");
         const ctx = canvasKeyboard.getContext("2d", { willReadFrequently: true });
@@ -33879,41 +33878,73 @@ function Keyboard() {
         const damping = 0.8;
         const stiffness = 0.05;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
+        const keyState = {
+            w: false,
+            a: false,
+            s: false,
+            d: false,
+        };
+        // const handleKeyDown = (event: KeyboardEvent) => {
+        //     isMovingKeys = true;
+        //     const dx = circleX - centerX;
+        //     const dy = circleY - centerY;
+        //     const dist = Math.hypot(dx, dy);
+        //     const newX = circleX + dx
+        //     const newY = circleY + dy
+        //     if (dist <= maxDistance) {
+        //         circleX = circleX;
+        //         circleY = circleY;
+        //     } else {
+        //         const angle = Math.atan2(dy, dx);
+        //         circleX = centerX + maxDistance * Math.cos(angle);
+        //         circleY = centerY + maxDistance * Math.sin(angle);
+        //     }
+        //     const { key } = event;
+        //         if (key === 'w') {
+        //             circleY -= 20 
+        //         } else if (key === 'a') {
+        //             circleX -= 20 
+        //         } else if (key === 's') {
+        //             circleY += 20 
+        //         } else if (key === 'd') {
+        //             circleX += 20
+        //         }
+        //     };
         const handleKeyDown = (event) => {
-            isMovingKeys = true;
+            if (keyState[event.key] !== undefined) {
+                keyState[event.key] = true;
+                isMovingKeys = true;
+            }
+        };
+        // const handleKeyUp = (event: KeyboardEvent) => {
+        //     isMovingKeys = false;
+        //         const { key } = event;
+        //         if (['w', 'a', 's', 'd'].includes(key)) {
+        //             console.log('reset key')
+        //         }
+        // };
+        const handleKeyUp = (event) => {
+            if (keyState[event.key] !== undefined) {
+                keyState[event.key] = false;
+                isMovingKeys = Object.values(keyState).some(state => state);
+            }
+        };
+        const updatePosition = () => {
+            if (keyState.w)
+                circleY -= 20;
+            if (keyState.a)
+                circleX -= 20;
+            if (keyState.s)
+                circleY += 20;
+            if (keyState.d)
+                circleX += 20;
             const dx = circleX - centerX;
             const dy = circleY - centerY;
             const dist = Math.hypot(dx, dy);
-            const newX = circleX + dx;
-            const newY = circleY + dy;
-            if (dist <= maxDistance) {
-                circleX = circleX;
-                circleY = mouse.y;
-            }
-            else {
+            if (dist > maxDistance) {
                 const angle = Math.atan2(dy, dx);
                 circleX = centerX + maxDistance * Math.cos(angle);
                 circleY = centerY + maxDistance * Math.sin(angle);
-            }
-            const { key } = event;
-            if (key === 'w') {
-                circleY -= 20;
-            }
-            else if (key === 'a') {
-                circleX -= 20;
-            }
-            else if (key === 's') {
-                circleY += 20;
-            }
-            else if (key === 'd') {
-                circleX += 20;
-            }
-        };
-        const handleKeyUp = (event) => {
-            isMovingKeys = false;
-            const { key } = event;
-            if (['w', 'a', 's', 'd'].includes(key)) {
-                console.log('reset key');
             }
         };
         const initscene = () => {
@@ -33940,7 +33971,7 @@ function Keyboard() {
         let animationFrameId;
         const render = () => {
             const distToCenter = Math.hypot(circleX - centerX, circleY - centerY);
-            if (!isDragging && !isMovingKeys) {
+            if (!isMovingKeys) {
                 const dx = centerX - circleX;
                 const dy = centerY - circleY;
                 const ax = dx * stiffness;
@@ -33953,6 +33984,7 @@ function Keyboard() {
                 circleY += vy;
             }
             else {
+                updatePosition();
                 vx = 0;
                 vy = 0;
             }
@@ -33990,7 +34022,7 @@ function Keyboard() {
         };
     }, []);
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Keyboard"),
+        react_1.default.createElement("h1", null, "Joystick"),
         react_1.default.createElement("canvas", { style: {
                 width: '100vw',
                 height: '100vh',
@@ -34922,7 +34954,7 @@ const Particles_1 = __importDefault(__webpack_require__(/*! ./pages/Particles */
 const Tether_1 = __importDefault(__webpack_require__(/*! ./pages/Tether */ "./src/pages/Tether.tsx"));
 const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "./src/pages/Switches.tsx"));
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
-const Keyboard_1 = __importDefault(__webpack_require__(/*! ./pages/Keyboard */ "./src/pages/Keyboard.tsx"));
+const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Lock_1 = __importDefault(__webpack_require__(/*! ./pages/Lock */ "./src/pages/Lock.tsx"));
 const App = () => {
     const [page, setPage] = (0, react_1.useState)('Home');
@@ -34952,8 +34984,8 @@ const App = () => {
         case 'Ball':
             CurrentPage = Ball_1.default;
             break;
-        case 'Keyboard':
-            CurrentPage = Keyboard_1.default;
+        case 'Joystick':
+            CurrentPage = Joystick_1.default;
             break;
         case 'Lock':
             CurrentPage = Lock_1.default;
@@ -34976,7 +35008,7 @@ const attachEventListeners = () => {
     const tetherPageButton = document.getElementById('tetherpageButton');
     const switchesPageButton = document.getElementById('switchespageButton');
     const ballPageButton = document.getElementById('ballpageButton');
-    const keyboardPageButton = document.getElementById('keyboardpageButton');
+    const joystickPageButton = document.getElementById('joystickpageButton');
     const lockPageButton = document.getElementById('lockpageButton');
     if (homeButton) {
         homeButton.addEventListener(clickType, () => window.loadPage('Home'));
@@ -35002,8 +35034,8 @@ const attachEventListeners = () => {
     if (ballPageButton) {
         ballPageButton.addEventListener(clickType, () => window.loadPage('Ball'));
     }
-    if (keyboardPageButton) {
-        keyboardPageButton.addEventListener(clickType, () => window.loadPage('Keyboard'));
+    if (joystickPageButton) {
+        joystickPageButton.addEventListener(clickType, () => window.loadPage('Joystick'));
     }
     if (lockPageButton) {
         lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));

@@ -22,7 +22,7 @@ function Navbar() {
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
             react_1.default.createElement("button", { id: "ballpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
-            react_1.default.createElement("button", { id: "keyboardpageButton" },
+            react_1.default.createElement("button", { id: "joystickpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick"))),
         react_1.default.createElement("div", { className: "settingsButton" },
             react_1.default.createElement("button", { id: "settingsButton" },

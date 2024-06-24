@@ -24,10 +24,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Keyboard;
+exports.default = Joystick;
 const react_1 = __importStar(require("react"));
-function Keyboard() {
-    const [position, setPosition] = (0, react_1.useState)({ x: 50, y: 50 });
+function Joystick() {
     (0, react_1.useEffect)(() => {
         const canvasKeyboard = document.querySelector("#canvasKeyboard");
         const ctx = canvasKeyboard.getContext("2d", { willReadFrequently: true });
@@ -192,7 +191,7 @@ function Keyboard() {
         };
     }, []);
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Keyboard"),
+        react_1.default.createElement("h1", null, "Joystick"),
         react_1.default.createElement("canvas", { style: {
                 width: '100vw',
                 height: '100vh',

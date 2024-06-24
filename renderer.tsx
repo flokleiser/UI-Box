@@ -9,10 +9,10 @@ import Particles from './pages/Particles';
 import Tether from './pages/Tether';
 import Switches from './pages/Switches'
 import Ball from './pages/Ball';
-import Keyboard from './pages/Keyboard'
+import Joystick from './pages/Joystick'
 import Lock from './pages/Lock'
 
-type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Tether' | 'Switches' | 'Ball' | 'Keyboard' | 'Lock';
+type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Tether' | 'Switches' | 'Ball' | 'Joystick' | 'Lock';
 
 declare global {
   interface Window {
@@ -55,8 +55,8 @@ const App: FC = () => {
             case 'Ball':
             CurrentPage = Ball;
             break;
-            case 'Keyboard':
-            CurrentPage = Keyboard;
+            case 'Joystick':
+            CurrentPage = Joystick;
             break;
             case 'Lock':
             CurrentPage = Lock;
@@ -83,7 +83,7 @@ const attachEventListeners = () => {
     const tetherPageButton = document.getElementById('tetherpageButton');
     const switchesPageButton = document.getElementById('switchespageButton');
     const ballPageButton = document.getElementById('ballpageButton');
-    const keyboardPageButton= document.getElementById('keyboardpageButton');
+    const joystickPageButton= document.getElementById('joystickpageButton');
     const lockPageButton= document.getElementById('lockpageButton');
 
     if (homeButton) {
@@ -116,8 +116,8 @@ const attachEventListeners = () => {
     if (ballPageButton) {
         ballPageButton.addEventListener(clickType, () => window.loadPage('Ball'));
     }
-    if (keyboardPageButton) {
-        keyboardPageButton.addEventListener(clickType, () => window.loadPage('Keyboard'));
+    if (joystickPageButton) {
+        joystickPageButton.addEventListener(clickType, () => window.loadPage('Joystick'));
     }
     if (lockPageButton) {
         lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
