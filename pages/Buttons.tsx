@@ -32,6 +32,7 @@ export default function Buttons() {
             i === index ? !state : state
           );
           setIsToggled(updateToggle)
+          // if (isToggled) 
       }
 
 
@@ -68,7 +69,7 @@ export default function Buttons() {
             </div>
 
             <div className="buttonColumn">
-                 <button className={`button2 ${isToggled [0] ? 'button2toggled' : ''}`} id="buttonToggle1" onMouseDown={() => handleToggle(0)}></button>
+                <button className={`button2 ${isToggled [0] ? 'button2toggled' : ''}`} id="buttonToggle1" onMouseDown={() => handleToggle(0)}></button>
                 <button className={`button2 ${isToggled [1] ? 'button2toggled' : ''}`} id="buttonToggle2" onMouseDown={() => handleToggle(1)}></button>
                 <button className={`button2 ${isToggled [2] ? 'button2toggled' : ''}`}id="buttonToggle3" onMouseDown={() => handleToggle(2)}></button>
             </div>
