@@ -39,34 +39,70 @@ export default function Ball() {
             centerY: number;
             width: number;
             height: number;
+            wall: number;
             color: string;
         
-            constructor(centerX: number, centerY: number, width: number, height: number, color: string) {
+            constructor(centerX: number, centerY: number, width: number, height: number, wall:number, color: string) {
                 this.centerX = centerX;
                 this.centerY = centerY;
                 this.width = width;
                 this.height = height;
+                this.wall= wall;
                 this.color = color;
             }
         
             draw(ctx: CanvasRenderingContext2D) {
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
-                ctx.rect(this.centerX - this.width / 2, this.centerY, this.width, this.height);
+                // ctx.rect(this.centerX - this.width / 2, this.centerY, this.width, this.height);
+                // ctx.fill();
+                ctx.rect(this.centerX - this.width / 2, this.centerY + this.height, this.width, this.wall);
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.rect(this.centerX - this.width / 2, this.centerY, this.wall, this.height + this.wall);
+                ctx.fill();
+        
+                // Draw the right wall
+                ctx.beginPath();
+                ctx.rect(this.centerX + this.width / 2 - this.wall, this.centerY, this.wall, this.height + this.wall);
                 ctx.fill();
             }
+
+            
         
-            getBoundingClientRect() {
-                return {
-                    left: this.centerX - this.width / 2,
-                    top: this.centerY,
-                    right: this.centerX + this.width / 2,
-                    bottom: this.centerY + this.height
-                };
+            getBoundingClientRects() {
+                // return {
+                //     left: this.centerX - this.width / 2,
+                //     top: this.centerY,
+                //     right: this.centerX + this.width / 2,
+                //     bottom: this.centerY + this.height
+                // };
+                return [
+                    { // Bottom bar
+                        left: this.centerX - this.width / 2,
+                        top: this.centerY + this.height,
+                        right: this.centerX + this.width / 2,
+                        bottom: this.centerY + this.height + this.wall
+                    },
+                    { // Left wall
+                        left: this.centerX - this.width / 2,
+                        top: this.centerY,
+                        right: this.centerX - this.width / 2 + this.wall,
+                        bottom: this.centerY + this.height + this.wall
+                    },
+                    { // Right wall
+                        left: this.centerX + this.width / 2 - this.wall,
+                        top: this.centerY,
+                        right: this.centerX + this.width / 2,
+                        bottom: this.centerY + this.height + this.wall
+                    }
+                ];
             }
         }
 
-        const hoop = new Hoop((canvasBall.width / 4) * 3, canvasBall.height / 3, 80, 30, color);
+        // const hoop = new Hoop((canvasBall.width / 4) * 3, canvasBall.height / 3, 80, 30, color);
+        const hoop = new Hoop((canvasBall.width / 4) * 3, canvasBall.height / 3, 80, 30, 10, color);
 
 
         const onMouseMove = (e:MouseEvent) => {
@@ -175,19 +211,34 @@ export default function Ball() {
                 ballY += vy;
 
                 //hoop
-                const hoopRect = hoop.getBoundingClientRect();
-                if (
-                    ballX + radius > hoopRect.left && ballX - radius < hoopRect.right &&
-                    ballY + radius > hoopRect.top && ballY - radius < hoopRect.bottom
-                ) {
-                    if (ballY - radius < hoopRect.top || ballY + radius > hoopRect.bottom) {
-                        vy *= -damping;
-                        ballY = ballY < hoopRect.top ? hoopRect.top - radius : hoopRect.bottom + radius;
-                    } else if (ballX - radius < hoopRect.left || ballX + radius > hoopRect.right) {
-                        vx *= -damping;
-                        ballX = ballX < hoopRect.left ? hoopRect.left - radius : hoopRect.right + radius;
+                const hoopRects = hoop.getBoundingClientRects();
+                for (const rect of hoopRects) {
+                    if (
+                        ballX + radius > rect.left && ballX - radius < rect.right &&
+                        ballY + radius > rect.top && ballY - radius < rect.bottom
+                    ) {
+                        // Calculate the reflection based on the collision side
+                        if (ballY - radius < rect.top || ballY + radius > rect.bottom) {
+                            vy *= -damping;
+                            ballY = ballY < rect.top ? rect.top - radius : rect.bottom + radius;
+                        } else if (ballX - radius < rect.left || ballX + radius > rect.right) {
+                            vx *= -damping;
+                            ballX = ballX < rect.left ? rect.left - radius : rect.right + radius;
+                        }
                     }
                 }
+                // if (
+                //     ballX + radius > hoopRect.left && ballX - radius < hoopRect.right &&
+                //     ballY + radius > hoopRect.top && ballY - radius < hoopRect.bottom
+                // ) {
+                //     if (ballY - radius < hoopRect.top || ballY + radius > hoopRect.bottom) {
+                //         vy *= -damping;
+                //         ballY = ballY < hoopRect.top ? hoopRect.top - radius : hoopRect.bottom + radius;
+                //     } else if (ballX - radius < hoopRect.left || ballX + radius > hoopRect.right) {
+                //         vx *= -damping;
+                //         ballX = ballX < hoopRect.left ? hoopRect.left - radius : hoopRect.right + radius;
+                //     }
+                // }
                 //hoop end
 
                 if (ballY + radius > wh || ballY - radius < 0) {
