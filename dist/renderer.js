@@ -33842,24 +33842,23 @@ function Buttons() {
         setIsPressed(true);
         setTimeout(() => {
             setIsPressed(false);
-        }, 50);
-        if (isPressed) {
-            let pressedButton = document.getElementById("buttonTest1");
-            pressedButton === null || pressedButton === void 0 ? void 0 : pressedButton.setAttribute;
-        }
+        }, 500);
+        // if (isPressed) {
+        //   let pressedButton = document.getElementById("buttonTest1")
+        //   pressedButton?.setAttribute("style", "background-color: red;")
+        // }
     };
     const handleToggle = (index) => {
         const updateToggle = isToggled.map((state, i) => i === index ? !state : state);
         setIsToggled(updateToggle);
-        console.log('toggled', isToggled);
     };
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, " Buttons "),
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' } },
             react_1.default.createElement("div", { className: "buttonContainer" },
                 react_1.default.createElement("div", { className: "buttonRow" },
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest1", onClick: handlePress }, " "),
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest2", onClick: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onClick: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onClick: handlePress }, " "),
                     react_1.default.createElement("button", { className: "button1" }, " ")),
                 react_1.default.createElement("div", { className: "buttonRow" },
                     react_1.default.createElement("button", { className: "button1" }, " "),

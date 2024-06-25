@@ -1,4 +1,5 @@
 import React, { ButtonHTMLAttributes, useState } from 'react'
+import {motion} from "framer-motion"
 
 export default function Buttons() {
 
@@ -17,13 +18,13 @@ export default function Buttons() {
         setIsPressed(true);
         setTimeout(() => {
           setIsPressed(false);
-        }, 50);
-        if (isPressed) {
-          let pressedButton = document.getElementById("buttonTest1")
-          pressedButton?.setAttribute
+        }, 500);
+        // if (isPressed) {
+        //   let pressedButton = document.getElementById("buttonTest1")
+        //   pressedButton?.setAttribute("style", "background-color: red;")
 
 
-        }
+        // }
       };
 
     const handleToggle = (index:number) => {
@@ -31,7 +32,6 @@ export default function Buttons() {
             i === index ? !state : state
           );
           setIsToggled(updateToggle)
-        console.log('toggled', isToggled)
       }
 
 
@@ -43,8 +43,11 @@ export default function Buttons() {
             <div className="buttonContainer">
                 <div className="buttonRow">
 
-                <button className="button1" id="buttonTest1" onClick={handlePress} > </button>
-                <button className="button1" id="buttonTest2" onClick={handlePress}> </button>
+                {/* <motion.button className="button1" id="buttonTest1" style={{ backgroundColor: isPressed? 'white' : 'red' }}  onClick={handlePress} > </motion.button> */}
+                {/* whileTap={{ scale: 0.1 }} */}
+
+                <button className="button1" id="buttonTest" onClick={handlePress}> </button>
+                <button className="button1" id="buttonTest" onClick={handlePress}> </button>
                 <button className="button1" > </button>
 
                 </div>
