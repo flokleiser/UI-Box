@@ -53,45 +53,12 @@ function Joystick() {
             s: false,
             d: false,
         };
-        // const handleKeyDown = (event: KeyboardEvent) => {
-        //     isMovingKeys = true;
-        //     const dx = circleX - centerX;
-        //     const dy = circleY - centerY;
-        //     const dist = Math.hypot(dx, dy);
-        //     const newX = circleX + dx
-        //     const newY = circleY + dy
-        //     if (dist <= maxDistance) {
-        //         circleX = circleX;
-        //         circleY = circleY;
-        //     } else {
-        //         const angle = Math.atan2(dy, dx);
-        //         circleX = centerX + maxDistance * Math.cos(angle);
-        //         circleY = centerY + maxDistance * Math.sin(angle);
-        //     }
-        //     const { key } = event;
-        //         if (key === 'w') {
-        //             circleY -= 20 
-        //         } else if (key === 'a') {
-        //             circleX -= 20 
-        //         } else if (key === 's') {
-        //             circleY += 20 
-        //         } else if (key === 'd') {
-        //             circleX += 20
-        //         }
-        //     };
         const handleKeyDown = (event) => {
             if (keyState[event.key] !== undefined) {
                 keyState[event.key] = true;
                 isMovingKeys = true;
             }
         };
-        // const handleKeyUp = (event: KeyboardEvent) => {
-        //     isMovingKeys = false;
-        //         const { key } = event;
-        //         if (['w', 'a', 's', 'd'].includes(key)) {
-        //             console.log('reset key')
-        //         }
-        // };
         const handleKeyUp = (event) => {
             if (keyState[event.key] !== undefined) {
                 keyState[event.key] = false;
@@ -100,13 +67,13 @@ function Joystick() {
         };
         const updatePosition = () => {
             if (keyState.w)
-                circleY -= 20;
+                circleY -= 10;
             if (keyState.a)
-                circleX -= 20;
+                circleX -= 10;
             if (keyState.s)
-                circleY += 20;
+                circleY += 10;
             if (keyState.d)
-                circleX += 20;
+                circleX += 10;
             const dx = circleX - centerX;
             const dy = circleY - centerY;
             const dist = Math.hypot(dx, dy);
@@ -139,7 +106,7 @@ function Joystick() {
         };
         let animationFrameId;
         const render = () => {
-            const distToCenter = Math.hypot(circleX - centerX, circleY - centerY);
+            // const distToCenter = Math.hypot(circleX - centerX, circleY - centerY) 
             if (!isMovingKeys) {
                 const dx = centerX - circleX;
                 const dy = centerY - circleY;
@@ -159,13 +126,13 @@ function Joystick() {
             }
             ctx.clearRect(0, 0, canvasKeyboard.width, canvasKeyboard.height);
             //tether
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 10;
-            ctx.lineCap = "round";
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY);
-            ctx.lineTo(circleX, circleY);
-            ctx.stroke();
+            // ctx.strokeStyle = color;
+            // ctx.lineWidth = 10;
+            // ctx.lineCap = "round";
+            // ctx.beginPath();
+            // ctx.moveTo(centerX, centerY);
+            // ctx.lineTo(circleX, circleY);
+            // ctx.stroke();
             //ball
             ctx.fillStyle = color;
             ctx.beginPath();
@@ -175,7 +142,7 @@ function Joystick() {
             ctx.strokeStyle = color;
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.arc(centerX, centerY, maxDistance + radius, 0, Math.PI * 2);
+            ctx.arc(centerX, centerY, maxDistance + (radius / 2), 0, Math.PI * 2);
             ctx.stroke(),
                 animationFrameId = requestAnimationFrame(render);
         };
