@@ -54,8 +54,6 @@ export default function Ball() {
             draw(ctx: CanvasRenderingContext2D) {
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
-                // ctx.rect(this.centerX - this.width / 2, this.centerY, this.width, this.height);
-                // ctx.fill();
                 ctx.rect(this.centerX - this.width / 2, this.centerY + this.height, this.width, this.wall);
                 ctx.fill();
 
@@ -63,7 +61,6 @@ export default function Ball() {
                 ctx.rect(this.centerX - this.width / 2, this.centerY, this.wall, this.height + this.wall);
                 ctx.fill();
         
-                // Draw the right wall
                 ctx.beginPath();
                 ctx.rect(this.centerX + this.width / 2 - this.wall, this.centerY, this.wall, this.height + this.wall);
                 ctx.fill();
@@ -72,12 +69,6 @@ export default function Ball() {
             
         
             getBoundingClientRects() {
-                // return {
-                //     left: this.centerX - this.width / 2,
-                //     top: this.centerY,
-                //     right: this.centerX + this.width / 2,
-                //     bottom: this.centerY + this.height
-                // };
                 return [
                     { // Bottom bar
                         left: this.centerX - this.width / 2,
@@ -102,7 +93,7 @@ export default function Ball() {
         }
 
         // const hoop = new Hoop((canvasBall.width / 4) * 3, canvasBall.height / 3, 80, 30, color);
-        const hoop = new Hoop((canvasBall.width / 4) * 3, canvasBall.height / 3, 80, 30, 10, color);
+        const hoop = new Hoop((canvasBall.width / 4) * 3, canvasBall.height / 3, 100,80, 10, color);
 
 
         const onMouseMove = (e:MouseEvent) => {

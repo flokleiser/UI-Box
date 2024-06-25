@@ -6,9 +6,9 @@ export default function Tether() {
         const canvasTether = document.querySelector("#sceneTether") as HTMLCanvasElement;
         const ctx = canvasTether.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
         const mouse = { x: 0, y: 0 };
-        const radius = 75;
+        const radius = 50;
         const radius2 = 25;
-        const radius3 = 50;
+        const radius3 = 35;
 
         let isDragging = false;
         let isDragging2 = false;

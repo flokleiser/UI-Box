@@ -30,9 +30,9 @@ function Tether() {
         const canvasTether = document.querySelector("#sceneTether");
         const ctx = canvasTether.getContext("2d", { willReadFrequently: true });
         const mouse = { x: 0, y: 0 };
-        const radius = 75;
+        const radius = 50;
         const radius2 = 25;
-        const radius3 = 50;
+        const radius3 = 35;
         let isDragging = false;
         let isDragging2 = false;
         let isDragging3 = false;

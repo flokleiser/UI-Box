@@ -43,13 +43,8 @@ export default function Switches() {
             </div>
             
 
-            <div className='centerContainer'>
+            {/* <div className='centerContainer'>
                 <motion.div className='switcherDiv' 
-                // variants={switcherMotion} 
-                // initial="active"
-                // animate={isSwitchedMotion? "inactive" : "active"}
-                // whileHover={{animate="inactive"}}
-                // animate="active" variants={switcherMotion}
                 style={{ rotate: isSwitchedMotion? '0':'100'}}
                 onMouseDown={handleSwitchMotion}
                  >
@@ -57,7 +52,7 @@ export default function Switches() {
                     style={{backgroundColor: "rgba(255, 255, 255, 0.5)"}}
                     />
                 </motion.div>
-            </div>
+            </div> */}
             
 
 
