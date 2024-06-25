@@ -27,12 +27,23 @@ exports.default = Buttons;
 const react_1 = __importStar(require("react"));
 function Buttons() {
     const [isPressed, setIsPressed] = (0, react_1.useState)(false);
+    const [isPressedEffect, setIsPressedEffect] = (0, react_1.useState)(false);
     const [isToggled, setIsToggled] = (0, react_1.useState)([false, false, false]);
+    const handlePressEffect = () => {
+        setIsPressedEffect(true);
+        setTimeout(() => {
+            setIsPressed(false);
+        }, 50);
+    };
     const handlePress = () => {
         setIsPressed(true);
         setTimeout(() => {
             setIsPressed(false);
         }, 50);
+        if (isPressed) {
+            let pressedButton = document.getElementById("buttonTest1");
+            pressedButton === null || pressedButton === void 0 ? void 0 : pressedButton.setAttribute;
+        }
     };
     const handleToggle = (index) => {
         const updateToggle = isToggled.map((state, i) => i === index ? !state : state);
@@ -44,17 +55,17 @@ function Buttons() {
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' } },
             react_1.default.createElement("div", { className: "buttonContainer" },
                 react_1.default.createElement("div", { className: "buttonRow" },
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " ")),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest1", onClick: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest2", onClick: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1" }, " ")),
                 react_1.default.createElement("div", { className: "buttonRow" },
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " ")),
+                    react_1.default.createElement("button", { className: "button1" }, " "),
+                    react_1.default.createElement("button", { className: "button1" }, " "),
+                    react_1.default.createElement("button", { className: "button1" }, " ")),
                 react_1.default.createElement("div", { className: "buttonRow" },
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "))),
+                    react_1.default.createElement("button", { className: "button1" }, " "),
+                    react_1.default.createElement("button", { className: "button1" }, " "),
+                    react_1.default.createElement("button", { className: "button1" }, " "))),
             react_1.default.createElement("div", { className: "buttonColumn" },
                 react_1.default.createElement("button", { className: `button2 ${isToggled[0] ? 'button2toggled' : ''}`, id: "buttonToggle1", onMouseDown: () => handleToggle(0) }),
                 react_1.default.createElement("button", { className: `button2 ${isToggled[1] ? 'button2toggled' : ''}`, id: "buttonToggle2", onMouseDown: () => handleToggle(1) }),

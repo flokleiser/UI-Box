@@ -3,15 +3,27 @@ import React, { ButtonHTMLAttributes, useState } from 'react'
 export default function Buttons() {
 
     const [isPressed, setIsPressed] = useState(false);
+    const [isPressedEffect, setIsPressedEffect] = useState(false)
     const [isToggled, setIsToggled] = useState([false, false, false])
 
-
+    const handlePressEffect = () => {
+      setIsPressedEffect(true);
+      setTimeout(() => {
+        setIsPressed(false);
+      }, 50);
+    }
 
     const handlePress = () => {
         setIsPressed(true);
         setTimeout(() => {
           setIsPressed(false);
         }, 50);
+        if (isPressed) {
+          let pressedButton = document.getElementById("buttonTest1")
+          pressedButton?.setAttribute
+
+
+        }
       };
 
     const handleToggle = (index:number) => {
@@ -30,21 +42,25 @@ export default function Buttons() {
         <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
             <div className="buttonContainer">
                 <div className="buttonRow">
-                <button className="button1" id="buttonTest" onMouseDown={handlePress}> </button>
-                <button className="button1" id="buttonTest" onMouseDown={handlePress}> </button>
-                <button className="button1" id="buttonTest" onMouseDown={handlePress}> </button>
+
+                <button className="button1" id="buttonTest1" onClick={handlePress} > </button>
+                <button className="button1" id="buttonTest2" onClick={handlePress}> </button>
+                <button className="button1" > </button>
+
                 </div>
 
                 <div className="buttonRow">
-                <button className="button1" id="buttonTest" onMouseDown={handlePress}> </button>
-                <button className="button1" id="buttonTest" onMouseDown={handlePress}> </button>
-                <button className="button1" id="buttonTest" onMouseDown={handlePress}> </button>
+                <button className="button1"  > </button>
+                <button className="button1"  > </button>
+                <button className="button1"  > </button>
+
                 </div>
 
                 <div className="buttonRow">
-                <button className="button1" id="buttonTest" onMouseDown={handlePress}> </button>
-                <button className="button1" id="buttonTest" onMouseDown={handlePress}> </button>
-                <button className="button1" id="buttonTest" onMouseDown={handlePress}> </button>
+                <button className="button1"  > </button>
+                <button className="button1"  > </button>
+                <button className="button1"  > </button>
+
                 </div>
             </div>
 
