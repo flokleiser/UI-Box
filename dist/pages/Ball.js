@@ -1,5 +1,5 @@
 "use strict";
-//https://github.com/Altanis/kinetics/
+//idea: make hoop like button, and calculate collision based on that
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -69,7 +69,7 @@ function Ball() {
                 ctx.rect(this.centerX + this.width / 2 - this.wall, this.centerY, this.wall, this.height + this.wall);
                 ctx.fill();
             }
-            getBoundingClientRects() {
+            calculateCollisions() {
                 return [
                     {
                         left: this.centerX - this.width / 2,
@@ -92,7 +92,6 @@ function Ball() {
                 ];
             }
         }
-        // const hoop = new Hoop((canvasBall.width / 4) * 3, canvasBall.height / 3, 80, 30, color);
         const hoop = new Hoop((canvasBall.width / 4) * 3, canvasBall.height / 3, 100, 80, 10, color);
         const onMouseMove = (e) => {
             if (isDragging) {
@@ -181,8 +180,7 @@ function Ball() {
                 }
                 ballX += vx;
                 ballY += vy;
-                //hoop
-                const hoopRects = hoop.getBoundingClientRects();
+                const hoopRects = hoop.calculateCollisions();
                 for (const rect of hoopRects) {
                     if (ballX + radius > rect.left && ballX - radius < rect.right &&
                         ballY + radius > rect.top && ballY - radius < rect.bottom) {
@@ -197,19 +195,6 @@ function Ball() {
                         }
                     }
                 }
-                // if (
-                //     ballX + radius > hoopRect.left && ballX - radius < hoopRect.right &&
-                //     ballY + radius > hoopRect.top && ballY - radius < hoopRect.bottom
-                // ) {
-                //     if (ballY - radius < hoopRect.top || ballY + radius > hoopRect.bottom) {
-                //         vy *= -damping;
-                //         ballY = ballY < hoopRect.top ? hoopRect.top - radius : hoopRect.bottom + radius;
-                //     } else if (ballX - radius < hoopRect.left || ballX + radius > hoopRect.right) {
-                //         vx *= -damping;
-                //         ballX = ballX < hoopRect.left ? hoopRect.left - radius : hoopRect.right + radius;
-                //     }
-                // }
-                //hoop end
                 if (ballY + radius > wh || ballY - radius < 0) {
                     vy *= -damping;
                     if (ballY + radius > wh)
