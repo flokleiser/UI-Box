@@ -169,7 +169,7 @@ function Lock() {
         };
     }, []);
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Lock"),
+        react_1.default.createElement("h1", null, "Lock (WIP)"),
         react_1.default.createElement("canvas", { style: {
                 width: '100vw',
                 height: '100vh',

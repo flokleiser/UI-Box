@@ -33461,7 +33461,9 @@ function Navbar() {
             react_1.default.createElement("button", { id: "ballpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
             react_1.default.createElement("button", { id: "joystickpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick"))),
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
+            react_1.default.createElement("button", { id: "lockpageButton" },
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "refresh"))),
         react_1.default.createElement("div", { className: "settingsButton" },
             react_1.default.createElement("button", { id: "settingsButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "settings")))));
@@ -34258,7 +34260,7 @@ function Lock() {
         };
     }, []);
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Lock"),
+        react_1.default.createElement("h1", null, "Lock (WIP)"),
         react_1.default.createElement("canvas", { style: {
                 width: '100vw',
                 height: '100vh',
@@ -34382,7 +34384,7 @@ function Particles() {
             }
             ctx.textAlign = "center";
             if (wh > 700) {
-                ctx.fillText(displayText, ww / 2, wh / 2);
+                ctx.fillText(displayText, ww / 2, wh / 1.3);
             }
             else {
                 ctx.fillText(displayText, ww / 2, wh / 1.2);
@@ -35001,7 +35003,7 @@ const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pa
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Lock_1 = __importDefault(__webpack_require__(/*! ./pages/Lock */ "./src/pages/Lock.tsx"));
 const App = () => {
-    const [page, setPage] = (0, react_1.useState)('Joystick');
+    const [page, setPage] = (0, react_1.useState)('Home');
     let CurrentPage;
     switch (page) {
         case 'Home':

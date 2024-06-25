@@ -101,7 +101,7 @@ function Particles() {
             }
             ctx.textAlign = "center";
             if (wh > 700) {
-                ctx.fillText(displayText, ww / 2, wh / 2);
+                ctx.fillText(displayText, ww / 2, wh / 1.3);
             }
             else {
                 ctx.fillText(displayText, ww / 2, wh / 1.2);

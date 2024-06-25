@@ -171,7 +171,7 @@ export default function Lock() {
 
     return (
         <div>
-            <h1>Lock</h1>
+            <h1>Lock (WIP)</h1>
             <canvas
                 style={{
                     width: '100vw',
