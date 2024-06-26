@@ -1,3 +1,4 @@
+//idea: calculate trajectory mode, + button to turn it on/off
 //idea: make hoop like button, and calculate collision based on that
 
 import React, { useEffect, useState } from 'react';
@@ -31,6 +32,7 @@ export default function Ball() {
         const stiffness = 0.4; 
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3; 
+
 
         class Hoop {
             centerX: number;

@@ -1,4 +1,5 @@
 "use strict";
+//idea: calculate trajectory mode, + button to turn it on/off
 //idea: make hoop like button, and calculate collision based on that
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
