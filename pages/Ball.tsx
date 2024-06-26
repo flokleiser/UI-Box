@@ -8,6 +8,8 @@ export default function Ball() {
     const [resetTrigger, setResetTrigger] = useState(0);
     const [buttonPosition, setButtonPosition] = useState({x:0,y:0})
 
+    const [hoopPosition, setHoopPosition] = useState({x:0,y:0});
+
     useEffect(() => {
         const canvasBall = document.querySelector("#sceneBall") as HTMLCanvasElement;
         const ctx = canvasBall.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
@@ -92,7 +94,7 @@ export default function Ball() {
             }
         }
 
-        const hoop = new Hoop((canvasBall.width / 4) * 3, canvasBall.height / 3, 100,80, 10, color);
+        const hoop = new Hoop((canvasBall.width / 4) * 3, canvasBall.height / 3, 125,80, 10, color);
 
 
         const onMouseMove = (e:MouseEvent) => {
@@ -157,6 +159,8 @@ export default function Ball() {
 
             setButtonPosition({ x: centerX, y: centerY+75});
 
+            // setHoopPosition({ x: (canvasBall.width / 4) * 3, y: (canvasBall.height / 3) });                
+
             vx = 0;
             vy = 0;
             render();
@@ -174,6 +178,7 @@ export default function Ball() {
             hoop.centerX = (ww / 4) * 3;
             hoop.centerY = wh / 3;
 
+            // setHoopPosition({ x: (canvasBall.width / 4) * 3, y: (canvasBall.height / 3) });                
             setButtonPosition({ x: centerX, y: centerY+75});
         }
 
@@ -200,17 +205,20 @@ export default function Ball() {
                 ballX += vx;
                 ballY += vy;
 
+
+                //hoop calculations
                 const hoopRects = hoop.calculateCollisions();
                 for (const rect of hoopRects) {
                     if (
-                        ballX + radius > rect.left && ballX - radius < rect.right &&
+                        ballX + radius > rect.left && ballX - radius < rect.right 
+                        &&
                         ballY + radius > rect.top && ballY - radius < rect.bottom
                     ) {
-                        // Calculate the reflection based on the collision side
-                        if (ballY - radius < rect.top || ballY + radius > rect.bottom) {
+                        if (ballY - radius < rect.top && ballY + radius > rect.bottom) {
                             vy *= -damping;
                             ballY = ballY < rect.top ? rect.top - radius : rect.bottom + radius;
-                        } else if (ballX - radius < rect.left || ballX + radius > rect.right) {
+
+                        } else if (ballX - radius < rect.left && ballX + radius > rect.right) {
                             vx *= -damping;
                             ballX = ballX < rect.left ? rect.left - radius : rect.right + radius;
                         }
@@ -321,6 +329,13 @@ export default function Ball() {
                     refresh
                 </span>
             </button>
+
+            {/* <button className="hoop"
+             style={{
+                left:hoopPosition.x,
+                top:hoopPosition.y,
+            }}> test hoop </button> */}
+
 
             <canvas
                 style={{

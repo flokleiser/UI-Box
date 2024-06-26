@@ -46,7 +46,8 @@ export default function Tether() {
         // const damping = 0.9; 
         // const stiffness = 0.1; 
         const damping = 0.8; 
-        const stiffness = 0.05; 
+        // const stiffness = 0.05; 
+        const stiffness = 0.1; 
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
 
         

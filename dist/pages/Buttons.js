@@ -48,6 +48,7 @@ function Buttons() {
     const handleToggle = (index) => {
         const updateToggle = isToggled.map((state, i) => i === index ? !state : state);
         setIsToggled(updateToggle);
+        console.log('toggled', isToggled);
         // if (isToggled) 
     };
     return (react_1.default.createElement("div", null,
@@ -67,7 +68,7 @@ function Buttons() {
                     react_1.default.createElement("button", { className: "button1" }, " "),
                     react_1.default.createElement("button", { className: "button1" }, " "))),
             react_1.default.createElement("div", { className: "buttonColumn" },
-                react_1.default.createElement("button", { className: `button2 ${isToggled[0] ? 'button2toggled' : ''}`, id: "buttonToggle1", onMouseDown: () => handleToggle(0) }),
-                react_1.default.createElement("button", { className: `button2 ${isToggled[1] ? 'button2toggled' : ''}`, id: "buttonToggle2", onMouseDown: () => handleToggle(1) }),
-                react_1.default.createElement("button", { className: `button2 ${isToggled[2] ? 'button2toggled' : ''}`, id: "buttonToggle3", onMouseDown: () => handleToggle(2) })))));
+                react_1.default.createElement("button", { className: `${isToggled[0] ? 'button2toggled' : 'button2'}`, id: "buttonToggle1", onMouseDown: () => handleToggle(0) }),
+                react_1.default.createElement("button", { className: `${isToggled[1] ? 'button2toggled' : 'button2'}`, id: "buttonToggle2", onMouseDown: () => handleToggle(1) }),
+                react_1.default.createElement("button", { className: `${isToggled[2] ? 'button2toggled' : 'button2'}`, id: "buttonToggle3", onMouseDown: () => handleToggle(2) })))));
 }
