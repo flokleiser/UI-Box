@@ -47952,7 +47952,6 @@ function Joystick() {
             const dist2 = Math.hypot(e.clientX - circleX2, e.clientY - circleY2);
             if (dist2 < radius) {
                 isDragging = true;
-                console.log('should be dragging');
             }
         };
         const onMouseUp = () => {
@@ -48063,6 +48062,12 @@ function Joystick() {
             ctx.beginPath();
             ctx.arc(circleX, circleY, radius, 0, Math.PI * 2);
             ctx.fill();
+            ctx.font = '48px Material Icons';
+            // ctx.fillStyle = '#333';
+            ctx.fillStyle = '#333333';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('keyboard', circleX, circleY);
             //big circle keyboard
             ctx.strokeStyle = color;
             ctx.lineWidth = 2;
@@ -48074,6 +48079,11 @@ function Joystick() {
             ctx.beginPath();
             ctx.arc(circleX2, circleY2, radius, 0, Math.PI * 2);
             ctx.fill();
+            ctx.font = '48px Material Icons';
+            ctx.fillStyle = '#333333';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('mouse', circleX2, circleY2);
             //big circle mouse 
             ctx.strokeStyle = color;
             ctx.lineWidth = 2;
