@@ -1,6 +1,3 @@
-//idea: calculate trajectory mode, + button to turn it on/off
-//idea: make hoop like button, and calculate collision based on that
-
 import React, { useEffect, useState } from 'react';
 
 export default function Ball() {

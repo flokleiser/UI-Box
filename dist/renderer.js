@@ -47435,8 +47435,6 @@ function Navbar() {
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-//idea: calculate trajectory mode, + button to turn it on/off
-//idea: make hoop like button, and calculate collision based on that
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -47887,12 +47885,18 @@ function Joystick() {
         let isMovingKeys = false;
         let ww = window.innerWidth;
         let wh = window.innerHeight;
-        let centerX = ww / 2;
+        let centerX = (ww / 2) - 135;
         let centerY = wh / 2;
+        let centerX2 = (ww / 2) + 135;
+        let centerY2 = wh / 2;
         let circleX = centerX;
         let circleY = centerY;
         let vx = 0;
         let vy = 0;
+        let circleX2 = centerX2;
+        let circleY2 = centerY2;
+        let vx2 = 0;
+        let vy2 = 0;
         const damping = 0.8;
         const stiffness = 0.05;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
@@ -47901,6 +47905,60 @@ function Joystick() {
             a: false,
             s: false,
             d: false,
+        };
+        const onMouseMove = (e) => {
+            if (isDragging) {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                const dx2 = mouse.x - centerX2;
+                const dy2 = mouse.y - centerY2;
+                const dist2 = Math.hypot(dx2, dy2);
+                if (dist2 <= maxDistance) {
+                    circleX2 = mouse.x;
+                    circleY2 = mouse.y;
+                }
+                else {
+                    const angle2 = Math.atan2(dy2, dx2);
+                    circleX2 = centerX2 + maxDistance * Math.cos(angle2);
+                    circleY2 = centerY2 + maxDistance * Math.sin(angle2);
+                }
+            }
+        };
+        const onTouchMove = (e) => {
+            if (e.touches.length > 0 && isDragging) {
+                mouse.x = e.touches[0].clientX;
+                mouse.y = e.touches[0].clientY;
+                const dx2 = mouse.x - centerX2;
+                const dy2 = mouse.y - centerY2;
+                const dist2 = Math.hypot(dx2, dy2);
+                if (dist2 <= maxDistance) {
+                    circleX2 = mouse.x;
+                    circleY2 = mouse.y;
+                }
+                else {
+                    const angle2 = Math.atan2(dy2, dx2);
+                    circleX2 = centerX2 + maxDistance * Math.cos(angle2);
+                    circleY2 = centerY2 + maxDistance * Math.sin(angle2);
+                }
+            }
+        };
+        const onTouchEnd = () => {
+            if (isDragging) {
+                isDragging = false;
+                console.log('stop drag');
+            }
+        };
+        const onMouseDown = (e) => {
+            const dist2 = Math.hypot(e.clientX - circleX2, e.clientY - circleY2);
+            if (dist2 < radius) {
+                isDragging = true;
+                console.log('should be dragging');
+            }
+        };
+        const onMouseUp = () => {
+            if (isDragging) {
+                isDragging = false;
+            }
         };
         const handleKeyDown = (event) => {
             if (keyState[event.key] !== undefined) {
@@ -47935,28 +47993,42 @@ function Joystick() {
         const initscene = () => {
             ww = canvasKeyboard.width = window.innerWidth;
             wh = canvasKeyboard.height = window.innerHeight;
-            centerX = ww / 2;
+            // centerX = ww / 2;
+            centerX = (ww / 2) - 135;
             centerY = wh / 2;
             circleX = centerX;
             circleY = centerY;
             vx = 0;
             vy = 0;
+            centerX2 = (ww / 2) + 135;
+            centerY2 = wh / 2;
+            circleX2 = centerX2;
+            circleY2 = centerY2;
+            vx2 = 0;
+            vy2 = 0;
             render();
         };
         const resizeScene = () => {
             ww = canvasKeyboard.width = window.innerWidth;
             wh = canvasKeyboard.height = window.innerHeight;
-            centerX = ww / 2;
+            // centerX = ww / 4;
+            centerX = (ww / 2) - 135;
             centerY = wh / 2;
             circleX = centerX;
             circleY = centerY;
             vx = 0;
             vy = 0;
+            centerX2 = (ww / 2) + 135;
+            centerY2 = wh / 2;
+            circleX2 = centerX2;
+            circleY2 = centerY2;
+            vx2 = 0;
+            vy2 = 0;
         };
         let animationFrameId;
         const render = () => {
             // const distToCenter = Math.hypot(circleX - centerX, circleY - centerY) 
-            if (!isMovingKeys) {
+            if (!isMovingKeys && !isDragging) {
                 const dx = centerX - circleX;
                 const dy = centerY - circleY;
                 const ax = dx * stiffness;
@@ -47967,39 +48039,64 @@ function Joystick() {
                 vy *= damping;
                 circleX += vx;
                 circleY += vy;
+                const dx2 = centerX2 - circleX2;
+                const dy2 = centerY2 - circleY2;
+                const ax2 = dx2 * stiffness;
+                const ay2 = dy2 * stiffness;
+                vx2 += ax2;
+                vy2 += ay2;
+                vx2 *= damping;
+                vy2 *= damping;
+                circleX2 += vx2;
+                circleY2 += vy2;
             }
             else {
                 updatePosition();
                 vx = 0;
                 vy = 0;
+                vx2 = 0;
+                vy2 = 0;
             }
             ctx.clearRect(0, 0, canvasKeyboard.width, canvasKeyboard.height);
-            //tether
-            // ctx.strokeStyle = color;
-            // ctx.lineWidth = 10;
-            // ctx.lineCap = "round";
-            // ctx.beginPath();
-            // ctx.moveTo(centerX, centerY);
-            // ctx.lineTo(circleX, circleY);
-            // ctx.stroke();
-            //ball
+            //ball keyboard
             ctx.fillStyle = color;
             ctx.beginPath();
             ctx.arc(circleX, circleY, radius, 0, Math.PI * 2);
             ctx.fill();
-            //big circle
+            //big circle keyboard
             ctx.strokeStyle = color;
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(centerX, centerY, maxDistance + (radius / 2), 0, Math.PI * 2);
             ctx.stroke(),
+                //ball mouse 
+                ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(circleX2, circleY2, radius, 0, Math.PI * 2);
+            ctx.fill();
+            //big circle mouse 
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX2, centerY2, maxDistance + (radius / 2), 0, Math.PI * 2);
+            ctx.stroke(),
                 animationFrameId = requestAnimationFrame(render);
         };
+        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("touchmove", onTouchMove);
+        window.addEventListener("mousedown", onMouseDown);
+        window.addEventListener("mouseup", onMouseUp);
+        window.addEventListener("touchend", onTouchEnd);
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
         window.addEventListener("resize", resizeScene);
         initscene();
         return () => {
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("touchmove", onTouchMove);
+            window.removeEventListener("mousedown", onMouseDown);
+            window.removeEventListener("mouseup", onMouseUp);
+            window.removeEventListener("touchend", onTouchEnd);
             window.removeEventListener('keydown', handleKeyDown);
             window.addEventListener('keydown', handleKeyDown);
             window.removeEventListener("resize", resizeScene);
@@ -49067,7 +49164,7 @@ const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pa
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Lock_1 = __importDefault(__webpack_require__(/*! ./pages/Lock */ "./src/pages/Lock.tsx"));
 const App = () => {
-    const [page, setPage] = (0, react_1.useState)('Switches');
+    const [page, setPage] = (0, react_1.useState)('Joystick');
     let CurrentPage;
     switch (page) {
         case 'Home':
