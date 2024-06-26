@@ -4,7 +4,10 @@
     color-scheme: light dark;
 
     --particle-color-dark: #333;
-    --particle-color-light: #ffffff; 
+    /* --particle-color-light: #ffffff;  */
+    --particle-color-light: #ddd; 
+    --canvas-colorelement-dark: #ddd;
+    --canvas-colorelement-light: #333;
   }
 
 
@@ -292,6 +295,7 @@ nav{
     body { background: #333; color: white; }
     :root {
       --particle-color: var(--particle-color-light);
+      --canvas-colorelement: var(--canvas-colorelement-light)
     }
     .logo {filter:invert()}
   }
@@ -308,7 +312,11 @@ nav{
     .button1:active {background:rgba(51,51,51,0.5)};
     .button2:active {background:rgba(51,51,51,0.5)}; 
     .button2toggled {background:rgba(51,51,51,0.5)}
+    .switcherCircleVerticalFill {background-color: rgba(51,51,51,0.5);}
+    .switcherDivVerticalLine {border:3px solid #333; background-color: #333;}
+    .switcherCircleVerticalOutline {background-color: #ddd;}
     :root {
       --particle-color: var(--particle-color-dark);
+      --canvas-colorelement: var(--canvas-colorelement-dark)
     }
   }

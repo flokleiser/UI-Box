@@ -38,6 +38,8 @@ export default function Joystick() {
         const stiffness = 0.05; 
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
 
+        const colorText = getComputedStyle(document.documentElement).getPropertyValue('--canvas-colorelement') || 'black'; 
+
         const keyState: { [key: string]: boolean } = {
             w: false,
             a: false,
@@ -224,7 +226,8 @@ export default function Joystick() {
 
             ctx.font = '48px Material Icons';
             // ctx.fillStyle = '#333';
-            ctx.fillStyle = '#333333';
+            // ctx.fillStyle = 'rgba(51,51,51,0.5)';
+            ctx.fillStyle = colorText
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('keyboard', circleX, circleY);
@@ -243,7 +246,9 @@ export default function Joystick() {
             ctx.fill();
 
             ctx.font = '48px Material Icons';
-            ctx.fillStyle = '#333333';
+            // ctx.fillStyle = '#333333';
+            // ctx.fillStyle = 'rgba(51,51,51,0.5)';
+            ctx.fillStyle = colorText
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('mouse', circleX2, circleY2);
