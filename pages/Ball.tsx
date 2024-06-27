@@ -197,6 +197,7 @@ export default function Ball() {
                 }
                 else {
                     vy += gravity;
+                    // vy -= gravity;
                 }
 
                 ballX += vx;

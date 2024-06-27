@@ -47613,6 +47613,7 @@ function Ball() {
                 }
                 else {
                     vy += gravity;
+                    // vy -= gravity;
                 }
                 ballX += vx;
                 ballY += vy;
