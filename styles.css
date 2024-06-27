@@ -1,10 +1,7 @@
-/* ROOT */
-
 :root {
     color-scheme: light dark;
 
     --particle-color-dark: #333;
-    /* --particle-color-light: #ffffff;  */
     --particle-color-light: #ddd; 
     --canvas-colorelement-dark: #ddd;
     --canvas-colorelement-light: #333;
@@ -18,15 +15,7 @@ body {
     max-width: 38rem;
     padding: 1.5rem;
     overflow:hidden;
-
-    /* for side navbar */
-    /* display:flex;
-    flex-direction: row;
-    gap:15px; */
 }
-
-
-/* NAVBAR */
 
 nav{
   display: flex;
@@ -48,7 +37,6 @@ nav{
 
 
 .material-icons {
-  /* font-size: 24px; */
   font-size: 20px;
 }
 
@@ -84,7 +72,6 @@ nav{
   margin:0.5rem;
   border: 2px solid white;
 
-  /* background-color:rgba(255, 255, 255, 0.5); */
   background:rgba(255, 255, 255, 0.5);
   transition: transform 0.3s ease, background 0.2s;
 }
@@ -97,7 +84,8 @@ nav{
   margin:0.5rem;
   border: 2px solid white;
 
-  background:rgba(255, 255, 255, 0.5);
+  background:#333;
+  /* background:rgba(255, 255, 255, 0.5); */
   transition: transform 0.3s ease, background 0.2s;
 }
 
@@ -109,7 +97,8 @@ nav{
   margin:0.5rem;
   border: 2px solid white;
 
-  background:white;
+  /* background:white; */
+  background:rgba(255, 255, 255, 0.5);
   transition: transform 0.3s ease, background 0.2s;
 }
 
@@ -120,7 +109,8 @@ nav{
 .button1:active{
   --scale-factor:0.95;
   transform: scale(var(--scale-factor));
-  background: white;
+  /* background: white; */
+  background: #333;
 }
 
 .button2:hover {
@@ -135,8 +125,6 @@ nav{
 
 .buttonInSettings{
   margin-right: 0.25rem;
-  /* display:flex;
-  gap:10px; */
 }
 
 .logo{
@@ -180,8 +168,6 @@ nav{
 
 .spinnerCircleCenter {
   position:absolute;
-  /* width:35px;
-  height:35px; */
   width:50px;
   height:50px;
 
@@ -214,6 +200,21 @@ nav{
   margin: 0.5rem;
 }
 
+.switcherDivHalf {
+  position:relative;
+  align-items: center;
+  display:flex;
+  /* width:137.5px;
+  height:100px; */
+  /* width:131.5px;
+  height:94px; */
+  width:132.5px;
+  height:90px;
+  border-radius: 0 100px 100px 0 ;
+  /* border: 5px solid #333; */
+  border-left: 0;
+}
+
 .switcherDivVertical {
   position:relative;
   align-items: center;
@@ -235,8 +236,9 @@ nav{
   border: 3px solid white;
   justify-content: center;
   align-items: center;
-  /* margin: 0.5rem; */
+  /* background: rgba(225, 225, 225, 0.5); */
 }
+
 .switcherCircle {
   position:relative;
   height:90px;
@@ -251,7 +253,6 @@ nav{
 .switcherCircleVerticalOutline {
   display:flex;
   position:relative;
-  /* position:absolute; */
   height:60px;
   width:60px;
   border-radius: 100px;
@@ -306,10 +307,12 @@ nav{
     .spinnerCircle {background-color: #333;}
     .spinnerCircleCenter {background-color: rgb(51, 51, 51);}
     .line {background-color: #333;}
-    .switcherDiv {border: 3px solid #333333}
+    /* .switcherDiv {border: 3px solid #333333} */
+    .switcherDiv {border: 0px solid #333333}
     .button1 {background:#333; border: 0px solid #333;}
-    .button2 {background:#333; border: 0px solid #333};
-    .button1:active {background:rgba(51,51,51,0.5)};
+    .button2 {background: rgba(255, 255, 255, 0.5); border: 2px solid #333};
+    /* .button2 {filter:invert()} */
+    .button1:active {background:rgba(255,255,255, 0.5)};
     .button2:active {background:rgba(51,51,51,0.5)}; 
     .button2toggled {background:rgba(51,51,51,0.5)}
     .switcherCircleVerticalFill {background-color: rgba(51,51,51,0.5);}

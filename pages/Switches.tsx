@@ -6,22 +6,16 @@ export default function Switches() {
     const switcherMotion = {
         active: {
             rotation:"0"
-            // scale:1
         },
         inactive: {
             rotaton: 180,
-            // scale:2,
             transition: { duration: 2 }
         }
     }
 
-    // const controls = useAnimation();
-
     const [isSwitched, setSwitched] = useState(false)
     const [isSwitchedMotion, setSwitchedMotion] = useState(false)
-    // const [isSwitchedVertical, setSwitchedVertical] = useState(false)
-
-    // const [verticalPosition, setVerticalPosition] = useState<'top' | 'middle' | 'bottom'>('middle');
+    const [isSwitchedFill, setSwitchedFill] = useState(false)
 
     const [verticalPosition, setVerticalPosition] = useState<'top' | 'middle' | 'bottom'>('middle');
     const [constraints, setConstraints] = useState({ top: 0, bottom: 0 });
@@ -38,6 +32,11 @@ export default function Switches() {
         setSwitched(!isSwitched);
     }
 
+    function handleSwitchFill() {
+        setSwitchedFill(!isSwitchedFill);
+        console.log("Fill switch",isSwitchedFill)
+    }
+
     function handleSwitchMotion() {
         setSwitchedMotion(!isSwitchedMotion);
     }
@@ -49,32 +48,12 @@ export default function Switches() {
 
         if (dragY < rect.height / 3) {
             setVerticalPosition('top');
-            // controls.start({ top: "-150px" });
         } else if (dragY < (rect.height / 3) * 2) {
             setVerticalPosition('middle');
-            // controls.start({ top: "0px" });
         } else {
             setVerticalPosition('bottom');
-            // controls.start({ top: "150px" });
         }
     }
-
-    // function handleSwitchVertical(e:React.MouseEvent) {
-    //     const verticalSwitch = document.getElementById("verticalSwitch")
-    //     const rect = verticalSwitch!.getBoundingClientRect()
-
-    //     const clickY = e.clientY - rect.top
-
-    //     if (clickY < rect.height/3) {
-    //         setVerticalPosition('top')
-    //     }
-    //     else if (clickY < (rect.height/3) * 2) {
-    //         setVerticalPosition('middle')
-    //     }
-    //     else {
-    //         setVerticalPosition('bottom')
-    //     }
-    // }
 
 
     return(
@@ -88,7 +67,7 @@ export default function Switches() {
 
                 <div className='centerContainer'>
                     <div className='switcherDiv' 
-                    style={{backgroundColor: isSwitched ?  "rgba(255, 255, 255, 0.5)" : "#333", transition:'0.3s'}} 
+                    style={{backgroundColor: isSwitched ?  "rgb(153,153,153)" : "#333", transition:'0.3s'}} 
                     onMouseDown={handleSwitch} 
                     >
                         <div className='switcherCircle' 
@@ -101,7 +80,6 @@ export default function Switches() {
                 <div className='centerContainer'>
                     <motion.div className='switcherDiv' 
                     style={{width:350}}
-                    // style={{width:500}}
                     onMouseDown={handleSwitchMotion}
                     >
                     </motion.div>
@@ -110,9 +88,22 @@ export default function Switches() {
 
                 <div className='centerContainer'>
                     <motion.div className='switcherDiv' 
-                    style={{width:275}}
-                    onMouseDown={handleSwitchMotion}
+                    style={{width:275, display:'flex',justifyContent:'center', backgroundColor:'#333'}}
+                    onMouseDown={handleSwitchFill}
                     >
+                        {/* <div className='switcherDivBorder' 
+                        style={{width:275, display:'flex',justifyContent:'space-between'}}
+                        onMouseDown={handleSwitchFill}
+                        > */}
+                            <div className='switcherDivHalf'
+                            style={{backgroundColor: isSwitchedFill ?  "rgba(255, 255, 255, 0.5)" : "#333", transition:'0.3s', rotate:'180deg'}}
+                            >
+                            </div>
+                            <div className='switcherDivHalf'
+                            style={{backgroundColor: isSwitchedFill ? "#333":"rgba(255, 255, 255, 0.5)" , transition:'0.3s'}}
+                            >
+                            </div>
+                        {/* </div> */}
                     </motion.div>
                 </div>
 
@@ -124,12 +115,8 @@ export default function Switches() {
                 <div className="switcherDivVertical"
                 >
                     <motion.div id="verticalSwitch" className='switcherDivVerticalLine' 
-                    // onMouseDown={handleSwitchVertical}
                     >
                         <motion.div className='switcherCircleVerticalOutline' 
-                        // style={{
-                        //     top: verticalPosition === 'top' ? "-150px" : verticalPosition === 'middle' ? "0px" : "150px", transition: '0.2s'
-                        // }}
                         drag="y"
                         dragConstraints={constraints}
                         dragElastic={0}
