@@ -66,11 +66,13 @@ export default function Switches() {
 
                 <div className='centerContainer'>
                     <div className='switcherDiv' 
-                    style={{backgroundColor: isSwitched ?  "rgb(153,153,153)" : "#333", transition:'0.3s'}} 
+                    // style={{backgroundColor: isSwitched ?  "rgb(153,153,153)" : "#333", transition:'0.3s'}} 
+                    style={{backgroundColor: isSwitched ?  "#ddd" : "#333", transition:'0.3s'}} 
                     onMouseDown={handleSwitch} 
                     >
                         <div className='switcherCircle' 
-                        style={{left: isSwitched ? "0px" : "100px", transition:'0.3s', backgroundColor: isSwitched ?  "#333" : "rgba(255, 255, 255, 0.5)"}} 
+                        // style={{left: isSwitched ? "0px" : "100px", transition:'0.3s', backgroundColor: isSwitched ?  "#333" : "rgba(255, 255, 255, 0.5)"}} 
+                        style={{left: isSwitched ? "0px" : "100px", transition:'0.3s', backgroundColor: isSwitched ?  "#333" : "#ddd"}} 
                         />
                     </div>
                 </div>
@@ -95,11 +97,13 @@ export default function Switches() {
                         onMouseDown={handleSwitchFill}
                         > */}
                             <div className='switcherDivHalf'
-                            style={{backgroundColor: isSwitchedFill ?  "rgba(255, 255, 255, 0.5)" : "#333", transition:'0.05s', rotate:'180deg'}}
+                            // style={{backgroundColor: isSwitchedFill ?  "rgba(255, 255, 255, 0.5)" : "#333", transition:'0.05s', rotate:'180deg'}}
+                            style={{backgroundColor: isSwitchedFill ?  "#ddd" : "#333", transition:'0.05s', rotate:'180deg'}}
                             >
                             </div>
                             <div className='switcherDivHalf'
-                            style={{backgroundColor: isSwitchedFill ? "#333":"rgba(255, 255, 255, 0.5)" , transition:'0.05s'}}
+                            // style={{backgroundColor: isSwitchedFill ? "#333":"rgba(255, 255, 255, 0.5)" , transition:'0.05s'}}
+                            style={{backgroundColor: isSwitchedFill ? "#333":"#ddd" , transition:'0.05s'}}
                             >
                             </div>
                         {/* </div> */}

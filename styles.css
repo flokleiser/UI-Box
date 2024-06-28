@@ -213,6 +213,16 @@ nav{
   border: 3px solid white;
   margin: 0.5rem;
 }
+.switcherDivFilled {
+  position:relative;
+  align-items: center;
+  display:grid;
+  width:200px;
+  height:100px;
+  border-radius: 100px;
+  border: 3px solid white;
+  margin: 0.5rem;
+}
 
 .switcherDivHalf {
   position:relative;
@@ -222,8 +232,13 @@ nav{
   height:100px; */
   /* width:131.5px;
   height:94px; */
+
   width:132.5px;
   height:90px;
+
+  /* width:135.5px;
+  height:96px; */
+
   border-radius: 0 100px 100px 0 ;
   /* border: 5px solid #333; */
   border-left: 0;
@@ -280,9 +295,9 @@ nav{
   height:50px;
   width:50px;
   border-radius: 100px;
-  background-color: rgba(255, 255, 255, 0.5);
+  /* background-color: rgba(255, 255, 255, 0.5); */
+  background-color: #ddd;
   transition: transform 0.3s;
-
 }
 
 .resetButton {
@@ -323,7 +338,10 @@ nav{
 
     .line {background-color: #333;}
 
-    .switcherDiv {border: 0px solid #333333}
+    .switcherDiv {border: 3px solid #333333}
+    /* .switcherDivFilled {border: 3px solid #ddd} */
+    /* .switcherDivHalf{width:135.5px; height:96px;} */
+    /* .switcherDivFilled {border: 0px solid #ddd;} */
     .switcherCircleVerticalFill {background-color: rgba(51,51,51,0.5);}
     .switcherDivVerticalLine {border:3px solid #333; background-color: #333;}
     .switcherCircleVerticalOutline {background-color: #ddd;}

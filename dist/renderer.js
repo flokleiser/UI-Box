@@ -48807,14 +48807,22 @@ function Switches() {
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' } },
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column' } },
                 react_1.default.createElement("div", { className: 'centerContainer' },
-                    react_1.default.createElement("div", { className: 'switcherDiv', style: { backgroundColor: isSwitched ? "rgb(153,153,153)" : "#333", transition: '0.3s' }, onMouseDown: handleSwitch },
-                        react_1.default.createElement("div", { className: 'switcherCircle', style: { left: isSwitched ? "0px" : "100px", transition: '0.3s', backgroundColor: isSwitched ? "#333" : "rgba(255, 255, 255, 0.5)" } }))),
+                    react_1.default.createElement("div", { className: 'switcherDiv', 
+                        // style={{backgroundColor: isSwitched ?  "rgb(153,153,153)" : "#333", transition:'0.3s'}} 
+                        style: { backgroundColor: isSwitched ? "#ddd" : "#333", transition: '0.3s' }, onMouseDown: handleSwitch },
+                        react_1.default.createElement("div", { className: 'switcherCircle', 
+                            // style={{left: isSwitched ? "0px" : "100px", transition:'0.3s', backgroundColor: isSwitched ?  "#333" : "rgba(255, 255, 255, 0.5)"}} 
+                            style: { left: isSwitched ? "0px" : "100px", transition: '0.3s', backgroundColor: isSwitched ? "#333" : "#ddd" } }))),
                 react_1.default.createElement("div", { className: 'centerContainer' },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 350 }, onMouseDown: handleSwitchMotion })),
                 react_1.default.createElement("div", { className: 'centerContainer' },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 275, display: 'flex', justifyContent: 'center', backgroundColor: '#333' }, onMouseDown: handleSwitchFill },
-                        react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "rgba(255, 255, 255, 0.5)" : "#333", transition: '0.05s', rotate: '180deg' } }),
-                        react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "#333" : "rgba(255, 255, 255, 0.5)", transition: '0.05s' } })))),
+                        react_1.default.createElement("div", { className: 'switcherDivHalf', 
+                            // style={{backgroundColor: isSwitchedFill ?  "rgba(255, 255, 255, 0.5)" : "#333", transition:'0.05s', rotate:'180deg'}}
+                            style: { backgroundColor: isSwitchedFill ? "#ddd" : "#333", transition: '0.05s', rotate: '180deg' } }),
+                        react_1.default.createElement("div", { className: 'switcherDivHalf', 
+                            // style={{backgroundColor: isSwitchedFill ? "#333":"rgba(255, 255, 255, 0.5)" , transition:'0.05s'}}
+                            style: { backgroundColor: isSwitchedFill ? "#333" : "#ddd", transition: '0.05s' } })))),
             react_1.default.createElement("div", { className: 'centerContainer' },
                 react_1.default.createElement("div", { className: "switcherDivVertical" },
                     react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch", className: 'switcherDivVerticalLine' },
