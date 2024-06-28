@@ -18,6 +18,7 @@ export default function Switches() {
     const [isSwitchedFill, setSwitchedFill] = useState(false)
 
     const [verticalPosition, setVerticalPosition] = useState<'top' | 'middle' | 'bottom'>('middle');
+    const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'middle' | 'right'>('middle');
     const [constraints, setConstraints] = useState({ top: 0, bottom: 0 });
     const controls = useAnimation();
 
@@ -38,6 +39,20 @@ export default function Switches() {
 
     function handleSwitchMotion() {
         setSwitchedMotion(!isSwitchedMotion);
+    }
+
+    function handleSwitchHorizontal(e:React.MouseEvent) {
+        const horizontalSwitch = document.getElementById('horizontalSwitch')
+        const rect = horizontalSwitch!.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+
+        if (clickX < rect.width/ 3) {
+            setHorizontalPosition('left');
+        } else if (clickX < (rect.width/ 3) * 2) {
+            setHorizontalPosition('middle');
+        } else {
+            setHorizontalPosition('right');
+        }
     }
 
     function handleDragEnd(e:any,info: any) {
@@ -78,11 +93,20 @@ export default function Switches() {
                 </div>
             
 
-                <div className='centerContainer'>
+                <div className='centerContainer' id="horizontalSwitch">
                     <motion.div className='switcherDiv' 
                     style={{width:350}}
-                    onMouseDown={handleSwitchMotion}
+                    onMouseDown={handleSwitchHorizontal}
                     >
+                        <motion.div className="switcherCircle"
+                         style={{
+                            backgroundColor:'#ddd',
+                            left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
+                            transition: '0.2s'
+                        }}
+                        >
+                        </motion.div>
+
                     </motion.div>
                 </div>
 
@@ -92,17 +116,11 @@ export default function Switches() {
                     style={{width:275, display:'flex',justifyContent:'center', backgroundColor:'#333'}}
                     onMouseDown={handleSwitchFill}
                     >
-                        {/* <div className='switcherDivBorder' 
-                        style={{width:275, display:'flex',justifyContent:'space-between'}}
-                        onMouseDown={handleSwitchFill}
-                        > */}
                             <div className='switcherDivHalf'
-                            // style={{backgroundColor: isSwitchedFill ?  "rgba(255, 255, 255, 0.5)" : "#333", transition:'0.05s', rotate:'180deg'}}
                             style={{backgroundColor: isSwitchedFill ?  "#ddd" : "#333", transition:'0.05s', rotate:'180deg'}}
                             >
                             </div>
                             <div className='switcherDivHalf'
-                            // style={{backgroundColor: isSwitchedFill ? "#333":"rgba(255, 255, 255, 0.5)" , transition:'0.05s'}}
                             style={{backgroundColor: isSwitchedFill ? "#333":"#ddd" , transition:'0.05s'}}
                             >
                             </div>

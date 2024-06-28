@@ -213,7 +213,7 @@ nav{
   border: 3px solid white;
   margin: 0.5rem;
 }
-.switcherDivFilled {
+/* .switcherDivFilled {
   position:relative;
   align-items: center;
   display:grid;
@@ -222,19 +222,19 @@ nav{
   border-radius: 100px;
   border: 3px solid white;
   margin: 0.5rem;
-}
+} */
 
 .switcherDivHalf {
   position:relative;
   align-items: center;
   display:flex;
-  /* width:137.5px;
-  height:100px; */
+  width:138px;
+  height:100px;
   /* width:131.5px;
   height:94px; */
 
-  width:132.5px;
-  height:90px;
+  /* width:132.5px;
+  height:90px; */
 
   /* width:135.5px;
   height:96px; */
@@ -342,8 +342,10 @@ nav{
     /* .switcherDivFilled {border: 3px solid #ddd} */
     /* .switcherDivHalf{width:135.5px; height:96px;} */
     /* .switcherDivFilled {border: 0px solid #ddd;} */
-    .switcherCircleVerticalFill {background-color: rgba(51,51,51,0.5);}
-    .switcherDivVerticalLine {border:3px solid #333; background-color: #333;}
+    .switcherCircleVerticalFill {background-color: #333;}
+    .switcherDivVerticalLine {border:3px solid #333; 
+      /* background-color: #333; */
+    }
     .switcherCircleVerticalOutline {background-color: #ddd;}
 
     .button1 {background:#333; border: 0px solid #333;}

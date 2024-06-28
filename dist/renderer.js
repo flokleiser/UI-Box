@@ -48772,6 +48772,7 @@ function Switches() {
     const [isSwitchedMotion, setSwitchedMotion] = (0, react_1.useState)(false);
     const [isSwitchedFill, setSwitchedFill] = (0, react_1.useState)(false);
     const [verticalPosition, setVerticalPosition] = (0, react_1.useState)('middle');
+    const [horizontalPosition, setHorizontalPosition] = (0, react_1.useState)('middle');
     const [constraints, setConstraints] = (0, react_1.useState)({ top: 0, bottom: 0 });
     const controls = (0, framer_motion_1.useAnimation)();
     (0, react_1.useEffect)(() => {
@@ -48787,6 +48788,20 @@ function Switches() {
     }
     function handleSwitchMotion() {
         setSwitchedMotion(!isSwitchedMotion);
+    }
+    function handleSwitchHorizontal(e) {
+        const horizontalSwitch = document.getElementById('horizontalSwitch');
+        const rect = horizontalSwitch.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        if (clickX < rect.width / 3) {
+            setHorizontalPosition('left');
+        }
+        else if (clickX < (rect.width / 3) * 2) {
+            setHorizontalPosition('middle');
+        }
+        else {
+            setHorizontalPosition('right');
+        }
     }
     function handleDragEnd(e, info) {
         const verticalSwitch = document.getElementById("verticalSwitch");
@@ -48813,16 +48828,17 @@ function Switches() {
                         react_1.default.createElement("div", { className: 'switcherCircle', 
                             // style={{left: isSwitched ? "0px" : "100px", transition:'0.3s', backgroundColor: isSwitched ?  "#333" : "rgba(255, 255, 255, 0.5)"}} 
                             style: { left: isSwitched ? "0px" : "100px", transition: '0.3s', backgroundColor: isSwitched ? "#333" : "#ddd" } }))),
-                react_1.default.createElement("div", { className: 'centerContainer' },
-                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 350 }, onMouseDown: handleSwitchMotion })),
+                react_1.default.createElement("div", { className: 'centerContainer', id: "horizontalSwitch" },
+                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 350 }, onMouseDown: handleSwitchHorizontal },
+                        react_1.default.createElement(framer_motion_1.motion.div, { className: "switcherCircle", style: {
+                                backgroundColor: '#ddd',
+                                left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
+                                transition: '0.2s'
+                            } }))),
                 react_1.default.createElement("div", { className: 'centerContainer' },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 275, display: 'flex', justifyContent: 'center', backgroundColor: '#333' }, onMouseDown: handleSwitchFill },
-                        react_1.default.createElement("div", { className: 'switcherDivHalf', 
-                            // style={{backgroundColor: isSwitchedFill ?  "rgba(255, 255, 255, 0.5)" : "#333", transition:'0.05s', rotate:'180deg'}}
-                            style: { backgroundColor: isSwitchedFill ? "#ddd" : "#333", transition: '0.05s', rotate: '180deg' } }),
-                        react_1.default.createElement("div", { className: 'switcherDivHalf', 
-                            // style={{backgroundColor: isSwitchedFill ? "#333":"rgba(255, 255, 255, 0.5)" , transition:'0.05s'}}
-                            style: { backgroundColor: isSwitchedFill ? "#333" : "#ddd", transition: '0.05s' } })))),
+                        react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "#ddd" : "#333", transition: '0.05s', rotate: '180deg' } }),
+                        react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "#333" : "#ddd", transition: '0.05s' } })))),
             react_1.default.createElement("div", { className: 'centerContainer' },
                 react_1.default.createElement("div", { className: "switcherDivVertical" },
                     react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch", className: 'switcherDivVerticalLine' },
