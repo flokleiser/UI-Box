@@ -98,9 +98,8 @@ export default function Switches() {
                     style={{width:350}}
                     onMouseDown={handleSwitchHorizontal}
                     >
-                        <motion.div className="switcherCircle"
+                        <motion.div className="switcherCircleHorizontal"
                          style={{
-                            backgroundColor:'#ddd',
                             left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
                             transition: '0.2s'
                         }}

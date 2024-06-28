@@ -98,8 +98,7 @@ function Switches() {
                             style: { left: isSwitched ? "0px" : "100px", transition: '0.3s', backgroundColor: isSwitched ? "#333" : "#ddd" } }))),
                 react_1.default.createElement("div", { className: 'centerContainer', id: "horizontalSwitch" },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 350 }, onMouseDown: handleSwitchHorizontal },
-                        react_1.default.createElement(framer_motion_1.motion.div, { className: "switcherCircle", style: {
-                                backgroundColor: '#ddd',
+                        react_1.default.createElement(framer_motion_1.motion.div, { className: "switcherCircleHorizontal", style: {
                                 left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
                                 transition: '0.2s'
                             } }))),

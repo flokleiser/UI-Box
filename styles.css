@@ -279,6 +279,17 @@ nav{
   margin-right: 5px;
 }
 
+.switcherCircleHorizontal {
+  position:relative;
+  height:90px;
+  width:90px;
+  border-radius: 100px;
+  background-color: #ddd;
+  transition: transform 0.3s;
+  margin-left:5px;
+  margin-right: 5px;
+}
+
 .switcherCircleVerticalOutline {
   display:flex;
   position:relative;
@@ -347,6 +358,7 @@ nav{
       /* background-color: #333; */
     }
     .switcherCircleVerticalOutline {background-color: #ddd;}
+    .switcherCircleHorizontal {background-color:#333}
 
     .button1 {background:#333; border: 0px solid #333;}
     .button1:active{background: #ddd; border: 2px solid #333;} 
