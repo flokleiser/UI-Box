@@ -48,10 +48,13 @@ export default function Switches() {
 
         if (clickX < rect.width/ 3) {
             setHorizontalPosition('left');
+            console.log('left')
         } else if (clickX < (rect.width/ 3) * 2) {
             setHorizontalPosition('middle');
+            console.log('middle')
         } else {
             setHorizontalPosition('right');
+            console.log('right')
         }
     }
 
@@ -81,12 +84,10 @@ export default function Switches() {
 
                 <div className='centerContainer'>
                     <div className='switcherDiv' 
-                    // style={{backgroundColor: isSwitched ?  "rgb(153,153,153)" : "#333", transition:'0.3s'}} 
                     style={{backgroundColor: isSwitched ?  "#ddd" : "#333", transition:'0.3s'}} 
                     onMouseDown={handleSwitch} 
                     >
                         <div className='switcherCircle' 
-                        // style={{left: isSwitched ? "0px" : "100px", transition:'0.3s', backgroundColor: isSwitched ?  "#333" : "rgba(255, 255, 255, 0.5)"}} 
                         style={{left: isSwitched ? "0px" : "100px", transition:'0.3s', backgroundColor: isSwitched ?  "#333" : "#ddd"}} 
                         />
                     </div>
@@ -95,13 +96,23 @@ export default function Switches() {
 
                 <div className='centerContainer' id="horizontalSwitch">
                     <motion.div className='switcherDiv' 
-                    style={{width:350}}
+                    style={{width:350,
+                        // backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgba(151,151,151)",
+                        backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgba(255,255,255,0)",
+                        backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #ddd 50%, #333 50%)" : '',
+                        // opacity: horizontalPosition === 'middle' ? 1 : 0,
+                        // transition:'background-color 0.3s, background-image:0.3s'
+                        transition: '0.3s'
+                    }}
                     onMouseDown={handleSwitchHorizontal}
                     >
                         <motion.div className="switcherCircleHorizontal"
                          style={{
                             left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
-                            transition: '0.2s'
+                            backgroundColor: horizontalPosition === 'left' ? "#333" :horizontalPosition === 'right' ? "#ddd" : "rgba(151,151,151,0.5)",
+                            backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #333 50%, #ddd 50%)" : '',
+                            border: horizontalPosition === 'middle' ? "3px solid #333" : 0,
+                            transition: '0.3s'
                         }}
                         >
                         </motion.div>

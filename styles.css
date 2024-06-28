@@ -41,7 +41,7 @@ nav{
 }
 .left-buttons {
   display:flex;
-  gap:10px;
+  gap:7px;
 }
 .navbar button{
   width: 100px;
@@ -213,16 +213,6 @@ nav{
   border: 3px solid white;
   margin: 0.5rem;
 }
-/* .switcherDivFilled {
-  position:relative;
-  align-items: center;
-  display:grid;
-  width:200px;
-  height:100px;
-  border-radius: 100px;
-  border: 3px solid white;
-  margin: 0.5rem;
-} */
 
 .switcherDivHalf {
   position:relative;
@@ -230,17 +220,8 @@ nav{
   display:flex;
   width:138px;
   height:100px;
-  /* width:131.5px;
-  height:94px; */
-
-  /* width:132.5px;
-  height:90px; */
-
-  /* width:135.5px;
-  height:96px; */
 
   border-radius: 0 100px 100px 0 ;
-  /* border: 5px solid #333; */
   border-left: 0;
 }
 

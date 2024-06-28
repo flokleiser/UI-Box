@@ -47441,7 +47441,9 @@ function Navbar() {
             react_1.default.createElement("button", { className: "navbarButton", id: "ballpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
             react_1.default.createElement("button", { className: "navbarButton", id: "joystickpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick"))),
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
+            react_1.default.createElement("button", { className: "navbarButton", id: "lockpageButton" },
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "refresh"))),
         react_1.default.createElement("div", { className: "settingsButton" },
             react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
                 react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));
@@ -48795,12 +48797,15 @@ function Switches() {
         const clickX = e.clientX - rect.left;
         if (clickX < rect.width / 3) {
             setHorizontalPosition('left');
+            console.log('left');
         }
         else if (clickX < (rect.width / 3) * 2) {
             setHorizontalPosition('middle');
+            console.log('middle');
         }
         else {
             setHorizontalPosition('right');
+            console.log('right');
         }
     }
     function handleDragEnd(e, info) {
@@ -48822,17 +48827,23 @@ function Switches() {
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' } },
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column' } },
                 react_1.default.createElement("div", { className: 'centerContainer' },
-                    react_1.default.createElement("div", { className: 'switcherDiv', 
-                        // style={{backgroundColor: isSwitched ?  "rgb(153,153,153)" : "#333", transition:'0.3s'}} 
-                        style: { backgroundColor: isSwitched ? "#ddd" : "#333", transition: '0.3s' }, onMouseDown: handleSwitch },
-                        react_1.default.createElement("div", { className: 'switcherCircle', 
-                            // style={{left: isSwitched ? "0px" : "100px", transition:'0.3s', backgroundColor: isSwitched ?  "#333" : "rgba(255, 255, 255, 0.5)"}} 
-                            style: { left: isSwitched ? "0px" : "100px", transition: '0.3s', backgroundColor: isSwitched ? "#333" : "#ddd" } }))),
+                    react_1.default.createElement("div", { className: 'switcherDiv', style: { backgroundColor: isSwitched ? "#ddd" : "#333", transition: '0.3s' }, onMouseDown: handleSwitch },
+                        react_1.default.createElement("div", { className: 'switcherCircle', style: { left: isSwitched ? "0px" : "100px", transition: '0.3s', backgroundColor: isSwitched ? "#333" : "#ddd" } }))),
                 react_1.default.createElement("div", { className: 'centerContainer', id: "horizontalSwitch" },
-                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 350 }, onMouseDown: handleSwitchHorizontal },
+                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 350,
+                            // backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgba(151,151,151)",
+                            backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgba(255,255,255,0)",
+                            backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #ddd 50%, #333 50%)" : '',
+                            // opacity: horizontalPosition === 'middle' ? 1 : 0,
+                            // transition:'background-color 0.3s, background-image:0.3s'
+                            transition: '0.3s'
+                        }, onMouseDown: handleSwitchHorizontal },
                         react_1.default.createElement(framer_motion_1.motion.div, { className: "switcherCircleHorizontal", style: {
                                 left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
-                                transition: '0.2s'
+                                backgroundColor: horizontalPosition === 'left' ? "#333" : horizontalPosition === 'right' ? "#ddd" : "rgba(151,151,151,0.5)",
+                                backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #333 50%, #ddd 50%)" : '',
+                                border: horizontalPosition === 'middle' ? "3px solid #333" : 0,
+                                transition: '0.3s'
                             } }))),
                 react_1.default.createElement("div", { className: 'centerContainer' },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 275, display: 'flex', justifyContent: 'center', backgroundColor: '#333' }, onMouseDown: handleSwitchFill },
@@ -49215,7 +49226,7 @@ const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pa
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Lock_1 = __importDefault(__webpack_require__(/*! ./pages/Lock */ "./src/pages/Lock.tsx"));
 const App = () => {
-    const [page, setPage] = (0, react_1.useState)('Home');
+    const [page, setPage] = (0, react_1.useState)('Switches');
     // let CurrentPage: React.ComponentType;
     const loadPage = (newPage) => {
         setPage(newPage);
