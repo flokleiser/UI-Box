@@ -23,39 +23,29 @@ nav{
   align-items: center;
   border-bottom: white;
 }
-#settingsButton {
-  margin-left:auto;
-  justify-content: center;
-}
+
 .settingsButton {
   margin-left:auto;
+  display:flex;
+  align-items: center;
   justify-content: center;
-}
-.settingsButtonHomepage {
-  /* margin-left:auto; */
-  /* justify-content: center; */
-  position:absolute;
-  z-index: 100;
+  padding-top: 1px;
+  padding-bottom:1px;
 }
 
 .navbarButton{
+  display:flex;
   margin-left:auto;
-  justify-content: center;
+  padding-top: 1px;
+  padding-bottom:1px;
 }
 .left-buttons {
   display:flex;
   gap:10px;
-  /* align-items: center; */
 }
 .navbar button{
   width: 100px;
   margin-right:0.25rem;
-}
-
-
-.material-icons {
-  font-size: 24px;
-  /* color: #333; */
 }
 
 .buttonContainer{
@@ -95,16 +85,28 @@ nav{
   transition: transform 0.3s ease, background 0.2s;
 }
 
+.button1:hover {
+  transform: scale(1.03);
+}
+
+.button1:active{
+  --scale-factor:0.95;
+  transform: scale(var(--scale-factor));
+  /* background: white; */
+  background: #333;
+  border: 2px solid rgba(255, 255, 255, 0.5)
+}
+
 .button2 {
   width: 105px;
   height: 105px;
   padding: 20px; 
   border-radius: 40px;
   margin:0.5rem;
-  border: 2px solid #ddd;
+  border: 0;
 
-  background:#333;
-  /* background:rgba(255, 255, 255, 0.5); */
+  /* background:#333; */
+  background:rgba(255, 255, 255, 0.5);
   transition: transform 0.3s ease, background 0.2s;
 }
 
@@ -114,26 +116,16 @@ nav{
   padding: 20px; 
   border-radius: 40px;
   margin:0.5rem;
-  border: 2px solid #ddd;
+  border: 2px solid rgba(255, 255, 255, 0.5);
 
   /* background:white; */
-  background:rgba(255, 255, 255, 0.5);
+  /* background:rgba(255, 255, 255, 0.5); */
+  background:#333;
   transition: transform 0.3s ease, background 0.2s;
 }
 
-.button1:hover {
-  transform: scale(1.05);
-}
-
-.button1:active{
-  --scale-factor:0.95;
-  transform: scale(var(--scale-factor));
-  /* background: white; */
-  background: #333;
-}
-
 .button2:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 /* .button2:active{
@@ -337,10 +329,10 @@ nav{
     .switcherCircleVerticalOutline {background-color: #ddd;}
 
     .button1 {background:#333; border: 0px solid #333;}
-    .button1:active{filter:invert();transition:transform 0.3s} 
+    .button1:active{background: #ddd; border: 2px solid #333;} 
 
-    .button2{border:0}
-    .button2toggled {background:rgba(51,51,51,0.5)}
+    .button2{background:#333; border:0px solid}
+    .button2toggled {background:#ddd; border:2px solid #333}
 
     :root {
       --particle-color: var(--particle-color-dark);

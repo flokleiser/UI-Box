@@ -32,7 +32,6 @@ function Joystick() {
         const canvasKeyboard = document.querySelector("#canvasKeyboard");
         const ctx = canvasKeyboard.getContext("2d", { willReadFrequently: true });
         const mouse = { x: 0, y: 0 };
-        // const radius = 100;
         const radius = 75;
         let isDragging = false;
         let maxDistance = 80;
@@ -101,7 +100,6 @@ function Joystick() {
         const onTouchEnd = () => {
             if (isDragging) {
                 isDragging = false;
-                console.log('stop drag');
             }
         };
         const onMouseDown = (e) => {
@@ -127,7 +125,8 @@ function Joystick() {
                 isMovingKeys = Object.values(keyState).some(state => state);
             }
         };
-        const updatePosition = () => {
+        // const updatePosition = () => {
+        const updatePositionKeyboard = () => {
             if (keyState.w)
                 circleY -= 10;
             if (keyState.a)
@@ -143,6 +142,16 @@ function Joystick() {
                 const angle = Math.atan2(dy, dx);
                 circleX = centerX + maxDistance * Math.cos(angle);
                 circleY = centerY + maxDistance * Math.sin(angle);
+            }
+        };
+        const updatePositionMouse = () => {
+            const dx2 = circleX2 - centerX2;
+            const dy2 = circleY2 - centerY2;
+            const dist2 = Math.hypot(dx2, dy2);
+            if (dist2 > maxDistance) {
+                const angle2 = Math.atan2(dy2, dx2);
+                circleX2 = centerX2 + maxDistance * Math.cos(angle2);
+                circleY2 = centerY2 + maxDistance * Math.sin(angle2);
             }
         };
         const initscene = () => {
@@ -182,7 +191,6 @@ function Joystick() {
         };
         let animationFrameId;
         const render = () => {
-            // const distToCenter = Math.hypot(circleX - centerX, circleY - centerY) 
             if (!isMovingKeys && !isDragging) {
                 const dx = centerX - circleX;
                 const dy = centerY - circleY;
@@ -206,11 +214,24 @@ function Joystick() {
                 circleY2 += vy2;
             }
             else {
-                updatePosition();
+                updatePositionKeyboard();
                 vx = 0;
                 vy = 0;
+            }
+            if (isDragging) {
+                updatePositionMouse();
                 vx2 = 0;
                 vy2 = 0;
+                const dx = centerX - circleX;
+                const dy = centerY - circleY;
+                const ax = dx * stiffness;
+                const ay = dy * stiffness;
+                vx += ax;
+                vy += ay;
+                vx *= damping;
+                vy *= damping;
+                circleX += vx;
+                circleY += vy;
             }
             ctx.clearRect(0, 0, canvasKeyboard.width, canvasKeyboard.height);
             //ball keyboard
@@ -219,8 +240,6 @@ function Joystick() {
             ctx.arc(circleX, circleY, radius, 0, Math.PI * 2);
             ctx.fill();
             ctx.font = '48px Material Icons';
-            // ctx.fillStyle = '#333';
-            // ctx.fillStyle = 'rgba(51,51,51,0.5)';
             ctx.fillStyle = colorText;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -237,8 +256,6 @@ function Joystick() {
             ctx.arc(circleX2, circleY2, radius, 0, Math.PI * 2);
             ctx.fill();
             ctx.font = '48px Material Icons';
-            // ctx.fillStyle = '#333333';
-            // ctx.fillStyle = 'rgba(51,51,51,0.5)';
             ctx.fillStyle = colorText;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
