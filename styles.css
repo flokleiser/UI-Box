@@ -25,10 +25,27 @@ nav{
 }
 #settingsButton {
   margin-left:auto;
+  justify-content: center;
+}
+.settingsButton {
+  margin-left:auto;
+  justify-content: center;
+}
+.settingsButtonHomepage {
+  /* margin-left:auto; */
+  /* justify-content: center; */
+  position:absolute;
+  z-index: 100;
+}
+
+.navbarButton{
+  margin-left:auto;
+  justify-content: center;
 }
 .left-buttons {
   display:flex;
   gap:10px;
+  /* align-items: center; */
 }
 .navbar button{
   width: 100px;
@@ -37,7 +54,8 @@ nav{
 
 
 .material-icons {
-  font-size: 20px;
+  font-size: 24px;
+  /* color: #333; */
 }
 
 .buttonContainer{
@@ -70,7 +88,8 @@ nav{
   padding: 10px 20px; 
   border-radius: 50px;
   margin:0.5rem;
-  border: 2px solid white;
+  /* border: 2px solid white; */
+  border: 0px solid white;
 
   background:rgba(255, 255, 255, 0.5);
   transition: transform 0.3s ease, background 0.2s;
@@ -82,7 +101,7 @@ nav{
   padding: 20px; 
   border-radius: 40px;
   margin:0.5rem;
-  border: 2px solid white;
+  border: 2px solid #ddd;
 
   background:#333;
   /* background:rgba(255, 255, 255, 0.5); */
@@ -95,7 +114,7 @@ nav{
   padding: 20px; 
   border-radius: 40px;
   margin:0.5rem;
-  border: 2px solid white;
+  border: 2px solid #ddd;
 
   /* background:white; */
   background:rgba(255, 255, 255, 0.5);
@@ -117,11 +136,11 @@ nav{
   transform: scale(1.05);
 }
 
-.button2:active{
+/* .button2:active{
   --scale-factor:0.95;
   transform: scale(var(--scale-factor));
   background: white;
-}
+} */
 
 .buttonInSettings{
   margin-right: 0.25rem;
@@ -161,7 +180,8 @@ nav{
   width:75px;
   height:75px;
 
-  background-color: white;
+  /* background-color: white; */
+  background-color: #ddd;
   transform:translate(-50%,-50%);
   border-radius: 50%;
 }
@@ -171,14 +191,16 @@ nav{
   width:50px;
   height:50px;
 
-  background-color: white;
+  /* background-color: white; */
+  background-color: #ddd;
   transform:translate(-50%,-50%);
   border-radius: 50%;
 }
 
 .line {
   position: absolute;
-  background-color: white;
+  /* background-color: white; */
+  background-color: #ddd;
   width: 5px;
 }
 
@@ -303,23 +325,27 @@ nav{
   
   @media (prefers-color-scheme: light) {
     body { background: #ddd; color: #333; }
-    /* .logo {filter:invert()} */
+
     .spinnerCircle {background-color: #333;}
     .spinnerCircleCenter {background-color: rgb(51, 51, 51);}
+
     .line {background-color: #333;}
-    /* .switcherDiv {border: 3px solid #333333} */
+
     .switcherDiv {border: 0px solid #333333}
-    .button1 {background:#333; border: 0px solid #333;}
-    .button2 {background: rgba(255, 255, 255, 0.5); border: 2px solid #333};
-    /* .button2 {filter:invert()} */
-    .button1:active {background:rgba(255,255,255, 0.5)};
-    .button2:active {background:rgba(51,51,51,0.5)}; 
-    .button2toggled {background:rgba(51,51,51,0.5)}
     .switcherCircleVerticalFill {background-color: rgba(51,51,51,0.5);}
     .switcherDivVerticalLine {border:3px solid #333; background-color: #333;}
     .switcherCircleVerticalOutline {background-color: #ddd;}
+
+    .button1 {background:#333; border: 0px solid #333;}
+    .button1:active{filter:invert();transition:transform 0.3s} 
+
+    .button2{border:0}
+    .button2toggled {background:rgba(51,51,51,0.5)}
+
     :root {
       --particle-color: var(--particle-color-dark);
       --canvas-colorelement: var(--canvas-colorelement-dark)
     }
+    .navbarButton {  color: #333;}
+    .settingsButton { color: #333}
   }

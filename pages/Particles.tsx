@@ -1,8 +1,10 @@
 import React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Particles() {
   // const Particles:React.FC = () => {
+
+  const [resetTrigger, setResetTrigger] = useState(0);
 
   useEffect(() => {
     let canvas = document.querySelector("#scene") as HTMLCanvasElement,
@@ -13,6 +15,8 @@ export default function Particles() {
       amount = 0,
       mouse = { x: 0, y: 0 },
       radius = 0.5;
+
+      const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
 
     // let color = ["#ffffff"];
     const color = [
@@ -175,6 +179,9 @@ export default function Particles() {
       }
     }
 
+    const handleThemeToggle = () => {resetScene()}
+
+    darkmodeToggleButton!.addEventListener("click", handleThemeToggle)
     window.addEventListener("resize", initScene);
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("touchmove", onTouchMove);
@@ -185,6 +192,7 @@ export default function Particles() {
     animationFrameId = requestAnimationFrame(render);
 
     return () => {
+      darkmodeToggleButton!.removeEventListener("click", handleThemeToggle)
       window.removeEventListener("resize", initScene);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("touchmove", onTouchMove);
@@ -193,7 +201,11 @@ export default function Particles() {
       window.removeEventListener("touchend", onTouchEnd);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [resetTrigger]);
+
+  function resetScene() {
+    setResetTrigger(prev => prev + 1);
+}
 
   return (
     <div>

@@ -26,6 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Tether;
 const react_1 = __importStar(require("react"));
 function Tether() {
+    const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     (0, react_1.useEffect)(() => {
         const canvasTether = document.querySelector("#sceneTether");
         const ctx = canvasTether.getContext("2d", { willReadFrequently: true });
@@ -56,6 +57,7 @@ function Tether() {
         let particleY3 = centerY3;
         let vx3 = 0;
         let vy3 = 0;
+        const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
         // const damping = 0.9; 
         // const stiffness = 0.1; 
         const damping = 0.8;
@@ -270,6 +272,8 @@ function Tether() {
             // requestAnimationFrame(render);
             animationFrameId = requestAnimationFrame(render);
         };
+        const handleThemeToggle = () => { resetScene(); };
+        darkmodeToggleButton.addEventListener('click', handleThemeToggle);
         window.addEventListener("resize", resizeScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -278,6 +282,7 @@ function Tether() {
         window.addEventListener("touchend", onTouchEnd);
         initscene();
         return () => {
+            darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
             window.removeEventListener("resize", resizeScene);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
@@ -286,7 +291,10 @@ function Tether() {
             window.removeEventListener("touchend", onTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [resetTrigger]);
+    function resetScene() {
+        setResetTrigger(prev => prev + 1);
+    }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Tether"),
         react_1.default.createElement("canvas", { style: {

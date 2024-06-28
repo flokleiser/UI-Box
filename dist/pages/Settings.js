@@ -52,8 +52,5 @@ function Settings() {
             "Current:",
             react_1.default.createElement("strong", { id: "theme-source" }, themeSourceDisplay())),
         react_1.default.createElement("button", { className: "buttonInSettings", id: "toggle-dark-mode", onMouseDown: toggleDarkMode }, "Toggle Dark Mode"),
-        react_1.default.createElement("button", { className: "buttonInSettings", id: "reset-to-system", onMouseDown: toggleSystemMode }, "Reset to System Theme"),
-        react_1.default.createElement("p", null,
-            "Navbar alignment:",
-            react_1.default.createElement("strong", null, "not yet implemented"))));
+        react_1.default.createElement("button", { className: "buttonInSettings", id: "reset-to-system", onMouseDown: toggleSystemMode }, "Reset to System Theme")));
 }

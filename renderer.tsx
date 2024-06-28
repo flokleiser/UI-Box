@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { createRoot } from 'react-dom/client';
 import Home from './pages/Home';
 import Navbar from './components/Navbar'
@@ -12,7 +12,9 @@ import Ball from './pages/Ball';
 import Joystick from './pages/Joystick'
 import Lock from './pages/Lock'
 
-type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Tether' | 'Switches' | 'Ball' | 'Joystick' | 'Lock';
+export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Tether' | 'Switches' | 'Ball' | 'Joystick' | 'Lock';
+
+// type Theme = 'Dark' | 'Light' ;
 
 declare global {
   interface Window {
@@ -21,14 +23,21 @@ declare global {
             toggle: () => Promise<void>;
             system: () => Promise<void>;
             getThemeSource: () => Promise<string>;
+            // onThemeChange: (callback: () => void) => void;
         }
   }
 }
 
 const App: FC = () => {
-    const [page, setPage] = useState<Page>('Switches');
+    const [page, setPage] = useState<Page>('Home');
 
-    let CurrentPage: React.ComponentType;
+    // let CurrentPage: React.ComponentType;
+
+    const loadPage = (newPage: Page) => {
+        setPage(newPage)
+    }
+
+    let CurrentPage: React.ComponentType<{ loadPage: (page: Page) => void }>;
 
     switch (page) {
         case 'Home':
@@ -36,6 +45,7 @@ const App: FC = () => {
             break;
             case 'Settings':
             CurrentPage = Settings;
+            // console.log('settings')
             break;
             case 'Buttons':
             CurrentPage = Buttons;
@@ -69,14 +79,16 @@ const App: FC = () => {
         setPage(page);
     };
 
-    return <CurrentPage />;
+    return <CurrentPage loadPage={loadPage} />;
 };
 
 const attachEventListeners = () => {
+
     const clickType = "mousedown";
 
     const homeButton = document.getElementById('homeButton');
     const settingsButton = document.getElementById('settingsButton');
+    const darkmodeToggleButton= document.getElementById('darkmodeToggleButton');
     const buttonsPageButton = document.getElementById('buttonspageButton');
     const spinnerPageButton = document.getElementById('spinnerpageButton');
     const particlesPageButton = document.getElementById('particlespageButton');
@@ -122,18 +134,20 @@ const attachEventListeners = () => {
     if (lockPageButton) {
         lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
     }
+
+    if (darkmodeToggleButton) {
+        darkmodeToggleButton!.addEventListener(clickType, () => {
+            window.darkMode.toggle()
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', attachEventListeners);
-// document.addEventListener('DOMContentLoaded', () => {
-//  attachEventListeners();
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(<App />);
 
 const navbarContainer = document.getElementById('navbarRoot');
-if (navbarContainer) {
-    const navbarRoot = createRoot(navbarContainer)
-    navbarRoot.render(<Navbar/>)
-}
+const navbarRoot = createRoot(navbarContainer!)
+navbarRoot.render(<Navbar/>)

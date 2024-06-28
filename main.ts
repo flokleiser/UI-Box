@@ -12,10 +12,16 @@ function createWindow () {
 
   mainWindow.loadFile('./src/index.html')
 
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.removeMenu()
-// }
+
+
+  //test
+nativeTheme.on('updated', () => {
+  mainWindow.webContents.send('theme-changed');
+});
+//test end
 
 ipcMain.handle('dark-mode:toggle', () => {
   if (nativeTheme.shouldUseDarkColors) {

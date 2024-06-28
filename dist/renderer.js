@@ -47393,34 +47393,58 @@ if (false) {} else {
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Navbar;
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Navbar() {
+    const [isDark, setIsDark] = (0, react_1.useState)(false);
+    function toggleIcon() {
+        setIsDark(!isDark);
+    }
     return (react_1.default.createElement("nav", null,
         react_1.default.createElement("div", { className: "left-buttons" },
-            react_1.default.createElement("button", { id: "homeButton" },
+            react_1.default.createElement("button", { className: "navbarButton", id: "homeButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home")),
-            react_1.default.createElement("button", { id: "buttonspageButton" },
+            react_1.default.createElement("button", { className: "navbarButton", id: "buttonspageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps")),
-            react_1.default.createElement("button", { id: "spinnerpageButton" },
+            react_1.default.createElement("button", { className: "navbarButton", id: "spinnerpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node")),
-            react_1.default.createElement("button", { id: "particlespageButton" },
+            react_1.default.createElement("button", { className: "navbarButton", id: "particlespageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur")),
-            react_1.default.createElement("button", { id: "switchespageButton" },
+            react_1.default.createElement("button", { className: "navbarButton", id: "switchespageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
-            react_1.default.createElement("button", { id: "tetherpageButton" },
+            react_1.default.createElement("button", { className: "navbarButton", id: "tetherpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
-            react_1.default.createElement("button", { id: "ballpageButton" },
+            react_1.default.createElement("button", { className: "navbarButton", id: "ballpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
-            react_1.default.createElement("button", { id: "joystickpageButton" },
+            react_1.default.createElement("button", { className: "navbarButton", id: "joystickpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick"))),
         react_1.default.createElement("div", { className: "settingsButton" },
-            react_1.default.createElement("button", { id: "settingsButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "settings")))));
+            react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
+                react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));
 }
 
 
@@ -47482,6 +47506,7 @@ function Ball() {
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3;
+        const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
         class Hoop {
             constructor(centerX, centerY, width, height, wall, color) {
                 this.centerX = centerX;
@@ -47687,7 +47712,11 @@ function Ball() {
             hoop.draw(ctx);
             animationFrameId = requestAnimationFrame(render);
         };
+        const handleThemeToggle = () => { resetScene(); };
         window.addEventListener("resize", resizeScene);
+        // darkmodeToggleButton!.addEventListener("mousedown", handleThemeChange);
+        // darkmodeToggleButton!.addEventListener("mousedown",resetScene) ;
+        darkmodeToggleButton.addEventListener('click', handleThemeToggle);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
         window.addEventListener("mousedown", onMouseDown);
@@ -47696,6 +47725,9 @@ function Ball() {
         initscene();
         return () => {
             window.removeEventListener("resize", resizeScene);
+            // darkmodeToggleButton!.removeEventListener("mousedown", handleThemeChange);
+            // darkmodeToggleButton!.removeEventListener("mousedown", resetScene);
+            darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);
@@ -47706,7 +47738,6 @@ function Ball() {
     }, [resetTrigger]);
     function resetScene() {
         setResetTrigger(prev => prev + 1);
-        // window.location.reload();
     }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Ball"),
@@ -47779,24 +47810,18 @@ function Buttons() {
         setTimeout(() => {
             setIsPressed(false);
         }, 500);
-        // if (isPressed) {
-        //   let pressedButton = document.getElementById("buttonTest1")
-        //   pressedButton?.setAttribute("style", "background-color: red;")
-        // }
     };
     const handleToggle = (index) => {
         const updateToggle = isToggled.map((state, i) => i === index ? !state : state);
         setIsToggled(updateToggle);
-        console.log('toggled', isToggled);
-        // if (isToggled) 
     };
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, " Buttons "),
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' } },
             react_1.default.createElement("div", { className: "buttonContainer" },
                 react_1.default.createElement("div", { className: "buttonRow" },
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onClick: handlePress }, " "),
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onClick: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
+                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
                     react_1.default.createElement("button", { className: "button1" }, " ")),
                 react_1.default.createElement("div", { className: "buttonRow" },
                     react_1.default.createElement("button", { className: "button1" }, " "),
@@ -47828,7 +47853,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Home;
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-function Home() {
+function Home({ loadPage }) {
+    const handleSettingsClick = () => {
+        window.loadPage('Settings');
+    };
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, " UI-Box "),
         react_1.default.createElement("div", { className: "logo" },
@@ -47873,6 +47901,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Joystick;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Joystick() {
+    const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     (0, react_1.useEffect)(() => {
         const canvasKeyboard = document.querySelector("#canvasKeyboard");
         const ctx = canvasKeyboard.getContext("2d", { willReadFrequently: true });
@@ -47896,6 +47925,7 @@ function Joystick() {
         let circleY2 = centerY2;
         let vx2 = 0;
         let vy2 = 0;
+        const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
         const damping = 0.8;
         const stiffness = 0.05;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
@@ -48095,6 +48125,8 @@ function Joystick() {
             ctx.stroke(),
                 animationFrameId = requestAnimationFrame(render);
         };
+        const handleThemeToggle = () => { resetScene(); };
+        darkmodeToggleButton.addEventListener('click', handleThemeToggle);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
         window.addEventListener("mousedown", onMouseDown);
@@ -48105,6 +48137,7 @@ function Joystick() {
         window.addEventListener("resize", resizeScene);
         initscene();
         return () => {
+            darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);
@@ -48115,7 +48148,10 @@ function Joystick() {
             window.removeEventListener("resize", resizeScene);
             cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [resetTrigger]);
+    function resetScene() {
+        setResetTrigger(prev => prev + 1);
+    }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Joystick"),
         react_1.default.createElement("canvas", { style: {
@@ -48288,10 +48324,12 @@ const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules
 const react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 function Particles() {
     // const Particles:React.FC = () => {
+    const [resetTrigger, setResetTrigger] = (0, react_2.useState)(0);
     (0, react_2.useEffect)(() => {
         let canvas = document.querySelector("#scene"), ctx = canvas.getContext("2d", {
             willReadFrequently: true,
         }), particles = [], amount = 0, mouse = { x: 0, y: 0 }, radius = 0.5;
+        const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
         // let color = ["#ffffff"];
         const color = [
             getComputedStyle(document.documentElement).getPropertyValue("--particle-color"),
@@ -48410,6 +48448,8 @@ function Particles() {
                 particles[i].render();
             }
         }
+        const handleThemeToggle = () => { resetScene(); };
+        darkmodeToggleButton.addEventListener("click", handleThemeToggle);
         window.addEventListener("resize", initScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -48419,6 +48459,7 @@ function Particles() {
         initScene();
         animationFrameId = requestAnimationFrame(render);
         return () => {
+            darkmodeToggleButton.removeEventListener("click", handleThemeToggle);
             window.removeEventListener("resize", initScene);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
@@ -48427,7 +48468,10 @@ function Particles() {
             window.removeEventListener("touchend", onTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [resetTrigger]);
+    function resetScene() {
+        setResetTrigger(prev => prev + 1);
+    }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, " Particles "),
         react_1.default.createElement("canvas", { style: {
@@ -48504,10 +48548,7 @@ function Settings() {
             "Current:",
             react_1.default.createElement("strong", { id: "theme-source" }, themeSourceDisplay())),
         react_1.default.createElement("button", { className: "buttonInSettings", id: "toggle-dark-mode", onMouseDown: toggleDarkMode }, "Toggle Dark Mode"),
-        react_1.default.createElement("button", { className: "buttonInSettings", id: "reset-to-system", onMouseDown: toggleSystemMode }, "Reset to System Theme"),
-        react_1.default.createElement("p", null,
-            "Navbar alignment:",
-            react_1.default.createElement("strong", null, "not yet implemented"))));
+        react_1.default.createElement("button", { className: "buttonInSettings", id: "reset-to-system", onMouseDown: toggleSystemMode }, "Reset to System Theme")));
 }
 
 
@@ -48726,7 +48767,6 @@ function Switches() {
     }
     function handleSwitchFill() {
         setSwitchedFill(!isSwitchedFill);
-        console.log("Fill switch", isSwitchedFill);
     }
     function handleSwitchMotion() {
         setSwitchedMotion(!isSwitchedMotion);
@@ -48756,8 +48796,8 @@ function Switches() {
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 350 }, onMouseDown: handleSwitchMotion })),
                 react_1.default.createElement("div", { className: 'centerContainer' },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 275, display: 'flex', justifyContent: 'center', backgroundColor: '#333' }, onMouseDown: handleSwitchFill },
-                        react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "rgba(255, 255, 255, 0.5)" : "#333", transition: '0.3s', rotate: '180deg' } }),
-                        react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "#333" : "rgba(255, 255, 255, 0.5)", transition: '0.3s' } })))),
+                        react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "rgba(255, 255, 255, 0.5)" : "#333", transition: '0.05s', rotate: '180deg' } }),
+                        react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "#333" : "rgba(255, 255, 255, 0.5)", transition: '0.05s' } })))),
             react_1.default.createElement("div", { className: 'centerContainer' },
                 react_1.default.createElement("div", { className: "switcherDivVertical" },
                     react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch", className: 'switcherDivVerticalLine' },
@@ -48802,6 +48842,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Tether;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Tether() {
+    const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     (0, react_1.useEffect)(() => {
         const canvasTether = document.querySelector("#sceneTether");
         const ctx = canvasTether.getContext("2d", { willReadFrequently: true });
@@ -48832,6 +48873,7 @@ function Tether() {
         let particleY3 = centerY3;
         let vx3 = 0;
         let vy3 = 0;
+        const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
         // const damping = 0.9; 
         // const stiffness = 0.1; 
         const damping = 0.8;
@@ -49046,6 +49088,8 @@ function Tether() {
             // requestAnimationFrame(render);
             animationFrameId = requestAnimationFrame(render);
         };
+        const handleThemeToggle = () => { resetScene(); };
+        darkmodeToggleButton.addEventListener('click', handleThemeToggle);
         window.addEventListener("resize", resizeScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -49054,6 +49098,7 @@ function Tether() {
         window.addEventListener("touchend", onTouchEnd);
         initscene();
         return () => {
+            darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
             window.removeEventListener("resize", resizeScene);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
@@ -49062,7 +49107,10 @@ function Tether() {
             window.removeEventListener("touchend", onTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [resetTrigger]);
+    function resetScene() {
+        setResetTrigger(prev => prev + 1);
+    }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Tether"),
         react_1.default.createElement("canvas", { style: {
@@ -49127,7 +49175,11 @@ const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pa
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Lock_1 = __importDefault(__webpack_require__(/*! ./pages/Lock */ "./src/pages/Lock.tsx"));
 const App = () => {
-    const [page, setPage] = (0, react_1.useState)('Switches');
+    const [page, setPage] = (0, react_1.useState)('Home');
+    // let CurrentPage: React.ComponentType;
+    const loadPage = (newPage) => {
+        setPage(newPage);
+    };
     let CurrentPage;
     switch (page) {
         case 'Home':
@@ -49135,6 +49187,7 @@ const App = () => {
             break;
         case 'Settings':
             CurrentPage = Settings_1.default;
+            // console.log('settings')
             break;
         case 'Buttons':
             CurrentPage = Buttons_1.default;
@@ -49166,12 +49219,13 @@ const App = () => {
     window.loadPage = (page) => {
         setPage(page);
     };
-    return react_1.default.createElement(CurrentPage, null);
+    return react_1.default.createElement(CurrentPage, { loadPage: loadPage });
 };
 const attachEventListeners = () => {
     const clickType = "mousedown";
     const homeButton = document.getElementById('homeButton');
     const settingsButton = document.getElementById('settingsButton');
+    const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
     const buttonsPageButton = document.getElementById('buttonspageButton');
     const spinnerPageButton = document.getElementById('spinnerpageButton');
     const particlesPageButton = document.getElementById('particlespageButton');
@@ -49210,18 +49264,19 @@ const attachEventListeners = () => {
     if (lockPageButton) {
         lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
     }
+    if (darkmodeToggleButton) {
+        darkmodeToggleButton.addEventListener(clickType, () => {
+            window.darkMode.toggle();
+        });
+    }
 };
 document.addEventListener('DOMContentLoaded', attachEventListeners);
-// document.addEventListener('DOMContentLoaded', () => {
-//  attachEventListeners();
 const container = document.getElementById('root');
 const root = (0, client_1.createRoot)(container);
 root.render(react_1.default.createElement(App, null));
 const navbarContainer = document.getElementById('navbarRoot');
-if (navbarContainer) {
-    const navbarRoot = (0, client_1.createRoot)(navbarContainer);
-    navbarRoot.render(react_1.default.createElement(Navbar_1.default, null));
-}
+const navbarRoot = (0, client_1.createRoot)(navbarContainer);
+navbarRoot.render(react_1.default.createElement(Navbar_1.default, null));
 
 
 /***/ })

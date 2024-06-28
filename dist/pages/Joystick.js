@@ -27,6 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Joystick;
 const react_1 = __importStar(require("react"));
 function Joystick() {
+    const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     (0, react_1.useEffect)(() => {
         const canvasKeyboard = document.querySelector("#canvasKeyboard");
         const ctx = canvasKeyboard.getContext("2d", { willReadFrequently: true });
@@ -50,6 +51,7 @@ function Joystick() {
         let circleY2 = centerY2;
         let vx2 = 0;
         let vy2 = 0;
+        const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
         const damping = 0.8;
         const stiffness = 0.05;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
@@ -249,6 +251,8 @@ function Joystick() {
             ctx.stroke(),
                 animationFrameId = requestAnimationFrame(render);
         };
+        const handleThemeToggle = () => { resetScene(); };
+        darkmodeToggleButton.addEventListener('click', handleThemeToggle);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
         window.addEventListener("mousedown", onMouseDown);
@@ -259,6 +263,7 @@ function Joystick() {
         window.addEventListener("resize", resizeScene);
         initscene();
         return () => {
+            darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);
@@ -269,7 +274,10 @@ function Joystick() {
             window.removeEventListener("resize", resizeScene);
             cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [resetTrigger]);
+    function resetScene() {
+        setResetTrigger(prev => prev + 1);
+    }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Joystick"),
         react_1.default.createElement("canvas", { style: {

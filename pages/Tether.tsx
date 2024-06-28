@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Tether() {
+
+    const [resetTrigger, setResetTrigger] = useState(0);
 
     useEffect(() => {
         const canvasTether = document.querySelector("#sceneTether") as HTMLCanvasElement;
@@ -41,6 +43,8 @@ export default function Tether() {
         let vx3 = 0; 
         let vy3 = 0; 
 
+
+        const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
 
 
         // const damping = 0.9; 
@@ -292,7 +296,9 @@ export default function Tether() {
             animationFrameId = requestAnimationFrame(render);
         };
 
+        const handleThemeToggle = () => {resetScene()}
 
+        darkmodeToggleButton!.addEventListener('click', handleThemeToggle);
         window.addEventListener("resize", resizeScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -302,6 +308,8 @@ export default function Tether() {
         initscene();
 
         return () => {
+
+            darkmodeToggleButton!.removeEventListener('click', handleThemeToggle);
             window.removeEventListener("resize", resizeScene);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
@@ -310,8 +318,11 @@ export default function Tether() {
             window.removeEventListener("touchend", onTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [resetTrigger]);
 
+    function resetScene() {
+        setResetTrigger(prev => prev + 1);
+    }
 
     return (
         <div>

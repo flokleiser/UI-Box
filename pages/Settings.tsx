@@ -58,12 +58,12 @@ export default function Settings() {
                 Reset to System Theme
             </button>
 
-            <p>
+            {/* <p>
                 Navbar alignment:
                 <strong>
                     not yet implemented
                 </strong>
-            </p>
+            </p> */}
 
         </div>
     )

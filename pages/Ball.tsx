@@ -12,6 +12,8 @@ export default function Ball() {
         const ctx = canvasBall.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
         const mouse = { x: 0, y: 0 };
         const radius = 25;
+
+
         let isDragging = false;
         let isReleased = false; 
 
@@ -32,6 +34,7 @@ export default function Ball() {
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3; 
 
+        const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
 
         class Hoop {
             centerX: number;
@@ -181,6 +184,7 @@ export default function Ball() {
 
         let animationFrameId: number;
 
+
         const render = () => {
             if (!isDragging) {
                 if (!isReleased) {
@@ -283,7 +287,14 @@ export default function Ball() {
             animationFrameId = requestAnimationFrame(render);
         };
 
+        const handleThemeToggle = () => {resetScene()}
+
         window.addEventListener("resize", resizeScene);
+
+        // darkmodeToggleButton!.addEventListener("mousedown", handleThemeChange);
+        // darkmodeToggleButton!.addEventListener("mousedown",resetScene) ;
+        darkmodeToggleButton!.addEventListener('click', handleThemeToggle);
+
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
         window.addEventListener("mousedown", onMouseDown);
@@ -293,6 +304,11 @@ export default function Ball() {
 
         return () => {
             window.removeEventListener("resize", resizeScene);
+            
+            // darkmodeToggleButton!.removeEventListener("mousedown", handleThemeChange);
+            // darkmodeToggleButton!.removeEventListener("mousedown", resetScene);
+            darkmodeToggleButton!.removeEventListener('click', handleThemeToggle);
+
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);
@@ -305,8 +321,8 @@ export default function Ball() {
 
     function resetScene() {
         setResetTrigger(prev => prev + 1);
-        // window.location.reload();
     }
+
 
     return (
         <div>

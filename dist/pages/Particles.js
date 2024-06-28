@@ -8,10 +8,12 @@ const react_1 = __importDefault(require("react"));
 const react_2 = require("react");
 function Particles() {
     // const Particles:React.FC = () => {
+    const [resetTrigger, setResetTrigger] = (0, react_2.useState)(0);
     (0, react_2.useEffect)(() => {
         let canvas = document.querySelector("#scene"), ctx = canvas.getContext("2d", {
             willReadFrequently: true,
         }), particles = [], amount = 0, mouse = { x: 0, y: 0 }, radius = 0.5;
+        const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
         // let color = ["#ffffff"];
         const color = [
             getComputedStyle(document.documentElement).getPropertyValue("--particle-color"),
@@ -130,6 +132,8 @@ function Particles() {
                 particles[i].render();
             }
         }
+        const handleThemeToggle = () => { resetScene(); };
+        darkmodeToggleButton.addEventListener("click", handleThemeToggle);
         window.addEventListener("resize", initScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -139,6 +143,7 @@ function Particles() {
         initScene();
         animationFrameId = requestAnimationFrame(render);
         return () => {
+            darkmodeToggleButton.removeEventListener("click", handleThemeToggle);
             window.removeEventListener("resize", initScene);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
@@ -147,7 +152,10 @@ function Particles() {
             window.removeEventListener("touchend", onTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [resetTrigger]);
+    function resetScene() {
+        setResetTrigger(prev => prev + 1);
+    }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, " Particles "),
         react_1.default.createElement("canvas", { style: {

@@ -34,7 +34,6 @@ export default function Switches() {
 
     function handleSwitchFill() {
         setSwitchedFill(!isSwitchedFill);
-        console.log("Fill switch",isSwitchedFill)
     }
 
     function handleSwitchMotion() {
@@ -96,11 +95,11 @@ export default function Switches() {
                         onMouseDown={handleSwitchFill}
                         > */}
                             <div className='switcherDivHalf'
-                            style={{backgroundColor: isSwitchedFill ?  "rgba(255, 255, 255, 0.5)" : "#333", transition:'0.3s', rotate:'180deg'}}
+                            style={{backgroundColor: isSwitchedFill ?  "rgba(255, 255, 255, 0.5)" : "#333", transition:'0.05s', rotate:'180deg'}}
                             >
                             </div>
                             <div className='switcherDivHalf'
-                            style={{backgroundColor: isSwitchedFill ? "#333":"rgba(255, 255, 255, 0.5)" , transition:'0.3s'}}
+                            style={{backgroundColor: isSwitchedFill ? "#333":"rgba(255, 255, 255, 0.5)" , transition:'0.05s'}}
                             >
                             </div>
                         {/* </div> */}

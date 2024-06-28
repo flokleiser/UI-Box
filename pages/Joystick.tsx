@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 
 export default function Joystick() {
 
+    const [resetTrigger, setResetTrigger] = useState(0);
+
     useEffect(() => {
         const canvasKeyboard= document.querySelector("#canvasKeyboard") as HTMLCanvasElement;
         const ctx = canvasKeyboard.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
@@ -32,6 +34,8 @@ export default function Joystick() {
         let circleY2 = centerY2;
         let vx2 = 0; 
         let vy2 = 0; 
+
+        const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
 
 
         const damping = 0.8; 
@@ -264,6 +268,9 @@ export default function Joystick() {
             animationFrameId = requestAnimationFrame(render);
         };
 
+        const handleThemeToggle = () => {resetScene()}
+
+        darkmodeToggleButton!.addEventListener('click', handleThemeToggle);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
         window.addEventListener("mousedown", onMouseDown);
@@ -276,6 +283,7 @@ export default function Joystick() {
         initscene();
 
         return () => {
+            darkmodeToggleButton!.removeEventListener('click', handleThemeToggle);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);
@@ -286,8 +294,12 @@ export default function Joystick() {
             window.removeEventListener("resize", resizeScene);
             cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [resetTrigger]);
 
+
+    function resetScene() {
+        setResetTrigger(prev => prev + 1);
+    }
 
     return (
         <div>
