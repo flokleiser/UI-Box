@@ -256,9 +256,9 @@ function Ball() {
         };
         const handleThemeToggle = () => { resetScene(); };
         window.addEventListener("resize", resizeScene);
-        // darkmodeToggleButton!.addEventListener("mousedown", handleThemeChange);
-        // darkmodeToggleButton!.addEventListener("mousedown",resetScene) ;
-        darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+        if (darkmodeToggleButton) {
+            darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+        }
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
         window.addEventListener("mousedown", onMouseDown);
@@ -267,9 +267,9 @@ function Ball() {
         initscene();
         return () => {
             window.removeEventListener("resize", resizeScene);
-            // darkmodeToggleButton!.removeEventListener("mousedown", handleThemeChange);
-            // darkmodeToggleButton!.removeEventListener("mousedown", resetScene);
-            darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
+            if (darkmodeToggleButton) {
+                darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
+            }
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);

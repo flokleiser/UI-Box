@@ -273,7 +273,9 @@ function Tether() {
             animationFrameId = requestAnimationFrame(render);
         };
         const handleThemeToggle = () => { resetScene(); };
-        darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+        if (darkmodeToggleButton) {
+            darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+        }
         window.addEventListener("resize", resizeScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -282,7 +284,9 @@ function Tether() {
         window.addEventListener("touchend", onTouchEnd);
         initscene();
         return () => {
-            darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
+            if (darkmodeToggleButton) {
+                darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
+            }
             window.removeEventListener("resize", resizeScene);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);

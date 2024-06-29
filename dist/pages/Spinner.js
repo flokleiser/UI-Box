@@ -23,9 +23,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Spinner;
 const react_1 = __importStar(require("react"));
-// export default function Spinner() {
-const Spinner = () => {
+function Spinner() {
+    // const Spinner: React.FC = () => {
     const spinnerRef = (0, react_1.useRef)(null);
     const [isDragging, setIsDragging] = (0, react_1.useState)(false);
     const [rotation, setRotation] = (0, react_1.useState)(0);
@@ -139,5 +140,4 @@ const Spinner = () => {
                 react_1.default.createElement("div", { className: "line", style: { top: '0%', left: '49%', height: '50%' } }),
                 react_1.default.createElement("div", { className: "line", style: { top: '36%', left: '29%', height: '50%', transform: 'rotate(60deg' } }),
                 react_1.default.createElement("div", { className: "line", style: { top: '36%', left: '70%', height: '50%', transform: 'rotate(120deg' } })))));
-};
-exports.default = Spinner;
+}

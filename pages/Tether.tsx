@@ -298,7 +298,9 @@ export default function Tether() {
 
         const handleThemeToggle = () => {resetScene()}
 
-        darkmodeToggleButton!.addEventListener('click', handleThemeToggle);
+        if (darkmodeToggleButton) {
+            darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+        }
         window.addEventListener("resize", resizeScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -309,7 +311,9 @@ export default function Tether() {
 
         return () => {
 
-            darkmodeToggleButton!.removeEventListener('click', handleThemeToggle);
+            if (darkmodeToggleButton) {
+                darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
+            }
             window.removeEventListener("resize", resizeScene);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);

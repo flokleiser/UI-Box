@@ -133,7 +133,9 @@ function Particles() {
             }
         }
         const handleThemeToggle = () => { resetScene(); };
-        darkmodeToggleButton.addEventListener("click", handleThemeToggle);
+        if (darkmodeToggleButton) {
+            darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+        }
         window.addEventListener("resize", initScene);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -143,7 +145,9 @@ function Particles() {
         initScene();
         animationFrameId = requestAnimationFrame(render);
         return () => {
-            darkmodeToggleButton.removeEventListener("click", handleThemeToggle);
+            if (darkmodeToggleButton) {
+                darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
+            }
             window.removeEventListener("resize", initScene);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);

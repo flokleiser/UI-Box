@@ -9,12 +9,12 @@ import Particles from './pages/Particles';
 import Tether from './pages/Tether';
 import Switches from './pages/Switches'
 import Ball from './pages/Ball';
+import TestBall from './pages/TestBall';
 import Joystick from './pages/Joystick'
 import Lock from './pages/Lock'
 
 export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Tether' | 'Switches' | 'Ball' | 'Joystick' | 'Lock';
 
-// type Theme = 'Dark' | 'Light' ;
 
 declare global {
   interface Window {
@@ -23,15 +23,12 @@ declare global {
             toggle: () => Promise<void>;
             system: () => Promise<void>;
             getThemeSource: () => Promise<string>;
-            // onThemeChange: (callback: () => void) => void;
         }
   }
 }
 
 const App: FC = () => {
-    const [page, setPage] = useState<Page>('Switches');
-
-    // let CurrentPage: React.ComponentType;
+    const [page, setPage] = useState<Page>('Ball');
 
     const loadPage = (newPage: Page) => {
         setPage(newPage)
@@ -43,36 +40,36 @@ const App: FC = () => {
         case 'Home':
             CurrentPage = Home;
             break;
-            case 'Settings':
+        case 'Settings':
             CurrentPage = Settings;
-            // console.log('settings')
             break;
-            case 'Buttons':
+        case 'Buttons':
             CurrentPage = Buttons;
             break;
-            case 'Spinner':
+        case 'Spinner':
             CurrentPage = Spinner;
             break;
-            case 'Particles':
+        case 'Particles':
             CurrentPage = Particles;
             break;
-            case 'Tether':
+        case 'Tether':
             CurrentPage = Tether;
             break;
-            case 'Switches':
+        case 'Switches':
             CurrentPage = Switches;
             break;
-            case 'Ball':
-            CurrentPage = Ball;
+        case 'Ball':
+            // CurrentPage = Ball;
+            CurrentPage = TestBall;
             break;
-            case 'Joystick':
+        case 'Joystick':
             CurrentPage = Joystick;
             break;
-            case 'Lock':
+        case 'Lock':
             CurrentPage = Lock;
             break;
-            default:
-                CurrentPage = Home;
+        default:
+            CurrentPage = Home;
     }
 
     window.loadPage = (page: Page) => {
@@ -125,12 +122,15 @@ const attachEventListeners = () => {
     if (switchesPageButton) {
         switchesPageButton.addEventListener(clickType, () => window.loadPage('Switches'));
     }
+
     if (ballPageButton) {
         ballPageButton.addEventListener(clickType, () => window.loadPage('Ball'));
     }
+
     if (joystickPageButton) {
         joystickPageButton.addEventListener(clickType, () => window.loadPage('Joystick'));
     }
+
     if (lockPageButton) {
         lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
     }
@@ -140,8 +140,21 @@ const attachEventListeners = () => {
             window.darkMode.toggle()
         });
     }
-}
 
+    // homeButton!.addEventListener(clickType, () => window.loadPage('Home'));
+    // // settingsButton!.addEventListener(clickType, () => window.loadPage('Settings'));
+    // buttonsPageButton!.addEventListener(clickType, () => window.loadPage('Buttons'));
+    // spinnerPageButton!.addEventListener(clickType, () => window.loadPage('Spinner'));
+    // particlesPageButton!.addEventListener(clickType, () => window.loadPage('Particles'));
+    // tetherPageButton!.addEventListener(clickType, () => window.loadPage('Tether'));
+    // switchesPageButton!.addEventListener(clickType, () => window.loadPage('Switches'));
+    // ballPageButton!.addEventListener(clickType, () => window.loadPage('Ball'));
+    // joystickPageButton!.addEventListener(clickType, () => window.loadPage('Joystick'));
+    // lockPageButton!.addEventListener(clickType, () => window.loadPage('Lock'));
+    // darkmodeToggleButton!.addEventListener(clickType, () => {
+    //     window.darkMode.toggle()
+    // });
+}
 document.addEventListener('DOMContentLoaded', attachEventListeners);
 
 const container = document.getElementById('root');

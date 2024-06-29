@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-export default function Ball() {
+export default function BallTest() {
 
     const [resetTrigger, setResetTrigger] = useState(0);
     const [buttonPosition, setButtonPosition] = useState({x:0,y:0})
+
+    // const [ballPosition, setBallPosition] = useState({x:0,y:0})
 
     const [hoopPosition, setHoopPosition] = useState({x:0,y:0});
 
@@ -22,6 +24,8 @@ export default function Ball() {
 
         let centerX = (ww / 2);
         let centerY = (wh / 5) * 3;
+        // let centerX = clientX
+        // let centerY = clientY
 
         let ballX = centerX;
         let ballY = centerY;
@@ -127,6 +131,9 @@ export default function Ball() {
             if (dist < radius) {
                 isDragging = true;
             }
+            centerX = e.clientX
+            centerY = e.clientY
+            console.log(centerX,centerY)
         };
 
         const onMouseUp = (e:MouseEvent) => {
@@ -150,8 +157,8 @@ export default function Ball() {
             wh = canvasBall.height = window.innerHeight;
             isDragging = false;
             isReleased = false; 
-            centerX = ww / 2;
-            centerY = (wh / 5) * 3;
+            // centerX = ww / 2;
+            // centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
             hoop.centerX = (ww / 4) * 3;
@@ -169,8 +176,8 @@ export default function Ball() {
         const resizeScene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
-            centerX = ww / 2;
-            centerY = (wh / 5) * 3;
+            // centerX = ww / 2;
+            // centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
             vx = 0;
@@ -326,12 +333,10 @@ export default function Ball() {
 
     return (
         <div>
-            <h1>Ball</h1>
+            <h1>Ball (Test)</h1>
 
             <button className="resetButton"             
                 style={{
-                // left: buttonPosition.x-35, 
-                // top: buttonPosition.y+70, 
                 left: buttonPosition.x-35, 
                 top: buttonPosition.y-25, 
                 }}
@@ -343,13 +348,6 @@ export default function Ball() {
                     refresh
                 </span>
             </button>
-
-            {/* <button className="hoop"
-             style={{
-                left:hoopPosition.x,
-                top:hoopPosition.y,
-            }}> test hoop </button> */}
-
 
             <canvas
                 style={{

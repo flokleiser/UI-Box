@@ -291,7 +291,10 @@ export default function Joystick() {
 
         const handleThemeToggle = () => {resetScene()}
 
-        darkmodeToggleButton!.addEventListener('click', handleThemeToggle);
+        if (darkmodeToggleButton) {
+            darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+        }
+
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
         window.addEventListener("mousedown", onMouseDown);
@@ -304,7 +307,10 @@ export default function Joystick() {
         initscene();
 
         return () => {
-            darkmodeToggleButton!.removeEventListener('click', handleThemeToggle);
+            if (darkmodeToggleButton) {
+                darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
+            }
+
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);

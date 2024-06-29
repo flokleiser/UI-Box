@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-// export default function Spinner() {
-const Spinner: React.FC = () => {
+export default function Spinner() {
+// const Spinner: React.FC = () => {
 
     const spinnerRef = useRef<HTMLDivElement>(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -155,4 +155,3 @@ const Spinner: React.FC = () => {
         </div>    
     )
 }
-export default Spinner
