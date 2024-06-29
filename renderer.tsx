@@ -127,6 +127,9 @@ const attachEventListeners = () => {
 
     if (buttonsPageButton) {
         buttonsPageButton.addEventListener(clickType, () => window.loadPage('Buttons'));
+        // buttonsPageButton.setAttribute.add(active)
+        buttonsPageButton.classList.add('currentPage')
+        // buttonsPageButton.classList.add('active')
     }
 
     if (spinnerPageButton) {
