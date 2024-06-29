@@ -22,6 +22,8 @@ export default function Ball() {
 
         let centerX = (ww / 2);
         let centerY = (wh / 5) * 3;
+        // let centerX = clientX
+        // let centerY = clientY
 
         let ballX = centerX;
         let ballY = centerY;
@@ -123,10 +125,11 @@ export default function Ball() {
         };
 
         const onMouseDown = (e:MouseEvent) => {
-            const dist = Math.hypot(e.clientX - ballX, e.clientY - ballY);
-            if (dist < radius) {
-                isDragging = true;
-            }
+            centerX = e.clientX
+            centerY = e.clientY
+
+            isDragging = true;
+            isReleased = false;
         };
 
         const onMouseUp = (e:MouseEvent) => {
@@ -138,11 +141,6 @@ export default function Ball() {
                 vy = -dy * 0.1; 
                 isReleased = true;
             }
-
-            if (isReleased) {
-                setButtonPosition({ x: e.clientX, y: e.clientY});                
-            }
-
         };
 
         const initscene = () => {
@@ -158,8 +156,6 @@ export default function Ball() {
             hoop.centerY = wh / 3;
 
             setButtonPosition({ x: centerX, y: centerY+75});
-
-            // setHoopPosition({ x: (canvasBall.width / 4) * 3, y: (canvasBall.height / 3) });                
 
             vx = 0;
             vy = 0;
@@ -272,8 +268,6 @@ export default function Ball() {
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(ballX, ballY);
                 ctx.stroke();
-
-
             }
 
             ctx.fillStyle = color;
@@ -317,6 +311,7 @@ export default function Ball() {
             cancelAnimationFrame(animationFrameId);
         };
     }, [resetTrigger]);
+    // }, []);
 
 
     function resetScene() {
@@ -327,29 +322,6 @@ export default function Ball() {
     return (
         <div>
             <h1>Ball</h1>
-
-            <button className="resetButton"             
-                style={{
-                // left: buttonPosition.x-35, 
-                // top: buttonPosition.y+70, 
-                left: buttonPosition.x-35, 
-                top: buttonPosition.y-25, 
-                }}
-            onMouseDown={resetScene}
-            >
-                <span className="material-symbols-outlined"
-                style={{fontSize:'30px'}}
-                >
-                    refresh
-                </span>
-            </button>
-
-            {/* <button className="hoop"
-             style={{
-                left:hoopPosition.x,
-                top:hoopPosition.y,
-            }}> test hoop </button> */}
-
 
             <canvas
                 style={{

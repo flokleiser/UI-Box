@@ -119,13 +119,15 @@ function BallTest() {
             }
         };
         const onMouseDown = (e) => {
-            const dist = Math.hypot(e.clientX - ballX, e.clientY - ballY);
-            if (dist < radius) {
-                isDragging = true;
-            }
             centerX = e.clientX;
             centerY = e.clientY;
             console.log(centerX, centerY);
+            isDragging = true;
+            isReleased = false;
+            // const dist = Math.hypot(e.clientX - ballX, e.clientY - ballY);
+            // if (dist < radius) {
+            //     isDragging = true;
+            // }
         };
         const onMouseUp = (e) => {
             if (isDragging) {
@@ -136,17 +138,17 @@ function BallTest() {
                 vy = -dy * 0.1;
                 isReleased = true;
             }
-            if (isReleased) {
-                setButtonPosition({ x: e.clientX, y: e.clientY });
-            }
+            // if (isReleased) {
+            //     setButtonPosition({ x: e.clientX, y: e.clientY});                
+            // }
         };
         const initscene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
             isDragging = false;
             isReleased = false;
-            // centerX = ww / 2;
-            // centerY = (wh / 5) * 3;
+            centerX = ww / 2;
+            centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
             hoop.centerX = (ww / 4) * 3;
@@ -160,8 +162,8 @@ function BallTest() {
         const resizeScene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
-            // centerX = ww / 2;
-            // centerY = (wh / 5) * 3;
+            centerX = ww / 2;
+            centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
             vx = 0;
@@ -284,16 +286,12 @@ function BallTest() {
             cancelAnimationFrame(animationFrameId);
         };
     }, [resetTrigger]);
+    // }, []);
     function resetScene() {
         setResetTrigger(prev => prev + 1);
     }
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Ball (Test)"),
-        react_1.default.createElement("button", { className: "resetButton", style: {
-                left: buttonPosition.x - 35,
-                top: buttonPosition.y - 25,
-            }, onMouseDown: resetScene },
-            react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: '30px' } }, "refresh")),
         react_1.default.createElement("canvas", { style: {
                 width: '100vw',
                 height: '100vh',

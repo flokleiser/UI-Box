@@ -9,7 +9,6 @@ import Particles from './pages/Particles';
 import Tether from './pages/Tether';
 import Switches from './pages/Switches'
 import Ball from './pages/Ball';
-import TestBall from './pages/TestBall';
 import Joystick from './pages/Joystick'
 import Lock from './pages/Lock'
 
@@ -59,8 +58,7 @@ const App: FC = () => {
             CurrentPage = Switches;
             break;
         case 'Ball':
-            // CurrentPage = Ball;
-            CurrentPage = TestBall;
+            CurrentPage = Ball;
             break;
         case 'Joystick':
             CurrentPage = Joystick;
