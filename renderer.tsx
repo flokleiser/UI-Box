@@ -2,7 +2,7 @@ import React, { useState, useEffect, FC } from 'react';
 import { createRoot } from 'react-dom/client';
 import Home from './pages/Home';
 import Navbar from './components/Navbar'
-import Settings from './pages/Settings';
+// import Settings from './pages/Settings';
 import Buttons from './pages/Buttons';
 import Spinner from './pages/Spinner';
 import Particles from './pages/Particles';
@@ -12,7 +12,7 @@ import Ball from './pages/Ball';
 import Joystick from './pages/Joystick'
 import Lock from './pages/Lock'
 
-export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Tether' | 'Switches' | 'Ball' | 'Joystick' | 'Lock';
+export type Page = 'Home' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Lock';
 
 
 declare global {
@@ -26,8 +26,32 @@ declare global {
   }
 }
 
+
+const pages: Page[] = ['Home' , 'Buttons' , 'Spinner' , 'Particles' , 'Switches' , 'Tether' , 'Ball' , 'Joystick' , 'Lock'];
+
 const App: FC = () => {
     const [page, setPage] = useState<Page>('Ball');
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.metaKey && (event.key === '1' || event.key === '2')) {
+                event.preventDefault();
+                const currentIndex = pages.indexOf(page);
+                if (event.key === '1') {
+                    const previousPage = pages[(currentIndex - 1 + pages.length) % pages.length];
+                    setPage(previousPage);
+                } else if (event.key === '2') {
+                    const nextPage = pages[(currentIndex + 1) % pages.length];
+                    setPage(nextPage);
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [page]);
 
     const loadPage = (newPage: Page) => {
         setPage(newPage)
@@ -39,9 +63,9 @@ const App: FC = () => {
         case 'Home':
             CurrentPage = Home;
             break;
-        case 'Settings':
-            CurrentPage = Settings;
-            break;
+        // case 'Settings':
+        //     CurrentPage = Settings;
+        //     break;
         case 'Buttons':
             CurrentPage = Buttons;
             break;
@@ -82,7 +106,7 @@ const attachEventListeners = () => {
     const clickType = "mousedown";
 
     const homeButton = document.getElementById('homeButton');
-    const settingsButton = document.getElementById('settingsButton');
+    // const settingsButton = document.getElementById('settingsButton');
     const darkmodeToggleButton= document.getElementById('darkmodeToggleButton');
     const buttonsPageButton = document.getElementById('buttonspageButton');
     const spinnerPageButton = document.getElementById('spinnerpageButton');
@@ -97,9 +121,9 @@ const attachEventListeners = () => {
         homeButton.addEventListener(clickType, () => window.loadPage('Home'));
     }
 
-    if (settingsButton) {
-        settingsButton.addEventListener(clickType, () => window.loadPage('Settings'));
-    }
+    // if (settingsButton) {
+    //     settingsButton.addEventListener(clickType, () => window.loadPage('Settings'));
+    // }
 
     if (buttonsPageButton) {
         buttonsPageButton.addEventListener(clickType, () => window.loadPage('Buttons'));
@@ -138,20 +162,6 @@ const attachEventListeners = () => {
             window.darkMode.toggle()
         });
     }
-
-    // homeButton!.addEventListener(clickType, () => window.loadPage('Home'));
-    // // settingsButton!.addEventListener(clickType, () => window.loadPage('Settings'));
-    // buttonsPageButton!.addEventListener(clickType, () => window.loadPage('Buttons'));
-    // spinnerPageButton!.addEventListener(clickType, () => window.loadPage('Spinner'));
-    // particlesPageButton!.addEventListener(clickType, () => window.loadPage('Particles'));
-    // tetherPageButton!.addEventListener(clickType, () => window.loadPage('Tether'));
-    // switchesPageButton!.addEventListener(clickType, () => window.loadPage('Switches'));
-    // ballPageButton!.addEventListener(clickType, () => window.loadPage('Ball'));
-    // joystickPageButton!.addEventListener(clickType, () => window.loadPage('Joystick'));
-    // lockPageButton!.addEventListener(clickType, () => window.loadPage('Lock'));
-    // darkmodeToggleButton!.addEventListener(clickType, () => {
-    //     window.darkMode.toggle()
-    // });
 }
 document.addEventListener('DOMContentLoaded', attachEventListeners);
 

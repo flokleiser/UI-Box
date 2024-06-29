@@ -47848,9 +47848,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Home;
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Home({ loadPage }) {
-    const handleSettingsClick = () => {
-        window.loadPage('Settings');
-    };
+    // const handleSettingsClick = () => {
+    //     window.loadPage('Settings');
+    // };
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, " UI-Box "),
         react_1.default.createElement("div", { className: "logo" },
@@ -48507,72 +48507,6 @@ function Particles() {
 
 /***/ }),
 
-/***/ "./src/pages/Settings.tsx":
-/*!********************************!*\
-  !*** ./src/pages/Settings.tsx ***!
-  \********************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports["default"] = Settings;
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-function Settings() {
-    const [activeThemeSource, setThemeSource] = (0, react_2.useState)('system');
-    (0, react_2.useEffect)(() => {
-        function fetchThemeSource() {
-            return __awaiter(this, void 0, void 0, function* () {
-                const currentThemeSource = yield window.darkMode.getThemeSource();
-                setThemeSource(currentThemeSource);
-            });
-        }
-        fetchThemeSource();
-    }, []);
-    function toggleDarkMode() {
-        window.darkMode.toggle().then(() => {
-            window.darkMode.getThemeSource().then(setThemeSource);
-        });
-    }
-    function toggleSystemMode() {
-        window.darkMode.system();
-        window.darkMode.getThemeSource().then(setThemeSource);
-    }
-    function themeSourceDisplay() {
-        if (activeThemeSource === 'dark') {
-            return 'Dark';
-        }
-        else if (activeThemeSource === 'light') {
-            return 'Light';
-        }
-        else {
-            return 'System';
-        }
-    }
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Settings"),
-        react_1.default.createElement("p", null,
-            "Current:",
-            react_1.default.createElement("strong", { id: "theme-source" }, themeSourceDisplay())),
-        react_1.default.createElement("button", { className: "buttonInSettings", id: "toggle-dark-mode", onMouseDown: toggleDarkMode }, "Toggle Dark Mode"),
-        react_1.default.createElement("button", { className: "buttonInSettings", id: "reset-to-system", onMouseDown: toggleSystemMode }, "Reset to System Theme")));
-}
-
-
-/***/ }),
-
 /***/ "./src/pages/Spinner.tsx":
 /*!*******************************!*\
   !*** ./src/pages/Spinner.tsx ***!
@@ -49220,7 +49154,7 @@ const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/re
 const client_1 = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 const Home_1 = __importDefault(__webpack_require__(/*! ./pages/Home */ "./src/pages/Home.tsx"));
 const Navbar_1 = __importDefault(__webpack_require__(/*! ./components/Navbar */ "./src/components/Navbar.tsx"));
-const Settings_1 = __importDefault(__webpack_require__(/*! ./pages/Settings */ "./src/pages/Settings.tsx"));
+// import Settings from './pages/Settings';
 const Buttons_1 = __importDefault(__webpack_require__(/*! ./pages/Buttons */ "./src/pages/Buttons.tsx"));
 const Spinner_1 = __importDefault(__webpack_require__(/*! ./pages/Spinner */ "./src/pages/Spinner.tsx"));
 const Particles_1 = __importDefault(__webpack_require__(/*! ./pages/Particles */ "./src/pages/Particles.tsx"));
@@ -49229,8 +49163,29 @@ const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Lock_1 = __importDefault(__webpack_require__(/*! ./pages/Lock */ "./src/pages/Lock.tsx"));
+const pages = ['Home', 'Buttons', 'Spinner', 'Particles', 'Switches', 'Tether', 'Ball', 'Joystick', 'Lock'];
 const App = () => {
     const [page, setPage] = (0, react_1.useState)('Ball');
+    (0, react_1.useEffect)(() => {
+        const handleKeyDown = (event) => {
+            if (event.metaKey && (event.key === '1' || event.key === '2')) {
+                event.preventDefault();
+                const currentIndex = pages.indexOf(page);
+                if (event.key === '1') {
+                    const previousPage = pages[(currentIndex - 1 + pages.length) % pages.length];
+                    setPage(previousPage);
+                }
+                else if (event.key === '2') {
+                    const nextPage = pages[(currentIndex + 1) % pages.length];
+                    setPage(nextPage);
+                }
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [page]);
     const loadPage = (newPage) => {
         setPage(newPage);
     };
@@ -49239,9 +49194,9 @@ const App = () => {
         case 'Home':
             CurrentPage = Home_1.default;
             break;
-        case 'Settings':
-            CurrentPage = Settings_1.default;
-            break;
+        // case 'Settings':
+        //     CurrentPage = Settings;
+        //     break;
         case 'Buttons':
             CurrentPage = Buttons_1.default;
             break;
@@ -49277,7 +49232,7 @@ const App = () => {
 const attachEventListeners = () => {
     const clickType = "mousedown";
     const homeButton = document.getElementById('homeButton');
-    const settingsButton = document.getElementById('settingsButton');
+    // const settingsButton = document.getElementById('settingsButton');
     const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
     const buttonsPageButton = document.getElementById('buttonspageButton');
     const spinnerPageButton = document.getElementById('spinnerpageButton');
@@ -49290,9 +49245,9 @@ const attachEventListeners = () => {
     if (homeButton) {
         homeButton.addEventListener(clickType, () => window.loadPage('Home'));
     }
-    if (settingsButton) {
-        settingsButton.addEventListener(clickType, () => window.loadPage('Settings'));
-    }
+    // if (settingsButton) {
+    //     settingsButton.addEventListener(clickType, () => window.loadPage('Settings'));
+    // }
     if (buttonsPageButton) {
         buttonsPageButton.addEventListener(clickType, () => window.loadPage('Buttons'));
     }
@@ -49322,19 +49277,6 @@ const attachEventListeners = () => {
             window.darkMode.toggle();
         });
     }
-    // homeButton!.addEventListener(clickType, () => window.loadPage('Home'));
-    // // settingsButton!.addEventListener(clickType, () => window.loadPage('Settings'));
-    // buttonsPageButton!.addEventListener(clickType, () => window.loadPage('Buttons'));
-    // spinnerPageButton!.addEventListener(clickType, () => window.loadPage('Spinner'));
-    // particlesPageButton!.addEventListener(clickType, () => window.loadPage('Particles'));
-    // tetherPageButton!.addEventListener(clickType, () => window.loadPage('Tether'));
-    // switchesPageButton!.addEventListener(clickType, () => window.loadPage('Switches'));
-    // ballPageButton!.addEventListener(clickType, () => window.loadPage('Ball'));
-    // joystickPageButton!.addEventListener(clickType, () => window.loadPage('Joystick'));
-    // lockPageButton!.addEventListener(clickType, () => window.loadPage('Lock'));
-    // darkmodeToggleButton!.addEventListener(clickType, () => {
-    //     window.darkMode.toggle()
-    // });
 };
 document.addEventListener('DOMContentLoaded', attachEventListeners);
 const container = document.getElementById('root');

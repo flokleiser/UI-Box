@@ -9,9 +9,9 @@ export default function Home({loadPage}:HomeProps) {
 
 
 
-    const handleSettingsClick = () => {
-        window.loadPage('Settings');
-    };
+    // const handleSettingsClick = () => {
+    //     window.loadPage('Settings');
+    // };
 
     return(
         <div>
