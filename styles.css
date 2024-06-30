@@ -36,7 +36,7 @@ nav{
 .navbarButton{
   display:flex;
   margin-left:auto;
-  border:0;
+  /* border:0; */
   padding-top: 1px;
   padding-bottom:1px;
 }
@@ -89,7 +89,6 @@ nav{
   padding: 10px 20px; 
   border-radius: 50px;
   margin:0.5rem;
-  /* border: 2px solid white; */
   border: 0px solid white;
 
   background:rgba(255, 255, 255, 0.5);
@@ -103,7 +102,6 @@ nav{
 .button1:active{
   --scale-factor:0.95;
   transform: scale(var(--scale-factor));
-  /* background: white; */
   background: #333;
   border: 2px solid rgba(255, 255, 255, 0.5)
 }

@@ -47442,8 +47442,8 @@ function Navbar() {
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
             react_1.default.createElement("button", { className: "navbarButton", id: "joystickpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
-            react_1.default.createElement("button", { className: "navbarButton", id: "lockpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "refresh"))),
+            react_1.default.createElement("button", { className: "navbarButton", id: "testpageButton" },
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz"))),
         react_1.default.createElement("div", { className: "settingsButton" },
             react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
                 react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));
@@ -48183,146 +48183,6 @@ function Joystick() {
 
 /***/ }),
 
-/***/ "./src/pages/Lock.tsx":
-/*!****************************!*\
-  !*** ./src/pages/Lock.tsx ***!
-  \****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-//https://github.com/bobboteck/JoyStick?tab=readme-ov-file
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports["default"] = Lock;
-const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-function Lock() {
-    (0, react_1.useEffect)(() => {
-        const canvasLock = document.querySelector("#canvasLock");
-        const ctx = canvasLock.getContext("2d", { willReadFrequently: true });
-        const mouse = { x: 0, y: 0 };
-        const radius = 175;
-        let isDragging = false;
-        let maxDistance = 80;
-        let isMovingKeys = false;
-        let ww = window.innerWidth;
-        let wh = window.innerHeight;
-        let centerX = ww / 2;
-        let centerY = wh / 2;
-        let circleX = centerX;
-        let circleY = centerY;
-        let vx = 0;
-        let vy = 0;
-        const damping = 0.8;
-        const stiffness = 0.05;
-        const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
-        const initscene = () => {
-            ww = canvasLock.width = window.innerWidth;
-            wh = canvasLock.height = window.innerHeight;
-            centerX = ww / 2;
-            centerY = wh / 2;
-            circleX = centerX;
-            circleY = centerY;
-            vx = 0;
-            vy = 0;
-            render();
-        };
-        const resizeScene = () => {
-            ww = canvasLock.width = window.innerWidth;
-            wh = canvasLock.height = window.innerHeight;
-            centerX = ww / 2;
-            centerY = wh / 2;
-            circleX = centerX;
-            circleY = centerY;
-            vx = 0;
-            vy = 0;
-        };
-        let animationFrameId;
-        const render = () => {
-            const distToCenter = Math.hypot(circleX - centerX, circleY - centerY);
-            if (!isDragging && !isMovingKeys) {
-                const dx = centerX - circleX;
-                const dy = centerY - circleY;
-                const ax = dx * stiffness;
-                const ay = dy * stiffness;
-                vx += ax;
-                vy += ay;
-                vx *= damping;
-                vy *= damping;
-                circleX += vx;
-                circleY += vy;
-            }
-            // if (distToCenter > maxDistance) {
-            //     const angle = Math.atan2(circleY - centerY, circleX - centerX);
-            //     circleX = centerX + maxDistance * Math.cos(angle);
-            //     circleY = centerY + maxDistance * Math.sin(angle);
-            // }
-            else {
-                vx = 0;
-                vy = 0;
-            }
-            ctx.clearRect(0, 0, canvasLock.width, canvasLock.height);
-            //ball
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(circleX, circleY, radius, 0, Math.PI * 2);
-            ctx.fill();
-            animationFrameId = requestAnimationFrame(render);
-        };
-        window.addEventListener("resize", resizeScene);
-        // window.addEventListener("mousemove", onMouseMove);
-        // window.addEventListener("touchmove", onTouchMove);
-        // window.addEventListener("mousedown", onMouseDown);
-        // window.addEventListener("mouseup", onMouseUp);
-        // window.addEventListener("touchend", onTouchEnd);
-        initscene();
-        return () => {
-            window.removeEventListener("resize", resizeScene);
-            // window.removeEventListener("mousemove", onMouseMove);
-            // window.removeEventListener("touchmove", onTouchMove);
-            // window.removeEventListener("mousedown", onMouseDown);
-            // window.removeEventListener("mouseup", onMouseUp);
-            // window.removeEventListener("touchend", onTouchEnd);
-            cancelAnimationFrame(animationFrameId);
-        };
-    }, []);
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Lock (WIP)"),
-        react_1.default.createElement("canvas", { style: {
-                width: '100vw',
-                height: '100vh',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                overflow: 'hidden',
-                zIndex: -10
-            }, id: "canvasLock" })));
-}
-
-
-/***/ }),
-
 /***/ "./src/pages/Particles.tsx":
 /*!*********************************!*\
   !*** ./src/pages/Particles.tsx ***!
@@ -48793,6 +48653,27 @@ function Switches() {
 
 /***/ }),
 
+/***/ "./src/pages/Test.tsx":
+/*!****************************!*\
+  !*** ./src/pages/Test.tsx ***!
+  \****************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports["default"] = Test;
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+function Test() {
+    return (react_1.default.createElement("div", null,
+        react_1.default.createElement("h1", null, "Test")));
+}
+
+
+/***/ }),
+
 /***/ "./src/pages/Tether.tsx":
 /*!******************************!*\
   !*** ./src/pages/Tether.tsx ***!
@@ -49162,10 +49043,10 @@ const Tether_1 = __importDefault(__webpack_require__(/*! ./pages/Tether */ "./sr
 const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "./src/pages/Switches.tsx"));
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
-const Lock_1 = __importDefault(__webpack_require__(/*! ./pages/Lock */ "./src/pages/Lock.tsx"));
-const pages = ['Home', 'Buttons', 'Spinner', 'Particles', 'Switches', 'Tether', 'Ball', 'Joystick', 'Lock'];
+const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
+const pages = ['Home', 'Buttons', 'Spinner', 'Particles', 'Switches', 'Tether', 'Ball', 'Joystick', 'Test'];
 const App = () => {
-    const [page, setPage] = (0, react_1.useState)('Ball');
+    const [page, setPage] = (0, react_1.useState)('Test');
     (0, react_1.useEffect)(() => {
         const handleKeyDown = (event) => {
             if (event.metaKey && (event.key === '1' || event.key === '2')) {
@@ -49218,8 +49099,11 @@ const App = () => {
         case 'Joystick':
             CurrentPage = Joystick_1.default;
             break;
-        case 'Lock':
-            CurrentPage = Lock_1.default;
+        // case 'Lock':
+        //     CurrentPage = Lock;
+        //     break;
+        case 'Test':
+            CurrentPage = Test_1.default;
             break;
         default:
             CurrentPage = Home_1.default;
@@ -49232,7 +49116,7 @@ const App = () => {
 const attachEventListeners = () => {
     const clickType = "mousedown";
     const homeButton = document.getElementById('homeButton');
-    // const settingsButton = document.getElementById('settingsButton');
+    const settingsButton = document.getElementById('settingsButton');
     const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
     const buttonsPageButton = document.getElementById('buttonspageButton');
     const spinnerPageButton = document.getElementById('spinnerpageButton');
@@ -49242,6 +49126,7 @@ const attachEventListeners = () => {
     const ballPageButton = document.getElementById('ballpageButton');
     const joystickPageButton = document.getElementById('joystickpageButton');
     const lockPageButton = document.getElementById('lockpageButton');
+    const testPageButton = document.getElementById('testpageButton');
     if (homeButton) {
         homeButton.addEventListener(clickType, () => window.loadPage('Home'));
     }
@@ -49250,9 +49135,6 @@ const attachEventListeners = () => {
     // }
     if (buttonsPageButton) {
         buttonsPageButton.addEventListener(clickType, () => window.loadPage('Buttons'));
-        // buttonsPageButton.setAttribute.add(active)
-        buttonsPageButton.classList.add('currentPage');
-        // buttonsPageButton.classList.add('active')
     }
     if (spinnerPageButton) {
         spinnerPageButton.addEventListener(clickType, () => window.loadPage('Spinner'));
@@ -49272,8 +49154,11 @@ const attachEventListeners = () => {
     if (joystickPageButton) {
         joystickPageButton.addEventListener(clickType, () => window.loadPage('Joystick'));
     }
-    if (lockPageButton) {
-        lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
+    // if (lockPageButton) {
+    //     lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
+    // }
+    if (testPageButton) {
+        testPageButton.addEventListener(clickType, () => window.loadPage('Test'));
     }
     if (darkmodeToggleButton) {
         darkmodeToggleButton.addEventListener(clickType, () => {

@@ -67,9 +67,15 @@ export default function Navbar() {
         </span>
       </button>
 
-      <button className="navbarButton" id="lockpageButton">
+      {/* <button className="navbarButton" id="lockpageButton">
         <span className="material-symbols-outlined">
             refresh
+        </span>
+      </button> */}
+
+      <button className="navbarButton" id="testpageButton">
+        <span className="material-symbols-outlined">
+          quiz
         </span>
       </button>
 

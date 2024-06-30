@@ -48,8 +48,8 @@ function Navbar() {
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
             react_1.default.createElement("button", { className: "navbarButton", id: "joystickpageButton" },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
-            react_1.default.createElement("button", { className: "navbarButton", id: "lockpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "refresh"))),
+            react_1.default.createElement("button", { className: "navbarButton", id: "testpageButton" },
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz"))),
         react_1.default.createElement("div", { className: "settingsButton" },
             react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
                 react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));

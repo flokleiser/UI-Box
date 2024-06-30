@@ -11,8 +11,9 @@ import Switches from './pages/Switches'
 import Ball from './pages/Ball';
 import Joystick from './pages/Joystick'
 import Lock from './pages/Lock'
+import Test from './pages/Test'
 
-export type Page = 'Home' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Lock';
+export type Page = 'Home' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Test';
 
 
 declare global {
@@ -27,10 +28,10 @@ declare global {
 }
 
 
-const pages: Page[] = ['Home' , 'Buttons' , 'Spinner' , 'Particles' , 'Switches' , 'Tether' , 'Ball' , 'Joystick' , 'Lock'];
+const pages: Page[] = ['Home' , 'Buttons' , 'Spinner' , 'Particles' , 'Switches' , 'Tether' , 'Ball' , 'Joystick' , 'Test'];
 
 const App: FC = () => {
-    const [page, setPage] = useState<Page>('Ball');
+    const [page, setPage] = useState<Page>('Test');
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -87,8 +88,11 @@ const App: FC = () => {
         case 'Joystick':
             CurrentPage = Joystick;
             break;
-        case 'Lock':
-            CurrentPage = Lock;
+        // case 'Lock':
+        //     CurrentPage = Lock;
+        //     break;
+        case 'Test':
+            CurrentPage = Test
             break;
         default:
             CurrentPage = Home;
@@ -106,7 +110,7 @@ const attachEventListeners = () => {
     const clickType = "mousedown";
 
     const homeButton = document.getElementById('homeButton');
-    // const settingsButton = document.getElementById('settingsButton');
+    const settingsButton = document.getElementById('settingsButton');
     const darkmodeToggleButton= document.getElementById('darkmodeToggleButton');
     const buttonsPageButton = document.getElementById('buttonspageButton');
     const spinnerPageButton = document.getElementById('spinnerpageButton');
@@ -116,6 +120,7 @@ const attachEventListeners = () => {
     const ballPageButton = document.getElementById('ballpageButton');
     const joystickPageButton= document.getElementById('joystickpageButton');
     const lockPageButton= document.getElementById('lockpageButton');
+    const testPageButton= document.getElementById('testpageButton');
 
     if (homeButton) {
         homeButton.addEventListener(clickType, () => window.loadPage('Home'));
@@ -127,9 +132,6 @@ const attachEventListeners = () => {
 
     if (buttonsPageButton) {
         buttonsPageButton.addEventListener(clickType, () => window.loadPage('Buttons'));
-        // buttonsPageButton.setAttribute.add(active)
-        buttonsPageButton.classList.add('currentPage')
-        // buttonsPageButton.classList.add('active')
     }
 
     if (spinnerPageButton) {
@@ -156,9 +158,14 @@ const attachEventListeners = () => {
         joystickPageButton.addEventListener(clickType, () => window.loadPage('Joystick'));
     }
 
-    if (lockPageButton) {
-        lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
+    // if (lockPageButton) {
+    //     lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
+    // }
+    
+    if (testPageButton) {
+        testPageButton.addEventListener(clickType, () => window.loadPage('Test'));
     }
+        
 
     if (darkmodeToggleButton) {
         darkmodeToggleButton!.addEventListener(clickType, () => {
