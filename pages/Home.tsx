@@ -14,24 +14,15 @@ export default function Home({loadPage}:HomeProps) {
     // };
 
     return(
+        <div className="bodyCenter">
         <div>
 
             <h1> UI-Box </h1>
-
-            {/* <div className="settingsButton" 
-            style={{position:'absolute', zIndex:999}}
-            >
-                <button id="settingsButton" onMouseDown={handleSettingsClick}>
-                    <span className="material-symbols-outlined">
-                        settings
-                    </span>
-                </button>
-            </div> */}
-
 
             <div className="logo">
                 <img className="logoImg" src="./media/icon.png" />
                 </div>
             </div>    
+            </div>
     )
 }

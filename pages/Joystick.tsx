@@ -329,6 +329,7 @@ export default function Joystick() {
     }
 
     return (
+        <div className="bodyCenter">
         <div>
             <h1>Joystick</h1>
             <canvas
@@ -343,6 +344,7 @@ export default function Joystick() {
                 }}
                 id="canvasKeyboard">
             </canvas>
+        </div>
         </div>
     );
 }

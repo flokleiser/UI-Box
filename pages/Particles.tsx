@@ -212,6 +212,7 @@ export default function Particles() {
 }
 
   return (
+    <div className="bodyCenter">
     <div>
       <h1> Particles </h1>
       <canvas
@@ -226,6 +227,7 @@ export default function Particles() {
         }}
         id="scene"
       ></canvas>
+    </div>
     </div>
   );
 }

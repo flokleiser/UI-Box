@@ -36,6 +36,7 @@ export default function Settings() {
     }
 
     return(
+        <div className="bodyCenter">
         <div>
             <h1>Settings</h1>
 
@@ -65,6 +66,7 @@ export default function Settings() {
                 </strong>
             </p> */}
 
+        </div>
         </div>
     )
 }

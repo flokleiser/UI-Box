@@ -280,15 +280,16 @@ function Ball() {
     function resetScene() {
         setResetTrigger(prev => prev + 1);
     }
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Ball"),
-        react_1.default.createElement("canvas", { style: {
-                width: '100vw',
-                height: '100vh',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                overflow: 'hidden',
-                zIndex: -10
-            }, id: "sceneBall" })));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, "Ball"),
+            react_1.default.createElement("canvas", { style: {
+                    width: '100vw',
+                    height: '100vh',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    overflow: 'hidden',
+                    zIndex: -10
+                }, id: "sceneBall" }))));
 }

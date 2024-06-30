@@ -47424,29 +47424,30 @@ function Navbar() {
     function toggleIcon() {
         setIsDark(!isDark);
     }
-    return (react_1.default.createElement("nav", null,
-        react_1.default.createElement("div", { className: "left-buttons" },
-            react_1.default.createElement("button", { className: "navbarButton", id: "homeButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home")),
-            react_1.default.createElement("button", { className: "navbarButton", id: "buttonspageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps")),
-            react_1.default.createElement("button", { className: "navbarButton", id: "spinnerpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node")),
-            react_1.default.createElement("button", { className: "navbarButton", id: "particlespageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur")),
-            react_1.default.createElement("button", { className: "navbarButton", id: "switchespageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
-            react_1.default.createElement("button", { className: "navbarButton", id: "tetherpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
-            react_1.default.createElement("button", { className: "navbarButton", id: "ballpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
-            react_1.default.createElement("button", { className: "navbarButton", id: "joystickpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
-            react_1.default.createElement("button", { className: "navbarButton", id: "testpageButton" },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz"))),
-        react_1.default.createElement("div", { className: "settingsButton" },
-            react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
-                react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));
+    return (react_1.default.createElement("div", { className: "bodyCenter", style: { paddingTop: '1.5rem', paddingBottom: '0.5rem' } },
+        react_1.default.createElement("nav", null,
+            react_1.default.createElement("div", { className: "navbarLeft" },
+                react_1.default.createElement("button", { className: "navbarButton", id: "homeButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "buttonspageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "spinnerpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "particlespageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "switchespageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "tetherpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "ballpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "joystickpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "testpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz"))),
+            react_1.default.createElement("div", { className: "settingsButton" },
+                react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast"))))));
 }
 
 
@@ -47740,17 +47741,18 @@ function Ball() {
     function resetScene() {
         setResetTrigger(prev => prev + 1);
     }
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Ball"),
-        react_1.default.createElement("canvas", { style: {
-                width: '100vw',
-                height: '100vh',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                overflow: 'hidden',
-                zIndex: -10
-            }, id: "sceneBall" })));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, "Ball"),
+            react_1.default.createElement("canvas", { style: {
+                    width: '100vw',
+                    height: '100vh',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    overflow: 'hidden',
+                    zIndex: -10
+                }, id: "sceneBall" }))));
 }
 
 
@@ -47809,26 +47811,27 @@ function Buttons() {
         const updateToggle = isToggled.map((state, i) => i === index ? !state : state);
         setIsToggled(updateToggle);
     };
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, " Buttons "),
-        react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' } },
-            react_1.default.createElement("div", { className: "buttonContainer" },
-                react_1.default.createElement("div", { className: "buttonRow" },
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                    react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
-                    react_1.default.createElement("button", { className: "button1" }, " ")),
-                react_1.default.createElement("div", { className: "buttonRow" },
-                    react_1.default.createElement("button", { className: "button1" }, " "),
-                    react_1.default.createElement("button", { className: "button1" }, " "),
-                    react_1.default.createElement("button", { className: "button1" }, " ")),
-                react_1.default.createElement("div", { className: "buttonRow" },
-                    react_1.default.createElement("button", { className: "button1" }, " "),
-                    react_1.default.createElement("button", { className: "button1" }, " "),
-                    react_1.default.createElement("button", { className: "button1" }, " "))),
-            react_1.default.createElement("div", { className: "buttonColumn" },
-                react_1.default.createElement("button", { className: `${isToggled[0] ? 'button2toggled' : 'button2'}`, id: "buttonToggle1", onMouseDown: () => handleToggle(0) }),
-                react_1.default.createElement("button", { className: `${isToggled[1] ? 'button2toggled' : 'button2'}`, id: "buttonToggle2", onMouseDown: () => handleToggle(1) }),
-                react_1.default.createElement("button", { className: `${isToggled[2] ? 'button2toggled' : 'button2'}`, id: "buttonToggle3", onMouseDown: () => handleToggle(2) })))));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, " Buttons "),
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' } },
+                react_1.default.createElement("div", { className: "buttonContainer" },
+                    react_1.default.createElement("div", { className: "buttonRow" },
+                        react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
+                        react_1.default.createElement("button", { className: "button1", id: "buttonTest", onMouseDown: handlePress }, " "),
+                        react_1.default.createElement("button", { className: "button1" }, " ")),
+                    react_1.default.createElement("div", { className: "buttonRow" },
+                        react_1.default.createElement("button", { className: "button1" }, " "),
+                        react_1.default.createElement("button", { className: "button1" }, " "),
+                        react_1.default.createElement("button", { className: "button1" }, " ")),
+                    react_1.default.createElement("div", { className: "buttonRow" },
+                        react_1.default.createElement("button", { className: "button1" }, " "),
+                        react_1.default.createElement("button", { className: "button1" }, " "),
+                        react_1.default.createElement("button", { className: "button1" }, " "))),
+                react_1.default.createElement("div", { className: "buttonColumn" },
+                    react_1.default.createElement("button", { className: `${isToggled[0] ? 'button2toggled' : 'button2'}`, id: "buttonToggle1", onMouseDown: () => handleToggle(0) }),
+                    react_1.default.createElement("button", { className: `${isToggled[1] ? 'button2toggled' : 'button2'}`, id: "buttonToggle2", onMouseDown: () => handleToggle(1) }),
+                    react_1.default.createElement("button", { className: `${isToggled[2] ? 'button2toggled' : 'button2'}`, id: "buttonToggle3", onMouseDown: () => handleToggle(2) }))))));
 }
 
 
@@ -47851,10 +47854,11 @@ function Home({ loadPage }) {
     // const handleSettingsClick = () => {
     //     window.loadPage('Settings');
     // };
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, " UI-Box "),
-        react_1.default.createElement("div", { className: "logo" },
-            react_1.default.createElement("img", { className: "logoImg", src: "./media/icon.png" }))));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, " UI-Box "),
+            react_1.default.createElement("div", { className: "logo" },
+                react_1.default.createElement("img", { className: "logoImg", src: "./media/icon.png" })))));
 }
 
 
@@ -48167,17 +48171,18 @@ function Joystick() {
     function resetScene() {
         setResetTrigger(prev => prev + 1);
     }
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Joystick"),
-        react_1.default.createElement("canvas", { style: {
-                width: '100vw',
-                height: '100vh',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                overflow: 'hidden',
-                zIndex: -10
-            }, id: "canvasKeyboard" })));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, "Joystick"),
+            react_1.default.createElement("canvas", { style: {
+                    width: '100vw',
+                    height: '100vh',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    overflow: 'hidden',
+                    zIndex: -10
+                }, id: "canvasKeyboard" }))));
 }
 
 
@@ -48351,17 +48356,18 @@ function Particles() {
     function resetScene() {
         setResetTrigger(prev => prev + 1);
     }
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, " Particles "),
-        react_1.default.createElement("canvas", { style: {
-                width: window.innerWidth,
-                height: window.innerHeight,
-                position: "absolute",
-                top: 0,
-                left: 0,
-                overflow: "hidden",
-                zIndex: -10,
-            }, id: "scene" })));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, " Particles "),
+            react_1.default.createElement("canvas", { style: {
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    overflow: "hidden",
+                    zIndex: -10,
+                }, id: "scene" }))));
 }
 
 
@@ -48504,17 +48510,18 @@ function Spinner() {
             window.removeEventListener('mouseup', handleMouseUp);
         };
     }, [isDragging, dragStartAngle, initialRotation, lastTime]);
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, " Spinner "),
-        react_1.default.createElement("div", { className: "spinnerDiv" },
-            react_1.default.createElement("div", { className: "spinner", ref: spinnerRef, onMouseDown: handleMouseDown, style: { transform: `rotate(${rotation}deg)` } },
-                react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '0%', left: '50%' } }),
-                react_1.default.createElement("div", { className: "spinnerCircleCenter", style: { top: '50%', left: '50%' } }),
-                react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '75%', left: '6.5%' } }),
-                react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '75%', left: '93.5%' } }),
-                react_1.default.createElement("div", { className: "line", style: { top: '0%', left: '49%', height: '50%' } }),
-                react_1.default.createElement("div", { className: "line", style: { top: '36%', left: '29%', height: '50%', transform: 'rotate(60deg' } }),
-                react_1.default.createElement("div", { className: "line", style: { top: '36%', left: '70%', height: '50%', transform: 'rotate(120deg' } })))));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, " Spinner "),
+            react_1.default.createElement("div", { className: "spinnerDiv" },
+                react_1.default.createElement("div", { className: "spinner", ref: spinnerRef, onMouseDown: handleMouseDown, style: { transform: `rotate(${rotation}deg)` } },
+                    react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '0%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "spinnerCircleCenter", style: { top: '50%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '75%', left: '6.5%' } }),
+                    react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '75%', left: '93.5%' } }),
+                    react_1.default.createElement("div", { className: "line", style: { top: '0%', left: '49%', height: '50%' } }),
+                    react_1.default.createElement("div", { className: "line", style: { top: '36%', left: '29%', height: '50%', transform: 'rotate(60deg' } }),
+                    react_1.default.createElement("div", { className: "line", style: { top: '36%', left: '70%', height: '50%', transform: 'rotate(120deg' } }))))));
 }
 
 
@@ -48616,38 +48623,39 @@ function Switches() {
             setVerticalPosition('bottom');
         }
     }
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, " Switches "),
-        react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' } },
-            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column' } },
-                react_1.default.createElement("div", { className: 'centerContainer' },
-                    react_1.default.createElement("div", { className: 'switcherDiv', style: { backgroundColor: isSwitched ? "#ddd" : "#333", transition: '0.3s' }, onMouseDown: handleSwitch },
-                        react_1.default.createElement("div", { className: 'switcherCircle', style: { left: isSwitched ? "0px" : "100px", transition: '0.3s', backgroundColor: isSwitched ? "#333" : "#ddd" } }))),
-                react_1.default.createElement("div", { className: 'centerContainer', id: "horizontalSwitch" },
-                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 350,
-                            // backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgba(151,151,151)",
-                            backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgba(255,255,255,0)",
-                            backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #ddd 50%, #333 50%)" : '',
-                            // opacity: horizontalPosition === 'middle' ? 1 : 0,
-                            // transition:'background-color 0.3s, background-image:0.3s'
-                            transition: '0.3s'
-                        }, onMouseDown: handleSwitchHorizontal },
-                        react_1.default.createElement(framer_motion_1.motion.div, { className: "switcherCircleHorizontal", style: {
-                                left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
-                                backgroundColor: horizontalPosition === 'left' ? "#333" : horizontalPosition === 'right' ? "#ddd" : "rgba(151,151,151,0.5)",
-                                backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #333 50%, #ddd 50%)" : '',
-                                border: horizontalPosition === 'middle' ? "3px solid #333" : 0,
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, " Switches "),
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' } },
+                react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column' } },
+                    react_1.default.createElement("div", { className: 'centerContainer' },
+                        react_1.default.createElement("div", { className: 'switcherDiv', style: { backgroundColor: isSwitched ? "#ddd" : "#333", transition: '0.3s' }, onMouseDown: handleSwitch },
+                            react_1.default.createElement("div", { className: 'switcherCircle', style: { left: isSwitched ? "0px" : "100px", transition: '0.3s', backgroundColor: isSwitched ? "#333" : "#ddd" } }))),
+                    react_1.default.createElement("div", { className: 'centerContainer', id: "horizontalSwitch" },
+                        react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 350,
+                                // backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgba(151,151,151)",
+                                backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgba(255,255,255,0)",
+                                backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #ddd 50%, #333 50%)" : '',
+                                // opacity: horizontalPosition === 'middle' ? 1 : 0,
+                                // transition:'background-color 0.3s, background-image:0.3s'
                                 transition: '0.3s'
-                            } }))),
+                            }, onMouseDown: handleSwitchHorizontal },
+                            react_1.default.createElement(framer_motion_1.motion.div, { className: "switcherCircleHorizontal", style: {
+                                    left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
+                                    backgroundColor: horizontalPosition === 'left' ? "#333" : horizontalPosition === 'right' ? "#ddd" : "rgba(151,151,151,0.5)",
+                                    backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #333 50%, #ddd 50%)" : '',
+                                    border: horizontalPosition === 'middle' ? "3px solid #333" : 0,
+                                    transition: '0.3s'
+                                } }))),
+                    react_1.default.createElement("div", { className: 'centerContainer' },
+                        react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 275, display: 'flex', justifyContent: 'center', backgroundColor: '#333' }, onMouseDown: handleSwitchFill },
+                            react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "#ddd" : "#333", transition: '0.05s', rotate: '180deg' } }),
+                            react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "#333" : "#ddd", transition: '0.05s' } })))),
                 react_1.default.createElement("div", { className: 'centerContainer' },
-                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 275, display: 'flex', justifyContent: 'center', backgroundColor: '#333' }, onMouseDown: handleSwitchFill },
-                        react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "#ddd" : "#333", transition: '0.05s', rotate: '180deg' } }),
-                        react_1.default.createElement("div", { className: 'switcherDivHalf', style: { backgroundColor: isSwitchedFill ? "#333" : "#ddd", transition: '0.05s' } })))),
-            react_1.default.createElement("div", { className: 'centerContainer' },
-                react_1.default.createElement("div", { className: "switcherDivVertical" },
-                    react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch", className: 'switcherDivVerticalLine' },
-                        react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', drag: "y", dragConstraints: constraints, dragElastic: 0, onDragEnd: handleDragEnd, animate: controls, style: { top: "0px", transition: '0.05s' } },
-                            react_1.default.createElement("div", { className: 'switcherCircleVerticalFill' }))))))));
+                    react_1.default.createElement("div", { className: "switcherDivVertical" },
+                        react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch", className: 'switcherDivVerticalLine' },
+                            react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', drag: "y", dragConstraints: constraints, dragElastic: 0, onDragEnd: handleDragEnd, animate: controls, style: { top: "0px", transition: '0.05s' } },
+                                react_1.default.createElement("div", { className: 'switcherCircleVerticalFill' })))))))));
 }
 
 
@@ -48692,16 +48700,17 @@ function Test() {
         const updateActive = isActive.map((state, i) => i === index ? !state : state);
         setIsActive(updateActive);
     };
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Test"),
-        react_1.default.createElement("div", { className: "tabs" },
-            react_1.default.createElement("div", { className: `${isActive[0] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(0) },
-                react_1.default.createElement("div", { className: "tab-box" })),
-            react_1.default.createElement("div", { className: `${isActive[1] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(1) },
-                react_1.default.createElement("div", { className: "tab-box" })),
-            react_1.default.createElement("div", { className: `${isActive[2] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(2) },
-                react_1.default.createElement("div", { className: "tab-box" }))),
-        react_1.default.createElement("div", { className: "content" })));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, "Test"),
+            react_1.default.createElement("div", { className: "tabs" },
+                react_1.default.createElement("div", { className: `${isActive[0] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(0) },
+                    react_1.default.createElement("div", { className: "tab-box" })),
+                react_1.default.createElement("div", { className: `${isActive[1] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(1) },
+                    react_1.default.createElement("div", { className: "tab-box" })),
+                react_1.default.createElement("div", { className: `${isActive[2] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(2) },
+                    react_1.default.createElement("div", { className: "tab-box" }))),
+            react_1.default.createElement("div", { className: "content" }))));
 }
 { /* <div className="surface">
 <div className="mock-browser">
@@ -49051,17 +49060,18 @@ function Tether() {
     function resetScene() {
         setResetTrigger(prev => prev + 1);
     }
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Tether"),
-        react_1.default.createElement("canvas", { style: {
-                width: '100vw',
-                height: '100vh',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                overflow: 'hidden',
-                zIndex: -10
-            }, id: "sceneTether" })));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, "Tether"),
+            react_1.default.createElement("canvas", { style: {
+                    width: '100vw',
+                    height: '100vh',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    overflow: 'hidden',
+                    zIndex: -10
+                }, id: "sceneTether" }))));
 }
 
 

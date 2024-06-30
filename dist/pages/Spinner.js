@@ -129,15 +129,16 @@ function Spinner() {
             window.removeEventListener('mouseup', handleMouseUp);
         };
     }, [isDragging, dragStartAngle, initialRotation, lastTime]);
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, " Spinner "),
-        react_1.default.createElement("div", { className: "spinnerDiv" },
-            react_1.default.createElement("div", { className: "spinner", ref: spinnerRef, onMouseDown: handleMouseDown, style: { transform: `rotate(${rotation}deg)` } },
-                react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '0%', left: '50%' } }),
-                react_1.default.createElement("div", { className: "spinnerCircleCenter", style: { top: '50%', left: '50%' } }),
-                react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '75%', left: '6.5%' } }),
-                react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '75%', left: '93.5%' } }),
-                react_1.default.createElement("div", { className: "line", style: { top: '0%', left: '49%', height: '50%' } }),
-                react_1.default.createElement("div", { className: "line", style: { top: '36%', left: '29%', height: '50%', transform: 'rotate(60deg' } }),
-                react_1.default.createElement("div", { className: "line", style: { top: '36%', left: '70%', height: '50%', transform: 'rotate(120deg' } })))));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, " Spinner "),
+            react_1.default.createElement("div", { className: "spinnerDiv" },
+                react_1.default.createElement("div", { className: "spinner", ref: spinnerRef, onMouseDown: handleMouseDown, style: { transform: `rotate(${rotation}deg)` } },
+                    react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '0%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "spinnerCircleCenter", style: { top: '50%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '75%', left: '6.5%' } }),
+                    react_1.default.createElement("div", { className: "spinnerCircle", style: { top: '75%', left: '93.5%' } }),
+                    react_1.default.createElement("div", { className: "line", style: { top: '0%', left: '49%', height: '50%' } }),
+                    react_1.default.createElement("div", { className: "line", style: { top: '36%', left: '29%', height: '50%', transform: 'rotate(60deg' } }),
+                    react_1.default.createElement("div", { className: "line", style: { top: '36%', left: '70%', height: '50%', transform: 'rotate(120deg' } }))))));
 }

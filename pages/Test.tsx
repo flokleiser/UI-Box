@@ -13,6 +13,7 @@ export default function Test() {
       }
 
     return (
+      <div className="bodyCenter">
         <div>
             <h1>Test</h1>
 
@@ -33,6 +34,7 @@ export default function Test() {
             <div className="content">
              </div>
 
+        </div>
         </div>
     );
 }

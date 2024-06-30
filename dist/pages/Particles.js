@@ -160,15 +160,16 @@ function Particles() {
     function resetScene() {
         setResetTrigger(prev => prev + 1);
     }
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, " Particles "),
-        react_1.default.createElement("canvas", { style: {
-                width: window.innerWidth,
-                height: window.innerHeight,
-                position: "absolute",
-                top: 0,
-                left: 0,
-                overflow: "hidden",
-                zIndex: -10,
-            }, id: "scene" })));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, " Particles "),
+            react_1.default.createElement("canvas", { style: {
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    overflow: "hidden",
+                    zIndex: -10,
+                }, id: "scene" }))));
 }

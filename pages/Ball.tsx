@@ -320,6 +320,7 @@ export default function Ball() {
 
 
     return (
+        <div className="bodyCenter">
         <div>
             <h1>Ball</h1>
 
@@ -335,6 +336,7 @@ export default function Ball() {
                 }}
                 id="sceneBall">
             </canvas>
+        </div>
         </div>
     );
 }

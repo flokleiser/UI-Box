@@ -74,6 +74,7 @@ export default function Switches() {
 
 
     return(
+        <div className="bodyCenter">
         <div>
             <h1> Switches </h1>
 
@@ -165,5 +166,6 @@ export default function Switches() {
             </div>
 
         </div>    
+        </div>
     )
 }

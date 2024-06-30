@@ -133,6 +133,7 @@ export default function Spinner() {
     }, [isDragging, dragStartAngle, initialRotation, lastTime]);
 
     return(
+        <div className="bodyCenter">
         <div>
             <h1> Spinner </h1>
             <div className="spinnerDiv">
@@ -153,5 +154,6 @@ export default function Spinner() {
                 </div>
                 </div>
         </div>    
+        </div>
     )
 }

@@ -31,16 +31,17 @@ function Test() {
         const updateActive = isActive.map((state, i) => i === index ? !state : state);
         setIsActive(updateActive);
     };
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Test"),
-        react_1.default.createElement("div", { className: "tabs" },
-            react_1.default.createElement("div", { className: `${isActive[0] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(0) },
-                react_1.default.createElement("div", { className: "tab-box" })),
-            react_1.default.createElement("div", { className: `${isActive[1] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(1) },
-                react_1.default.createElement("div", { className: "tab-box" })),
-            react_1.default.createElement("div", { className: `${isActive[2] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(2) },
-                react_1.default.createElement("div", { className: "tab-box" }))),
-        react_1.default.createElement("div", { className: "content" })));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, "Test"),
+            react_1.default.createElement("div", { className: "tabs" },
+                react_1.default.createElement("div", { className: `${isActive[0] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(0) },
+                    react_1.default.createElement("div", { className: "tab-box" })),
+                react_1.default.createElement("div", { className: `${isActive[1] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(1) },
+                    react_1.default.createElement("div", { className: "tab-box" })),
+                react_1.default.createElement("div", { className: `${isActive[2] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(2) },
+                    react_1.default.createElement("div", { className: "tab-box" }))),
+            react_1.default.createElement("div", { className: "content" }))));
 }
 { /* <div className="surface">
 <div className="mock-browser">

@@ -30,6 +30,7 @@ export default function Buttons() {
 
 
     return(
+      <div className="bodyCenter">
         <div>
             <h1> Buttons </h1>
 
@@ -66,6 +67,7 @@ export default function Buttons() {
 
             </div>
 
+        </div>
         </div>
     )
 }

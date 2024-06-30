@@ -114,6 +114,7 @@ export default function Lock() {
 
 
     return (
+        <div className="bodyCenter">
         <div>
             <h1>Lock (WIP)</h1>
             <canvas
@@ -128,6 +129,7 @@ export default function Lock() {
                 }}
                 id="canvasLock">
             </canvas>
+        </div>
         </div>
     );
 }

@@ -6,15 +6,77 @@
     --canvas-colorelement-light: #333;
   }
 
-
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+
+  /* OLD STYLE: add below back to body and remove .bodyCenter */
+
+    /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
         Arial, sans-serif;
     margin: auto;
     max-width: 38rem;
     padding: 1.5rem;
-    overflow:hidden;
+    overflow:hidden; */
+
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+    margin:0
 }
+
+.bodyCenter {
+  margin: auto;
+  max-width: 38rem;
+  padding: 1.5rem;
+  padding-top:0;
+  /* overflow:hidden; */
+}
+
+#navbarRoot {
+  background-color: #494949;
+  /* background-color: rgba(51,51,51,0.5); */
+  /* background-color: rgba(255,255,255,0.5); */
+}
+
+/* TAB EXPERIMENTS */
+.tabs {
+  height:45px;
+  padding: 0 0 0 0;
+  overflow:visible;
+}
+.tab {
+  width:100px;
+  height:45px;
+  overflow:hidden;
+  float:left;
+  margin:0 -15px 0 0;
+}
+
+.tab-box {
+  height:50px;
+  background: rgb(221, 221, 221,0.5);
+  border-radius: 4px;
+  border:1px solid #ccc;
+  margin:0 10px 0;
+  box-shadow: 0 0 2px  #fff inset;
+}
+
+.tab.active {
+  z-index:40;
+  position:relative;
+  padding-bottom:1px;
+}
+.tab.active .tab-box{
+  background-color: rgb(221, 221, 221);
+}
+
+.content {
+  z-index:1;
+  padding:100px;
+  border:1px solid #ccc;
+  background:#ddd;
+  position:relative;
+  
+}
+/* TAB EXPERIMENTS */
 
 nav{
   display: flex;
@@ -32,25 +94,39 @@ nav{
   padding-bottom:1px;
 }
 
+/* OLD NAVBAR BUTTON */
+/* .navbarButton{
+  display:flex;
+  margin-left:auto;
+  padding-top: 1px;
+  padding-bottom:1px;
+} */
+
+.navbarLeft{
+  display:flex;
+  gap:7px;
+}
+
 .navbarButton{
   display:flex;
   margin-left:auto;
   padding-top: 1px;
   padding-bottom:1px;
+
+  background: rgb(221, 221, 221,0.5);
+  border-radius: 4px;
+  border:1px solid #ccc;
+  box-shadow: 0 0 2px  #fff inset;
 }
 
-.navbarButton:active{
+/* .navbarButton:active{
   background-color: #333;
-}
+} */
 
-.left-buttons {
-  display:flex;
-  gap:7px;
-}
-.navbar button{
+/* .navbar button{
   width: 100px;
   margin-right:0.25rem;
-}
+} */
 
 .buttonContainer{
   display: flex;
@@ -295,57 +371,6 @@ nav{
   align-items: center;
 }
 
-  
-
-/* TAB EXPERIMENTS */
-.tabs {
-  height:45px;
-  padding: 0 0 0 0;
-  overflow:visible;
-}
-.tab {
-  width:100px;
-  height:45px;
-  overflow:hidden;
-  float:left;
-  margin:0 -15px 0 0;
-}
-
-.tab-box {
-  height:50px;
-  /* background: #fff; */
-  background: rgb(221, 221, 221,0.5);
-  border-radius: 4px;
-  border:1px solid #ccc;
-  margin:0 10px 0;
-  box-shadow: 0 0 2px  #fff inset;
-}
-
-.tab.active {
-  z-index:40;
-  position:relative;
-  padding-bottom:1px;
-}
-.tab.active .tab-box{
-  background-color: rgb(221, 221, 221);
-  /* @include background-image(linear-gradient(top, #ccc , #ddd 3%, rgba(#eee, 0.5)  )); */
-  /* box-shadow: 0 0 2px 0 #fff inset; */
-}
-
-.content {
-  z-index:1;
-  padding:100px;
-  border:1px solid #ccc;
-  background:#ddd;
-  position:relative;
-  
-}
-/* TAB EXPERIMENTS */
-
-
-
-
-
   @media (prefers-color-scheme: dark) {
     body { background: #333; color: white; }
     :root {
@@ -357,6 +382,8 @@ nav{
   
   @media (prefers-color-scheme: light) {
     body { background: #ddd; color: #333; }
+
+    #navbarRoot {background-color: rgba(255,255,255,0.5);}
 
     .spinnerCircle {background-color: #333;}
     .spinnerCircleCenter {background-color: rgb(51, 51, 51);}

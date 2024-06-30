@@ -46,11 +46,12 @@ function Settings() {
             return 'System';
         }
     }
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, "Settings"),
-        react_1.default.createElement("p", null,
-            "Current:",
-            react_1.default.createElement("strong", { id: "theme-source" }, themeSourceDisplay())),
-        react_1.default.createElement("button", { className: "buttonInSettings", id: "toggle-dark-mode", onMouseDown: toggleDarkMode }, "Toggle Dark Mode"),
-        react_1.default.createElement("button", { className: "buttonInSettings", id: "reset-to-system", onMouseDown: toggleSystemMode }, "Reset to System Theme")));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, "Settings"),
+            react_1.default.createElement("p", null,
+                "Current:",
+                react_1.default.createElement("strong", { id: "theme-source" }, themeSourceDisplay())),
+            react_1.default.createElement("button", { className: "buttonInSettings", id: "toggle-dark-mode", onMouseDown: toggleDarkMode }, "Toggle Dark Mode"),
+            react_1.default.createElement("button", { className: "buttonInSettings", id: "reset-to-system", onMouseDown: toggleSystemMode }, "Reset to System Theme"))));
 }

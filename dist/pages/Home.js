@@ -9,8 +9,9 @@ function Home({ loadPage }) {
     // const handleSettingsClick = () => {
     //     window.loadPage('Settings');
     // };
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", null, " UI-Box "),
-        react_1.default.createElement("div", { className: "logo" },
-            react_1.default.createElement("img", { className: "logoImg", src: "./media/icon.png" }))));
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, " UI-Box "),
+            react_1.default.createElement("div", { className: "logo" },
+                react_1.default.createElement("img", { className: "logoImg", src: "./media/icon.png" })))));
 }

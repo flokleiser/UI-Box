@@ -12,8 +12,9 @@ export default function Navbar() {
 
   return(
 
+  <div className="bodyCenter" style={{paddingTop:'1.5rem', paddingBottom:'0.5rem'}}>
   <nav>
-    <div className="left-buttons">
+    <div className="navbarLeft">
 
       <button className="navbarButton" id="homeButton">
         <span className="material-symbols-outlined">
@@ -93,6 +94,7 @@ export default function Navbar() {
       </div>
 
     </nav>
+    </div>
   )
 }
 

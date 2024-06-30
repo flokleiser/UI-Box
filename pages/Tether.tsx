@@ -329,6 +329,7 @@ export default function Tether() {
     }
 
     return (
+        <div className="bodyCenter">
         <div>
             <h1>Tether</h1>
             <canvas
@@ -343,6 +344,7 @@ export default function Tether() {
                 }}
                 id="sceneTether">
             </canvas>
+        </div>
         </div>
     );
 }
