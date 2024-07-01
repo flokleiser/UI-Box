@@ -212,7 +212,6 @@ function Ball() {
                     if (ballY + radius > wh)
                         ballY = wh - radius;
                     if (ballY - radius < 0 + navbarHeight) {
-                        console.log('top?');
                         ballY = navbarHeight + radius;
                     }
                 }

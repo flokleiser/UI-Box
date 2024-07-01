@@ -47420,97 +47420,43 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Navbar;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Navbar() {
-    const newNavbar = false;
-    // const newNavbar = true;
     const [isDark, setIsDark] = (0, react_1.useState)(false);
     function toggleIcon() {
         setIsDark(!isDark);
     }
     document.addEventListener('DOMContentLoaded', function () {
-        if (newNavbar) {
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function () {
-                    const activeTab = document.querySelector('.tab.active');
-                    activeTab.classList.remove('active');
-                    tab.classList.add('active');
-                });
+        const oldTabs = document.querySelectorAll('.navbarButton');
+        oldTabs.forEach(oldTab => {
+            oldTab.addEventListener('click', function () {
+                const activeOldTab = document.querySelector('.navbarButton.active');
+                activeOldTab.classList.remove('active');
+                oldTab.classList.add('active');
             });
-        }
-        else {
-            const oldTabs = document.querySelectorAll('.navbarButton');
-            oldTabs.forEach(oldTab => {
-                oldTab.addEventListener('click', function () {
-                    const activeOldTab = document.querySelector('.navbarButton.active');
-                    activeOldTab.classList.remove('active');
-                    oldTab.classList.add('active');
-                });
-            });
-        }
+        });
     });
-    if (!newNavbar) {
-        return (react_1.default.createElement("div", { className: "bodyCenter", style: { paddingTop: '1rem', paddingBottom: '0.5rem' } },
-            react_1.default.createElement("nav", null,
-                react_1.default.createElement("div", { className: "navbarLeft" },
-                    react_1.default.createElement("button", { className: "navbarButton active", id: "homeButton" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home")),
-                    react_1.default.createElement("button", { className: "navbarButton", id: "buttonspageButton" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps")),
-                    react_1.default.createElement("button", { className: "navbarButton", id: "spinnerpageButton" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node")),
-                    react_1.default.createElement("button", { className: "navbarButton", id: "particlespageButton" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur")),
-                    react_1.default.createElement("button", { className: "navbarButton", id: "switchespageButton" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
-                    react_1.default.createElement("button", { className: "navbarButton", id: "tetherpageButton" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
-                    react_1.default.createElement("button", { className: "navbarButton", id: "ballpageButton" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
-                    react_1.default.createElement("button", { className: "navbarButton", id: "joystickpageButton" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
-                    react_1.default.createElement("button", { className: "navbarButton", id: "testpageButton" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz"))),
-                react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));
-    }
-    // }
-    else {
-        return (
-        // <div className="bodyCenter" style={{padding:0, paddingTop:'1.5rem', paddingBottom:'0rem'}}>
-        react_1.default.createElement("div", { className: "bodyCenter", style: { padding: 0, paddingTop: '1rem', paddingBottom: '0rem' } },
-            react_1.default.createElement("nav", null,
-                react_1.default.createElement("div", { className: "tabs" },
-                    react_1.default.createElement("div", { className: "tab active", id: "homeButton" },
-                        react_1.default.createElement("div", { className: "tab-box" },
-                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home"))),
-                    react_1.default.createElement("div", { className: "tab", id: "buttonspageButton" },
-                        react_1.default.createElement("div", { className: "tab-box" },
-                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps"))),
-                    react_1.default.createElement("div", { className: "tab", id: "spinnerpageButton" },
-                        react_1.default.createElement("div", { className: "tab-box" },
-                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node"))),
-                    react_1.default.createElement("div", { className: "tab", id: "particlespageButton" },
-                        react_1.default.createElement("div", { className: "tab-box" },
-                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur"))),
-                    react_1.default.createElement("div", { className: "tab", id: "switchespageButton" },
-                        react_1.default.createElement("div", { className: "tab-box" },
-                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on"))),
-                    react_1.default.createElement("div", { className: "tab", id: "tetherpageButton" },
-                        react_1.default.createElement("div", { className: "tab-box" },
-                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy"))),
-                    react_1.default.createElement("div", { className: "tab", id: "ballpageButton" },
-                        react_1.default.createElement("div", { className: "tab-box" },
-                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops"))),
-                    react_1.default.createElement("div", { className: "tab", id: "joystickpageButton" },
-                        react_1.default.createElement("div", { className: "tab-box" },
-                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick"))),
-                    react_1.default.createElement("div", { className: "tab", id: "testpageButton" },
-                        react_1.default.createElement("div", { className: "tab-box" },
-                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz")))),
-                react_1.default.createElement("div", { className: "settingsButton", style: { paddingRight: '1.5rem' } },
-                    react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast"))))));
-    }
+    return (react_1.default.createElement("div", { className: "bodyCenter", style: { paddingTop: '1rem', paddingBottom: '0.5rem' } },
+        react_1.default.createElement("nav", null,
+            react_1.default.createElement("div", { className: "navbarLeft" },
+                react_1.default.createElement("button", { className: "navbarButton active", id: "homeButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "buttonspageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "spinnerpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "particlespageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "switchespageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "tetherpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "ballpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "joystickpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
+                react_1.default.createElement("button", { className: "navbarButton", id: "testpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz"))),
+            react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
+                react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));
 }
 
 
@@ -47736,7 +47682,6 @@ function Ball() {
                     if (ballY + radius > wh)
                         ballY = wh - radius;
                     if (ballY - radius < 0 + navbarHeight) {
-                        console.log('top?');
                         ballY = navbarHeight + radius;
                     }
                 }
