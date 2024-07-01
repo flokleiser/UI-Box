@@ -48,7 +48,6 @@ body {
   float:left;
   margin:0 -15px 0 0;
 }
-
 .tab-box {
   height:50px;
   background: rgb(221, 221, 221,0.5);
@@ -57,16 +56,13 @@ body {
   margin:0 10px 0;
   box-shadow: 0 0 2px  #fff inset;
 }
-
 .tab.active {
   z-index:110;
   position:relative;
 }
-
 .tab.active .tab-box{
   background-color:#333;
 }
-
 .content {
   z-index:1;
   padding:100px;

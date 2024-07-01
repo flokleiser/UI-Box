@@ -47417,47 +47417,37 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports["default"] = Navbar;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-function Navbar() {
+const Navbar = ({ activePage }) => {
     const [isDark, setIsDark] = (0, react_1.useState)(false);
     function toggleIcon() {
         setIsDark(!isDark);
     }
-    document.addEventListener('DOMContentLoaded', function () {
-        const oldTabs = document.querySelectorAll('.navbarButton');
-        oldTabs.forEach(oldTab => {
-            oldTab.addEventListener('click', function () {
-                const activeOldTab = document.querySelector('.navbarButton.active');
-                activeOldTab.classList.remove('active');
-                oldTab.classList.add('active');
-            });
-        });
-    });
     return (react_1.default.createElement("div", { className: "bodyCenter", style: { paddingTop: '1rem', paddingBottom: '0.5rem' } },
         react_1.default.createElement("nav", null,
             react_1.default.createElement("div", { className: "navbarLeft" },
-                react_1.default.createElement("button", { className: "navbarButton active", id: "homeButton" },
+                react_1.default.createElement("button", { className: activePage === 'Home' ? "navbarButton active" : "navbarButton", id: "homeButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home")),
-                react_1.default.createElement("button", { className: "navbarButton", id: "buttonspageButton" },
+                react_1.default.createElement("button", { className: activePage === 'Buttons' ? "navbarButton active" : "navbarButton", id: "buttonspageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps")),
-                react_1.default.createElement("button", { className: "navbarButton", id: "spinnerpageButton" },
+                react_1.default.createElement("button", { className: activePage === 'Spinner' ? "navbarButton active" : "navbarButton", id: "spinnerpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node")),
-                react_1.default.createElement("button", { className: "navbarButton", id: "particlespageButton" },
+                react_1.default.createElement("button", { className: activePage === 'Particles' ? "navbarButton active" : "navbarButton", id: "particlespageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur")),
-                react_1.default.createElement("button", { className: "navbarButton", id: "switchespageButton" },
+                react_1.default.createElement("button", { className: activePage === 'Switches' ? "navbarButton active" : "navbarButton", id: "switchespageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
-                react_1.default.createElement("button", { className: "navbarButton", id: "tetherpageButton" },
+                react_1.default.createElement("button", { className: activePage === 'Tether' ? "navbarButton active" : "navbarButton", id: "tetherpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
-                react_1.default.createElement("button", { className: "navbarButton", id: "ballpageButton" },
+                react_1.default.createElement("button", { className: activePage === 'Ball' ? "navbarButton active" : "navbarButton", id: "ballpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
-                react_1.default.createElement("button", { className: "navbarButton", id: "joystickpageButton" },
+                react_1.default.createElement("button", { className: activePage === 'Joystick' ? "navbarButton active" : "navbarButton", id: "joystickpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
-                react_1.default.createElement("button", { className: "navbarButton", id: "testpageButton" },
+                react_1.default.createElement("button", { className: activePage === 'Test' ? "navbarButton active" : "navbarButton", id: "testpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz"))),
             react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
                 react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));
-}
+};
+exports["default"] = Navbar;
 
 
 /***/ }),
@@ -48697,15 +48687,15 @@ function Switches() {
         const clickX = e.clientX - rect.left;
         if (clickX < rect.width / 3) {
             setHorizontalPosition('left');
-            console.log('left');
+            // console.log('left')
         }
         else if (clickX < (rect.width / 3) * 2) {
             setHorizontalPosition('middle');
-            console.log('middle');
+            // console.log('middle')
         }
         else {
             setHorizontalPosition('right');
-            console.log('right');
+            // console.log('right')
         }
     }
     function handleDragEnd(e, info) {
@@ -48732,17 +48722,15 @@ function Switches() {
                             react_1.default.createElement("div", { className: 'switcherCircle', style: { left: isSwitched ? "0px" : "100px", transition: '0.3s', backgroundColor: isSwitched ? "#333" : "#ddd" } }))),
                     react_1.default.createElement("div", { className: 'centerContainer', id: "horizontalSwitch" },
                         react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 350,
-                                // backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgba(151,151,151)",
-                                backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgba(255,255,255,0)",
-                                backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #ddd 50%, #333 50%)" : '',
-                                // opacity: horizontalPosition === 'middle' ? 1 : 0,
-                                // transition:'background-color 0.3s, background-image:0.3s'
+                                backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgb(107, 107, 107)",
+                                // backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #ddd 50%, #333 50%)" : '',
                                 transition: '0.3s'
                             }, onMouseDown: handleSwitchHorizontal },
                             react_1.default.createElement(framer_motion_1.motion.div, { className: "switcherCircleHorizontal", style: {
                                     left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
-                                    backgroundColor: horizontalPosition === 'left' ? "#333" : horizontalPosition === 'right' ? "#ddd" : "rgba(151,151,151,0.5)",
-                                    backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #333 50%, #ddd 50%)" : '',
+                                    // backgroundColor: horizontalPosition === 'left' ? "#333" :horizontalPosition === 'right' ? "#ddd" : "rgba(151,151,151,0.5)",
+                                    backgroundColor: horizontalPosition === 'left' ? "#333" : horizontalPosition === 'right' ? "#ddd" : "rgb(107, 107, 107)",
+                                    // backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #333 50%, #ddd 50%)" : '',
                                     border: horizontalPosition === 'middle' ? "3px solid #333" : 0,
                                     transition: '0.3s'
                                 } }))),
@@ -49215,32 +49203,9 @@ const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
-const pages = ['Home', 'Buttons', 'Spinner', 'Particles', 'Switches', 'Tether', 'Ball', 'Joystick', 'Test'];
 const App = () => {
-    const [page, setPage] = (0, react_1.useState)('Test');
-    (0, react_1.useEffect)(() => {
-        const handleKeyDown = (event) => {
-            if (event.metaKey && (event.key === '1' || event.key === '2')) {
-                event.preventDefault();
-                const currentIndex = pages.indexOf(page);
-                if (event.key === '1') {
-                    const previousPage = pages[(currentIndex - 1 + pages.length) % pages.length];
-                    setPage(previousPage);
-                }
-                else if (event.key === '2') {
-                    const nextPage = pages[(currentIndex + 1) % pages.length];
-                    setPage(nextPage);
-                }
-            }
-        };
-        window.addEventListener('keydown', handleKeyDown);
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [page]);
-    const loadPage = (newPage) => {
-        setPage(newPage);
-    };
+    const [page, setPage] = (0, react_1.useState)('Home');
+    const [active, setActive] = (0, react_1.useState)(page);
     let CurrentPage;
     switch (page) {
         case 'Home':
@@ -49279,58 +49244,41 @@ const App = () => {
         default:
             CurrentPage = Home_1.default;
     }
+    const loadPage = (newPage) => {
+        setPage(newPage);
+        setActive(newPage);
+    };
     window.loadPage = (page) => {
         setPage(page);
+        setActive(page);
     };
-    return react_1.default.createElement(CurrentPage, { loadPage: loadPage });
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement(CurrentPage, { loadPage: loadPage })));
 };
 const attachEventListeners = () => {
     const clickType = "mousedown";
-    const homeButton = document.getElementById('homeButton');
-    const settingsButton = document.getElementById('settingsButton');
+    const buttons = {
+        'homeButton': 'Home',
+        'settingsButton': 'Settings',
+        'buttonspageButton': 'Buttons',
+        'spinnerpageButton': 'Spinner',
+        'particlespageButton': 'Particles',
+        'tetherpageButton': 'Tether',
+        'switchespageButton': 'Switches',
+        'ballpageButton': 'Ball',
+        'joystickpageButton': 'Joystick',
+        'testpageButton': 'Test'
+    };
     const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
-    const buttonsPageButton = document.getElementById('buttonspageButton');
-    const spinnerPageButton = document.getElementById('spinnerpageButton');
-    const particlesPageButton = document.getElementById('particlespageButton');
-    const tetherPageButton = document.getElementById('tetherpageButton');
-    const switchesPageButton = document.getElementById('switchespageButton');
-    const ballPageButton = document.getElementById('ballpageButton');
-    const joystickPageButton = document.getElementById('joystickpageButton');
-    const lockPageButton = document.getElementById('lockpageButton');
-    const testPageButton = document.getElementById('testpageButton');
-    if (homeButton) {
-        homeButton.addEventListener(clickType, () => window.loadPage('Home'));
-    }
-    if (settingsButton) {
-        settingsButton.addEventListener(clickType, () => window.loadPage('Settings'));
-    }
-    if (buttonsPageButton) {
-        buttonsPageButton.addEventListener(clickType, () => window.loadPage('Buttons'));
-    }
-    if (spinnerPageButton) {
-        spinnerPageButton.addEventListener(clickType, () => window.loadPage('Spinner'));
-    }
-    if (particlesPageButton) {
-        particlesPageButton.addEventListener(clickType, () => window.loadPage('Particles'));
-    }
-    if (tetherPageButton) {
-        tetherPageButton.addEventListener(clickType, () => window.loadPage('Tether'));
-    }
-    if (switchesPageButton) {
-        switchesPageButton.addEventListener(clickType, () => window.loadPage('Switches'));
-    }
-    if (ballPageButton) {
-        ballPageButton.addEventListener(clickType, () => window.loadPage('Ball'));
-    }
-    if (joystickPageButton) {
-        joystickPageButton.addEventListener(clickType, () => window.loadPage('Joystick'));
-    }
-    // if (lockPageButton) {
-    //     lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
-    // }
-    if (testPageButton) {
-        testPageButton.addEventListener(clickType, () => window.loadPage('Test'));
-    }
+    Object.entries(buttons).forEach(([buttonId, pageName]) => {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.addEventListener(clickType, () => {
+                window.loadPage(pageName);
+                navbarRoot.render(react_1.default.createElement(Navbar_1.default, { activePage: pageName }));
+            });
+        }
+    });
     if (darkmodeToggleButton) {
         darkmodeToggleButton.addEventListener(clickType, () => {
             window.darkMode.toggle();
@@ -49343,7 +49291,7 @@ const root = (0, client_1.createRoot)(container);
 root.render(react_1.default.createElement(App, null));
 const navbarContainer = document.getElementById('navbarRoot');
 const navbarRoot = (0, client_1.createRoot)(navbarContainer);
-navbarRoot.render(react_1.default.createElement(Navbar_1.default, null));
+navbarRoot.render(react_1.default.createElement(Navbar_1.default, { activePage: "Home" }));
 
 
 /***/ })

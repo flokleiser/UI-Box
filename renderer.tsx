@@ -19,6 +19,7 @@ export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | '
 declare global {
   interface Window {
       loadPage: (page: Page) => void;
+      setActivePage: (page: Page) => void;
       darkMode: {
             toggle: () => Promise<void>;
             system: () => Promise<void>;
@@ -27,36 +28,9 @@ declare global {
   }
 }
 
-
-const pages: Page[] = ['Home' , 'Buttons' , 'Spinner' , 'Particles' , 'Switches' , 'Tether' , 'Ball' , 'Joystick' , 'Test'];
-
 const App: FC = () => {
-    const [page, setPage] = useState<Page>('Test');
-
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.metaKey && (event.key === '1' || event.key === '2')) {
-                event.preventDefault();
-                const currentIndex = pages.indexOf(page);
-                if (event.key === '1') {
-                    const previousPage = pages[(currentIndex - 1 + pages.length) % pages.length];
-                    setPage(previousPage);
-                } else if (event.key === '2') {
-                    const nextPage = pages[(currentIndex + 1) % pages.length];
-                    setPage(nextPage);
-                }
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [page]);
-
-    const loadPage = (newPage: Page) => {
-        setPage(newPage)
-    }
+    const [page, setPage] = useState<Page>('Home');
+    const [active, setActive] = useState<Page>(page);
 
     let CurrentPage: React.ComponentType<{ loadPage: (page: Page) => void }>;
 
@@ -98,73 +72,54 @@ const App: FC = () => {
             CurrentPage = Home;
     }
 
+    const loadPage = (newPage: Page) => {
+        setPage(newPage)
+        setActive(newPage)
+    }
+
     window.loadPage = (page: Page) => {
         setPage(page);
+        setActive(page);
     };
 
-    return <CurrentPage loadPage={loadPage} />;
+    return (
+        <>
+            <CurrentPage loadPage={loadPage} />
+        </>
+    )
 };
+
 
 const attachEventListeners = () => {
 
     const clickType = "mousedown";
 
-    const homeButton = document.getElementById('homeButton');
-    const settingsButton = document.getElementById('settingsButton');
+    const buttons: {[key: string] : Page} = {
+        'homeButton': 'Home',
+        'settingsButton': 'Settings',
+        'buttonspageButton': 'Buttons',
+        'spinnerpageButton': 'Spinner',
+        'particlespageButton': 'Particles',
+        'tetherpageButton': 'Tether',
+        'switchespageButton': 'Switches',
+        'ballpageButton': 'Ball',
+        'joystickpageButton': 'Joystick',
+        'testpageButton': 'Test'
+    };
     const darkmodeToggleButton= document.getElementById('darkmodeToggleButton');
-    const buttonsPageButton = document.getElementById('buttonspageButton');
-    const spinnerPageButton = document.getElementById('spinnerpageButton');
-    const particlesPageButton = document.getElementById('particlespageButton');
-    const tetherPageButton = document.getElementById('tetherpageButton');
-    const switchesPageButton = document.getElementById('switchespageButton');
-    const ballPageButton = document.getElementById('ballpageButton');
-    const joystickPageButton= document.getElementById('joystickpageButton');
-    const lockPageButton= document.getElementById('lockpageButton');
-    const testPageButton= document.getElementById('testpageButton');
 
-    if (homeButton) {
-        homeButton.addEventListener(clickType, () => window.loadPage('Home'));
-    }
 
-    if (settingsButton) {
-        settingsButton.addEventListener(clickType, () => window.loadPage('Settings'));
-    }
+    Object.entries(buttons).forEach(([buttonId, pageName]) => {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.addEventListener(clickType, () => {
+                window.loadPage(pageName as Page);
 
-    if (buttonsPageButton) {
-        buttonsPageButton.addEventListener(clickType, () => window.loadPage('Buttons'));
-    }
+                navbarRoot.render(<Navbar activePage={pageName} />);
+            })
+        }
+    });
 
-    if (spinnerPageButton) {
-        spinnerPageButton.addEventListener(clickType, () => window.loadPage('Spinner'));
-    }
-
-    if (particlesPageButton) {
-        particlesPageButton.addEventListener(clickType, () => window.loadPage('Particles'));
-    }
-
-    if (tetherPageButton) {
-        tetherPageButton.addEventListener(clickType, () => window.loadPage('Tether'));
-    }
-
-    if (switchesPageButton) {
-        switchesPageButton.addEventListener(clickType, () => window.loadPage('Switches'));
-    }
-
-    if (ballPageButton) {
-        ballPageButton.addEventListener(clickType, () => window.loadPage('Ball'));
-    }
-
-    if (joystickPageButton) {
-        joystickPageButton.addEventListener(clickType, () => window.loadPage('Joystick'));
-    }
-
-    // if (lockPageButton) {
-    //     lockPageButton.addEventListener(clickType, () => window.loadPage('Lock'));
-    // }
-    
-    if (testPageButton) {
-        testPageButton.addEventListener(clickType, () => window.loadPage('Test'));
-    }
         
 
     if (darkmodeToggleButton) {
@@ -172,8 +127,10 @@ const attachEventListeners = () => {
             window.darkMode.toggle()
         });
     }
+ 
 }
 document.addEventListener('DOMContentLoaded', attachEventListeners);
+
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
@@ -181,4 +138,4 @@ root.render(<App />);
 
 const navbarContainer = document.getElementById('navbarRoot');
 const navbarRoot = createRoot(navbarContainer!)
-navbarRoot.render(<Navbar/>)
+navbarRoot.render(<Navbar activePage={"Home"}/>)
