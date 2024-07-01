@@ -7,18 +7,22 @@ export default function Ball() {
 
     const [hoopPosition, setHoopPosition] = useState({x:0,y:0});
 
+    const navbar = document.querySelector('#navbarRoot') as HTMLElement;
+    const navbarHeight = navbar.offsetHeight;
+
     useEffect(() => {
+
         const canvasBall = document.querySelector("#sceneBall") as HTMLCanvasElement;
         const ctx = canvasBall.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
         const mouse = { x: 0, y: 0 };
         const radius = 25;
-
 
         let isDragging = false;
         let isReleased = false; 
 
         let ww = window.innerWidth;
         let wh = window.innerHeight;
+        // let wh = window.innerHeight - navbarHeight;
 
         let centerX = (ww / 2);
         let centerY = (wh / 5) * 3;
@@ -128,6 +132,12 @@ export default function Ball() {
             centerX = e.clientX
             centerY = e.clientY
 
+            ballX = centerX
+            ballY = centerY
+
+            vx = 0
+            vy = 0
+
             isDragging = true;
             isReleased = false;
         };
@@ -146,6 +156,7 @@ export default function Ball() {
         const initscene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
+            // wh = canvasBall.height = window.innerHeight - navbarHeight;
             isDragging = false;
             isReleased = false; 
             centerX = ww / 2;
@@ -165,6 +176,7 @@ export default function Ball() {
         const resizeScene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
+            // wh = canvasBall.height = window.innerHeight - navbarHeight;
             centerX = ww / 2;
             centerY = (wh / 5) * 3;
             ballX = centerX;
@@ -223,10 +235,13 @@ export default function Ball() {
                     }
                 }
 
-                if (ballY + radius > wh || ballY - radius < 0) {
+                if (ballY + radius > wh|| ballY - radius < 0 + navbarHeight) {
                     vy *= -damping;
-                    if (ballY + radius > wh ) ballY = wh - radius;
-                    if (ballY - radius < 0) ballY = radius;
+                    if (ballY + radius > wh) ballY = wh - radius;
+                    if (ballY - radius < 0 +navbarHeight) {
+                        console.log('top?')
+                        ballY = navbarHeight + radius;
+                    }
                 }
 
                 if (ballX + radius > ww|| ballX - radius < 0) {
@@ -235,11 +250,18 @@ export default function Ball() {
                     if (ballX - radius < 0) ballX = radius;
                 }
             }
+
+
+
+            /* collision while dragging */
             else {
                 if (isDragging) {
-                    if (ballY + radius > wh || ballY - radius < 0) {
+                    if (ballY + radius > wh|| ballY - radius < 0) {
                         vy *= -damping;
-                        if (ballY + radius > wh ) ballY = wh - radius;
+                        if (ballY + radius > wh) {
+                            ballY = wh - radius;
+                        }
+
                         if (ballY - radius < 0) {
                             ballY = radius;
                         }
@@ -329,7 +351,8 @@ export default function Ball() {
                     width: '100vw',
                     height: '100vh',
                     position: 'absolute',
-                    top: 0,
+                    // top: navbarHeight,
+                    top:0,
                     left: 0,
                     overflow: 'hidden',
                     zIndex: -10

@@ -2,7 +2,7 @@ import React, { useState, useEffect, FC } from 'react';
 import { createRoot } from 'react-dom/client';
 import Home from './pages/Home';
 import Navbar from './components/Navbar'
-// import Settings from './pages/Settings';
+import Settings from './pages/Settings';
 import Buttons from './pages/Buttons';
 import Spinner from './pages/Spinner';
 import Particles from './pages/Particles';
@@ -13,7 +13,7 @@ import Joystick from './pages/Joystick'
 import Lock from './pages/Lock'
 import Test from './pages/Test'
 
-export type Page = 'Home' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Test';
+export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Test';
 
 
 declare global {
@@ -64,9 +64,9 @@ const App: FC = () => {
         case 'Home':
             CurrentPage = Home;
             break;
-        // case 'Settings':
-        //     CurrentPage = Settings;
-        //     break;
+        case 'Settings':
+            CurrentPage = Settings;
+            break;
         case 'Buttons':
             CurrentPage = Buttons;
             break;
@@ -126,9 +126,9 @@ const attachEventListeners = () => {
         homeButton.addEventListener(clickType, () => window.loadPage('Home'));
     }
 
-    // if (settingsButton) {
-    //     settingsButton.addEventListener(clickType, () => window.loadPage('Settings'));
-    // }
+    if (settingsButton) {
+        settingsButton.addEventListener(clickType, () => window.loadPage('Settings'));
+    }
 
     if (buttonsPageButton) {
         buttonsPageButton.addEventListener(clickType, () => window.loadPage('Buttons'));

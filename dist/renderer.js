@@ -47420,146 +47420,98 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Navbar;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Navbar() {
+    const newNavbar = false;
+    // const newNavbar = true;
     const [isDark, setIsDark] = (0, react_1.useState)(false);
     function toggleIcon() {
         setIsDark(!isDark);
     }
     document.addEventListener('DOMContentLoaded', function () {
-        const tabs = document.querySelectorAll('.tab');
-        const content = document.querySelector('.content');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function () {
-                const activeTab = document.querySelector('.tab.active');
-                // if (activeTab) {
-                activeTab.classList.remove('active');
-                // }
-                tab.classList.add('active');
-                const tabIndex = Array.from(tabs).indexOf(tab);
-                content.innerHTML = `Content for Tab ${tabIndex + 1}`;
+        if (newNavbar) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    const activeTab = document.querySelector('.tab.active');
+                    activeTab.classList.remove('active');
+                    tab.classList.add('active');
+                });
             });
-        });
+        }
+        else {
+            const oldTabs = document.querySelectorAll('.navbarButton');
+            oldTabs.forEach(oldTab => {
+                oldTab.addEventListener('click', function () {
+                    const activeOldTab = document.querySelector('.navbarButton.active');
+                    activeOldTab.classList.remove('active');
+                    oldTab.classList.add('active');
+                });
+            });
+        }
     });
-    return (
-    //   <div className="bodyCenter" style={{paddingTop:'1.5rem', paddingBottom:'0.5rem'}}>
-    //   <nav>
-    //     <div className="navbarLeft">
-    //       <button className="navbarButton" id="homeButton">
-    //         <span className="material-symbols-outlined">
-    //           home
-    //         </span>
-    //       </button>
-    //       <button className="navbarButton" id="buttonspageButton">
-    //         <span className="material-symbols-outlined">
-    //           apps
-    //         </span>
-    //       </button>
-    //       <button className="navbarButton" id="spinnerpageButton">
-    //         <span className="material-symbols-outlined">
-    //           {/* spoke */}
-    //           network_node
-    //         </span>
-    //       </button>
-    //       <button className="navbarButton" id="particlespageButton">
-    //         <span className="material-symbols-outlined">
-    //           lens_blur
-    //         </span>
-    //       </button>
-    //       <button className="navbarButton" id="switchespageButton">
-    //         <span className="material-symbols-outlined">
-    //           {/* page_info */}
-    //           toggle_on 
-    //         </span>
-    //       </button>
-    //       <button className="navbarButton" id="tetherpageButton">
-    //         <span className="material-symbols-outlined">
-    //           {/* linked_services */}
-    //           tenancy
-    //         </span>
-    //       </button>
-    //       <button className="navbarButton" id="ballpageButton">
-    //         <span className="material-symbols-outlined">
-    //           airline_stops
-    //         </span>
-    //       </button>
-    //       <button className="navbarButton" id="joystickpageButton">
-    //         <span className="material-symbols-outlined">
-    //           {/* keyboard_keys */}
-    //           joystick 
-    //         </span>
-    //       </button>
-    //       {/* <button className="navbarButton" id="lockpageButton">
-    //         <span className="material-symbols-outlined">
-    //             refresh
-    //         </span>
-    //       </button> */}
-    //       <button className="navbarButton" id="testpageButton">
-    //         <span className="material-symbols-outlined">
-    //           quiz
-    //         </span>
-    //       </button>
-    //       </div>
-    //       <div className="settingsButton">
-    //         <button className="settingsButton" id="darkmodeToggleButton"
-    //         onMouseDown={toggleIcon}
-    //         >
-    //           <span className="material-symbols-outlined" 
-    //           style={{transform: isDark? 'rotate(180deg)':'rotate(0deg)', transition:'transform 0.2s'}}>
-    //             contrast
-    //           </span>
-    //         </button>
-    //       </div>
-    //     </nav>
-    //     </div>
-    //   )
-    // }
-    react_1.default.createElement("div", { className: "bodyCenter", style: { padding: 0, paddingTop: '1.5rem', paddingBottom: '0rem' } },
-        react_1.default.createElement("nav", null,
-            react_1.default.createElement("div", { className: "tabs" },
-                react_1.default.createElement("div", { className: "tab active", id: "homeButton" },
-                    react_1.default.createElement("div", { className: "tab-box" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home"))),
-                react_1.default.createElement("div", { className: "tab", id: "buttonspageButton" },
-                    react_1.default.createElement("div", { className: "tab-box" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps"))),
-                react_1.default.createElement("div", { className: "tab", id: "spinnerpageButton" },
-                    react_1.default.createElement("div", { className: "tab-box" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node"))),
-                react_1.default.createElement("div", { className: "tab", id: "particlespageButton" },
-                    react_1.default.createElement("div", { className: "tab-box" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur"))),
-                react_1.default.createElement("div", { className: "tab", id: "switchespageButton" },
-                    react_1.default.createElement("div", { className: "tab-box" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on"))),
-                react_1.default.createElement("div", { className: "tab", id: "tetherpageButton" },
-                    react_1.default.createElement("div", { className: "tab-box" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy"))),
-                react_1.default.createElement("div", { className: "tab", id: "ballpageButton" },
-                    react_1.default.createElement("div", { className: "tab-box" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops"))),
-                react_1.default.createElement("div", { className: "tab", id: "joystickpageButton" },
-                    react_1.default.createElement("div", { className: "tab-box" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick"))),
-                react_1.default.createElement("div", { className: "tab", id: "testpageButton" },
-                    react_1.default.createElement("div", { className: "tab-box" },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz")))),
-            react_1.default.createElement("div", { className: "settingsButton", style: { paddingRight: '1.5rem' } },
+    if (!newNavbar) {
+        return (react_1.default.createElement("div", { className: "bodyCenter", style: { paddingTop: '1rem', paddingBottom: '0.5rem' } },
+            react_1.default.createElement("nav", null,
+                react_1.default.createElement("div", { className: "navbarLeft" },
+                    react_1.default.createElement("button", { className: "navbarButton active", id: "homeButton" },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home")),
+                    react_1.default.createElement("button", { className: "navbarButton", id: "buttonspageButton" },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps")),
+                    react_1.default.createElement("button", { className: "navbarButton", id: "spinnerpageButton" },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node")),
+                    react_1.default.createElement("button", { className: "navbarButton", id: "particlespageButton" },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur")),
+                    react_1.default.createElement("button", { className: "navbarButton", id: "switchespageButton" },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
+                    react_1.default.createElement("button", { className: "navbarButton", id: "tetherpageButton" },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
+                    react_1.default.createElement("button", { className: "navbarButton", id: "ballpageButton" },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
+                    react_1.default.createElement("button", { className: "navbarButton", id: "joystickpageButton" },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
+                    react_1.default.createElement("button", { className: "navbarButton", id: "testpageButton" },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz"))),
                 react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast"))))));
+                    react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));
+    }
+    // }
+    else {
+        return (
+        // <div className="bodyCenter" style={{padding:0, paddingTop:'1.5rem', paddingBottom:'0rem'}}>
+        react_1.default.createElement("div", { className: "bodyCenter", style: { padding: 0, paddingTop: '1rem', paddingBottom: '0rem' } },
+            react_1.default.createElement("nav", null,
+                react_1.default.createElement("div", { className: "tabs" },
+                    react_1.default.createElement("div", { className: "tab active", id: "homeButton" },
+                        react_1.default.createElement("div", { className: "tab-box" },
+                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home"))),
+                    react_1.default.createElement("div", { className: "tab", id: "buttonspageButton" },
+                        react_1.default.createElement("div", { className: "tab-box" },
+                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps"))),
+                    react_1.default.createElement("div", { className: "tab", id: "spinnerpageButton" },
+                        react_1.default.createElement("div", { className: "tab-box" },
+                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node"))),
+                    react_1.default.createElement("div", { className: "tab", id: "particlespageButton" },
+                        react_1.default.createElement("div", { className: "tab-box" },
+                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur"))),
+                    react_1.default.createElement("div", { className: "tab", id: "switchespageButton" },
+                        react_1.default.createElement("div", { className: "tab-box" },
+                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on"))),
+                    react_1.default.createElement("div", { className: "tab", id: "tetherpageButton" },
+                        react_1.default.createElement("div", { className: "tab-box" },
+                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy"))),
+                    react_1.default.createElement("div", { className: "tab", id: "ballpageButton" },
+                        react_1.default.createElement("div", { className: "tab-box" },
+                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops"))),
+                    react_1.default.createElement("div", { className: "tab", id: "joystickpageButton" },
+                        react_1.default.createElement("div", { className: "tab-box" },
+                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick"))),
+                    react_1.default.createElement("div", { className: "tab", id: "testpageButton" },
+                        react_1.default.createElement("div", { className: "tab-box" },
+                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz")))),
+                react_1.default.createElement("div", { className: "settingsButton", style: { paddingRight: '1.5rem' } },
+                    react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast"))))));
+    }
 }
-/* active tab selector */
-// document.addEventListener('DOMContentLoaded', function() {
-//   const tabs = document.querySelectorAll('.tab');
-//   const content = document.querySelector('.content');
-//   tabs.forEach(tab => {
-//       tab.addEventListener('click', function() {
-//           document.querySelector('.tab.active').classList.remove('active');
-//           tab.classList.add('active');
-//           // Update content based on the active tab
-//           const tabIndex = Array.from(tabs).indexOf(tab);
-//           content.innerHTML = `Content for Tab ${tabIndex + 1}`;
-//       });
-//   });
-// });
 
 
 /***/ }),
@@ -47601,6 +47553,8 @@ function Ball() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     const [buttonPosition, setButtonPosition] = (0, react_1.useState)({ x: 0, y: 0 });
     const [hoopPosition, setHoopPosition] = (0, react_1.useState)({ x: 0, y: 0 });
+    const navbar = document.querySelector('#navbarRoot');
+    const navbarHeight = navbar.offsetHeight;
     (0, react_1.useEffect)(() => {
         const canvasBall = document.querySelector("#sceneBall");
         const ctx = canvasBall.getContext("2d", { willReadFrequently: true });
@@ -47610,6 +47564,7 @@ function Ball() {
         let isReleased = false;
         let ww = window.innerWidth;
         let wh = window.innerHeight;
+        // let wh = window.innerHeight - navbarHeight;
         let centerX = (ww / 2);
         let centerY = (wh / 5) * 3;
         // let centerX = clientX
@@ -47692,6 +47647,10 @@ function Ball() {
         const onMouseDown = (e) => {
             centerX = e.clientX;
             centerY = e.clientY;
+            ballX = centerX;
+            ballY = centerY;
+            vx = 0;
+            vy = 0;
             isDragging = true;
             isReleased = false;
         };
@@ -47708,6 +47667,7 @@ function Ball() {
         const initscene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
+            // wh = canvasBall.height = window.innerHeight - navbarHeight;
             isDragging = false;
             isReleased = false;
             centerX = ww / 2;
@@ -47724,6 +47684,7 @@ function Ball() {
         const resizeScene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
+            // wh = canvasBall.height = window.innerHeight - navbarHeight;
             centerX = ww / 2;
             centerY = (wh / 5) * 3;
             ballX = centerX;
@@ -47770,12 +47731,14 @@ function Ball() {
                         }
                     }
                 }
-                if (ballY + radius > wh || ballY - radius < 0) {
+                if (ballY + radius > wh || ballY - radius < 0 + navbarHeight) {
                     vy *= -damping;
                     if (ballY + radius > wh)
                         ballY = wh - radius;
-                    if (ballY - radius < 0)
-                        ballY = radius;
+                    if (ballY - radius < 0 + navbarHeight) {
+                        console.log('top?');
+                        ballY = navbarHeight + radius;
+                    }
                 }
                 if (ballX + radius > ww || ballX - radius < 0) {
                     vx *= -damping;
@@ -47785,12 +47748,14 @@ function Ball() {
                         ballX = radius;
                 }
             }
+            /* collision while dragging */
             else {
                 if (isDragging) {
                     if (ballY + radius > wh || ballY - radius < 0) {
                         vy *= -damping;
-                        if (ballY + radius > wh)
+                        if (ballY + radius > wh) {
                             ballY = wh - radius;
+                        }
                         if (ballY - radius < 0) {
                             ballY = radius;
                         }
@@ -47859,6 +47824,7 @@ function Ball() {
                     width: '100vw',
                     height: '100vh',
                     position: 'absolute',
+                    // top: navbarHeight,
                     top: 0,
                     left: 0,
                     overflow: 'hidden',
@@ -47961,13 +47927,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Home;
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-function Home({ loadPage }) {
-    // const handleSettingsClick = () => {
-    //     window.loadPage('Settings');
-    // };
+const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
+function Home() {
+    const handleSettingsClick = () => {
+        window.loadPage('Settings');
+    };
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("h1", null, " UI-Box "),
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
+                react_1.default.createElement("h1", null, " UI-Box"),
+                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "settingsButton", onMouseDown: handleSettingsClick, whileHover: { rotate: 180, repeatCount: 30 } },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "settings"))),
             react_1.default.createElement("div", { className: "logo" },
                 react_1.default.createElement("img", { className: "logoImg", src: "./media/icon.png" })))));
 }
@@ -48484,6 +48454,79 @@ function Particles() {
 
 /***/ }),
 
+/***/ "./src/pages/Settings.tsx":
+/*!********************************!*\
+  !*** ./src/pages/Settings.tsx ***!
+  \********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports["default"] = Settings;
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function Settings() {
+    const [activeThemeSource, setThemeSource] = (0, react_2.useState)('system');
+    const handleHomeClick = () => {
+        window.loadPage('Home');
+    };
+    (0, react_2.useEffect)(() => {
+        function fetchThemeSource() {
+            return __awaiter(this, void 0, void 0, function* () {
+                const currentThemeSource = yield window.darkMode.getThemeSource();
+                setThemeSource(currentThemeSource);
+            });
+        }
+        fetchThemeSource();
+    }, []);
+    function toggleDarkMode() {
+        window.darkMode.toggle().then(() => {
+            window.darkMode.getThemeSource().then(setThemeSource);
+        });
+    }
+    function toggleSystemMode() {
+        window.darkMode.system();
+        window.darkMode.getThemeSource().then(setThemeSource);
+    }
+    function themeSourceDisplay() {
+        if (activeThemeSource === 'dark') {
+            return 'Dark';
+        }
+        else if (activeThemeSource === 'light') {
+            return 'Light';
+        }
+        else {
+            return 'System';
+        }
+    }
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
+                react_1.default.createElement("h1", null, "Settings"),
+                react_1.default.createElement("button", { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "settingsButton", onMouseDown: handleHomeClick },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home"))),
+            react_1.default.createElement("p", null,
+                "Current:",
+                react_1.default.createElement("strong", { id: "theme-source" }, themeSourceDisplay())),
+            react_1.default.createElement("button", { className: "buttonInSettings", id: "toggle-dark-mode", onMouseDown: toggleDarkMode }, "Toggle Dark Mode"),
+            react_1.default.createElement("button", { className: "buttonInSettings", id: "reset-to-system", onMouseDown: toggleSystemMode }, "Reset to System Theme"))));
+}
+
+
+/***/ }),
+
 /***/ "./src/pages/Spinner.tsx":
 /*!*******************************!*\
   !*** ./src/pages/Spinner.tsx ***!
@@ -48813,15 +48856,7 @@ function Test() {
     };
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("h1", null, "Test"),
-            react_1.default.createElement("div", { className: "tabs" },
-                react_1.default.createElement("div", { className: `${isActive[0] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(0) },
-                    react_1.default.createElement("div", { className: "tab-box" })),
-                react_1.default.createElement("div", { className: `${isActive[1] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(1) },
-                    react_1.default.createElement("div", { className: "tab-box" })),
-                react_1.default.createElement("div", { className: `${isActive[2] ? 'tab active' : 'tab'}`, onMouseDown: () => handleActive(2) },
-                    react_1.default.createElement("div", { className: "tab-box" }))),
-            react_1.default.createElement("div", { className: "content" }))));
+            react_1.default.createElement("h1", null, "Test"))));
 }
 { /* <div className="surface">
 <div className="mock-browser">
@@ -49226,7 +49261,7 @@ const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/re
 const client_1 = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 const Home_1 = __importDefault(__webpack_require__(/*! ./pages/Home */ "./src/pages/Home.tsx"));
 const Navbar_1 = __importDefault(__webpack_require__(/*! ./components/Navbar */ "./src/components/Navbar.tsx"));
-// import Settings from './pages/Settings';
+const Settings_1 = __importDefault(__webpack_require__(/*! ./pages/Settings */ "./src/pages/Settings.tsx"));
 const Buttons_1 = __importDefault(__webpack_require__(/*! ./pages/Buttons */ "./src/pages/Buttons.tsx"));
 const Spinner_1 = __importDefault(__webpack_require__(/*! ./pages/Spinner */ "./src/pages/Spinner.tsx"));
 const Particles_1 = __importDefault(__webpack_require__(/*! ./pages/Particles */ "./src/pages/Particles.tsx"));
@@ -49266,9 +49301,9 @@ const App = () => {
         case 'Home':
             CurrentPage = Home_1.default;
             break;
-        // case 'Settings':
-        //     CurrentPage = Settings;
-        //     break;
+        case 'Settings':
+            CurrentPage = Settings_1.default;
+            break;
         case 'Buttons':
             CurrentPage = Buttons_1.default;
             break;
@@ -49321,9 +49356,9 @@ const attachEventListeners = () => {
     if (homeButton) {
         homeButton.addEventListener(clickType, () => window.loadPage('Home'));
     }
-    // if (settingsButton) {
-    //     settingsButton.addEventListener(clickType, () => window.loadPage('Settings'));
-    // }
+    if (settingsButton) {
+        settingsButton.addEventListener(clickType, () => window.loadPage('Settings'));
+    }
     if (buttonsPageButton) {
         buttonsPageButton.addEventListener(clickType, () => window.loadPage('Buttons'));
     }

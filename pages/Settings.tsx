@@ -6,6 +6,10 @@ export default function Settings() {
 
     const [activeThemeSource, setThemeSource] = useState('system')
 
+    const handleHomeClick= () => {
+        window.loadPage('Home');
+    };
+
     useEffect(() => {
         async function fetchThemeSource() {
             const currentThemeSource = await window.darkMode.getThemeSource();
@@ -38,7 +42,16 @@ export default function Settings() {
     return(
         <div className="bodyCenter">
         <div>
-            <h1>Settings</h1>
+            <div style={{display:'flex',flexDirection:'row',justifyContent:'start', alignItems:'center'}}> 
+                <h1>Settings</h1>
+                
+                <button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} id="settingsButton" onMouseDown={handleHomeClick}>
+                    <span className="material-symbols-outlined">
+                        home
+                    </span>
+                </button>
+
+            </div>
 
             <p>
                 Current: 

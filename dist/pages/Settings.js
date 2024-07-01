@@ -17,6 +17,9 @@ const react_1 = __importDefault(require("react"));
 const react_2 = require("react");
 function Settings() {
     const [activeThemeSource, setThemeSource] = (0, react_2.useState)('system');
+    const handleHomeClick = () => {
+        window.loadPage('Home');
+    };
     (0, react_2.useEffect)(() => {
         function fetchThemeSource() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -48,7 +51,10 @@ function Settings() {
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("h1", null, "Settings"),
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
+                react_1.default.createElement("h1", null, "Settings"),
+                react_1.default.createElement("button", { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "settingsButton", onMouseDown: handleHomeClick },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home"))),
             react_1.default.createElement("p", null,
                 "Current:",
                 react_1.default.createElement("strong", { id: "theme-source" }, themeSourceDisplay())),

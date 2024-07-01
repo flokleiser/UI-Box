@@ -17,7 +17,7 @@ export default function Test() {
         <div>
             <h1>Test</h1>
 
-            <div className="tabs">
+            {/* <div className="tabs">
                 <div className={`${isActive[0] ? 'tab active' : 'tab'}`} onMouseDown={() => handleActive(0)}>
                     <div className="tab-box"></div>
                 </div>
@@ -29,10 +29,10 @@ export default function Test() {
                 <div className={`${isActive[2] ? 'tab active' : 'tab'}`} onMouseDown={() => handleActive(2)}>
                     <div className="tab-box"></div>
                 </div>
-            </div>
+            </div> */}
 
-            <div className="content">
-             </div>
+            {/* <div className="content">
+             </div> */}
 
         </div>
         </div>
