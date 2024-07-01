@@ -15,6 +15,8 @@ import Test from './pages/Test'
 
 export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Test';
 
+const startPage = "Switches"
+
 
 declare global {
   interface Window {
@@ -29,7 +31,7 @@ declare global {
 }
 
 const App: FC = () => {
-    const [page, setPage] = useState<Page>('Home');
+    const [page, setPage] = useState<Page>(startPage);
     const [active, setActive] = useState<Page>(page);
 
     let CurrentPage: React.ComponentType<{ loadPage: (page: Page) => void }>;
@@ -138,4 +140,4 @@ root.render(<App />);
 
 const navbarContainer = document.getElementById('navbarRoot');
 const navbarRoot = createRoot(navbarContainer!)
-navbarRoot.render(<Navbar activePage={"Home"}/>)
+navbarRoot.render(<Navbar activePage={startPage}/>)

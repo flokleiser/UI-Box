@@ -48664,7 +48664,7 @@ function Switches() {
     const [isSwitchedMotion, setSwitchedMotion] = (0, react_1.useState)(false);
     const [isSwitchedFill, setSwitchedFill] = (0, react_1.useState)(false);
     const [verticalPosition, setVerticalPosition] = (0, react_1.useState)('middle');
-    const [horizontalPosition, setHorizontalPosition] = (0, react_1.useState)('middle');
+    const [horizontalPosition, setHorizontalPosition] = (0, react_1.useState)('right');
     const [constraints, setConstraints] = (0, react_1.useState)({ top: 0, bottom: 0 });
     const controls = (0, framer_motion_1.useAnimation)();
     (0, react_1.useEffect)(() => {
@@ -48722,16 +48722,21 @@ function Switches() {
                             react_1.default.createElement("div", { className: 'switcherCircle', style: { left: isSwitched ? "0px" : "100px", transition: '0.3s', backgroundColor: isSwitched ? "#333" : "#ddd" } }))),
                     react_1.default.createElement("div", { className: 'centerContainer', id: "horizontalSwitch" },
                         react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherDiv', style: { width: 350,
-                                backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgb(107, 107, 107)",
+                                backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" :
+                                    "rgb(107, 107, 107)"
+                                // "rgb(51,51,51,0.5)"
+                                ,
                                 // backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #ddd 50%, #333 50%)" : '',
                                 transition: '0.3s'
                             }, onMouseDown: handleSwitchHorizontal },
                             react_1.default.createElement(framer_motion_1.motion.div, { className: "switcherCircleHorizontal", style: {
                                     left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
                                     // backgroundColor: horizontalPosition === 'left' ? "#333" :horizontalPosition === 'right' ? "#ddd" : "rgba(151,151,151,0.5)",
-                                    backgroundColor: horizontalPosition === 'left' ? "#333" : horizontalPosition === 'right' ? "#ddd" : "rgb(107, 107, 107)",
+                                    backgroundColor: horizontalPosition === 'left' ? "#333" : horizontalPosition === 'right' ? "#ddd" :
+                                        // "rgb(107, 107, 107)"
+                                        "rgb(51,51,51,0)",
                                     // backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #333 50%, #ddd 50%)" : '',
-                                    border: horizontalPosition === 'middle' ? "3px solid #333" : 0,
+                                    // border: horizontalPosition === 'middle' ? "3px solid #333" : 0,
                                     transition: '0.3s'
                                 } }))),
                     react_1.default.createElement("div", { className: 'centerContainer' },
@@ -49203,8 +49208,9 @@ const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
+const startPage = "Switches";
 const App = () => {
-    const [page, setPage] = (0, react_1.useState)('Home');
+    const [page, setPage] = (0, react_1.useState)(startPage);
     const [active, setActive] = (0, react_1.useState)(page);
     let CurrentPage;
     switch (page) {
@@ -49291,7 +49297,7 @@ const root = (0, client_1.createRoot)(container);
 root.render(react_1.default.createElement(App, null));
 const navbarContainer = document.getElementById('navbarRoot');
 const navbarRoot = (0, client_1.createRoot)(navbarContainer);
-navbarRoot.render(react_1.default.createElement(Navbar_1.default, { activePage: "Home" }));
+navbarRoot.render(react_1.default.createElement(Navbar_1.default, { activePage: startPage }));
 
 
 /***/ })

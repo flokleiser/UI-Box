@@ -18,7 +18,7 @@ export default function Switches() {
     const [isSwitchedFill, setSwitchedFill] = useState(false)
 
     const [verticalPosition, setVerticalPosition] = useState<'top' | 'middle' | 'bottom'>('middle');
-    const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'middle' | 'right'>('middle');
+    const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'middle' | 'right'>('right');
     const [constraints, setConstraints] = useState({ top: 0, bottom: 0 });
     const controls = useAnimation();
 
@@ -98,7 +98,11 @@ export default function Switches() {
                 <div className='centerContainer' id="horizontalSwitch">
                     <motion.div className='switcherDiv' 
                     style={{width:350,
-                        backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : "rgb(107, 107, 107)",
+                        backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : 
+                        "rgb(107, 107, 107)"
+                        // "rgb(51,51,51,0.5)"
+                        ,
+
                         // backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #ddd 50%, #333 50%)" : '',
                         transition: '0.3s'
                     }}
@@ -108,10 +112,13 @@ export default function Switches() {
                          style={{
                             left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
                             // backgroundColor: horizontalPosition === 'left' ? "#333" :horizontalPosition === 'right' ? "#ddd" : "rgba(151,151,151,0.5)",
-                            backgroundColor: horizontalPosition === 'left' ? "#333" :horizontalPosition === 'right' ? "#ddd" : "rgb(107, 107, 107)",
+                            backgroundColor: horizontalPosition === 'left' ? "#333" :horizontalPosition === 'right' ? "#ddd" : 
+                            // "rgb(107, 107, 107)"
+                            "rgb(51,51,51,0)"
+                            ,
                             
                             // backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #333 50%, #ddd 50%)" : '',
-                            border: horizontalPosition === 'middle' ? "3px solid #333" : 0,
+                            // border: horizontalPosition === 'middle' ? "3px solid #333" : 0,
                             transition: '0.3s'
                         }}
                         >
