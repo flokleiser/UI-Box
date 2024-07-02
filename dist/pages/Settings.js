@@ -56,8 +56,10 @@ function Settings() {
                 react_1.default.createElement("button", { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "settingsButton", onMouseDown: handleHomeClick },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home"))),
             react_1.default.createElement("p", null,
-                "Current:",
-                react_1.default.createElement("strong", { id: "theme-source" }, themeSourceDisplay())),
+                "Current: ",
+                react_1.default.createElement("strong", { id: "theme-source" },
+                    " ",
+                    themeSourceDisplay())),
             react_1.default.createElement("button", { className: "buttonInSettings", id: "toggle-dark-mode", onMouseDown: toggleDarkMode }, "Toggle Dark Mode"),
             react_1.default.createElement("button", { className: "buttonInSettings", id: "reset-to-system", onMouseDown: toggleSystemMode }, "Reset to System Theme"))));
 }

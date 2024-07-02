@@ -19,6 +19,7 @@ export default function Switches() {
 
     const [verticalPosition, setVerticalPosition] = useState<'top' | 'middle' | 'bottom'>('middle');
     const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'middle' | 'right'>('right');
+    const [previousHorizontalPosition, setPreviousHorizontalPosition] = useState<'left' | 'middle' | 'right'>('right');
     const [constraints, setConstraints] = useState({ top: 0, bottom: 0 });
     const controls = useAnimation();
 
@@ -48,14 +49,15 @@ export default function Switches() {
 
         if (clickX < rect.width/ 3) {
             setHorizontalPosition('left');
-            // console.log('left')
         } else if (clickX < (rect.width/ 3) * 2) {
             setHorizontalPosition('middle');
-            // console.log('middle')
         } else {
             setHorizontalPosition('right');
-            // console.log('right')
         }
+    }
+
+    function handleSwitchHorizontal2() {
+        console.log('test');
     }
 
     function handleDragEnd(e:any,info: any) {
@@ -80,7 +82,8 @@ export default function Switches() {
 
 
         <div style={{display:'flex', flexDirection:'row',justifyContent:'space-between'}}>
-
+            
+            {/* first switch */}
             <div style={{display:'flex', flexDirection:'column'}}>
 
                 <div className='centerContainer'>
@@ -93,41 +96,33 @@ export default function Switches() {
                         />
                     </div>
                 </div>
+            {/* first switch */}
             
 
+            {/* second switch */}
                 <div className='centerContainer' id="horizontalSwitch">
                     <motion.div className='switcherDiv' 
-                    style={{width:350,
-                        backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333" : 
-                        "rgb(107, 107, 107)"
-                        // "rgb(51,51,51,0.5)"
-                        ,
-
-                        // backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #ddd 50%, #333 50%)" : '',
-                        transition: '0.3s'
+                    style={{width:325,
+                        backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333":'#888888', transition: '0.3s'
                     }}
                     onMouseDown={handleSwitchHorizontal}
                     >
                         <motion.div className="switcherCircleHorizontal"
                          style={{
-                            left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
-                            // backgroundColor: horizontalPosition === 'left' ? "#333" :horizontalPosition === 'right' ? "#ddd" : "rgba(151,151,151,0.5)",
-                            backgroundColor: horizontalPosition === 'left' ? "#333" :horizontalPosition === 'right' ? "#ddd" : 
-                            // "rgb(107, 107, 107)"
-                            "rgb(51,51,51,0)"
-                            ,
-                            
-                            // backgroundImage: horizontalPosition === 'middle' ? "linear-gradient(90deg, #333 50%, #ddd 50%)" : '',
-                            // border: horizontalPosition === 'middle' ? "3px solid #333" : 0,
-                            transition: '0.3s'
+                            // left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
+                            left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "112.5px" : "225px",
+                            backgroundColor: horizontalPosition === 'left' ? "#333" :horizontalPosition === 'right' ? "#ddd" : "rgb(51,51,51,0)",transition: '0.3s'
                         }}
                         >
                         </motion.div>
 
                     </motion.div>
                 </div>
+            {/* second switch */}
 
 
+
+            {/* third filled switch */}
                 <div className='centerContainer'>
                     <motion.div className='switcherDiv' 
                     style={{width:275, display:'flex',justifyContent:'center', backgroundColor:'#333'}}
@@ -141,15 +136,17 @@ export default function Switches() {
                             style={{backgroundColor: isSwitchedFill ? "#333":"#ddd" , transition:'0.05s'}}
                             >
                             </div>
-                        {/* </div> */}
                     </motion.div>
                 </div>
+            {/* third filled switch */}
 
             </div>
 
 
 
             <div className='centerContainer'>
+
+            {/* Vertical Switch 1 */}
                 <div className="switcherDivVertical"
                 >
                     <motion.div id="verticalSwitch" className='switcherDivVerticalLine' 
@@ -165,8 +162,28 @@ export default function Switches() {
                             <div className='switcherCircleVerticalFill'></div>
                         </motion.div>
                     </motion.div>
-
                 </div>
+            {/* Vertical Switch 1 */}
+
+            {/* Vertical Switch 2 */}
+                <div className="switcherDivVertical"
+                >
+                    <motion.div id="verticalSwitch" className='switcherDivVerticalLineFilled'
+                    >
+                        <motion.div className='switcherCircleVerticalOutline' 
+                        drag="y"
+                        dragConstraints={constraints}
+                        dragElastic={0}
+                        onDragEnd={handleDragEnd}
+                        animate={controls}
+                        style={{ top: "0px", transition: '0.05s' }}
+                        >
+                            <div className='switcherCircleVerticalFillAlt'></div>
+                        </motion.div>
+                    </motion.div>
+                </div>
+            {/* Vertical Switch 2*/}
+
             </div>
 
             </div>

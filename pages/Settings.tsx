@@ -54,10 +54,7 @@ export default function Settings() {
             </div>
 
             <p>
-                Current: 
-                <strong id="theme-source">
-                {themeSourceDisplay()}
-                </strong>
+                Current: <strong id="theme-source"> {themeSourceDisplay()}</strong>
             </p>
 
             <button className="buttonInSettings" id="toggle-dark-mode" 

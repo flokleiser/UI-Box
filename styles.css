@@ -293,7 +293,8 @@ nav{
   position:relative;
   align-items: center;
   display: grid;
-  width:100px;
+  /* width:100px; */
+  width:50px;
   height:350px;
   margin: 0.5rem;
   justify-content: center;
@@ -307,6 +308,18 @@ nav{
   height:350px;
   border-radius: 100px;
   border: 3px solid white;
+  justify-content: center;
+  align-items: center;
+}
+
+.switcherDivVerticalLineFilled {
+  position:relative;
+  display:grid;
+  width:10px;
+  height:350px;
+  border-radius: 100px;
+  border: 3px solid #ddd;
+  background-color: #ddd;
   justify-content: center;
   align-items: center;
 }
@@ -350,6 +363,16 @@ nav{
   width:50px;
   border-radius: 100px;
   background-color: #ddd;
+  transition: transform 0.3s;
+}
+
+.switcherCircleVerticalFillAlt {
+  position:absolute;
+  height:44px;
+  width:44px;
+  border-radius: 100px;
+  background-color: #333;
+  border:3px solid #ddd;
   transition: transform 0.3s;
 }
 
@@ -399,8 +422,10 @@ nav{
     .line {background-color: #333;}
 
     .switcherDiv {border: 3px solid #333333}
-    .switcherCircleVerticalFill {background-color: #333;}
-    .switcherDivVerticalLine {border:3px solid #333; 
+    .switcherCircleVerticalFill {background-color: #333}
+    .switcherCircleVerticalFillAlt {background-color: #ddd; border:3px solid #333}
+    .switcherDivVerticalLineFilled {background-color: #333;  border: 3px solid #333;}
+    .switcherDivVerticalLine {border:3px solid #333 
     }
     .switcherCircleVerticalOutline {background-color: #ddd;}
     .switcherCircleHorizontal {background-color:#333}
