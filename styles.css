@@ -125,6 +125,10 @@ nav{
 .navbarButton.active{
   background-color:#333;
   color:rgba(255, 255, 255);
+
+  scale:1.15;
+  transition:0.1s;
+
   /* border:1px solid #ddd; */
   /* padding-top:10px; */
   /* margin-bottom:0; */
