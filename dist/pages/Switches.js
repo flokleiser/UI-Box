@@ -58,20 +58,18 @@ function Switches() {
     function handleSwitchMotion() {
         setSwitchedMotion(!isSwitchedMotion);
     }
-    function handleSwitchHorizontal(e) {
-        const horizontalSwitch = document.getElementById('horizontalSwitch');
-        const rect = horizontalSwitch.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        if (clickX < rect.width / 3) {
-            setHorizontalPosition('left');
-        }
-        else if (clickX < (rect.width / 3) * 2) {
-            setHorizontalPosition('middle');
-        }
-        else {
-            setHorizontalPosition('right');
-        }
-    }
+    // function handleSwitchHorizontal(e:React.MouseEvent) {
+    //     const horizontalSwitch = document.getElementById('horizontalSwitch')
+    //     const rect = horizontalSwitch!.getBoundingClientRect();
+    //     const clickX = e.clientX - rect.left;
+    //     if (clickX < rect.width/ 3) {
+    //         setHorizontalPosition('left');
+    //     } else if (clickX < (rect.width/ 3) * 2) {
+    //         setHorizontalPosition('middle');
+    //     } else {
+    //         setHorizontalPosition('right');
+    //     }
+    // }
     function handleSwitchHorizontal2() {
         console.log('test');
         setSwitchedHorizontal(!isSwitchedHorizontal);

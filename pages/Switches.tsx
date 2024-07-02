@@ -23,6 +23,7 @@ export default function Switches() {
 
     const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'middle' | 'right'>('right');
 
+
     const [constraints, setConstraints] = useState({ top: 0, bottom: 0 });
     const controls = useAnimation();
 
@@ -45,19 +46,19 @@ export default function Switches() {
         setSwitchedMotion(!isSwitchedMotion);
     }
 
-    function handleSwitchHorizontal(e:React.MouseEvent) {
-        const horizontalSwitch = document.getElementById('horizontalSwitch')
-        const rect = horizontalSwitch!.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
+    // function handleSwitchHorizontal(e:React.MouseEvent) {
+    //     const horizontalSwitch = document.getElementById('horizontalSwitch')
+    //     const rect = horizontalSwitch!.getBoundingClientRect();
+    //     const clickX = e.clientX - rect.left;
 
-        if (clickX < rect.width/ 3) {
-            setHorizontalPosition('left');
-        } else if (clickX < (rect.width/ 3) * 2) {
-            setHorizontalPosition('middle');
-        } else {
-            setHorizontalPosition('right');
-        }
-    }
+    //     if (clickX < rect.width/ 3) {
+    //         setHorizontalPosition('left');
+    //     } else if (clickX < (rect.width/ 3) * 2) {
+    //         setHorizontalPosition('middle');
+    //     } else {
+    //         setHorizontalPosition('right');
+    //     }
+    // }
 
     function handleSwitchHorizontal2() {
         console.log('test');
@@ -87,9 +88,9 @@ export default function Switches() {
 
         <div style={{display:'flex', flexDirection:'row',justifyContent:'space-between'}}>
             
-            {/* first switch */}
             <div style={{display:'flex', flexDirection:'column'}}>
 
+            {/* first switch */}
                 <div className='centerContainer'>
                     <div className='switcherDiv' 
                     style={{backgroundColor: isSwitched ?  "#ddd" : "#333", transition:'0.3s'}} 
@@ -100,11 +101,9 @@ export default function Switches() {
                         />
                     </div>
                 </div>
-            {/* first switch */}
             
 
             {/* second switch */}
-
                 <div className='centerContainer' id="horizontalSwitch">
                     <motion.div className='switcherDiv' 
                     style={{width:325,backgroundColor: isSwitchedHorizontal ?  "#ddd" : "#333", transition:'0.3s',height:'50px'}} 
