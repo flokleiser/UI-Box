@@ -1,5 +1,6 @@
 import React, { useState, useEffect, FC } from 'react';
 import { Page } from '../renderer';
+import {motion} from 'framer-motion'
 
 
 interface NavbarProps {
@@ -85,6 +86,7 @@ const Navbar: React.FC<NavbarProps> = ({ activePage }) => {
             onMouseDown={toggleIcon}
             >
               <span className="material-symbols-outlined" 
+              // whileHover={{rotate:180}}
               style={{transform: isDark? 'rotate(180deg)':'rotate(0deg)', transition:'transform 0.2s'}}>
                 contrast
               </span>

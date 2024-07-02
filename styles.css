@@ -270,6 +270,7 @@ nav{
 .switcherDiv {
   position:relative;
   align-items: center;
+  align-content: center;
   display:grid;
   width:200px;
   height:100px;
@@ -278,15 +279,24 @@ nav{
   margin: 0.5rem;
 }
 
+.switcherDivFill {
+  position:relative;
+  align-items: center;
+  display:grid;
+  width:200px;
+  height:100px;
+  border: 3px solid white;
+  margin: 0.5rem;
+}
+
 .switcherDivHalf {
   position:relative;
   align-items: center;
   display:flex;
-  width:138px;
-  height:100px;
-
-  border-radius: 0 100px 100px 0 ;
-  border-left: 0;
+  width:131px;
+  height:92px;
+  background-color: #ddd;
+  border-radius: 0 18px 18px 0 ;
 }
 
 .switcherDivVertical {
@@ -339,9 +349,11 @@ nav{
   position:relative;
   height:90px;
   width:90px;
-  border-radius: 100px;
+  /* border-radius: 100px; */
+  border-radius: 25px;
   background-color: #ddd;
   transition: transform 0.3s;
+  border-color: #333;
   margin-left:5px;
   margin-right: 5px;
 }
@@ -422,12 +434,15 @@ nav{
     .line {background-color: #333;}
 
     .switcherDiv {border: 3px solid #333333}
+    .switcherDivFill {border:0}
+    .switcherDivHalf{border-radius: 0 20px 20px 0 ;}
+
     .switcherCircleVerticalFill {background-color: #333}
     .switcherCircleVerticalFillAlt {background-color: #ddd; border:3px solid #333}
     .switcherDivVerticalLineFilled {background-color: #333;  border: 3px solid #333;}
-    .switcherDivVerticalLine {border:3px solid #333 
-    }
+    .switcherDivVerticalLine {border:3px solid #333 }
     .switcherCircleVerticalOutline {background-color: #ddd;}
+
     .switcherCircleHorizontal {background-color:#333}
 
     .button1 {background:#333; border: 0px solid #333;}

@@ -17,9 +17,12 @@ export default function Switches() {
     const [isSwitchedMotion, setSwitchedMotion] = useState(false)
     const [isSwitchedFill, setSwitchedFill] = useState(false)
 
+    const [isSwitchedHorizontal, setSwitchedHorizontal] = useState(false)
+
     const [verticalPosition, setVerticalPosition] = useState<'top' | 'middle' | 'bottom'>('middle');
+
     const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'middle' | 'right'>('right');
-    const [previousHorizontalPosition, setPreviousHorizontalPosition] = useState<'left' | 'middle' | 'right'>('right');
+
     const [constraints, setConstraints] = useState({ top: 0, bottom: 0 });
     const controls = useAnimation();
 
@@ -58,6 +61,7 @@ export default function Switches() {
 
     function handleSwitchHorizontal2() {
         console.log('test');
+        setSwitchedHorizontal(!isSwitchedHorizontal);
     }
 
     function handleDragEnd(e:any,info: any) {
@@ -100,45 +104,57 @@ export default function Switches() {
             
 
             {/* second switch */}
+
                 <div className='centerContainer' id="horizontalSwitch">
                     <motion.div className='switcherDiv' 
-                    style={{width:325,
-                        backgroundColor: horizontalPosition === 'left' ? "#ddd" : horizontalPosition === 'right' ? "#333":'#888888', transition: '0.3s'
-                    }}
-                    onMouseDown={handleSwitchHorizontal}
+                    style={{width:325,backgroundColor: isSwitchedHorizontal ?  "#ddd" : "#333", transition:'0.3s',height:'50px'}} 
+                    onMouseDown={handleSwitchHorizontal2}
                     >
                         <motion.div className="switcherCircleHorizontal"
-                         style={{
-                            // left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "125px" : "250px",
-                            left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "112.5px" : "225px",
-                            backgroundColor: horizontalPosition === 'left' ? "#333" :horizontalPosition === 'right' ? "#ddd" : "rgb(51,51,51,0)",transition: '0.3s'
-                        }}
+                        style={{border:isSwitchedHorizontal ? '3px solid #ddd' : '3px solid #333', left: isSwitchedHorizontal ? "0px" : "220px", transition:'0.2s', backgroundColor: isSwitchedHorizontal ?  "#333" : "#ddd"}} 
                         >
                         </motion.div>
 
                     </motion.div>
                 </div>
-            {/* second switch */}
-
-
 
             {/* third filled switch */}
                 <div className='centerContainer'>
-                    <motion.div className='switcherDiv' 
-                    style={{width:275, display:'flex',justifyContent:'center', backgroundColor:'#333'}}
+                    <motion.div className='switcherDivFill' 
+                    style={{width:275, display:'flex', backgroundColor:'#333',borderRadius: '25px',
+                        justifyContent:'center',
+
+                    }}
                     onMouseDown={handleSwitchFill}
                     >
+
+                        {/* old */}
+                            {/* <div className='switcherDivHalf'
+                            style={{
+                                left: isSwitchedFill ? '-68px' : '68px' ,
+                                rotate: isSwitchedFill? '180deg': '0deg',
+                            }}
+                        /> */}
+
                             <div className='switcherDivHalf'
-                            style={{backgroundColor: isSwitchedFill ?  "#ddd" : "#333", transition:'0.05s', rotate:'180deg'}}
-                            >
-                            </div>
+                            style={{
+                                backgroundColor: isSwitchedFill ? '#333':'#ddd',
+                                scale: isSwitchedFill ? '0.9': '1',
+                                rotate:'180deg',
+                                transition:'0.1s',
+                                width:'133px'
+                            }}
+                            />
                             <div className='switcherDivHalf'
-                            style={{backgroundColor: isSwitchedFill ? "#333":"#ddd" , transition:'0.05s'}}
-                            >
-                            </div>
+                            style={{
+                                backgroundColor: isSwitchedFill ? '#ddd':'#333',
+                                scale: isSwitchedFill ? '1': '0.9',
+                                transition:'0.1s',
+                                width:'133px'
+                            }}
+                            />
                     </motion.div>
                 </div>
-            {/* third filled switch */}
 
             </div>
 

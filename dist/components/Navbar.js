@@ -51,6 +51,8 @@ const Navbar = ({ activePage }) => {
                 react_1.default.createElement("button", { className: activePage === 'Test' ? "navbarButton active" : "navbarButton", id: "testpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz"))),
             react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
-                react_1.default.createElement("span", { className: "material-symbols-outlined", style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));
+                react_1.default.createElement("span", { className: "material-symbols-outlined", 
+                    // whileHover={{rotate:180}}
+                    style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));
 };
 exports.default = Navbar;
