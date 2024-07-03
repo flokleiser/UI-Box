@@ -25,12 +25,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Ball;
 const react_1 = __importStar(require("react"));
+const framer_motion_1 = require("framer-motion");
 function Ball() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
+    // const [randomizeHoop, setRandomizeHoop] = useState(0);
+    const [randomizeHoop, setRandomizeHoop] = (0, react_1.useState)(false);
     const [buttonPosition, setButtonPosition] = (0, react_1.useState)({ x: 0, y: 0 });
     const [hoopPosition, setHoopPosition] = (0, react_1.useState)({ x: 0, y: 0 });
     const navbar = document.querySelector('#navbarRoot');
     const navbarHeight = navbar.offsetHeight;
+    // const hoop = new Hoop( ((canvasBall.width / 4) * 3), (canvasBall.height / 3), 100, 50, 5, color);
     (0, react_1.useEffect)(() => {
         const canvasBall = document.querySelector("#sceneBall");
         const ctx = canvasBall.getContext("2d", { willReadFrequently: true });
@@ -54,6 +58,7 @@ function Ball() {
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3;
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
+        const randomizerButton = document.getElementById('randomizerButton');
         class Hoop {
             constructor(centerX, centerY, width, height, wall, color) {
                 this.centerX = centerX;
@@ -78,27 +83,30 @@ function Ball() {
             calculateCollisions() {
                 return [
                     {
-                        left: this.centerX - this.width / 2,
+                        left: this.centerX - this.width / 2 + 2,
                         top: this.centerY + this.height,
-                        right: this.centerX + this.width / 2,
+                        right: this.centerX + this.width / 2 - 2,
                         bottom: this.centerY + this.height + this.wall
                     },
                     {
                         left: this.centerX - this.width / 2,
-                        top: this.centerY,
+                        top: this.centerY + 2,
                         right: this.centerX - this.width / 2 + this.wall,
-                        bottom: this.centerY + this.height + this.wall
+                        bottom: this.centerY + (this.height - 2) + this.wall
                     },
                     {
                         left: this.centerX + this.width / 2 - this.wall,
-                        top: this.centerY,
+                        top: this.centerY + 2,
                         right: this.centerX + this.width / 2,
-                        bottom: this.centerY + this.height + this.wall
+                        bottom: this.centerY + (this.height - 2) + this.wall
                     }
                 ];
             }
         }
-        const hoop = new Hoop((canvasBall.width / 4) * 3, canvasBall.height / 3, 125, 80, 10, color);
+        const hoop = new Hoop(((canvasBall.width / 4) * 3), (canvasBall.height / 3), 100, 50, 5, color);
+        // function handleRandomizeHoop() {
+        //     console.log('test random')
+        // }
         const onMouseMove = (e) => {
             if (isDragging) {
                 mouse.x = e.clientX;
@@ -143,7 +151,6 @@ function Ball() {
         const initscene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
-            // wh = canvasBall.height = window.innerHeight - navbarHeight;
             isDragging = false;
             isReleased = false;
             centerX = ww / 2;
@@ -160,7 +167,6 @@ function Ball() {
         const resizeScene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
-            // wh = canvasBall.height = window.innerHeight - navbarHeight;
             centerX = ww / 2;
             centerY = (wh / 5) * 3;
             ballX = centerX;
@@ -169,7 +175,6 @@ function Ball() {
             vy = 0;
             hoop.centerX = (ww / 4) * 3;
             hoop.centerY = wh / 3;
-            // setHoopPosition({ x: (canvasBall.width / 4) * 3, y: (canvasBall.height / 3) });                
             setButtonPosition({ x: centerX, y: centerY + 75 });
         };
         let animationFrameId;
@@ -187,11 +192,11 @@ function Ball() {
                 }
                 else {
                     vy += gravity;
-                    // vy -= gravity;
                 }
                 ballX += vx;
                 ballY += vy;
-                //hoop calculations
+                //hoop collisions
+                // todo --> seperate out bottom bar?
                 const hoopRects = hoop.calculateCollisions();
                 for (const rect of hoopRects) {
                     if (ballX + radius > rect.left && ballX - radius < rect.right
@@ -207,12 +212,13 @@ function Ball() {
                         }
                     }
                 }
-                if (ballY + radius > wh || ballY - radius < 0 + navbarHeight) {
+                //wall collision
+                if (ballY + radius > wh || ballY - radius < 0 + navbar.offsetHeight) {
                     vy *= -damping;
                     if (ballY + radius > wh)
                         ballY = wh - radius;
-                    if (ballY - radius < 0 + navbarHeight) {
-                        ballY = navbarHeight + radius;
+                    if (ballY - radius < 0 + navbar.offsetHeight) {
+                        ballY = navbar.offsetHeight + radius;
                     }
                 }
                 if (ballX + radius > ww || ballX - radius < 0) {
@@ -265,9 +271,18 @@ function Ball() {
             animationFrameId = requestAnimationFrame(render);
         };
         const handleThemeToggle = () => { resetScene(); };
+        const handleRandomizeHoop = () => {
+            const hoop = new Hoop(((canvasBall.width / 2)), (canvasBall.height / 2), 100, 50, 5, color);
+            // setRandomizeHoop(!randomizeHoop)
+            initscene();
+            console.log('hoop', randomizeHoop);
+        };
         window.addEventListener("resize", resizeScene);
         if (darkmodeToggleButton) {
             darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+        }
+        if (randomizerButton) {
+            randomizerButton.addEventListener('click', handleRandomizeHoop);
         }
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -280,6 +295,9 @@ function Ball() {
             if (darkmodeToggleButton) {
                 darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
             }
+            if (randomizerButton) {
+                randomizerButton.removeEventListener('click', handleRandomizeHoop);
+            }
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);
@@ -287,19 +305,20 @@ function Ball() {
             window.removeEventListener("touchend", onTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
-    }, [resetTrigger]);
-    // }, []);
+    }, [resetTrigger, randomizeHoop]);
     function resetScene() {
         setResetTrigger(prev => prev + 1);
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("h1", null, "Ball"),
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
+                react_1.default.createElement("h1", null, "Ball"),
+                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "randomizerButton", whileHover: { rotate: 180 } },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "swap_horiz"))),
             react_1.default.createElement("canvas", { style: {
                     width: '100vw',
                     height: '100vh',
                     position: 'absolute',
-                    // top: navbarHeight,
                     top: 0,
                     left: 0,
                     overflow: 'hidden',

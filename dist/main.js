@@ -58,7 +58,9 @@ const { app, ipcMain, BrowserWindow, nativeTheme } = __webpack_require__(/*! ele
 const path = __webpack_require__(/*! node:path */ "node:path");
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 800,
+        // width: 800,
+        // height: 600,
+        width: 850,
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')

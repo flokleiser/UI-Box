@@ -213,26 +213,45 @@ function Joystick() {
                 circleX2 += vx2;
                 circleY2 += vy2;
             }
-            else {
+            if (isMovingKeys) {
                 updatePositionKeyboard();
                 vx = 0;
                 vy = 0;
+                if (!isDragging) {
+                    const dx2 = centerX2 - circleX2;
+                    const dy2 = centerY2 - circleY2;
+                    const ax2 = dx2 * stiffness;
+                    const ay2 = dy2 * stiffness;
+                    vx2 += ax2;
+                    vy2 += ay2;
+                    vx2 *= damping;
+                    vy2 *= damping;
+                    circleX2 += vx2;
+                    circleY2 += vy2;
+                }
             }
             if (isDragging) {
                 updatePositionMouse();
                 vx2 = 0;
                 vy2 = 0;
-                const dx = centerX - circleX;
-                const dy = centerY - circleY;
-                const ax = dx * stiffness;
-                const ay = dy * stiffness;
-                vx += ax;
-                vy += ay;
-                vx *= damping;
-                vy *= damping;
-                circleX += vx;
-                circleY += vy;
+                if (!isMovingKeys) {
+                    const dx = centerX - circleX;
+                    const dy = centerY - circleY;
+                    const ax = dx * stiffness;
+                    const ay = dy * stiffness;
+                    vx += ax;
+                    vy += ay;
+                    vx *= damping;
+                    vy *= damping;
+                    circleX += vx;
+                    circleY += vy;
+                }
             }
+            // else {
+            //     updatePositionKeyboard();
+            //     vx = 0;
+            //     vy = 0;
+            // } 
             ctx.clearRect(0, 0, canvasKeyboard.width, canvasKeyboard.height);
             //ball keyboard
             ctx.fillStyle = color;

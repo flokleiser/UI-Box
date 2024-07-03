@@ -14,7 +14,7 @@ export default function Home() {
             
                     <h1> UI-Box</h1>
 
-                    <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} id="settingsButton" onMouseDown={handleSettingsClick} whileHover={{rotate:180,repeatCount:30}}>
+                    <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} id="settingsButton" onMouseDown={handleSettingsClick} whileHover={{rotate:180}}>
                         <span className="material-symbols-outlined">
                        settings 
                         </span>

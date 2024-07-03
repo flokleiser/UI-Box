@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {motion, useAnimation} from "framer-motion"
+import {motion, useAnimation, useDragControls} from "framer-motion"
 
 export default function Switches() {
 
@@ -13,19 +13,23 @@ export default function Switches() {
         }
     }
 
+    const newSecondSwitch = false;
+
     const [isSwitched, setSwitched] = useState(false)
     const [isSwitchedMotion, setSwitchedMotion] = useState(false)
     const [isSwitchedFill, setSwitchedFill] = useState(false)
 
-    const [isSwitchedHorizontal, setSwitchedHorizontal] = useState(false)
-
     const [verticalPosition, setVerticalPosition] = useState<'top' | 'middle' | 'bottom'>('middle');
 
     const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'middle' | 'right'>('right');
+    const [isSwitchedHorizontal, setSwitchedHorizontal] = useState(false)
 
 
     const [constraints, setConstraints] = useState({ top: 0, bottom: 0 });
+    const dragControls = useDragControls();
     const controls = useAnimation();
+
+
 
     useEffect(() => {
         const verticalSwitch = document.getElementById("verticalSwitch");
@@ -37,32 +41,33 @@ export default function Switches() {
     function handleSwitch() {
         setSwitched(!isSwitched);
     }
-
     function handleSwitchFill() {
         setSwitchedFill(!isSwitchedFill);
     }
-
     function handleSwitchMotion() {
         setSwitchedMotion(!isSwitchedMotion);
     }
 
-    // function handleSwitchHorizontal(e:React.MouseEvent) {
-    //     const horizontalSwitch = document.getElementById('horizontalSwitch')
-    //     const rect = horizontalSwitch!.getBoundingClientRect();
-    //     const clickX = e.clientX - rect.left;
+    function handleSwitchHorizontal(e:React.MouseEvent) {
+        if (newSecondSwitch) {
+        const horizontalSwitch = document.getElementById('horizontalSwitch')
+        const rect = horizontalSwitch!.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+            if (clickX < rect.width/ 3) {
+                setHorizontalPosition('left');
+            } else if (clickX < (rect.width/ 3) * 2) {
+                setHorizontalPosition('middle');
+            } else {
+                setHorizontalPosition('right');
+            }
+        }
+        else {
+            setSwitchedHorizontal(!isSwitchedHorizontal)
+        }
+    }
 
-    //     if (clickX < rect.width/ 3) {
-    //         setHorizontalPosition('left');
-    //     } else if (clickX < (rect.width/ 3) * 2) {
-    //         setHorizontalPosition('middle');
-    //     } else {
-    //         setHorizontalPosition('right');
-    //     }
-    // }
-
-    function handleSwitchHorizontal2() {
-        console.log('test');
-        setSwitchedHorizontal(!isSwitchedHorizontal);
+    function startDrag(event:any) {
+        dragControls.start(event, {snapToCursor:true})
     }
 
     function handleDragEnd(e:any,info: any) {
@@ -78,7 +83,6 @@ export default function Switches() {
             setVerticalPosition('bottom');
         }
     }
-
 
     return(
         <div className="bodyCenter">
@@ -107,10 +111,15 @@ export default function Switches() {
                 <div className='centerContainer' id="horizontalSwitch">
                     <motion.div className='switcherDiv' 
                     style={{width:325,backgroundColor: isSwitchedHorizontal ?  "#ddd" : "#333", transition:'0.3s',height:'50px'}} 
-                    onMouseDown={handleSwitchHorizontal2}
+                    onMouseDown={handleSwitchHorizontal}
                     >
+                        
                         <motion.div className="switcherCircleHorizontal"
-                        style={{border:isSwitchedHorizontal ? '3px solid #ddd' : '3px solid #333', left: isSwitchedHorizontal ? "0px" : "220px", transition:'0.2s', backgroundColor: isSwitchedHorizontal ?  "#333" : "#ddd"}} 
+                        style={{
+                            // left: horizontalPosition === 'left' ? "0px" : horizontalPosition === 'middle' ? "112.5px" : "225px", 
+                            border:isSwitchedHorizontal ? '3px solid #ddd' : '3px solid #333', 
+                            left: isSwitchedHorizontal ? "0px" : "220px", 
+                            transition:'0.2s', backgroundColor: isSwitchedHorizontal ?  "#333" : "#ddd"}} 
                         >
                         </motion.div>
 
@@ -186,7 +195,19 @@ export default function Switches() {
                     <motion.div id="verticalSwitch" className='switcherDivVerticalLineFilled'
                     >
                         <motion.div className='switcherCircleVerticalOutline' 
-                        drag="y"
+
+                        // drag="y"
+
+                        // dragConstraints={{
+                        //     top: -100, 
+                        //     bottom: 100
+                        // }}
+
+                        // dragElastic={0.1}
+                        // onDragEnd={handleDragEnd}
+                        // animate={controls}
+                        // dragControls={dragControls}
+                        // style={{ top: "0px"}}
                         dragConstraints={constraints}
                         dragElastic={0}
                         onDragEnd={handleDragEnd}
