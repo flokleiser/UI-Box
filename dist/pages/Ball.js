@@ -202,17 +202,27 @@ function Ball() {
                     if (ballX + radius > rect.left && ballX - radius < rect.right
                         &&
                             ballY + radius > rect.top && ballY - radius < rect.bottom) {
-                        if (ballY - radius < rect.top && ballY + radius > rect.bottom) {
+                        if (ballY - radius < rect.top || ballY + radius > rect.bottom) {
                             vy *= -damping;
-                            ballY = ballY < rect.top ? rect.top - radius : rect.bottom + radius;
+                            if (ballY - radius < rect.top) {
+                                ballY = rect.top - radius;
+                            }
+                            else {
+                                ballY = rect.bottom + radius;
+                            }
                         }
-                        else if (ballX - radius < rect.left && ballX + radius > rect.right) {
+                        if (ballX - radius < rect.left || ballX + radius > rect.right) {
                             vx *= -damping;
-                            ballX = ballX < rect.left ? rect.left - radius : rect.right + radius;
+                            if (ballX - radius < rect.left) {
+                                ballX = rect.left - radius;
+                            }
+                            else {
+                                ballX = rect.right + radius;
+                            }
                         }
                     }
                 }
-                //wall collision
+                //canvascollision
                 if (ballY + radius > wh || ballY - radius < 0 + navbar.offsetHeight) {
                     vy *= -damping;
                     if (ballY + radius > wh)
@@ -230,24 +240,22 @@ function Ball() {
                 }
             }
             /* collision while dragging */
-            else {
-                if (isDragging) {
-                    if (ballY + radius > wh || ballY - radius < 0) {
-                        vy *= -damping;
-                        if (ballY + radius > wh) {
-                            ballY = wh - radius;
-                        }
-                        if (ballY - radius < 0) {
-                            ballY = radius;
-                        }
+            if (isDragging) {
+                if (ballY + radius > wh || ballY - radius < 0) {
+                    vy *= -damping;
+                    if (ballY + radius > wh) {
+                        ballY = wh - radius;
                     }
-                    if (ballX + radius > ww || ballX - radius < 0) {
-                        vx *= -damping;
-                        if (ballX + radius > ww)
-                            ballX = canvasBall.width - radius;
-                        if (ballX - radius < 0) {
-                            ballX = radius;
-                        }
+                    if (ballY - radius < 0) {
+                        ballY = radius;
+                    }
+                }
+                if (ballX + radius > ww || ballX - radius < 0) {
+                    vx *= -damping;
+                    if (ballX + radius > ww)
+                        ballX = canvasBall.width - radius;
+                    if (ballX - radius < 0) {
+                        ballX = radius;
                     }
                 }
                 vx = 0;

@@ -208,6 +208,7 @@ export default function Switches() {
                         // animate={controls}
                         // dragControls={dragControls}
                         // style={{ top: "0px"}}
+                        drag="y"
                         dragConstraints={constraints}
                         dragElastic={0}
                         onDragEnd={handleDragEnd}

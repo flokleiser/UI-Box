@@ -230,24 +230,36 @@ export default function Ball() {
                 // todo --> seperate out bottom bar?
 
                 const hoopRects = hoop.calculateCollisions();
+
                 for (const rect of hoopRects) {
                     if (
                         ballX + radius > rect.left && ballX - radius < rect.right 
                         &&
                         ballY + radius > rect.top && ballY - radius < rect.bottom
                     ) {
-                        if (ballY - radius < rect.top && ballY + radius > rect.bottom) {
+                      
+                        if (ballY - radius < rect.top || ballY + radius > rect.bottom) {
                             vy *= -damping;
-                            ballY = ballY < rect.top ? rect.top - radius : rect.bottom + radius;
-
-                        } else if (ballX - radius < rect.left && ballX + radius > rect.right) {
-                            vx *= -damping;
-                            ballX = ballX < rect.left ? rect.left - radius : rect.right + radius;
+                            if (ballY - radius < rect.top) {
+                                ballY = rect.top - radius;
+                            } else {
+                                ballY = rect.bottom + radius;
+                            }
                         }
+                        if (ballX - radius < rect.left || ballX + radius > rect.right) {
+                            vx *= -damping;
+                            if (ballX - radius < rect.left) {
+                                ballX = rect.left - radius;
+                            } else {
+                                ballX = rect.right + radius;
+                            }
+                        }
+
+                      
                     }
                 }
 
-                //wall collision
+                //canvascollision
                 if (ballY + radius > wh|| ballY - radius < 0 + navbar.offsetHeight) {
                     vy *= -damping;
                     if (ballY + radius > wh) ballY = wh - radius;
@@ -265,9 +277,8 @@ export default function Ball() {
             }
 
             /* collision while dragging */
-            else {
-                if (isDragging) {
-                    if (ballY + radius > wh|| ballY - radius < 0) {
+            if (isDragging) {
+                if (ballY + radius > wh|| ballY - radius < 0) {
                         vy *= -damping;
                         if (ballY + radius > wh) {
                             ballY = wh - radius;
@@ -285,10 +296,9 @@ export default function Ball() {
                             ballX = radius;
                         }
                     }
+                    vx = 0;
+                    vy = 0;
                 }
-                vx = 0;
-                vy = 0;
-            }
 
 
             ctx.clearRect(0, 0, canvasBall.width, canvasBall.height);
@@ -313,6 +323,8 @@ export default function Ball() {
 
             animationFrameId = requestAnimationFrame(render);
         };
+
+      
 
         const handleThemeToggle = () => {resetScene()}
 

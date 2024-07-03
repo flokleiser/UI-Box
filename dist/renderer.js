@@ -47664,17 +47664,27 @@ function Ball() {
                     if (ballX + radius > rect.left && ballX - radius < rect.right
                         &&
                             ballY + radius > rect.top && ballY - radius < rect.bottom) {
-                        if (ballY - radius < rect.top && ballY + radius > rect.bottom) {
+                        if (ballY - radius < rect.top || ballY + radius > rect.bottom) {
                             vy *= -damping;
-                            ballY = ballY < rect.top ? rect.top - radius : rect.bottom + radius;
+                            if (ballY - radius < rect.top) {
+                                ballY = rect.top - radius;
+                            }
+                            else {
+                                ballY = rect.bottom + radius;
+                            }
                         }
-                        else if (ballX - radius < rect.left && ballX + radius > rect.right) {
+                        if (ballX - radius < rect.left || ballX + radius > rect.right) {
                             vx *= -damping;
-                            ballX = ballX < rect.left ? rect.left - radius : rect.right + radius;
+                            if (ballX - radius < rect.left) {
+                                ballX = rect.left - radius;
+                            }
+                            else {
+                                ballX = rect.right + radius;
+                            }
                         }
                     }
                 }
-                //wall collision
+                //canvascollision
                 if (ballY + radius > wh || ballY - radius < 0 + navbar.offsetHeight) {
                     vy *= -damping;
                     if (ballY + radius > wh)
@@ -47692,24 +47702,22 @@ function Ball() {
                 }
             }
             /* collision while dragging */
-            else {
-                if (isDragging) {
-                    if (ballY + radius > wh || ballY - radius < 0) {
-                        vy *= -damping;
-                        if (ballY + radius > wh) {
-                            ballY = wh - radius;
-                        }
-                        if (ballY - radius < 0) {
-                            ballY = radius;
-                        }
+            if (isDragging) {
+                if (ballY + radius > wh || ballY - radius < 0) {
+                    vy *= -damping;
+                    if (ballY + radius > wh) {
+                        ballY = wh - radius;
                     }
-                    if (ballX + radius > ww || ballX - radius < 0) {
-                        vx *= -damping;
-                        if (ballX + radius > ww)
-                            ballX = canvasBall.width - radius;
-                        if (ballX - radius < 0) {
-                            ballX = radius;
-                        }
+                    if (ballY - radius < 0) {
+                        ballY = radius;
+                    }
+                }
+                if (ballX + radius > ww || ballX - radius < 0) {
+                    vx *= -damping;
+                    if (ballX + radius > ww)
+                        ballX = canvasBall.width - radius;
+                    if (ballX - radius < 0) {
+                        ballX = radius;
                     }
                 }
                 vx = 0;
@@ -48813,7 +48821,7 @@ function Switches() {
                                 // animate={controls}
                                 // dragControls={dragControls}
                                 // style={{ top: "0px"}}
-                                dragConstraints: constraints, dragElastic: 0, onDragEnd: handleDragEnd, animate: controls, style: { top: "0px", transition: '0.05s' } },
+                                drag: "y", dragConstraints: constraints, dragElastic: 0, onDragEnd: handleDragEnd, animate: controls, style: { top: "0px", transition: '0.05s' } },
                                 react_1.default.createElement("div", { className: 'switcherCircleVerticalFillAlt' })))))))));
 }
 
@@ -49251,7 +49259,7 @@ const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
-const startPage = "Switches";
+const startPage = "Ball";
 const App = () => {
     const [page, setPage] = (0, react_1.useState)(startPage);
     const [active, setActive] = (0, react_1.useState)(page);
