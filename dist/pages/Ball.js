@@ -28,13 +28,7 @@ const react_1 = __importStar(require("react"));
 const framer_motion_1 = require("framer-motion");
 function Ball() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
-    // const [randomizeHoop, setRandomizeHoop] = useState(0);
-    const [randomizeHoop, setRandomizeHoop] = (0, react_1.useState)(false);
-    const [buttonPosition, setButtonPosition] = (0, react_1.useState)({ x: 0, y: 0 });
-    const [hoopPosition, setHoopPosition] = (0, react_1.useState)({ x: 0, y: 0 });
     const navbar = document.querySelector('#navbarRoot');
-    const navbarHeight = navbar.offsetHeight;
-    // const hoop = new Hoop( ((canvasBall.width / 4) * 3), (canvasBall.height / 3), 100, 50, 5, color);
     (0, react_1.useEffect)(() => {
         const canvasBall = document.querySelector("#sceneBall");
         const ctx = canvasBall.getContext("2d", { willReadFrequently: true });
@@ -44,11 +38,8 @@ function Ball() {
         let isReleased = false;
         let ww = window.innerWidth;
         let wh = window.innerHeight;
-        // let wh = window.innerHeight - navbarHeight;
         let centerX = (ww / 2);
         let centerY = (wh / 5) * 3;
-        // let centerX = clientX
-        // let centerY = clientY
         let ballX = centerX;
         let ballY = centerY;
         let vx = 0;
@@ -58,55 +49,44 @@ function Ball() {
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3;
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
-        const randomizerButton = document.getElementById('randomizerButton');
         class Hoop {
-            constructor(centerX, centerY, width, height, wall, color) {
+            constructor(centerX, centerY, width, height, color) {
                 this.centerX = centerX;
                 this.centerY = centerY;
                 this.width = width;
                 this.height = height;
-                this.wall = wall;
                 this.color = color;
             }
             draw(ctx) {
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
-                ctx.rect(this.centerX - this.width / 2, this.centerY + this.height, this.width, this.wall);
+                ctx.rect(this.centerX, this.centerY, this.width, this.height);
                 ctx.fill();
-                ctx.beginPath();
-                ctx.rect(this.centerX - this.width / 2, this.centerY, this.wall, this.height + this.wall);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.rect(this.centerX + this.width / 2 - this.wall, this.centerY, this.wall, this.height + this.wall);
-                ctx.fill();
-            }
-            calculateCollisions() {
-                return [
-                    {
-                        left: this.centerX - this.width / 2 + 2,
-                        top: this.centerY + this.height,
-                        right: this.centerX + this.width / 2 - 2,
-                        bottom: this.centerY + this.height + this.wall
-                    },
-                    {
-                        left: this.centerX - this.width / 2,
-                        top: this.centerY + 2,
-                        right: this.centerX - this.width / 2 + this.wall,
-                        bottom: this.centerY + (this.height - 2) + this.wall
-                    },
-                    {
-                        left: this.centerX + this.width / 2 - this.wall,
-                        top: this.centerY + 2,
-                        right: this.centerX + this.width / 2,
-                        bottom: this.centerY + (this.height - 2) + this.wall
-                    }
-                ];
             }
         }
-        const hoop = new Hoop(((canvasBall.width / 4) * 3), (canvasBall.height / 3), 100, 50, 5, color);
-        // function handleRandomizeHoop() {
-        //     console.log('test random')
-        // }
+        // const hoop = new Hoop( ((canvasBall.width / 4) * 3), (canvasBall.height / 3), 100, 50, 5, color);
+        const hoopLeft = new Hoop(((canvasBall.width / 4) * 3), canvasBall.height / 3, 10, 50, color);
+        const hoopRight = new Hoop(((canvasBall.width / 4) * 3), canvasBall.height / 3, 10, 50, color);
+        const hoopBottom = new Hoop(((canvasBall.width / 4) * 3), (canvasBall.height / 3) + 50, 100, 10, color);
+        function checkCollision(ballX, ballY, radius, rect) {
+            const distX = Math.abs(ballX - rect.centerX - rect.width / 2);
+            const distY = Math.abs(ballY - rect.centerY - rect.height / 2);
+            if (distX > (rect.width / 2 + radius)) {
+                return false;
+            }
+            if (distY > (rect.height / 2 + radius)) {
+                return false;
+            }
+            if (distX <= (rect.width / 2)) {
+                return true;
+            }
+            if (distY <= (rect.height / 2)) {
+                return true;
+            }
+            const dx = distX - rect.width / 2;
+            const dy = distY - rect.height / 2;
+            return (dx * dx + dy * dy <= (radius * radius));
+        }
         const onMouseMove = (e) => {
             if (isDragging) {
                 mouse.x = e.clientX;
@@ -157,9 +137,12 @@ function Ball() {
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            hoop.centerX = (ww / 4) * 3;
-            hoop.centerY = wh / 3;
-            setButtonPosition({ x: centerX, y: centerY + 75 });
+            hoopLeft.centerX = (ww / 4) * 3;
+            hoopLeft.centerY = wh / 3;
+            hoopRight.centerX = ((ww / 4) * 3) + 90;
+            hoopRight.centerY = wh / 3;
+            hoopBottom.centerX = (ww / 4) * 3;
+            hoopBottom.centerY = (wh / 3) + 50;
             vx = 0;
             vy = 0;
             render();
@@ -173,9 +156,12 @@ function Ball() {
             ballY = centerY;
             vx = 0;
             vy = 0;
-            hoop.centerX = (ww / 4) * 3;
-            hoop.centerY = wh / 3;
-            setButtonPosition({ x: centerX, y: centerY + 75 });
+            hoopLeft.centerX = (ww / 4) * 3;
+            hoopLeft.centerY = wh / 3;
+            hoopRight.centerX = ((ww / 4) * 3) + 90;
+            hoopRight.centerY = wh / 3;
+            hoopBottom.centerX = (ww / 4) * 3;
+            hoopBottom.centerY = (wh / 3) + 50;
         };
         let animationFrameId;
         const render = () => {
@@ -195,31 +181,35 @@ function Ball() {
                 }
                 ballX += vx;
                 ballY += vy;
-                //hoop collisions
-                // todo --> seperate out bottom bar?
-                const hoopRects = hoop.calculateCollisions();
-                for (const rect of hoopRects) {
-                    if (ballX + radius > rect.left && ballX - radius < rect.right
-                        &&
-                            ballY + radius > rect.top && ballY - radius < rect.bottom) {
-                        if (ballY - radius < rect.top || ballY + radius > rect.bottom) {
-                            vy *= -damping;
-                            if (ballY - radius < rect.top) {
-                                ballY = rect.top - radius;
-                            }
-                            else {
-                                ballY = rect.bottom + radius;
-                            }
-                        }
-                        if (ballX - radius < rect.left || ballX + radius > rect.right) {
-                            vx *= -damping;
-                            if (ballX - radius < rect.left) {
-                                ballX = rect.left - radius;
-                            }
-                            else {
-                                ballX = rect.right + radius;
-                            }
-                        }
+                if (checkCollision(ballX, ballY, radius, hoopLeft)) {
+                    if (ballX < hoopLeft.centerX) {
+                        ballX = hoopLeft.centerX - radius;
+                        vx *= -damping;
+                    }
+                    else {
+                        ballX = hoopLeft.centerX + hoopLeft.width + radius;
+                        vx *= -damping;
+                    }
+                }
+                if (checkCollision(ballX, ballY, radius, hoopRight)) {
+                    if (ballX < hoopRight.centerX) {
+                        ballX = hoopRight.centerX - radius;
+                        vx *= -damping;
+                    }
+                    else {
+                        ballX = hoopRight.centerX + hoopRight.width + radius;
+                        vx *= -damping;
+                    }
+                }
+                if (checkCollision(ballX, ballY, radius, hoopBottom)) {
+                    if (ballY < hoopBottom.centerY) {
+                        ballY = hoopBottom.centerY - radius;
+                        vy *= -damping;
+                    }
+                    else {
+                        ballY = hoopBottom.centerY + hoopBottom.height + radius;
+                        // ballY = hoopBottom.centerY + radius;
+                        vy *= -damping;
                     }
                 }
                 //canvascollision
@@ -275,22 +265,15 @@ function Ball() {
             ctx.beginPath();
             ctx.arc(ballX, ballY, radius, 0, Math.PI * 2);
             ctx.fill();
-            hoop.draw(ctx);
+            hoopLeft.draw(ctx);
+            hoopRight.draw(ctx);
+            hoopBottom.draw(ctx);
             animationFrameId = requestAnimationFrame(render);
         };
         const handleThemeToggle = () => { resetScene(); };
-        const handleRandomizeHoop = () => {
-            const hoop = new Hoop(((canvasBall.width / 2)), (canvasBall.height / 2), 100, 50, 5, color);
-            // setRandomizeHoop(!randomizeHoop)
-            initscene();
-            console.log('hoop', randomizeHoop);
-        };
         window.addEventListener("resize", resizeScene);
         if (darkmodeToggleButton) {
             darkmodeToggleButton.addEventListener('click', handleThemeToggle);
-        }
-        if (randomizerButton) {
-            randomizerButton.addEventListener('click', handleRandomizeHoop);
         }
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -303,9 +286,6 @@ function Ball() {
             if (darkmodeToggleButton) {
                 darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
             }
-            if (randomizerButton) {
-                randomizerButton.removeEventListener('click', handleRandomizeHoop);
-            }
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);
@@ -313,7 +293,7 @@ function Ball() {
             window.removeEventListener("touchend", onTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
-    }, [resetTrigger, randomizeHoop]);
+    }, [resetTrigger]);
     function resetScene() {
         setResetTrigger(prev => prev + 1);
     }

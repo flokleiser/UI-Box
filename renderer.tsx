@@ -15,7 +15,7 @@ import Test from './pages/Test'
 
 export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Test';
 
-const startPage = "Ball"
+const startPage = "Switches"
 
 declare global {
   interface Window {

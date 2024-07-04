@@ -47490,13 +47490,7 @@ const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/re
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 function Ball() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
-    // const [randomizeHoop, setRandomizeHoop] = useState(0);
-    const [randomizeHoop, setRandomizeHoop] = (0, react_1.useState)(false);
-    const [buttonPosition, setButtonPosition] = (0, react_1.useState)({ x: 0, y: 0 });
-    const [hoopPosition, setHoopPosition] = (0, react_1.useState)({ x: 0, y: 0 });
     const navbar = document.querySelector('#navbarRoot');
-    const navbarHeight = navbar.offsetHeight;
-    // const hoop = new Hoop( ((canvasBall.width / 4) * 3), (canvasBall.height / 3), 100, 50, 5, color);
     (0, react_1.useEffect)(() => {
         const canvasBall = document.querySelector("#sceneBall");
         const ctx = canvasBall.getContext("2d", { willReadFrequently: true });
@@ -47506,11 +47500,8 @@ function Ball() {
         let isReleased = false;
         let ww = window.innerWidth;
         let wh = window.innerHeight;
-        // let wh = window.innerHeight - navbarHeight;
         let centerX = (ww / 2);
         let centerY = (wh / 5) * 3;
-        // let centerX = clientX
-        // let centerY = clientY
         let ballX = centerX;
         let ballY = centerY;
         let vx = 0;
@@ -47520,55 +47511,44 @@ function Ball() {
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3;
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
-        const randomizerButton = document.getElementById('randomizerButton');
         class Hoop {
-            constructor(centerX, centerY, width, height, wall, color) {
+            constructor(centerX, centerY, width, height, color) {
                 this.centerX = centerX;
                 this.centerY = centerY;
                 this.width = width;
                 this.height = height;
-                this.wall = wall;
                 this.color = color;
             }
             draw(ctx) {
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
-                ctx.rect(this.centerX - this.width / 2, this.centerY + this.height, this.width, this.wall);
+                ctx.rect(this.centerX, this.centerY, this.width, this.height);
                 ctx.fill();
-                ctx.beginPath();
-                ctx.rect(this.centerX - this.width / 2, this.centerY, this.wall, this.height + this.wall);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.rect(this.centerX + this.width / 2 - this.wall, this.centerY, this.wall, this.height + this.wall);
-                ctx.fill();
-            }
-            calculateCollisions() {
-                return [
-                    {
-                        left: this.centerX - this.width / 2 + 2,
-                        top: this.centerY + this.height,
-                        right: this.centerX + this.width / 2 - 2,
-                        bottom: this.centerY + this.height + this.wall
-                    },
-                    {
-                        left: this.centerX - this.width / 2,
-                        top: this.centerY + 2,
-                        right: this.centerX - this.width / 2 + this.wall,
-                        bottom: this.centerY + (this.height - 2) + this.wall
-                    },
-                    {
-                        left: this.centerX + this.width / 2 - this.wall,
-                        top: this.centerY + 2,
-                        right: this.centerX + this.width / 2,
-                        bottom: this.centerY + (this.height - 2) + this.wall
-                    }
-                ];
             }
         }
-        const hoop = new Hoop(((canvasBall.width / 4) * 3), (canvasBall.height / 3), 100, 50, 5, color);
-        // function handleRandomizeHoop() {
-        //     console.log('test random')
-        // }
+        // const hoop = new Hoop( ((canvasBall.width / 4) * 3), (canvasBall.height / 3), 100, 50, 5, color);
+        const hoopLeft = new Hoop(((canvasBall.width / 4) * 3), canvasBall.height / 3, 10, 50, color);
+        const hoopRight = new Hoop(((canvasBall.width / 4) * 3), canvasBall.height / 3, 10, 50, color);
+        const hoopBottom = new Hoop(((canvasBall.width / 4) * 3), (canvasBall.height / 3) + 50, 100, 10, color);
+        function checkCollision(ballX, ballY, radius, rect) {
+            const distX = Math.abs(ballX - rect.centerX - rect.width / 2);
+            const distY = Math.abs(ballY - rect.centerY - rect.height / 2);
+            if (distX > (rect.width / 2 + radius)) {
+                return false;
+            }
+            if (distY > (rect.height / 2 + radius)) {
+                return false;
+            }
+            if (distX <= (rect.width / 2)) {
+                return true;
+            }
+            if (distY <= (rect.height / 2)) {
+                return true;
+            }
+            const dx = distX - rect.width / 2;
+            const dy = distY - rect.height / 2;
+            return (dx * dx + dy * dy <= (radius * radius));
+        }
         const onMouseMove = (e) => {
             if (isDragging) {
                 mouse.x = e.clientX;
@@ -47619,9 +47599,12 @@ function Ball() {
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            hoop.centerX = (ww / 4) * 3;
-            hoop.centerY = wh / 3;
-            setButtonPosition({ x: centerX, y: centerY + 75 });
+            hoopLeft.centerX = (ww / 4) * 3;
+            hoopLeft.centerY = wh / 3;
+            hoopRight.centerX = ((ww / 4) * 3) + 90;
+            hoopRight.centerY = wh / 3;
+            hoopBottom.centerX = (ww / 4) * 3;
+            hoopBottom.centerY = (wh / 3) + 50;
             vx = 0;
             vy = 0;
             render();
@@ -47635,9 +47618,12 @@ function Ball() {
             ballY = centerY;
             vx = 0;
             vy = 0;
-            hoop.centerX = (ww / 4) * 3;
-            hoop.centerY = wh / 3;
-            setButtonPosition({ x: centerX, y: centerY + 75 });
+            hoopLeft.centerX = (ww / 4) * 3;
+            hoopLeft.centerY = wh / 3;
+            hoopRight.centerX = ((ww / 4) * 3) + 90;
+            hoopRight.centerY = wh / 3;
+            hoopBottom.centerX = (ww / 4) * 3;
+            hoopBottom.centerY = (wh / 3) + 50;
         };
         let animationFrameId;
         const render = () => {
@@ -47657,31 +47643,35 @@ function Ball() {
                 }
                 ballX += vx;
                 ballY += vy;
-                //hoop collisions
-                // todo --> seperate out bottom bar?
-                const hoopRects = hoop.calculateCollisions();
-                for (const rect of hoopRects) {
-                    if (ballX + radius > rect.left && ballX - radius < rect.right
-                        &&
-                            ballY + radius > rect.top && ballY - radius < rect.bottom) {
-                        if (ballY - radius < rect.top || ballY + radius > rect.bottom) {
-                            vy *= -damping;
-                            if (ballY - radius < rect.top) {
-                                ballY = rect.top - radius;
-                            }
-                            else {
-                                ballY = rect.bottom + radius;
-                            }
-                        }
-                        if (ballX - radius < rect.left || ballX + radius > rect.right) {
-                            vx *= -damping;
-                            if (ballX - radius < rect.left) {
-                                ballX = rect.left - radius;
-                            }
-                            else {
-                                ballX = rect.right + radius;
-                            }
-                        }
+                if (checkCollision(ballX, ballY, radius, hoopLeft)) {
+                    if (ballX < hoopLeft.centerX) {
+                        ballX = hoopLeft.centerX - radius;
+                        vx *= -damping;
+                    }
+                    else {
+                        ballX = hoopLeft.centerX + hoopLeft.width + radius;
+                        vx *= -damping;
+                    }
+                }
+                if (checkCollision(ballX, ballY, radius, hoopRight)) {
+                    if (ballX < hoopRight.centerX) {
+                        ballX = hoopRight.centerX - radius;
+                        vx *= -damping;
+                    }
+                    else {
+                        ballX = hoopRight.centerX + hoopRight.width + radius;
+                        vx *= -damping;
+                    }
+                }
+                if (checkCollision(ballX, ballY, radius, hoopBottom)) {
+                    if (ballY < hoopBottom.centerY) {
+                        ballY = hoopBottom.centerY - radius;
+                        vy *= -damping;
+                    }
+                    else {
+                        ballY = hoopBottom.centerY + hoopBottom.height + radius;
+                        // ballY = hoopBottom.centerY + radius;
+                        vy *= -damping;
                     }
                 }
                 //canvascollision
@@ -47737,22 +47727,15 @@ function Ball() {
             ctx.beginPath();
             ctx.arc(ballX, ballY, radius, 0, Math.PI * 2);
             ctx.fill();
-            hoop.draw(ctx);
+            hoopLeft.draw(ctx);
+            hoopRight.draw(ctx);
+            hoopBottom.draw(ctx);
             animationFrameId = requestAnimationFrame(render);
         };
         const handleThemeToggle = () => { resetScene(); };
-        const handleRandomizeHoop = () => {
-            const hoop = new Hoop(((canvasBall.width / 2)), (canvasBall.height / 2), 100, 50, 5, color);
-            // setRandomizeHoop(!randomizeHoop)
-            initscene();
-            console.log('hoop', randomizeHoop);
-        };
         window.addEventListener("resize", resizeScene);
         if (darkmodeToggleButton) {
             darkmodeToggleButton.addEventListener('click', handleThemeToggle);
-        }
-        if (randomizerButton) {
-            randomizerButton.addEventListener('click', handleRandomizeHoop);
         }
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -47765,9 +47748,6 @@ function Ball() {
             if (darkmodeToggleButton) {
                 darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
             }
-            if (randomizerButton) {
-                randomizerButton.removeEventListener('click', handleRandomizeHoop);
-            }
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
             window.removeEventListener("mousedown", onMouseDown);
@@ -47775,7 +47755,7 @@ function Ball() {
             window.removeEventListener("touchend", onTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
-    }, [resetTrigger, randomizeHoop]);
+    }, [resetTrigger]);
     function resetScene() {
         setResetTrigger(prev => prev + 1);
     }
@@ -48753,7 +48733,7 @@ function Switches() {
             setSwitchedHorizontal(!isSwitchedHorizontal);
         }
     }
-    function startDrag(event) {
+    function handleDragStart(event) {
         dragControls.start(event, { snapToCursor: true });
     }
     function handleDragEnd(e, info) {
@@ -48768,6 +48748,22 @@ function Switches() {
         }
         else {
             setVerticalPosition('bottom');
+        }
+    }
+    function handleDragEndTest(e, info) {
+        const verticalSwitch = document.getElementById("verticalSwitch2");
+        const rect = verticalSwitch.getBoundingClientRect();
+        const dragY = info.point.y - rect.top;
+        if (dragY < rect.height / 3) {
+            setVerticalPosition('top');
+        }
+        else if (dragY < (rect.height / 3) * 2) {
+            setVerticalPosition('middle');
+        }
+        else {
+            setVerticalPosition('bottom');
+        }
+        if (verticalPosition === 'top') {
         }
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
@@ -48809,19 +48805,8 @@ function Switches() {
                             react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', drag: "y", dragConstraints: constraints, dragElastic: 0, onDragEnd: handleDragEnd, animate: controls, style: { top: "0px", transition: '0.05s' } },
                                 react_1.default.createElement("div", { className: 'switcherCircleVerticalFill' })))),
                     react_1.default.createElement("div", { className: "switcherDivVertical" },
-                        react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch", className: 'switcherDivVerticalLineFilled' },
-                            react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', 
-                                // drag="y"
-                                // dragConstraints={{
-                                //     top: -100, 
-                                //     bottom: 100
-                                // }}
-                                // dragElastic={0.1}
-                                // onDragEnd={handleDragEnd}
-                                // animate={controls}
-                                // dragControls={dragControls}
-                                // style={{ top: "0px"}}
-                                drag: "y", dragConstraints: constraints, dragElastic: 0, onDragEnd: handleDragEnd, animate: controls, style: { top: "0px", transition: '0.05s' } },
+                        react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch2", className: 'switcherDivVerticalLineFilled' },
+                            react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', drag: "y", dragConstraints: constraints, dragElastic: 0, onDragStart: handleDragStart, onDragEnd: handleDragEndTest, animate: controls, style: { top: "0px" }, dragControls: dragControls },
                                 react_1.default.createElement("div", { className: 'switcherCircleVerticalFillAlt' })))))))));
 }
 
@@ -48835,54 +48820,20 @@ function Switches() {
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-// https://codepen.io/steveeeie/details/zjYmjR
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Test;
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 function Test() {
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("h1", null, "Test"))));
-}
-{ /* <div className="surface">
-<div className="mock-browser">
-<div className="chrome-tabs"
-style={{margin: '9px'}}
->
-<div className="chrome-tabs-content">
-<div className="chrome-tab">
-  <div className="chrome-tab-dividers"></div>
-  <div className="chrome-tab-background">
-  </div>
-  <div className="chrome-tab-content">
-    <div className="chrome-tab-favicon" ></div>
-    <div className="chrome-tab-title">Google</div>
-    <div className="chrome-tab-drag-handle"></div>
-    <div className="chrome-tab-close"></div>
-  </div>
-</div>
-<div className="chrome-tab"
-// active
->
-  <div className="chrome-tab-dividers"></div>
-  <div className="chrome-tab-background">
-  </div>
-  <div className="chrome-tab-content">
-    <div className="chrome-tab-favicon" ></div>
-    <div className="chrome-tab-title">Facebook</div>
-    <div className="chrome-tab-drag-handle"></div>
-    <div className="chrome-tab-close"></div>
-  </div>
-</div>
-</div>
-<div className="chrome-tabs-bottom-bar"></div>
-
-</div>
-</div>
-</div> */
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
+                react_1.default.createElement("h1", null, "Test"),
+                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "randomizerButton", whileHover: { rotate: 180 } },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "swap_horiz"))))));
 }
 
 
@@ -49259,7 +49210,7 @@ const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
-const startPage = "Ball";
+const startPage = "Switches";
 const App = () => {
     const [page, setPage] = (0, react_1.useState)(startPage);
     const [active, setActive] = (0, react_1.useState)(page);

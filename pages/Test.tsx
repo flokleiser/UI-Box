@@ -1,62 +1,28 @@
-// https://codepen.io/steveeeie/details/zjYmjR
-
-import React, {useState} from 'react'
-
+import React, { useEffect, useState } from 'react';
+import {motion} from 'framer-motion'
 
 export default function Test() {
 
-  
 
 
     return (
-      <div className="bodyCenter">
+        <div className="bodyCenter">
         <div>
+
+        <div style={{display:'flex',flexDirection:'row',justifyContent:'start', alignItems:'center'}}> 
             <h1>Test</h1>
 
+            <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} 
+            id="randomizerButton" 
+            whileHover={{rotate:180}}
+            >
+                <span className="material-symbols-outlined">
+                    swap_horiz
+                </span>
+            </motion.button>
+            </div>
 
         </div>
         </div>
     );
 }
-
-
-
-
-
-
-            {/* <div className="surface">
-      <div className="mock-browser">
-        <div className="chrome-tabs" 
-        style={{margin: '9px'}}
-        >
-          <div className="chrome-tabs-content">
-            <div className="chrome-tab">
-              <div className="chrome-tab-dividers"></div>
-              <div className="chrome-tab-background">
-              </div>
-              <div className="chrome-tab-content">
-                <div className="chrome-tab-favicon" ></div>
-                <div className="chrome-tab-title">Google</div>
-                <div className="chrome-tab-drag-handle"></div>
-                <div className="chrome-tab-close"></div>
-              </div>
-            </div>
-            <div className="chrome-tab" 
-            // active
-            >
-              <div className="chrome-tab-dividers"></div>
-              <div className="chrome-tab-background">
-              </div>
-              <div className="chrome-tab-content">
-                <div className="chrome-tab-favicon" ></div>
-                <div className="chrome-tab-title">Facebook</div>
-                <div className="chrome-tab-drag-handle"></div>
-                <div className="chrome-tab-close"></div>
-              </div>
-            </div>
-          </div>
-          <div className="chrome-tabs-bottom-bar"></div>
-
-</div>
-</div>
-</div> */}
