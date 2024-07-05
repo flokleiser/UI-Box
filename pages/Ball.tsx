@@ -142,12 +142,13 @@ export default function Ball() {
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            hoopLeft.centerX = (ww / 4) * 3;
+            hoopLeft.centerX = ((ww / 4) * 3) + 45;
             hoopLeft.centerY = wh / 3;
-            hoopRight.centerX = ((ww / 4) * 3) + 90;
+            hoopRight.centerX = ((ww / 4) * 3) - 45;
             hoopRight.centerY = wh / 3;
-            hoopBottom.centerX = (ww / 4) * 3;
-            hoopBottom.centerY = (wh / 3)+50;
+            // hoopBottom.centerX = (ww / 4) * 3;
+            hoopBottom.centerX = ((ww / 4) * 3) - 45;
+            hoopBottom.centerY = (wh / 3) + 50;
 
 
             vx = 0;
@@ -164,12 +165,12 @@ export default function Ball() {
             ballY = centerY;
             vx = 0;
             vy = 0;
-            hoopLeft.centerX = (ww / 4) * 3;
+            hoopLeft.centerX = ((ww / 4) * 3) + 45;
             hoopLeft.centerY = wh / 3;
-            hoopRight.centerX = ((ww / 4) * 3) + 90;
+            hoopRight.centerX = ((ww / 4) * 3) - 45;
             hoopRight.centerY = wh / 3;
-            hoopBottom.centerX = (ww / 4) * 3;
-            hoopBottom.centerY = (wh / 3)+50;
+            hoopBottom.centerX = ((ww / 4) * 3) - 45;
+            hoopBottom.centerY = (wh / 3) + 50;
 
         }
 

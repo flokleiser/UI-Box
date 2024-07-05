@@ -26,7 +26,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Spinner;
 const react_1 = __importStar(require("react"));
 function Spinner() {
-    // const Spinner: React.FC = () => {
     const spinnerRef = (0, react_1.useRef)(null);
     const [isDragging, setIsDragging] = (0, react_1.useState)(false);
     const [rotation, setRotation] = (0, react_1.useState)(0);

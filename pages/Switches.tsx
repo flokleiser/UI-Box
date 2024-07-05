@@ -29,13 +29,18 @@ export default function Switches() {
     const dragControls = useDragControls();
     const controls = useAnimation();
 
+    const [snapTo, setSnapTo] = useState({ y: 0 });
 
 
-    useEffect(() => {
-        const verticalSwitch = document.getElementById("verticalSwitch");
-        const rect = verticalSwitch!.getBoundingClientRect();
-        setConstraints({ top: -rect.height / 2, bottom: rect.height / 2 });
-    }, []);
+
+    // useEffect(() => {
+    //     // const verticalSwitch = document.getElementById("verticalSwitch");
+    //     // const rect = verticalSwitch!.getBoundingClientRect();
+    //     // setConstraints({ top: -rect.height / 2, bottom: rect.height / 2 });
+    //     const verticalSwitch2 = document.getElementById("verticalSwitch2");
+    //     const rect2 = verticalSwitch2!.getBoundingClientRect();
+    //     setConstraints({ top: -rect2.height / 2, bottom: rect2.height / 2 });
+    // }, []);
     
 
     function handleSwitch() {
@@ -66,9 +71,9 @@ export default function Switches() {
         }
     }
 
-    function handleDragStart(event:any) {
-        dragControls.start(event, {snapToCursor:true})
-    }
+    // function handleDragStart(event:any) {
+    //     dragControls.start(event, {snapToCursor:false })
+    // }
 
     function handleDragEnd(e:any,info: any) {
         const verticalSwitch = document.getElementById("verticalSwitch");
@@ -84,22 +89,29 @@ export default function Switches() {
         }
     }
 
-    function handleDragEndTest(e:any,info: any) {
-        const verticalSwitch = document.getElementById("verticalSwitch2");
-        const rect = verticalSwitch!.getBoundingClientRect();
-        const dragY = info.point.y - rect.top;
+    function handleDragEndTest(e:any,info:any) {
+        const verticalSwitch2 = document.getElementById("verticalSwitch2");
+        const rect2 = verticalSwitch2!.getBoundingClientRect();
+        const dragY = info.point.y - rect2.top;
+        // const snapY:number;
 
-        if (dragY < rect.height / 3) {
-            setVerticalPosition('top');
-        } else if (dragY < (rect.height / 3) * 2) {
-            setVerticalPosition('middle');
-        } else {
-            setVerticalPosition('bottom');
+        let newPosition: 'top' | 'bottom';
+        let snapY:number;
+
+        if (dragY < rect2.height / 2) {
+            newPosition = 'top'
+            snapY = -rect2.height/2
+            console.log('top')
+        } else  {
+            newPosition = 'bottom'
+            console.log('bottom')
+            snapY = rect2.height/2
         }
 
-        if (verticalPosition === 'top') {
+        setVerticalPosition(newPosition)
+        setSnapTo({y:snapY});
 
-        }
+        setConstraints({ top: -rect2.height / 2, bottom: rect2.height / 2 });
 
     }
 
@@ -205,15 +217,17 @@ export default function Switches() {
                     <motion.div id="verticalSwitch2" className='switcherDivVerticalLineFilled'
                     >
                         <motion.div className='switcherCircleVerticalOutline' 
+                        style={{ top: "0px",cursor: "grab"}}
+
                         drag="y"
                         dragConstraints={constraints}
-
                         dragElastic={0}
-                        onDragStart={handleDragStart}
+                        // onDragStart={handleDragStart}
                         onDragEnd={handleDragEndTest}
-                        animate={controls}
-                        style={{ top: "0px"}}
                         dragControls={dragControls}
+                        // dragSnapToOrigin
+                        animate={snapTo}
+                        whileTap={{ cursor: "grabbing" }}
                         >
                             <div className='switcherCircleVerticalFillAlt'></div>
                         </motion.div>

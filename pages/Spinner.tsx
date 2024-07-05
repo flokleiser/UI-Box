@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 
 export default function Spinner() {
-// const Spinner: React.FC = () => {
 
     const spinnerRef = useRef<HTMLDivElement>(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -48,6 +47,7 @@ export default function Spinner() {
 
         prevSide = currentSide
     };
+    
 
     useEffect(() => {
         let animationFrameId:number;

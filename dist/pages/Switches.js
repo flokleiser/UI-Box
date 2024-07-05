@@ -46,11 +46,15 @@ function Switches() {
     const [constraints, setConstraints] = (0, react_1.useState)({ top: 0, bottom: 0 });
     const dragControls = (0, framer_motion_1.useDragControls)();
     const controls = (0, framer_motion_1.useAnimation)();
-    (0, react_1.useEffect)(() => {
-        const verticalSwitch = document.getElementById("verticalSwitch");
-        const rect = verticalSwitch.getBoundingClientRect();
-        setConstraints({ top: -rect.height / 2, bottom: rect.height / 2 });
-    }, []);
+    const [snapTo, setSnapTo] = (0, react_1.useState)({ y: 0 });
+    // useEffect(() => {
+    //     // const verticalSwitch = document.getElementById("verticalSwitch");
+    //     // const rect = verticalSwitch!.getBoundingClientRect();
+    //     // setConstraints({ top: -rect.height / 2, bottom: rect.height / 2 });
+    //     const verticalSwitch2 = document.getElementById("verticalSwitch2");
+    //     const rect2 = verticalSwitch2!.getBoundingClientRect();
+    //     setConstraints({ top: -rect2.height / 2, bottom: rect2.height / 2 });
+    // }, []);
     function handleSwitch() {
         setSwitched(!isSwitched);
     }
@@ -79,9 +83,9 @@ function Switches() {
             setSwitchedHorizontal(!isSwitchedHorizontal);
         }
     }
-    function handleDragStart(event) {
-        dragControls.start(event, { snapToCursor: true });
-    }
+    // function handleDragStart(event:any) {
+    //     dragControls.start(event, {snapToCursor:false })
+    // }
     function handleDragEnd(e, info) {
         const verticalSwitch = document.getElementById("verticalSwitch");
         const rect = verticalSwitch.getBoundingClientRect();
@@ -97,20 +101,25 @@ function Switches() {
         }
     }
     function handleDragEndTest(e, info) {
-        const verticalSwitch = document.getElementById("verticalSwitch2");
-        const rect = verticalSwitch.getBoundingClientRect();
-        const dragY = info.point.y - rect.top;
-        if (dragY < rect.height / 3) {
-            setVerticalPosition('top');
-        }
-        else if (dragY < (rect.height / 3) * 2) {
-            setVerticalPosition('middle');
+        const verticalSwitch2 = document.getElementById("verticalSwitch2");
+        const rect2 = verticalSwitch2.getBoundingClientRect();
+        const dragY = info.point.y - rect2.top;
+        // const snapY:number;
+        let newPosition;
+        let snapY;
+        if (dragY < rect2.height / 2) {
+            newPosition = 'top';
+            snapY = -rect2.height / 2;
+            console.log('top');
         }
         else {
-            setVerticalPosition('bottom');
+            newPosition = 'bottom';
+            console.log('bottom');
+            snapY = rect2.height / 2;
         }
-        if (verticalPosition === 'top') {
-        }
+        setVerticalPosition(newPosition);
+        setSnapTo({ y: snapY });
+        setConstraints({ top: -rect2.height / 2, bottom: rect2.height / 2 });
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
@@ -152,6 +161,10 @@ function Switches() {
                                 react_1.default.createElement("div", { className: 'switcherCircleVerticalFill' })))),
                     react_1.default.createElement("div", { className: "switcherDivVertical" },
                         react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch2", className: 'switcherDivVerticalLineFilled' },
-                            react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', drag: "y", dragConstraints: constraints, dragElastic: 0, onDragStart: handleDragStart, onDragEnd: handleDragEndTest, animate: controls, style: { top: "0px" }, dragControls: dragControls },
+                            react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', style: { top: "0px", cursor: "grab" }, drag: "y", dragConstraints: constraints, dragElastic: 0, 
+                                // onDragStart={handleDragStart}
+                                onDragEnd: handleDragEndTest, dragControls: dragControls, 
+                                // dragSnapToOrigin
+                                animate: snapTo, whileTap: { cursor: "grabbing" } },
                                 react_1.default.createElement("div", { className: 'switcherCircleVerticalFillAlt' })))))))));
 }
