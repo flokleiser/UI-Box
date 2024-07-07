@@ -3,29 +3,20 @@ import {motion, useAnimation, useDragControls} from "framer-motion"
 
 export default function Switches() {
 
-    const switcherMotion = {
-        active: {
-            rotation:"0"
-        },
-        inactive: {
-            rotaton: 180,
-            transition: { duration: 2 }
-        }
-    }
 
     const newSecondSwitch = false;
 
     const [isSwitched, setSwitched] = useState(false)
-    const [isSwitchedMotion, setSwitchedMotion] = useState(false)
     const [isSwitchedFill, setSwitchedFill] = useState(false)
 
-    const [verticalPosition, setVerticalPosition] = useState<'top' | 'middle' | 'bottom'>('middle');
+    const [verticalPosition, setVerticalPosition] = useState<'top' | 'middleTop' | 'middle' | 'middleBottom' | 'bottom'>('middle');
 
     const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'middle' | 'right'>('right');
     const [isSwitchedHorizontal, setSwitchedHorizontal] = useState(false)
 
 
     const [constraints, setConstraints] = useState({ top: 0, bottom: 0 });
+    const [constraints2, setConstraints2] = useState({ top: 0, bottom: 0 });
     const dragControls = useDragControls();
     const controls = useAnimation();
 
@@ -37,6 +28,10 @@ export default function Switches() {
         const verticalSwitch = document.getElementById("verticalSwitch");
         const rect = verticalSwitch!.getBoundingClientRect();
         setConstraints({ top: -rect.height / 2, bottom: rect.height / 2 });
+
+        // const verticalSwitch2 = document.getElementById("verticalSwitch2");
+        // const rect2 = verticalSwitch2!.getBoundingClientRect();
+        // setConstraints({ top: -rect2.height / 2, bottom: rect2.height / 2 });
     }, []);
     
 
@@ -45,9 +40,6 @@ export default function Switches() {
     }
     function handleSwitchFill() {
         setSwitchedFill(!isSwitchedFill);
-    }
-    function handleSwitchMotion() {
-        setSwitchedMotion(!isSwitchedMotion);
     }
 
     function handleSwitchHorizontal(e:React.MouseEvent) {
@@ -74,26 +66,35 @@ export default function Switches() {
         const verticalSwitch2 = document.getElementById("verticalSwitch2");
         const rect2 = verticalSwitch2!.getBoundingClientRect();
         const dragY = info.point.y - rect2.top;
-        // const snapY:number;
 
-        let newPosition: 'top' | 'bottom';
+        let newPosition: 'top' |'middle' | 'bottom';
         let snapY:number;
 
-        if (dragY < rect2.height / 2) {
+        if (dragY < rect2.height / 3) {
             newPosition = 'top'
             snapY = -rect2.height/2
             console.log('top')
-        } else  {
+        if (dragY < rect2.height/3 && dragY > (rect2.height/3) * 2) {
+            console.log('middle')
+            newPosition = 'middle'
+            snapY = 0
+        }
+        if (dragY > (rect2.height/3)*2 ){
             newPosition = 'bottom'
             console.log('bottom')
             snapY = rect2.height/2
         }
+        // } else  {
+        //     newPosition = 'bottom'
+        //     console.log('bottom')
+        //     snapY = rect2.height/2
+        // }
 
         setVerticalPosition(newPosition)
         setSnapTo({y:snapY});
 
-        setConstraints({ top: -rect2.height / 2, bottom: rect2.height / 2 });
 
+        }
     }
 
     return(
@@ -103,10 +104,7 @@ export default function Switches() {
 
 
         <div style={{display:'flex', flexDirection:'row',justifyContent:'space-between'}}>
-            
             <div style={{display:'flex', flexDirection:'column'}}>
-
-            {/* first switch */}
                 <div className='centerContainer'>
                     <div className='switcherDiv' 
                     style={{backgroundColor: isSwitched ?  "#ddd" : "#333", transition:'0.3s'}} 
@@ -117,9 +115,7 @@ export default function Switches() {
                         />
                     </div>
                 </div>
-            
 
-            {/* second switch */}
                 <div className='centerContainer' id="horizontalSwitch">
                     <motion.div className='switcherDiv' 
                     style={{width:325,backgroundColor: isSwitchedHorizontal ?  "#ddd" : "#333", transition:'0.3s',height:'50px'}} 
@@ -138,7 +134,6 @@ export default function Switches() {
                     </motion.div>
                 </div>
 
-            {/* third filled switch */}
                 <div className='centerContainer'>
                     <motion.div className='switcherDivFill' 
                     style={{width:275, display:'flex', backgroundColor:'#333',borderRadius: '25px',
@@ -166,14 +161,11 @@ export default function Switches() {
                             />
                     </motion.div>
                 </div>
-
             </div>
 
 
 
             <div className='centerContainer'>
-
-            {/* Vertical Switch 1 */}
                 <div className="switcherDivVertical"
                 >
                     <motion.div id="verticalSwitch" className='switcherDivVerticalLine' 
@@ -190,30 +182,40 @@ export default function Switches() {
                     </motion.div>
                 </div>
 
-
-            {/* Vertical Switch 2 */}
                 <div className="switcherDivVertical"
                 >
                     <motion.div id="verticalSwitch2" className='switcherDivVerticalLineFilled'
                     >
+
+                        <div style={{
+                            display:'flex',
+                            flexDirection:'column',
+                            height:'350px',
+                            position:'absolute', 
+                            justifyContent:'space-evenly',
+                            justifySelf:'center'
+                        }}>
+                            <div className="dividerLine"/>
+                            <div className="dividerLine"/>
+                            <div className="dividerLine"/>
+                        </div>
+
                         <motion.div className='switcherCircleVerticalOutline' 
                         style={{ top: "0px",cursor: "grab"}}
 
-                        // drag="y"
-                        // dragConstraints={constraints}
-                        // dragElastic={0}
-                        // // onDragStart={handleDragStart}
-                        // onDragEnd={handleDragEndTest}
-                        // dragControls={dragControls}
-                        // // dragSnapToOrigin
-                        // animate={snapTo}
-                        // whileTap={{ cursor: "grabbing" }}
+                        drag="y"
+                        dragConstraints={constraints}
+                        dragElastic={0}
+                        onDragEnd={handleDragEndTest}
+                        dragControls={dragControls}
+                        dragSnapToOrigin
+                        animate={snapTo}
+                        whileTap={{ cursor: "grabbing" }}
                         >
                             <div className='switcherCircleVerticalFillAlt'></div>
                         </motion.div>
                     </motion.div>
                 </div>
-            {/* Vertical Switch 2*/}
 
             </div>
 

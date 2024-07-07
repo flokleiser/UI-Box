@@ -7,16 +7,12 @@ export default function Cube() {
     const x = useMotionValue(300);
     const y = useMotionValue(200);
 
-    // const rect = document.getElementById("cubeContainer")!.getBoundingClientRect()
 
     const rotateX = useTransform(y, [0, 400], [45, -45]);
     const rotateY = useTransform(x, [0, 500], [-45, 45]);
 
-    // const rotateX = useTransform(y, [0, rect.width], [45, -45]);
-    // const rotateY = useTransform(x, [0, rect.height], [-45, 45]);
 
     function handleMouse(event:React.MouseEvent) {
-        // const rect = event.currentTarget.getBoundingClientRect();
         const rect = document.getElementById("cubeContainer")!.getBoundingClientRect()
 
         x.set(event.clientX - rect.left);

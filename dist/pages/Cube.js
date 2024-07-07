@@ -10,13 +10,9 @@ const framer_motion_1 = require("framer-motion");
 function Cube() {
     const x = (0, framer_motion_1.useMotionValue)(300);
     const y = (0, framer_motion_1.useMotionValue)(200);
-    // const rect = document.getElementById("cubeContainer")!.getBoundingClientRect()
     const rotateX = (0, framer_motion_1.useTransform)(y, [0, 400], [45, -45]);
     const rotateY = (0, framer_motion_1.useTransform)(x, [0, 500], [-45, 45]);
-    // const rotateX = useTransform(y, [0, rect.width], [45, -45]);
-    // const rotateY = useTransform(x, [0, rect.height], [-45, 45]);
     function handleMouse(event) {
-        // const rect = event.currentTarget.getBoundingClientRect();
         const rect = document.getElementById("cubeContainer").getBoundingClientRect();
         x.set(event.clientX - rect.left);
         y.set(event.clientY - rect.top);
