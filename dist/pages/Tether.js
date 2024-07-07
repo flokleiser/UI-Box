@@ -31,8 +31,8 @@ function Tether() {
     (0, react_1.useEffect)(() => {
         const canvasTether = document.querySelector("#sceneTether");
         const ctx = canvasTether.getContext("2d", { willReadFrequently: true });
-        const ctx2 = canvasTether.getContext("2d", { willReadFrequently: true });
-        const ctx3 = canvasTether.getContext("2d", { willReadFrequently: true });
+        // const ctx2 = canvasTether.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
+        // const ctx3 = canvasTether.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
         const mouse = { x: 0, y: 0 };
         const radius = 50;
         const radius2 = 25;
@@ -289,16 +289,16 @@ function Tether() {
             ctx.beginPath();
             ctx.arc(particleX1, particleY1, radius, 0, Math.PI * 2);
             ctx.fill();
-            // ctx.fillStyle = color;
-            ctx2.fillStyle = colorChange2 ? '#666' : '#fffff';
-            ctx2.beginPath();
-            ctx2.arc(particleX2, particleY2, radius2, 0, Math.PI * 2);
-            ctx2.fill();
-            // ctx.fillStyle = color;
-            ctx3.fillStyle = colorChange3 ? '#666' : '#fffff';
-            ctx3.beginPath();
-            ctx3.arc(particleX3, particleY3, radius3, 0, Math.PI * 2);
-            ctx3.fill();
+            ctx.fillStyle = color;
+            // ctx2.fillStyle = colorChange2? '#666': '#fffff';
+            ctx.beginPath();
+            ctx.arc(particleX2, particleY2, radius2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = color;
+            // ctx3.fillStyle = colorChange3? '#666': '#fffff';
+            ctx.beginPath();
+            ctx.arc(particleX3, particleY3, radius3, 0, Math.PI * 2);
+            ctx.fill();
             // requestAnimationFrame(render);
             animationFrameId = requestAnimationFrame(render);
         };

@@ -33,14 +33,11 @@ export default function Switches() {
 
 
 
-    // useEffect(() => {
-    //     // const verticalSwitch = document.getElementById("verticalSwitch");
-    //     // const rect = verticalSwitch!.getBoundingClientRect();
-    //     // setConstraints({ top: -rect.height / 2, bottom: rect.height / 2 });
-    //     const verticalSwitch2 = document.getElementById("verticalSwitch2");
-    //     const rect2 = verticalSwitch2!.getBoundingClientRect();
-    //     setConstraints({ top: -rect2.height / 2, bottom: rect2.height / 2 });
-    // }, []);
+    useEffect(() => {
+        const verticalSwitch = document.getElementById("verticalSwitch");
+        const rect = verticalSwitch!.getBoundingClientRect();
+        setConstraints({ top: -rect.height / 2, bottom: rect.height / 2 });
+    }, []);
     
 
     function handleSwitch() {
@@ -71,23 +68,7 @@ export default function Switches() {
         }
     }
 
-    // function handleDragStart(event:any) {
-    //     dragControls.start(event, {snapToCursor:false })
-    // }
 
-    function handleDragEnd(e:any,info: any) {
-        const verticalSwitch = document.getElementById("verticalSwitch");
-        const rect = verticalSwitch!.getBoundingClientRect();
-        const dragY = info.point.y - rect.top;
-
-        if (dragY < rect.height / 3) {
-            setVerticalPosition('top');
-        } else if (dragY < (rect.height / 3) * 2) {
-            setVerticalPosition('middle');
-        } else {
-            setVerticalPosition('bottom');
-        }
-    }
 
     function handleDragEndTest(e:any,info:any) {
         const verticalSwitch2 = document.getElementById("verticalSwitch2");
@@ -201,7 +182,6 @@ export default function Switches() {
                         drag="y"
                         dragConstraints={constraints}
                         dragElastic={0}
-                        onDragEnd={handleDragEnd}
                         animate={controls}
                         style={{ top: "0px", transition: '0.05s' }}
                         >
@@ -219,15 +199,15 @@ export default function Switches() {
                         <motion.div className='switcherCircleVerticalOutline' 
                         style={{ top: "0px",cursor: "grab"}}
 
-                        drag="y"
-                        dragConstraints={constraints}
-                        dragElastic={0}
-                        // onDragStart={handleDragStart}
-                        onDragEnd={handleDragEndTest}
-                        dragControls={dragControls}
-                        // dragSnapToOrigin
-                        animate={snapTo}
-                        whileTap={{ cursor: "grabbing" }}
+                        // drag="y"
+                        // dragConstraints={constraints}
+                        // dragElastic={0}
+                        // // onDragStart={handleDragStart}
+                        // onDragEnd={handleDragEndTest}
+                        // dragControls={dragControls}
+                        // // dragSnapToOrigin
+                        // animate={snapTo}
+                        // whileTap={{ cursor: "grabbing" }}
                         >
                             <div className='switcherCircleVerticalFillAlt'></div>
                         </motion.div>
