@@ -48779,31 +48779,32 @@ function Switches() {
     function handleDragEndTest(e, info) {
         const verticalSwitch2 = document.getElementById("verticalSwitch2");
         const rect2 = verticalSwitch2.getBoundingClientRect();
+        setConstraints({ top: -rect2.height / 2, bottom: rect2.height / 2 });
         const dragY = info.point.y - rect2.top;
         let newPosition;
         let snapY;
-        if (dragY < rect2.height / 3) {
+        if (dragY < rect2.height / 5) {
             newPosition = 'top';
-            snapY = -rect2.height / 2;
-            console.log('top');
-            if (dragY < rect2.height / 3 && dragY > (rect2.height / 3) * 2) {
-                console.log('middle');
-                newPosition = 'middle';
-                snapY = 0;
-            }
-            if (dragY > (rect2.height / 3) * 2) {
-                newPosition = 'bottom';
-                console.log('bottom');
-                snapY = rect2.height / 2;
-            }
-            // } else  {
-            //     newPosition = 'bottom'
-            //     console.log('bottom')
-            //     snapY = rect2.height/2
-            // }
-            setVerticalPosition(newPosition);
-            setSnapTo({ y: snapY });
+            snapY = -(rect2.height / 2);
         }
+        else if (dragY < (rect2.height / 5) * 2) {
+            newPosition = 'middleTop';
+            snapY = -(rect2.height / 4);
+        }
+        else if (dragY < (rect2.height / 5) * 3) {
+            newPosition = 'middle';
+            snapY = 0;
+        }
+        else if (dragY < (rect2.height / 5) * 4) {
+            newPosition = 'middleBottom';
+            snapY = (rect2.height / 4);
+        }
+        else {
+            newPosition = 'bottom';
+            snapY = (rect2.height / 2);
+        }
+        setVerticalPosition(newPosition);
+        setSnapTo({ y: snapY });
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
@@ -48856,7 +48857,9 @@ function Switches() {
                                 react_1.default.createElement("div", { className: "dividerLine" }),
                                 react_1.default.createElement("div", { className: "dividerLine" }),
                                 react_1.default.createElement("div", { className: "dividerLine" })),
-                            react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', style: { top: "0px", cursor: "grab" }, drag: "y", dragConstraints: constraints, dragElastic: 0, onDragEnd: handleDragEndTest, dragControls: dragControls, dragSnapToOrigin: true, animate: snapTo, whileTap: { cursor: "grabbing" } },
+                            react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', style: { top: "0px", cursor: "grab" }, drag: "y", dragConstraints: constraints, dragElastic: 0, onDragEnd: handleDragEndTest, dragControls: dragControls, 
+                                // dragSnapToOrigin
+                                animate: snapTo, whileTap: { cursor: "grabbing" } },
                                 react_1.default.createElement("div", { className: 'switcherCircleVerticalFillAlt' })))))))));
 }
 

@@ -65,36 +65,38 @@ export default function Switches() {
     function handleDragEndTest(e:any,info:any) {
         const verticalSwitch2 = document.getElementById("verticalSwitch2");
         const rect2 = verticalSwitch2!.getBoundingClientRect();
+        setConstraints({ top: -rect2.height / 2, bottom: rect2.height / 2 });
+
         const dragY = info.point.y - rect2.top;
 
-        let newPosition: 'top' |'middle' | 'bottom';
+        let newPosition: 'top' | 'middleTop' | 'middle' | 'middleBottom' | 'bottom';
         let snapY:number;
 
-        if (dragY < rect2.height / 3) {
-            newPosition = 'top'
-            snapY = -rect2.height/2
-            console.log('top')
-        if (dragY < rect2.height/3 && dragY > (rect2.height/3) * 2) {
-            console.log('middle')
-            newPosition = 'middle'
+        if (dragY < rect2.height / 5) {
+            newPosition = 'top';
+            snapY = -(rect2.height/2)
+
+        } else if (dragY < (rect2.height / 5) * 2) {
+            newPosition = 'middleTop';
+            snapY = -(rect2.height/4)
+
+        } else if (dragY < (rect2.height / 5) * 3) {
+            newPosition = 'middle';
             snapY = 0
+
+        } else if (dragY < (rect2.height / 5) * 4) {
+            newPosition = 'middleBottom';
+            snapY = (rect2.height/4)
+
+        } else {
+            newPosition = 'bottom';
+            snapY = (rect2.height/2)
         }
-        if (dragY > (rect2.height/3)*2 ){
-            newPosition = 'bottom'
-            console.log('bottom')
-            snapY = rect2.height/2
-        }
-        // } else  {
-        //     newPosition = 'bottom'
-        //     console.log('bottom')
-        //     snapY = rect2.height/2
-        // }
 
         setVerticalPosition(newPosition)
         setSnapTo({y:snapY});
 
 
-        }
     }
 
     return(
@@ -208,7 +210,7 @@ export default function Switches() {
                         dragElastic={0}
                         onDragEnd={handleDragEndTest}
                         dragControls={dragControls}
-                        dragSnapToOrigin
+                        // dragSnapToOrigin
                         animate={snapTo}
                         whileTap={{ cursor: "grabbing" }}
                         >
