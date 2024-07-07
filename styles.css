@@ -369,7 +369,7 @@ nav{
   width:60px;
   border-radius: 100px;
   background-color:#333;
-  transition: transform 0.3s;
+  /* transition: transform 0.3s; */
   align-items: center;
   justify-content: center;
 }
@@ -379,7 +379,7 @@ nav{
   width:50px;
   border-radius: 100px;
   background-color: #ddd;
-  transition: transform 0.3s;
+  /* transition: transform 0.3s; */
 }
 
 .switcherCircleVerticalFillAlt {
@@ -389,7 +389,7 @@ nav{
   border-radius: 100px;
   background-color: #333;
   border:3px solid #ddd;
-  transition: transform 0.3s;
+  /* transition: transform 0.3s; */
 }
 
 .resetButton {
@@ -410,6 +410,17 @@ nav{
   justify-self: center;
   justify-content: center;
   align-items: center;
+}
+
+.tetherCircle{
+  position:relative;
+  /* position:absolute; */
+  height:100px;
+  width:100px;
+  border-radius: 100px;
+  background-color: #ddd;
+  margin-left:5px;
+  margin-right: 5px;
 }
 
   @media (prefers-color-scheme: dark) {
@@ -454,6 +465,7 @@ nav{
 
     .button2{background:#333; border:0px solid}
     .button2toggled {background:#ddd; border:2px solid #333}
+    .tetherCircle{background-color: #333;}
 
     :root {
       --particle-color: var(--particle-color-dark);
