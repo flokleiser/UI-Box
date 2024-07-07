@@ -48887,9 +48887,12 @@ exports["default"] = Tether;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Tether() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
+    // const [colorChange, setColorChange] = useState(false)
     (0, react_1.useEffect)(() => {
         const canvasTether = document.querySelector("#sceneTether");
         const ctx = canvasTether.getContext("2d", { willReadFrequently: true });
+        const ctx2 = canvasTether.getContext("2d", { willReadFrequently: true });
+        const ctx3 = canvasTether.getContext("2d", { willReadFrequently: true });
         const mouse = { x: 0, y: 0 };
         const radius = 50;
         const radius2 = 25;
@@ -48913,6 +48916,9 @@ function Tether() {
         let particleY2 = centerY2;
         let vx2 = 0;
         let vy2 = 0;
+        let colorChange1 = false;
+        let colorChange2 = false;
+        let colorChange3 = false;
         let particleX3 = centerX3;
         let particleY3 = centerY3;
         let vx3 = 0;
@@ -49045,6 +49051,27 @@ function Tether() {
         };
         let animationFrameId;
         const render = () => {
+            const distToCenter1 = Math.hypot(particleX1 - centerX, particleY1 - centerY);
+            const distToCenter2 = Math.hypot(centerX2 - particleX2, centerY2 - particleY2);
+            const distToCenter3 = Math.hypot(centerX3 - particleX3, centerY3 - particleY3);
+            if (distToCenter1 > 150) {
+                colorChange1 = true;
+            }
+            else {
+                colorChange1 = false;
+            }
+            if (distToCenter2 > 150) {
+                colorChange2 = true;
+            }
+            else {
+                colorChange2 = false;
+            }
+            if (distToCenter3 > 150) {
+                colorChange3 = true;
+            }
+            else {
+                colorChange3 = false;
+            }
             if (!isDragging) {
                 const dx = centerX - particleX1;
                 const dy = centerY - particleY1;
@@ -49117,18 +49144,21 @@ function Tether() {
             ctx.lineTo(particleX3, particleY3);
             ctx.stroke();
             //ball
-            ctx.fillStyle = color;
+            // ctx.fillStyle = color;
+            ctx.fillStyle = colorChange1 ? '#666' : color;
             ctx.beginPath();
             ctx.arc(particleX1, particleY1, radius, 0, Math.PI * 2);
             ctx.fill();
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(particleX2, particleY2, radius2, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(particleX3, particleY3, radius3, 0, Math.PI * 2);
-            ctx.fill();
+            // ctx.fillStyle = color;
+            ctx2.fillStyle = colorChange2 ? '#666' : '#fffff';
+            ctx2.beginPath();
+            ctx2.arc(particleX2, particleY2, radius2, 0, Math.PI * 2);
+            ctx2.fill();
+            // ctx.fillStyle = color;
+            ctx3.fillStyle = colorChange3 ? '#666' : '#fffff';
+            ctx3.beginPath();
+            ctx3.arc(particleX3, particleY3, radius3, 0, Math.PI * 2);
+            ctx3.fill();
             // requestAnimationFrame(render);
             animationFrameId = requestAnimationFrame(render);
         };
@@ -49223,7 +49253,7 @@ const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
-const startPage = "Switches";
+const startPage = "Tether";
 const App = () => {
     const [page, setPage] = (0, react_1.useState)(startPage);
     const [active, setActive] = (0, react_1.useState)(page);
