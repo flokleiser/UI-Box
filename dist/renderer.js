@@ -47442,8 +47442,8 @@ const Navbar = ({ activePage }) => {
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
                 react_1.default.createElement("button", { className: activePage === 'Joystick' ? "navbarButton active" : "navbarButton", id: "joystickpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
-                react_1.default.createElement("button", { className: activePage === 'Test' ? "navbarButton active" : "navbarButton", id: "testpageButton" },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz"))),
+                react_1.default.createElement("button", { className: activePage === 'Cube' ? "navbarButton active" : "navbarButton", id: "cubepageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "deployed_code"))),
             react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
                 react_1.default.createElement("span", { className: "material-symbols-outlined", 
                     // whileHover={{rotate:180}}
@@ -47854,6 +47854,58 @@ function Buttons() {
                     react_1.default.createElement("button", { className: `${isToggled[0] ? 'button2toggled' : 'button2'}`, id: "buttonToggle1", onMouseDown: () => handleToggle(0) }),
                     react_1.default.createElement("button", { className: `${isToggled[1] ? 'button2toggled' : 'button2'}`, id: "buttonToggle2", onMouseDown: () => handleToggle(1) }),
                     react_1.default.createElement("button", { className: `${isToggled[2] ? 'button2toggled' : 'button2'}`, id: "buttonToggle3", onMouseDown: () => handleToggle(2) }))))));
+}
+
+
+/***/ }),
+
+/***/ "./src/pages/Cube.tsx":
+/*!****************************!*\
+  !*** ./src/pages/Cube.tsx ***!
+  \****************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports["default"] = Cube;
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+// import {motion, useAnimation, useDragControls} from "framer-motion"
+const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
+function Cube() {
+    const x = (0, framer_motion_1.useMotionValue)(300);
+    const y = (0, framer_motion_1.useMotionValue)(200);
+    // const rect = document.getElementById("cubeContainer")!.getBoundingClientRect()
+    const rotateX = (0, framer_motion_1.useTransform)(y, [0, 400], [45, -45]);
+    const rotateY = (0, framer_motion_1.useTransform)(x, [0, 500], [-45, 45]);
+    // const rotateX = useTransform(y, [0, rect.width], [45, -45]);
+    // const rotateY = useTransform(x, [0, rect.height], [-45, 45]);
+    function handleMouse(event) {
+        // const rect = event.currentTarget.getBoundingClientRect();
+        const rect = document.getElementById("cubeContainer").getBoundingClientRect();
+        x.set(event.clientX - rect.left);
+        y.set(event.clientY - rect.top);
+    }
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, "Cube"),
+            react_1.default.createElement("div", { style: { display: 'flex ' } },
+                react_1.default.createElement(framer_motion_1.motion.div, { id: "cubeContainer", style: {
+                        width: 600,
+                        height: 400,
+                        display: "flex",
+                        placeItems: "center",
+                        placeContent: "center",
+                        borderRadius: 30,
+                        backgroundColor: "rgba(255, 255, 255, 0.05)",
+                        perspective: 400
+                    }, onMouseMove: handleMouse },
+                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', style: {
+                            rotateX,
+                            rotateY
+                        } }))))));
 }
 
 
@@ -48443,8 +48495,11 @@ const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules
 const react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 function Settings() {
     const [activeThemeSource, setThemeSource] = (0, react_2.useState)('system');
-    const handleHomeClick = () => {
-        window.loadPage('Home');
+    // const handleHomeClick= () => {
+    //     window.loadPage('Home');
+    // };
+    const handleTestClick = () => {
+        window.loadPage('Test');
     };
     (0, react_2.useEffect)(() => {
         function fetchThemeSource() {
@@ -48479,8 +48534,8 @@ function Settings() {
         react_1.default.createElement("div", null,
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
                 react_1.default.createElement("h1", null, "Settings"),
-                react_1.default.createElement("button", { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "settingsButton", onMouseDown: handleHomeClick },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home"))),
+                react_1.default.createElement("button", { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "settingsButton", onMouseDown: handleTestClick },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "quiz"))),
             react_1.default.createElement("p", null,
                 "Current: ",
                 react_1.default.createElement("strong", { id: "theme-source" },
@@ -49264,8 +49319,9 @@ const Tether_1 = __importDefault(__webpack_require__(/*! ./pages/Tether */ "./sr
 const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "./src/pages/Switches.tsx"));
 const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
+const Cube_1 = __importDefault(__webpack_require__(/*! ./pages/Cube */ "./src/pages/Cube.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
-const startPage = "Tether";
+const startPage = "Cube";
 const App = () => {
     const [page, setPage] = (0, react_1.useState)(startPage);
     const [active, setActive] = (0, react_1.useState)(page);
@@ -49304,6 +49360,9 @@ const App = () => {
         case 'Test':
             CurrentPage = Test_1.default;
             break;
+        case 'Cube':
+            CurrentPage = Cube_1.default;
+            break;
         default:
             CurrentPage = Home_1.default;
     }
@@ -49330,7 +49389,8 @@ const attachEventListeners = () => {
         'switchespageButton': 'Switches',
         'ballpageButton': 'Ball',
         'joystickpageButton': 'Joystick',
-        'testpageButton': 'Test'
+        'testpageButton': 'Test',
+        'cubepageButton': 'Cube',
     };
     const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
     Object.entries(buttons).forEach(([buttonId, pageName]) => {

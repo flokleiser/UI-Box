@@ -74,9 +74,14 @@ const Navbar: React.FC<NavbarProps> = ({ activePage }) => {
             </span>
           </button> */}
 
-          <button className={activePage === 'Test' ? "navbarButton active" : "navbarButton"} id="testpageButton">
+          {/* <button className={activePage === 'Test' ? "navbarButton active" : "navbarButton"} id="testpageButton">
             <span className="material-symbols-outlined">
               quiz
+            </span>
+          </button> */}
+          <button className={activePage === 'Cube' ? "navbarButton active" : "navbarButton"} id="cubepageButton">
+            <span className="material-symbols-outlined">
+              deployed_code
             </span>
           </button>
 

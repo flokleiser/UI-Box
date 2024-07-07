@@ -423,6 +423,13 @@ nav{
   margin-right: 5px;
 }
 
+.cube {
+  width: 150px;
+  height: 150px;
+  border-radius: 30px;
+  background-color: #ddd
+}
+
   @media (prefers-color-scheme: dark) {
     body { background: #333; color: white; }
     :root {
@@ -466,6 +473,8 @@ nav{
     .button2{background:#333; border:0px solid}
     .button2toggled {background:#ddd; border:2px solid #333}
     .tetherCircle{background-color: #333;}
+
+    .cube {background-color: #333;}
 
     :root {
       --particle-color: var(--particle-color-dark);

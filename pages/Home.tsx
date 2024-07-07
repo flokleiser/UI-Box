@@ -20,6 +20,7 @@ export default function Home() {
                         </span>
                     </motion.button>
 
+
                 </div>
 
                 <div className="logo">
