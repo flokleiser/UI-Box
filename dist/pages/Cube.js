@@ -25,18 +25,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Cube;
 const react_1 = __importStar(require("react"));
-// import {motion, useAnimation, useDragControls} from "framer-motion"
 const framer_motion_1 = require("framer-motion");
 function Cube() {
-    const x = (0, framer_motion_1.useMotionValue)(200);
-    const y = (0, framer_motion_1.useMotionValue)(200);
+    // const x = useMotionValue(200);
+    // const y = useMotionValue(200);
     const [isInside, setIsInside] = (0, react_1.useState)(false);
     const springConfig = {
-        damping: 20,
-        // stiffness: 300 
+        // damping: 2,
+        stiffness: 150
     };
-    const rotateXSpring = (0, framer_motion_1.useSpring)(0, springConfig);
-    const rotateYSpring = (0, framer_motion_1.useSpring)(0, springConfig);
+    const x = (0, framer_motion_1.useSpring)(200, springConfig);
+    const y = (0, framer_motion_1.useSpring)(200, springConfig);
+    const resetX = (0, framer_motion_1.useSpring)(0, springConfig);
+    const resetY = (0, framer_motion_1.useSpring)(0, springConfig);
     const rotateX = (0, framer_motion_1.useTransform)(y, [0, 400], [45, -45]);
     const rotateY = (0, framer_motion_1.useTransform)(x, [0, 400], [-45, 45]);
     function handleMouse(event) {
@@ -50,37 +51,30 @@ function Cube() {
         }
         else {
             setIsInside(false);
-            // x.set(200);
-            // y.set(200);
-            // rotateXSpring.set(mouseX)
-            // rotateYSpring.set(mouseY)
         }
     }
+    // function resetRotation() {
+    //     resetX.set(200);
+    //     resetY.set(200);
+    // }
     function handleMouseLeave(e) {
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
+        // const rect = document.getElementById("cubeContainer")!.getBoundingClientRect()
+        // const mouseX = e.clientX - rect.left;
+        // const mouseY = e.clientY - rect.top;
+        // x.set(mouseX);
+        // y.set(mouseY);
         setIsInside(false);
-        x.set(mouseX);
-        y.set(mouseY);
+        // resetRotation()
+        x.set(200);
+        y.set(200);
     }
-    (0, react_1.useEffect)(() => {
-        if (!isInside) {
-            rotateXSpring.set(rotateX.get());
-            rotateYSpring.set(rotateY.get());
-            // rotateXSpring.set(0);
-            // rotateYSpring.set(0);
-            console.log('outside');
-        }
-    }, [isInside, rotateX, rotateY]);
     // useEffect(() => {
-    //     if (isInside) {
-    //         rotateXSpring.set(rotateX.get());
-    //         rotateYSpring.set(rotateY.get());
-    //     } else {
-    //         rotateXSpring.set(0);
-    //         rotateYSpring.set(0);
+    //     if (!isInside) {
+    //         resetX.set(200)
+    //         resetY.set(200)
+    //         console.log('outside')
     //     }
-    // }, [isInside, rotateX, rotateY]);
+    // }, [isInside, resetX, resetY]);
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
             react_1.default.createElement("h1", null, "Cube"),
@@ -97,10 +91,12 @@ function Cube() {
                         perspective: 400
                     }, onMouseMove: handleMouse, onMouseLeave: handleMouseLeave },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', style: {
+                            rotateX,
+                            rotateY
                             // rotateX: isInside ? rotateX : 0,
                             // rotateY: isInside ? rotateY : 0,
-                            rotateX: isInside ? rotateX : rotateXSpring,
-                            rotateY: isInside ? rotateY : rotateYSpring,
+                            // rotateX: isInside ? rotateX : rotateXSpring,
+                            // rotateY: isInside ? rotateY : rotateYSpring,
                             // rotateX: rotateXSpring,
                             // rotateY:rotateYSpring,
                         } }))))));
