@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { motion, useSpring, useMotionValue, useTransform } from "framer-motion";
 
 export default function Cube() {
-
-    // const x = useMotionValue(200);
-    // const y = useMotionValue(200);
-
     const [isInside, setIsInside] = useState(false);
 
     const springConfig = { 
@@ -36,31 +32,12 @@ export default function Cube() {
         }
     }
 
-    // function resetRotation() {
-    //     resetX.set(200);
-    //     resetY.set(200);
-    // }
-
     function handleMouseLeave(e:React.MouseEvent) {
-        // const rect = document.getElementById("cubeContainer")!.getBoundingClientRect()
-        // const mouseX = e.clientX - rect.left;
-        // const mouseY = e.clientY - rect.top;
-        // x.set(mouseX);
-        // y.set(mouseY);
         setIsInside(false)
-        // resetRotation()
         x.set(200)
         y.set(200)
 
     }
-
-    // useEffect(() => {
-    //     if (!isInside) {
-    //         resetX.set(200)
-    //         resetY.set(200)
-    //         console.log('outside')
-    //     }
-    // }, [isInside, resetX, resetY]);
 
     return (
         <div className="bodyCenter">

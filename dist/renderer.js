@@ -47894,8 +47894,6 @@ exports["default"] = Cube;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 function Cube() {
-    // const x = useMotionValue(200);
-    // const y = useMotionValue(200);
     const [isInside, setIsInside] = (0, react_1.useState)(false);
     const springConfig = {
         // damping: 2,
@@ -47920,28 +47918,11 @@ function Cube() {
             setIsInside(false);
         }
     }
-    // function resetRotation() {
-    //     resetX.set(200);
-    //     resetY.set(200);
-    // }
     function handleMouseLeave(e) {
-        // const rect = document.getElementById("cubeContainer")!.getBoundingClientRect()
-        // const mouseX = e.clientX - rect.left;
-        // const mouseY = e.clientY - rect.top;
-        // x.set(mouseX);
-        // y.set(mouseY);
         setIsInside(false);
-        // resetRotation()
         x.set(200);
         y.set(200);
     }
-    // useEffect(() => {
-    //     if (!isInside) {
-    //         resetX.set(200)
-    //         resetY.set(200)
-    //         console.log('outside')
-    //     }
-    // }, [isInside, resetX, resetY]);
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
             react_1.default.createElement("h1", null, "Cube"),
@@ -48812,9 +48793,6 @@ function Switches() {
         const verticalSwitch = document.getElementById("verticalSwitch");
         const rect = verticalSwitch.getBoundingClientRect();
         setConstraints({ top: -rect.height / 2, bottom: rect.height / 2 });
-        // const verticalSwitch2 = document.getElementById("verticalSwitch2");
-        // const rect2 = verticalSwitch2!.getBoundingClientRect();
-        // setConstraints({ top: -rect2.height / 2, bottom: rect2.height / 2 });
     }, []);
     function handleSwitch() {
         setSwitched(!isSwitched);
@@ -48967,7 +48945,6 @@ const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/re
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 function Test() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
-    // const [colorChange, setColorChange] = useState(false)
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
             react_1.default.createElement("h1", null, "Test"),
@@ -48977,17 +48954,23 @@ function Test() {
                             width: 50,
                             height: 50,
                             // top: window.innerHeight / 3,
-                        }, drag: true, dragConstraints: { top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0 }, dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } })),
+                        }, drag: true, 
+                        // dragConstraints={{ top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0}}
+                        dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } })),
                 react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'right', marginRight: '4rem' } },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'tetherCircle', style: { cursor: "grab",
                             width: 75,
                             height: 75,
                             // top: window.innerHeight / 2,
-                        }, drag: true, dragConstraints: { top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0 }, dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } })),
+                        }, drag: true, 
+                        // dragConstraints={{ top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0}}
+                        dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } })),
                 react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'center' } },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'tetherCircle', style: { cursor: "grab",
                             // top:(window.innerHeight/3)*2
-                        }, drag: true, dragConstraints: { top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0 }, dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } }))))));
+                        }, drag: true, 
+                        // dragConstraints={{ top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0}}
+                        dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } }))))));
 }
 
 
@@ -49395,7 +49378,7 @@ const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pa
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Cube_1 = __importDefault(__webpack_require__(/*! ./pages/Cube */ "./src/pages/Cube.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
-const startPage = "Cube";
+const startPage = "Test";
 const App = () => {
     const [page, setPage] = (0, react_1.useState)(startPage);
     const [active, setActive] = (0, react_1.useState)(page);

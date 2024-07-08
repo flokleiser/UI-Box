@@ -42,9 +42,6 @@ function Switches() {
         const verticalSwitch = document.getElementById("verticalSwitch");
         const rect = verticalSwitch.getBoundingClientRect();
         setConstraints({ top: -rect.height / 2, bottom: rect.height / 2 });
-        // const verticalSwitch2 = document.getElementById("verticalSwitch2");
-        // const rect2 = verticalSwitch2!.getBoundingClientRect();
-        // setConstraints({ top: -rect2.height / 2, bottom: rect2.height / 2 });
     }, []);
     function handleSwitch() {
         setSwitched(!isSwitched);

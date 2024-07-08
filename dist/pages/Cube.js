@@ -27,8 +27,6 @@ exports.default = Cube;
 const react_1 = __importStar(require("react"));
 const framer_motion_1 = require("framer-motion");
 function Cube() {
-    // const x = useMotionValue(200);
-    // const y = useMotionValue(200);
     const [isInside, setIsInside] = (0, react_1.useState)(false);
     const springConfig = {
         // damping: 2,
@@ -53,28 +51,11 @@ function Cube() {
             setIsInside(false);
         }
     }
-    // function resetRotation() {
-    //     resetX.set(200);
-    //     resetY.set(200);
-    // }
     function handleMouseLeave(e) {
-        // const rect = document.getElementById("cubeContainer")!.getBoundingClientRect()
-        // const mouseX = e.clientX - rect.left;
-        // const mouseY = e.clientY - rect.top;
-        // x.set(mouseX);
-        // y.set(mouseY);
         setIsInside(false);
-        // resetRotation()
         x.set(200);
         y.set(200);
     }
-    // useEffect(() => {
-    //     if (!isInside) {
-    //         resetX.set(200)
-    //         resetY.set(200)
-    //         console.log('outside')
-    //     }
-    // }, [isInside, resetX, resetY]);
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
             react_1.default.createElement("h1", null, "Cube"),

@@ -28,7 +28,6 @@ const react_1 = __importStar(require("react"));
 const framer_motion_1 = require("framer-motion");
 function Test() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
-    // const [colorChange, setColorChange] = useState(false)
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
             react_1.default.createElement("h1", null, "Test"),
@@ -38,15 +37,21 @@ function Test() {
                             width: 50,
                             height: 50,
                             // top: window.innerHeight / 3,
-                        }, drag: true, dragConstraints: { top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0 }, dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } })),
+                        }, drag: true, 
+                        // dragConstraints={{ top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0}}
+                        dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } })),
                 react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'right', marginRight: '4rem' } },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'tetherCircle', style: { cursor: "grab",
                             width: 75,
                             height: 75,
                             // top: window.innerHeight / 2,
-                        }, drag: true, dragConstraints: { top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0 }, dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } })),
+                        }, drag: true, 
+                        // dragConstraints={{ top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0}}
+                        dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } })),
                 react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'center' } },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'tetherCircle', style: { cursor: "grab",
                             // top:(window.innerHeight/3)*2
-                        }, drag: true, dragConstraints: { top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0 }, dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } }))))));
+                        }, drag: true, 
+                        // dragConstraints={{ top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0}}
+                        dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } }))))));
 }
