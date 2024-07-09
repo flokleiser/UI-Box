@@ -66,12 +66,6 @@ export default function Cube() {
                 style={{
                     rotateX,
                     rotateY
-                    // rotateX: isInside ? rotateX : 0,
-                    // rotateY: isInside ? rotateY : 0,
-                    // rotateX: isInside ? rotateX : rotateXSpring,
-                    // rotateY: isInside ? rotateY : rotateYSpring,
-                    // rotateX: rotateXSpring,
-                    // rotateY:rotateYSpring,
                 }}
             />
         </motion.div>

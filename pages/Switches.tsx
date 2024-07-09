@@ -10,10 +10,8 @@ export default function Switches() {
     const [isSwitchedFill, setSwitchedFill] = useState(false)
 
     const [verticalPosition, setVerticalPosition] = useState<'top' | 'middleTop' | 'middle' | 'middleBottom' | 'bottom'>('middle');
-
     const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'middle' | 'right'>('right');
     const [isSwitchedHorizontal, setSwitchedHorizontal] = useState(false)
-
 
     const [constraints, setConstraints] = useState({ top: 0, bottom: 0 });
     const [constraints2, setConstraints2] = useState({ top: 0, bottom: 0 });
@@ -21,8 +19,6 @@ export default function Switches() {
     const controls = useAnimation();
 
     const [snapTo, setSnapTo] = useState({ y: 0 });
-
-
 
     useEffect(() => {
         const verticalSwitch = document.getElementById("verticalSwitch");
@@ -55,7 +51,6 @@ export default function Switches() {
             setSwitchedHorizontal(!isSwitchedHorizontal)
         }
     }
-
 
 
     function handleDragEndTest(e:any,info:any) {
@@ -109,7 +104,7 @@ export default function Switches() {
                     onMouseDown={handleSwitch} 
                     >
                         <div className='switcherCircle' 
-                        style={{left: isSwitched ? "0px" : "100px", transition:'0.3s', backgroundColor: isSwitched ?  "#333" : "#ddd"}} 
+                        style={{left: isSwitched ? "0px" : "100px", transition:'0.2s', backgroundColor: isSwitched ?  "#333" : "#ddd"}} 
                         />
                     </div>
                 </div>
@@ -171,7 +166,10 @@ export default function Switches() {
                         <motion.div className='switcherCircleVerticalOutline' 
                         drag="y"
                         dragConstraints={constraints}
-                        dragElastic={0}
+                        dragElastic={0.1}
+                        dragTransition={{ bounceStiffness: 600, bounceDamping: 10}}
+
+
                         animate={controls}
                         style={{ top: "0px", transition: '0.05s' }}
                         >

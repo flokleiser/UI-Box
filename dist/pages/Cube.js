@@ -74,11 +74,5 @@ function Cube() {
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', style: {
                             rotateX,
                             rotateY
-                            // rotateX: isInside ? rotateX : 0,
-                            // rotateY: isInside ? rotateY : 0,
-                            // rotateX: isInside ? rotateX : rotateXSpring,
-                            // rotateY: isInside ? rotateY : rotateYSpring,
-                            // rotateX: rotateXSpring,
-                            // rotateY:rotateYSpring,
                         } }))))));
 }
