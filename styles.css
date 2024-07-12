@@ -439,6 +439,10 @@ nav{
   background-color: #ddd
 }
 
+.cubeContainer {
+  background: rgba(255, 255, 255, 0.05);
+}
+
   @media (prefers-color-scheme: dark) {
     body { background: #333; color: white; }
     :root {
@@ -486,6 +490,7 @@ nav{
     .dividerLine {background-color:#ddd ;}
 
     .cube {background-color: #333;}
+    .cubeContainer {background-color:rgba(51,51,51,0.2)}
 
     :root {
       --particle-color: var(--particle-color-dark);

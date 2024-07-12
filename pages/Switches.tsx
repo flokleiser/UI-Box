@@ -167,7 +167,8 @@ export default function Switches() {
                         drag="y"
                         dragConstraints={constraints}
                         dragElastic={0.1}
-                        dragTransition={{ bounceStiffness: 600, bounceDamping: 10}}
+                        // dragTransition={{ bounceStiffness: 600, bounceDamping: 10}}
+                        dragTransition={{ bounceStiffness: 500, bounceDamping: 50}}
 
 
                         animate={controls}

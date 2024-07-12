@@ -47901,14 +47901,51 @@ function Cube() {
     };
     const x = (0, framer_motion_1.useSpring)(200, springConfig);
     const y = (0, framer_motion_1.useSpring)(200, springConfig);
-    const resetX = (0, framer_motion_1.useSpring)(0, springConfig);
-    const resetY = (0, framer_motion_1.useSpring)(0, springConfig);
     const rotateX = (0, framer_motion_1.useTransform)(y, [0, 400], [45, -45]);
     const rotateY = (0, framer_motion_1.useTransform)(x, [0, 400], [-45, 45]);
-    function handleMouse(event) {
+    //spinning experiments
+    const [isSpinning, setIsSpinning] = (0, react_1.useState)(false);
+    const spinVelocityX = (0, framer_motion_1.useMotionValue)(0);
+    const spinVelocityY = (0, framer_motion_1.useMotionValue)(0);
+    const handleSpin = (e) => {
+        setIsSpinning(true);
+        // const startX = e.clientX
+        // const startY = e.clientY
+    };
+    const handleMouseMove = (e) => {
+        if (isSpinning) {
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            spinVelocityX.set(deltaX);
+            spinVelocityY.set(deltaY);
+            rotateX.set(rotateX.get() + deltaY * 0.5);
+            rotateY.set(rotateY.get() + deltaX * 0.5);
+        }
+    };
+    const handleMouseUp = () => {
+        // rotateX.animate({
+        (0, framer_motion_1.animate)(rotateX, rotateX.get(), {
+            type: "inertia",
+            velocity: spinVelocityY.get() * 0.5,
+            power: 0.2,
+            timeConstant: 700,
+            onComplete: () => setIsSpinning(false)
+        });
+        // rotateY.animate({
+        (0, framer_motion_1.animate)(rotateY, rotateY.get(), {
+            type: "inertia",
+            velocity: -spinVelocityX.get() * 0.5,
+            power: 0.2,
+            timeConstant: 700,
+            onComplete: () => setIsSpinning(false)
+        });
+    };
+    const handleMouse = (e) => {
         const rect = document.getElementById("cubeContainer").getBoundingClientRect();
-        const mouseX = event.clientX - rect.left;
-        const mouseY = event.clientY - rect.top;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
         if (mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
             setIsInside(true);
             x.set(mouseX);
@@ -47917,17 +47954,19 @@ function Cube() {
         else {
             setIsInside(false);
         }
-    }
+    };
     function handleMouseLeave(e) {
-        setIsInside(false);
-        x.set(200);
-        y.set(200);
+        if (!isSpinning) {
+            setIsInside(false);
+            x.set(200);
+            y.set(200);
+        }
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
             react_1.default.createElement("h1", null, "Cube"),
             react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'center' } },
-                react_1.default.createElement(framer_motion_1.motion.div, { id: "cubeContainer", style: {
+                react_1.default.createElement(framer_motion_1.motion.div, { className: "cubeContainer", id: "cubeContainer", style: {
                         // width: 500,
                         width: 400,
                         height: 400,
@@ -47935,12 +47974,16 @@ function Cube() {
                         placeItems: "center",
                         placeContent: "center",
                         borderRadius: 30,
-                        backgroundColor: "rgba(255, 255, 255, 0.05)",
+                        // backgroundColor: "rgba(255, 255, 255, 0.05)",
                         perspective: 400
-                    }, onMouseMove: handleMouse, onMouseLeave: handleMouseLeave },
+                    }, 
+                    // onMouseDown={handleSpin}
+                    onMouseMove: handleMouse, onMouseLeave: handleMouseLeave },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', style: {
                             rotateX,
                             rotateY
+                            // rotateX: isSpinning ? rotateX : useTransform(y, [0, 400], [45, -45]),
+                            // rotateY: isSpinning ? rotateY : useTransform(x, [0, 400], [-45, 45])
                         } }))))));
 }
 
@@ -48879,7 +48922,9 @@ function Switches() {
                 react_1.default.createElement("div", { className: 'centerContainer' },
                     react_1.default.createElement("div", { className: "switcherDivVertical" },
                         react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch", className: 'switcherDivVerticalLine' },
-                            react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', drag: "y", dragConstraints: constraints, dragElastic: 0.1, dragTransition: { bounceStiffness: 600, bounceDamping: 10 }, animate: controls, style: { top: "0px", transition: '0.05s' } },
+                            react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', drag: "y", dragConstraints: constraints, dragElastic: 0.1, 
+                                // dragTransition={{ bounceStiffness: 600, bounceDamping: 10}}
+                                dragTransition: { bounceStiffness: 500, bounceDamping: 50 }, animate: controls, style: { top: "0px", transition: '0.05s' } },
                                 react_1.default.createElement("div", { className: 'switcherCircleVerticalFill' })))),
                     react_1.default.createElement("div", { className: "switcherDivVertical" },
                         react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch2", className: 'switcherDivVerticalLineFilled' },
@@ -49372,7 +49417,7 @@ const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pa
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Cube_1 = __importDefault(__webpack_require__(/*! ./pages/Cube */ "./src/pages/Cube.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
-const startPage = "Switches";
+const startPage = "Cube";
 const App = () => {
     const [page, setPage] = (0, react_1.useState)(startPage);
     const [active, setActive] = (0, react_1.useState)(page);

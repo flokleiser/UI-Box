@@ -134,7 +134,9 @@ function Switches() {
                 react_1.default.createElement("div", { className: 'centerContainer' },
                     react_1.default.createElement("div", { className: "switcherDivVertical" },
                         react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch", className: 'switcherDivVerticalLine' },
-                            react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', drag: "y", dragConstraints: constraints, dragElastic: 0.1, dragTransition: { bounceStiffness: 600, bounceDamping: 10 }, animate: controls, style: { top: "0px", transition: '0.05s' } },
+                            react_1.default.createElement(framer_motion_1.motion.div, { className: 'switcherCircleVerticalOutline', drag: "y", dragConstraints: constraints, dragElastic: 0.1, 
+                                // dragTransition={{ bounceStiffness: 600, bounceDamping: 10}}
+                                dragTransition: { bounceStiffness: 500, bounceDamping: 50 }, animate: controls, style: { top: "0px", transition: '0.05s' } },
                                 react_1.default.createElement("div", { className: 'switcherCircleVerticalFill' })))),
                     react_1.default.createElement("div", { className: "switcherDivVertical" },
                         react_1.default.createElement(framer_motion_1.motion.div, { id: "verticalSwitch2", className: 'switcherDivVerticalLineFilled' },
