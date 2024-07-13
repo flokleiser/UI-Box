@@ -3,9 +3,10 @@ import { motion, useSpring, useMotionValue, useTransform, animate} from "framer-
 
 export default function Cube() {
     const [isInside, setIsInside] = useState(false);
+    const [isSwitched, setIsSwitched] = useState(false);
+    const [isSpinning, setIsSpinning] = useState(false);
 
     const springConfig = { 
-        // damping: 2,
         stiffness: 150
     };
     const x = useSpring(200, springConfig)
@@ -17,51 +18,66 @@ export default function Cube() {
 
 //spinning experiments
 
-const [isSpinning, setIsSpinning] = useState(false);
 const spinVelocityX = useMotionValue(0);
 const spinVelocityY = useMotionValue(0);
 
 
-const handleSpin = (e:React.MouseEvent) => {
-    setIsSpinning(true);
-    // const startX = e.clientX
-    // const startY = e.clientY
-}
 
-const handleMouseMove = (e: MouseEvent) => {
-    if (isSpinning) {
-        const startX = e.clientX
-        const startY = e.clientY
-        const deltaX = e.clientX - startX;
-        const deltaY = e.clientY - startY;
-        spinVelocityX.set(deltaX);
-        spinVelocityY.set(deltaY);
-        rotateX.set(rotateX.get()  + deltaY * 0.5)
-        rotateY.set(rotateY.get() + deltaX * 0.5)
+const handleMouseDown = (e: React.MouseEvent) => {
+    if (isSwitched) {
+        setIsSpinning(true);
+        const startX = e.clientX;
+        const startY = e.clientY;
+
+        const handleMouseMove = (moveEvent: MouseEvent) => {
+            const deltaX = moveEvent.clientX - startX;
+            const deltaY = moveEvent.clientY - startY;
+            spinVelocityX.set(deltaX);
+            spinVelocityY.set(deltaY);
+            rotateX.set(rotateX.get() + deltaY * 0.5);
+            rotateY.set(rotateY.get() + deltaX * 0.5);
+        };
+
+        const handleMouseUp = () => {
+            setIsSpinning(false);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+
+            animate(rotateX, rotateX.get(), {
+                type: "inertia",
+                velocity: spinVelocityY.get() * 0.01,
+                power: 0.01,
+                timeConstant: 700,
+                onComplete: () => setIsSpinning(false)
+            });
+
+            animate(rotateY, rotateY.get(), {
+                type: "inertia",
+                velocity: -spinVelocityX.get() * 0.01,
+                power: 0.01,
+                timeConstant: 700,
+                onComplete: () => setIsSpinning(false)
+            });
+            // animate(rotateX, {
+            //     type: "inertia",
+            //     velocity: spinVelocityY.get() * 0.5,
+            //     power: 0.5,
+            //     timeConstant: 700,
+            // });
+
+            // animate(rotateY, {
+            //     type: "inertia",
+            //     velocity: -spinVelocityX.get() * 0.5,
+            //     power: 0.5,
+            //     timeConstant: 700,
+            // });
+
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
     }
-}
-
-const handleMouseUp = () => {
-
-    // rotateX.animate({
-    animate(rotateX, rotateX.get(), {
-        type: "inertia",
-        velocity: spinVelocityY.get() * 0.5,
-        power: 0.2,
-        timeConstant: 700,
-        onComplete: () => setIsSpinning(false)
-    });
-    // rotateY.animate({
-
-    animate(rotateY, rotateY.get(), {
-        type: "inertia",
-        velocity: -spinVelocityX.get() * 0.5,
-        power: 0.2,
-        timeConstant: 700,
-        onComplete: () => setIsSpinning(false)
-    });
-}
-
+};
 
 
 const handleMouse = (e: React.MouseEvent) => {
@@ -69,6 +85,7 @@ const handleMouse = (e: React.MouseEvent) => {
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
 
+        if (!isSwitched) {
         if (mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
             setIsInside(true);
             x.set(mouseX);
@@ -77,20 +94,32 @@ const handleMouse = (e: React.MouseEvent) => {
         else {
             setIsInside(false);
         }
+    }
 }
 
 function handleMouseLeave(e:React.MouseEvent) {
-    if (!isSpinning) {
         setIsInside(false)
         x.set(200)
         y.set(200)
-    }
+}
+
+function handleCubeSwitch() {
+    setIsSwitched(!isSwitched)
+    console.log('test')
 }
 
     return (
         <div className="bodyCenter">
         <div>
+            <div style={{display:'flex',flexDirection:'row',justifyContent:'start', alignItems:'center'}}> 
             <h1>Cube</h1>
+
+            <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} onMouseDown={handleCubeSwitch}>
+                        <span className="material-symbols-outlined">
+                            {isSwitched ? "hand_gesture" : "do_not_touch"}
+                        </span>
+            </motion.button>
+            </div>
 
         <div style={{display:'flex', justifyContent:'center'}}
         >
@@ -107,6 +136,7 @@ function handleMouseLeave(e:React.MouseEvent) {
                     perspective: 400
                 }}
                 // onMouseDown={handleSpin}
+                onMouseDown={handleMouseDown}
                 onMouseMove={handleMouse}
                 onMouseLeave={handleMouseLeave}
             >

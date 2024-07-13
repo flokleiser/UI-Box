@@ -47895,8 +47895,9 @@ const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/re
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 function Cube() {
     const [isInside, setIsInside] = (0, react_1.useState)(false);
+    const [isSwitched, setIsSwitched] = (0, react_1.useState)(false);
+    const [isSpinning, setIsSpinning] = (0, react_1.useState)(false);
     const springConfig = {
-        // damping: 2,
         stiffness: 150
     };
     const x = (0, framer_motion_1.useSpring)(200, springConfig);
@@ -47904,67 +47905,86 @@ function Cube() {
     const rotateX = (0, framer_motion_1.useTransform)(y, [0, 400], [45, -45]);
     const rotateY = (0, framer_motion_1.useTransform)(x, [0, 400], [-45, 45]);
     //spinning experiments
-    const [isSpinning, setIsSpinning] = (0, react_1.useState)(false);
     const spinVelocityX = (0, framer_motion_1.useMotionValue)(0);
     const spinVelocityY = (0, framer_motion_1.useMotionValue)(0);
-    const handleSpin = (e) => {
-        setIsSpinning(true);
-        // const startX = e.clientX
-        // const startY = e.clientY
-    };
-    const handleMouseMove = (e) => {
-        if (isSpinning) {
+    const handleMouseDown = (e) => {
+        if (isSwitched) {
+            setIsSpinning(true);
             const startX = e.clientX;
             const startY = e.clientY;
-            const deltaX = e.clientX - startX;
-            const deltaY = e.clientY - startY;
-            spinVelocityX.set(deltaX);
-            spinVelocityY.set(deltaY);
-            rotateX.set(rotateX.get() + deltaY * 0.5);
-            rotateY.set(rotateY.get() + deltaX * 0.5);
+            const handleMouseMove = (moveEvent) => {
+                const deltaX = moveEvent.clientX - startX;
+                const deltaY = moveEvent.clientY - startY;
+                spinVelocityX.set(deltaX);
+                spinVelocityY.set(deltaY);
+                rotateX.set(rotateX.get() + deltaY * 0.5);
+                rotateY.set(rotateY.get() + deltaX * 0.5);
+            };
+            const handleMouseUp = () => {
+                setIsSpinning(false);
+                window.removeEventListener('mousemove', handleMouseMove);
+                window.removeEventListener('mouseup', handleMouseUp);
+                (0, framer_motion_1.animate)(rotateX, rotateX.get(), {
+                    type: "inertia",
+                    velocity: spinVelocityY.get() * 0.01,
+                    power: 0.01,
+                    timeConstant: 700,
+                    onComplete: () => setIsSpinning(false)
+                });
+                (0, framer_motion_1.animate)(rotateY, rotateY.get(), {
+                    type: "inertia",
+                    velocity: -spinVelocityX.get() * 0.01,
+                    power: 0.01,
+                    timeConstant: 700,
+                    onComplete: () => setIsSpinning(false)
+                });
+                // animate(rotateX, {
+                //     type: "inertia",
+                //     velocity: spinVelocityY.get() * 0.5,
+                //     power: 0.5,
+                //     timeConstant: 700,
+                // });
+                // animate(rotateY, {
+                //     type: "inertia",
+                //     velocity: -spinVelocityX.get() * 0.5,
+                //     power: 0.5,
+                //     timeConstant: 700,
+                // });
+            };
+            window.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('mouseup', handleMouseUp);
         }
-    };
-    const handleMouseUp = () => {
-        // rotateX.animate({
-        (0, framer_motion_1.animate)(rotateX, rotateX.get(), {
-            type: "inertia",
-            velocity: spinVelocityY.get() * 0.5,
-            power: 0.2,
-            timeConstant: 700,
-            onComplete: () => setIsSpinning(false)
-        });
-        // rotateY.animate({
-        (0, framer_motion_1.animate)(rotateY, rotateY.get(), {
-            type: "inertia",
-            velocity: -spinVelocityX.get() * 0.5,
-            power: 0.2,
-            timeConstant: 700,
-            onComplete: () => setIsSpinning(false)
-        });
     };
     const handleMouse = (e) => {
         const rect = document.getElementById("cubeContainer").getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
-        if (mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
-            setIsInside(true);
-            x.set(mouseX);
-            y.set(mouseY);
-        }
-        else {
-            setIsInside(false);
+        if (!isSwitched) {
+            if (mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
+                setIsInside(true);
+                x.set(mouseX);
+                y.set(mouseY);
+            }
+            else {
+                setIsInside(false);
+            }
         }
     };
     function handleMouseLeave(e) {
-        if (!isSpinning) {
-            setIsInside(false);
-            x.set(200);
-            y.set(200);
-        }
+        setIsInside(false);
+        x.set(200);
+        y.set(200);
+    }
+    function handleCubeSwitch() {
+        setIsSwitched(!isSwitched);
+        console.log('test');
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("h1", null, "Cube"),
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
+                react_1.default.createElement("h1", null, "Cube"),
+                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: handleCubeSwitch },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, isSwitched ? "hand_gesture" : "do_not_touch"))),
             react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'center' } },
                 react_1.default.createElement(framer_motion_1.motion.div, { className: "cubeContainer", id: "cubeContainer", style: {
                         // width: 500,
@@ -47978,7 +47998,7 @@ function Cube() {
                         perspective: 400
                     }, 
                     // onMouseDown={handleSpin}
-                    onMouseMove: handleMouse, onMouseLeave: handleMouseLeave },
+                    onMouseDown: handleMouseDown, onMouseMove: handleMouse, onMouseLeave: handleMouseLeave },
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', style: {
                             rotateX,
                             rotateY

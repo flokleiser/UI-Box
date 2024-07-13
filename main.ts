@@ -1,5 +1,5 @@
-const { app, ipcMain, BrowserWindow, nativeTheme } = require('electron')
-const path = require('node:path')
+import { app, ipcMain, BrowserWindow, nativeTheme } from 'electron'
+import path from 'node:path'
 
 function createWindow () {
   const mainWindow = new BrowserWindow({
