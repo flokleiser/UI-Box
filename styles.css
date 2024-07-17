@@ -440,7 +440,18 @@ nav{
 }
 
 .cubeContainer {
+  /* width:400px;
+  height:400px; */
   background: rgba(255, 255, 255, 0.05);
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(3,1fr);
+}
+
+.section {
+  width:133px;
+  height:133px;
+  border:1px solid rgba(221, 221, 221,0.2)
+
 }
 
   @media (prefers-color-scheme: dark) {

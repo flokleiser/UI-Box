@@ -3,7 +3,6 @@ import { motion, useSpring, useMotionValue, useTransform, animate, transform} fr
 
 export default function Cube() {
     const [isInside, setIsInside] = useState(false);
-    const [isSwitched, setIsSwitched] = useState(false);
 
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState('');
@@ -19,12 +18,18 @@ export default function Cube() {
     const rotateX = useTransform(y, [0, 400], [45, -45]);
     const rotateY = useTransform(x, [0, 400], [-45, 45]);
 
-const handleMouse = (e: React.MouseEvent) => {
+// const handleMouse = (e: React.MouseEvent) => {
+const handleMouse = (e: React.MouseEvent<HTMLDivElement>) => {
+
+    if (isDragging) {
+        setDragEnd(e.currentTarget.id)
+    }
+
         const rect = document.getElementById("cubeContainer")!.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
 
-        if (!isSwitched) {
+        
         if (mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
             setIsInside(true);
             x.set(mouseX);
@@ -33,7 +38,6 @@ const handleMouse = (e: React.MouseEvent) => {
         else {
             setIsInside(false);
         }
-    }
 }
 
 function handleMouseLeave(e:React.MouseEvent) {
@@ -45,13 +49,19 @@ function handleMouseLeave(e:React.MouseEvent) {
 const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     setDragStart(e.currentTarget.id)
+    console.log(dragStart)
 };
 
-function gridClick(event:React.MouseEvent<HTMLDivElement>) {
-    console.log(event.currentTarget.id,)
-
-    // const [rotation, setRotation] = useState<Page>(startPage);
+const handleMouseUp = () => {
+    console.log(dragEnd)
+    if (isDragging && dragStart === 'center-left' && dragEnd ===  'center-right') {
+        console.log('correct drag')
+    }
+    setIsDragging(false);
+    setDragStart('')
+    setDragEnd('')
 }
+
 
 
     return (
@@ -75,43 +85,44 @@ function gridClick(event:React.MouseEvent<HTMLDivElement>) {
                 }}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouse}
+                onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseLeave}
             >
 
                 <div className="section" data-section="0" id="top-left"
-                onMouseDown={gridClick}
+                onMouseEnter={() => handleMouse({currentTarget: {id:'top-left'}} as React.MouseEvent<HTMLDivElement>)}
                 /> 
 
                 <div className="section" data-section="1" id="top-center"
-                onMouseDown={gridClick}
+                onMouseEnter={() => handleMouse({currentTarget: {id:'top-center'}} as React.MouseEvent<HTMLDivElement>)}
                 /> 
 
                 <div className="section" data-section="2" id="top-right"
-                onMouseDown={gridClick}
+                onMouseEnter={() => handleMouse({currentTarget: {id:'top-right'}} as React.MouseEvent<HTMLDivElement>)}
                 /> 
 
                 <div className="section" data-section="3" id="center-left"
-                onMouseDown={gridClick}                
+                onMouseEnter={() => handleMouse({currentTarget: {id:'center-left'}} as React.MouseEvent<HTMLDivElement>)}
                 />
 
                 <div className="section" data-section="4" id="center-center"
-                onMouseDown={gridClick}                
+                onMouseEnter={() => handleMouse({currentTarget: {id:'center-center'}} as React.MouseEvent<HTMLDivElement>)}
                 /> 
 
                 <div className="section" data-section="5" id="center-right"
-                onMouseDown={gridClick}                
+                onMouseEnter={() => handleMouse({currentTarget: {id:'center-right'}} as React.MouseEvent<HTMLDivElement>)}
                 />
 
                 <div className="section" data-section="6" id="bottom-left"
-                onMouseDown={gridClick}                
+                onMouseEnter={() => handleMouse({currentTarget: {id:'bottom-left'}} as React.MouseEvent<HTMLDivElement>)}
                 /> 
 
                 <div className="section" data-section="7" id="bottom-center"
-                onMouseDown={gridClick}                
+                onMouseEnter={() => handleMouse({currentTarget: {id:'bottom-center'}} as React.MouseEvent<HTMLDivElement>)}
                 /> 
 
                 <div className="section" data-section="8" id="bottom-right"
-                onMouseDown={gridClick}                
+                onMouseEnter={() => handleMouse({currentTarget: {id:'bottom-right'}} as React.MouseEvent<HTMLDivElement>)}
                 /> 
 
             <motion.div className='cube'

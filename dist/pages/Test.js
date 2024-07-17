@@ -45,14 +45,8 @@ function Cube() {
         const startX = e.clientX;
         const startY = e.clientY;
         const handleMouseMove = (moveEvent) => {
-            // const deltaX = moveEvent.clientX - startX;
-            // const deltaY = moveEvent.clientY - startY;
             const deltaX = (moveEvent.clientX - startX) / 25;
             const deltaY = (moveEvent.clientY - startY) / 25;
-            // const deltaX = (moveEvent.clientY - startY)/50;
-            // const deltaY = (moveEvent.clientX - startX)/50;
-            // spinVelocityX.set(deltaX);
-            // spinVelocityY.set(deltaY);
             rotateX.set(rotateX.get() + deltaY * 0.5);
             rotateY.set(rotateY.get() + deltaX * 0.5);
         };
@@ -91,7 +85,6 @@ function Cube() {
                         placeItems: "center",
                         placeContent: "center",
                         borderRadius: 30,
-                        // backgroundColor: "rgba(255, 255, 255, 0.05)",
                         perspective: 400
                     }, 
                     // onMouseDown={handleSpin}

@@ -47896,7 +47896,9 @@ const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules
 function Cube() {
     const [isInside, setIsInside] = (0, react_1.useState)(false);
     const [isSwitched, setIsSwitched] = (0, react_1.useState)(false);
-    const [isSpinning, setIsSpinning] = (0, react_1.useState)(false);
+    const [isDragging, setIsDragging] = (0, react_1.useState)(false);
+    const [dragStart, setDragStart] = (0, react_1.useState)('');
+    const [dragEnd, setDragEnd] = (0, react_1.useState)('');
     const springConfig = {
         stiffness: 150
     };
@@ -47904,57 +47906,6 @@ function Cube() {
     const y = (0, framer_motion_1.useSpring)(200, springConfig);
     const rotateX = (0, framer_motion_1.useTransform)(y, [0, 400], [45, -45]);
     const rotateY = (0, framer_motion_1.useTransform)(x, [0, 400], [-45, 45]);
-    //spinning experiments
-    const spinVelocityX = (0, framer_motion_1.useMotionValue)(0);
-    const spinVelocityY = (0, framer_motion_1.useMotionValue)(0);
-    const handleMouseDown = (e) => {
-        if (isSwitched) {
-            setIsSpinning(true);
-            const startX = e.clientX;
-            const startY = e.clientY;
-            const handleMouseMove = (moveEvent) => {
-                const deltaX = moveEvent.clientX - startX;
-                const deltaY = moveEvent.clientY - startY;
-                spinVelocityX.set(deltaX);
-                spinVelocityY.set(deltaY);
-                rotateX.set(rotateX.get() + deltaY * 0.5);
-                rotateY.set(rotateY.get() + deltaX * 0.5);
-            };
-            const handleMouseUp = () => {
-                setIsSpinning(false);
-                window.removeEventListener('mousemove', handleMouseMove);
-                window.removeEventListener('mouseup', handleMouseUp);
-                (0, framer_motion_1.animate)(rotateX, rotateX.get(), {
-                    type: "inertia",
-                    velocity: spinVelocityY.get() * 0.01,
-                    power: 0.01,
-                    timeConstant: 700,
-                    onComplete: () => setIsSpinning(false)
-                });
-                (0, framer_motion_1.animate)(rotateY, rotateY.get(), {
-                    type: "inertia",
-                    velocity: -spinVelocityX.get() * 0.01,
-                    power: 0.01,
-                    timeConstant: 700,
-                    onComplete: () => setIsSpinning(false)
-                });
-                // animate(rotateX, {
-                //     type: "inertia",
-                //     velocity: spinVelocityY.get() * 0.5,
-                //     power: 0.5,
-                //     timeConstant: 700,
-                // });
-                // animate(rotateY, {
-                //     type: "inertia",
-                //     velocity: -spinVelocityX.get() * 0.5,
-                //     power: 0.5,
-                //     timeConstant: 700,
-                // });
-            };
-            window.addEventListener('mousemove', handleMouseMove);
-            window.addEventListener('mouseup', handleMouseUp);
-        }
-    };
     const handleMouse = (e) => {
         const rect = document.getElementById("cubeContainer").getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
@@ -47975,36 +47926,43 @@ function Cube() {
         x.set(200);
         y.set(200);
     }
-    function handleCubeSwitch() {
-        setIsSwitched(!isSwitched);
-        console.log('test');
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        setDragStart(e.currentTarget.id);
+    };
+    function gridClick(event) {
+        console.log(event.currentTarget.id);
+        // const [rotation, setRotation] = useState<Page>(startPage);
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
-                react_1.default.createElement("h1", null, "Cube"),
-                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: handleCubeSwitch },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, isSwitched ? "hand_gesture" : "do_not_touch"))),
+            react_1.default.createElement("h1", null, "Cube"),
             react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'center' } },
                 react_1.default.createElement(framer_motion_1.motion.div, { className: "cubeContainer", id: "cubeContainer", style: {
-                        // width: 500,
                         width: 400,
                         height: 400,
-                        display: "flex",
+                        display: "grid",
                         placeItems: "center",
                         placeContent: "center",
                         borderRadius: 30,
-                        // backgroundColor: "rgba(255, 255, 255, 0.05)",
-                        perspective: 400
-                    }, 
-                    // onMouseDown={handleSpin}
-                    onMouseDown: handleMouseDown, onMouseMove: handleMouse, onMouseLeave: handleMouseLeave },
+                        perspective: 400,
+                        position: 'relative'
+                    }, onMouseDown: handleMouseDown, onMouseMove: handleMouse, onMouseLeave: handleMouseLeave },
+                    react_1.default.createElement("div", { className: "section", "data-section": "0", id: "top-left", onMouseDown: gridClick }),
+                    react_1.default.createElement("div", { className: "section", "data-section": "1", id: "top-center", onMouseDown: gridClick }),
+                    react_1.default.createElement("div", { className: "section", "data-section": "2", id: "top-right", onMouseDown: gridClick }),
+                    react_1.default.createElement("div", { className: "section", "data-section": "3", id: "center-left", onMouseDown: gridClick }),
+                    react_1.default.createElement("div", { className: "section", "data-section": "4", id: "center-center", onMouseDown: gridClick }),
+                    react_1.default.createElement("div", { className: "section", "data-section": "5", id: "center-right", onMouseDown: gridClick }),
+                    react_1.default.createElement("div", { className: "section", "data-section": "6", id: "bottom-left", onMouseDown: gridClick }),
+                    react_1.default.createElement("div", { className: "section", "data-section": "7", id: "bottom-center", onMouseDown: gridClick }),
+                    react_1.default.createElement("div", { className: "section", "data-section": "8", id: "bottom-right", onMouseDown: gridClick }),
                     react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', style: {
                             rotateX,
-                            rotateY
-                            // rotateX: isSpinning ? rotateX : useTransform(y, [0, 400], [45, -45]),
-                            // rotateY: isSpinning ? rotateY : useTransform(x, [0, 400], [-45, 45])
-                        } }))))));
+                            rotateY,
+                            position: 'absolute',
+                            transform: "translate(-50%,-50%)"
+                        }, whileTap: { scale: 0.8 } }))))));
 }
 
 
@@ -49021,14 +48979,8 @@ function Cube() {
         const startX = e.clientX;
         const startY = e.clientY;
         const handleMouseMove = (moveEvent) => {
-            // const deltaX = moveEvent.clientX - startX;
-            // const deltaY = moveEvent.clientY - startY;
             const deltaX = (moveEvent.clientX - startX) / 25;
             const deltaY = (moveEvent.clientY - startY) / 25;
-            // const deltaX = (moveEvent.clientY - startY)/50;
-            // const deltaY = (moveEvent.clientX - startX)/50;
-            // spinVelocityX.set(deltaX);
-            // spinVelocityY.set(deltaY);
             rotateX.set(rotateX.get() + deltaY * 0.5);
             rotateY.set(rotateY.get() + deltaX * 0.5);
         };
@@ -49067,7 +49019,6 @@ function Cube() {
                         placeItems: "center",
                         placeContent: "center",
                         borderRadius: 30,
-                        // backgroundColor: "rgba(255, 255, 255, 0.05)",
                         perspective: 400
                     }, 
                     // onMouseDown={handleSpin}
@@ -49485,7 +49436,7 @@ const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pa
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Cube_1 = __importDefault(__webpack_require__(/*! ./pages/Cube */ "./src/pages/Cube.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
-const startPage = "Test";
+const startPage = "Cube";
 const App = () => {
     const [page, setPage] = (0, react_1.useState)(startPage);
     const [active, setActive] = (0, react_1.useState)(page);
