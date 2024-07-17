@@ -48999,37 +48999,85 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports["default"] = Test;
+exports["default"] = Cube;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
-function Test() {
-    const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
+function Cube() {
+    const [isInside, setIsInside] = (0, react_1.useState)(false);
+    const [isSpinning, setIsSpinning] = (0, react_1.useState)(false);
+    const springConfig = {
+        stiffness: 150
+    };
+    const x = (0, framer_motion_1.useSpring)(200, springConfig);
+    const y = (0, framer_motion_1.useSpring)(200, springConfig);
+    const rotateX = (0, framer_motion_1.useTransform)(y, [0, 400], [90, -90]);
+    const rotateY = (0, framer_motion_1.useTransform)(x, [0, 400], [-90, 90]);
+    // const spinVelocityX = useMotionValue(0);
+    // const spinVelocityY = useMotionValue(0);
+    // const spinVelocityX = useTransform(x, [0,400], [90, -90]);
+    // const spinVelocityY = useTransform(y, [0,400], [90, -90]);
+    const handleMouseDown = (e) => {
+        setIsSpinning(true);
+        const startX = e.clientX;
+        const startY = e.clientY;
+        const handleMouseMove = (moveEvent) => {
+            // const deltaX = moveEvent.clientX - startX;
+            // const deltaY = moveEvent.clientY - startY;
+            const deltaX = (moveEvent.clientX - startX) / 25;
+            const deltaY = (moveEvent.clientY - startY) / 25;
+            // const deltaX = (moveEvent.clientY - startY)/50;
+            // const deltaY = (moveEvent.clientX - startX)/50;
+            // spinVelocityX.set(deltaX);
+            // spinVelocityY.set(deltaY);
+            rotateX.set(rotateX.get() + deltaY * 0.5);
+            rotateY.set(rotateY.get() + deltaX * 0.5);
+        };
+        const handleMouseUp = () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            setIsSpinning(false);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+    };
+    // const handleMouse = (e: React.MouseEvent) => {
+    //         const rect = document.getElementById("cubeContainer")!.getBoundingClientRect();
+    //         const mouseX = e.clientX - rect.left;
+    //         const mouseY = e.clientY - rect.top;
+    //         if (mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
+    //             setIsInside(true);
+    //             x.set(mouseX);
+    //             y.set(mouseY);
+    //         } 
+    // }
+    function handleMouseLeave(e) {
+        setIsInside(false);
+        x.set(200);
+        y.set(200);
+    }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("h1", null, "Test"),
-            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', marginTop: '5rem' } },
-                react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'left', marginLeft: '4rem' } },
-                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'tetherCircle', style: { cursor: "grab",
-                            width: 50,
-                            height: 50,
-                            // top: window.innerHeight / 3,
-                        }, drag: true, 
-                        // dragConstraints={{ top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0}}
-                        dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } })),
-                react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'right', marginRight: '4rem' } },
-                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'tetherCircle', style: { cursor: "grab",
-                            width: 75,
-                            height: 75,
-                            // top: window.innerHeight / 2,
-                        }, drag: true, 
-                        // dragConstraints={{ top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0}}
-                        dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } })),
-                react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'center' } },
-                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'tetherCircle', style: { cursor: "grab",
-                            // top:(window.innerHeight/3)*2
-                        }, drag: true, 
-                        // dragConstraints={{ top: 0, right: window.innerWidth, bottom: window.innerHeight, left: 0}}
-                        dragSnapToOrigin: true, dragTransition: { bounceStiffness: 600, bounceDamping: 20 }, dragElastic: 0.5, whileTap: { cursor: "grabbing" } }))))));
+            react_1.default.createElement("h1", null, "Cube"),
+            react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'center' } },
+                react_1.default.createElement(framer_motion_1.motion.div, { className: "cubeContainer", id: "cubeContainer", style: {
+                        // width: 500,
+                        width: 400,
+                        height: 400,
+                        display: "flex",
+                        placeItems: "center",
+                        placeContent: "center",
+                        borderRadius: 30,
+                        // backgroundColor: "rgba(255, 255, 255, 0.05)",
+                        perspective: 400
+                    }, 
+                    // onMouseDown={handleSpin}
+                    onMouseDown: handleMouseDown, 
+                    // onMouseMove={handleMouse}
+                    onMouseLeave: handleMouseLeave },
+                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', style: {
+                            rotateX,
+                            rotateY
+                        } }))))));
 }
 
 
@@ -49437,7 +49485,7 @@ const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pa
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Cube_1 = __importDefault(__webpack_require__(/*! ./pages/Cube */ "./src/pages/Cube.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
-const startPage = "Cube";
+const startPage = "Test";
 const App = () => {
     const [page, setPage] = (0, react_1.useState)(startPage);
     const [active, setActive] = (0, react_1.useState)(page);
