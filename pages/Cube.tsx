@@ -45,17 +45,41 @@ export default function Cube() {
 
 
 
-    function animateRotation(newRotateX: number, newRotateY: number) {
+    // function animateRotation(newRotateX: number, newRotateY: number) {
+    //     return new Promise<void>((resolve) => {
+    //         animate(rotateX, newRotateX, {
+    //             duration: 0.7,
+    //             onComplete: () => {
+    //                 animate(rotateY, newRotateY, {
+    //                     duration: 0.7,
+    //                     onComplete: resolve
+    //                 });
+    //             }
+    //         });
+    //     });
+    // }
+
+    // function animateRotation(newRotateX: number, newRotateY: number) {
+    //     return new Promise<void>((resolve) => {
+    //         animate(rotateY, newRotateY, {
+    //             duration: 0.7,
+    //             onComplete: () => {
+    //                 animate(rotateX, newRotateX, {
+    //                     duration: 0.7,
+    //                     onComplete: resolve
+    //                 });
+    //             }
+    //         });
+    //     });
+    // }
+
+
+    function animateRotation(newRotateX:number, newRotateY:number) {
         return new Promise<void>((resolve) => {
-            animate(rotateX, newRotateX, {
-                duration: 0.5,
-                onComplete: () => {
-                    animate(rotateY, newRotateY, {
-                        duration: 0.5,
-                        onComplete: resolve
-                    });
-                }
-            });
+            Promise.all([
+                animate(rotateY, newRotateY, {duration:0.8}),
+                animate(rotateX, newRotateX, {duration:0.8})
+            ]).then(() => resolve())
         });
     }
 
@@ -85,16 +109,19 @@ export default function Cube() {
                 newRotateY -= 180;
                 break;
             case "top-right":
+                newRotateX += 135;
+                // newRotateY += 135;
+                newRotateY += 225;
+                // newRotateX += 180;
+                // newRotateY += 180;
+                break;
+            case "bottom-left":
                 newRotateX -= 180;
                 newRotateY -= 180;
                 break;
-            case "bottom-left":
-                newRotateX += 180;
-                newRotateY += 180;
-                break;
             case "bottom-right":
-                newRotateX += 180;
-                newRotateY -= 180;
+                newRotateX -= 180;
+                newRotateY += 180;
                 break;
             }
 
@@ -190,21 +217,36 @@ export default function Cube() {
 
                             style={{
                                 display:"flex",
-                                justifyContent:"center",
-                                alignItems:"center",
+                                // justifyContent:"center",
+                                // alignItems:"center",
+
+                                justifyContent:"flex-start",
+                                alignItems:"flex-start",
+
                                 rotateX: compositeRotateX,
                                 rotateY: compositeRotateY,
                                 position:'absolute',
                                 transform:"translate(-50%,-50%)"
                             }}
-                            whileTap={{scale:0.8}}
+                            whileTap={{scale:0.95}}
                         >
 
-                            <motion.div className="cube"
+                        <div className="cube" 
+                            style={{
+                                position:'absolute', 
+                                justifySelf:'left', 
+                                backgroundColor:"rgba(50,50,50,0.5", 
+                                width:50, 
+                                height:50,
+                                margin:6.25
+                            }} 
+                        />
 
-                        drag
-                        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                        onDragEnd={handleDragEnd} 
+
+                        <motion.div className="cube"
+                            drag
+                            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                            onDragEnd={handleDragEnd} 
 
                                 style={{
                                     // width: 200,

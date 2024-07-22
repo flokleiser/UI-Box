@@ -68,17 +68,38 @@ function Cube() {
         x.set(200);
         y.set(200);
     }
+    // function animateRotation(newRotateX: number, newRotateY: number) {
+    //     return new Promise<void>((resolve) => {
+    //         animate(rotateX, newRotateX, {
+    //             duration: 0.7,
+    //             onComplete: () => {
+    //                 animate(rotateY, newRotateY, {
+    //                     duration: 0.7,
+    //                     onComplete: resolve
+    //                 });
+    //             }
+    //         });
+    //     });
+    // }
+    // function animateRotation(newRotateX: number, newRotateY: number) {
+    //     return new Promise<void>((resolve) => {
+    //         animate(rotateY, newRotateY, {
+    //             duration: 0.7,
+    //             onComplete: () => {
+    //                 animate(rotateX, newRotateX, {
+    //                     duration: 0.7,
+    //                     onComplete: resolve
+    //                 });
+    //             }
+    //         });
+    //     });
+    // }
     function animateRotation(newRotateX, newRotateY) {
         return new Promise((resolve) => {
-            (0, framer_motion_1.animate)(rotateX, newRotateX, {
-                duration: 0.5,
-                onComplete: () => {
-                    (0, framer_motion_1.animate)(rotateY, newRotateY, {
-                        duration: 0.5,
-                        onComplete: resolve
-                    });
-                }
-            });
+            Promise.all([
+                (0, framer_motion_1.animate)(rotateY, newRotateY, { duration: 0.8 }),
+                (0, framer_motion_1.animate)(rotateX, newRotateX, { duration: 0.8 })
+            ]).then(() => resolve());
         });
     }
     function gridClick(event) {
@@ -105,16 +126,19 @@ function Cube() {
                         newRotateY -= 180;
                         break;
                     case "top-right":
+                        newRotateX += 135;
+                        // newRotateY += 135;
+                        newRotateY += 225;
+                        // newRotateX += 180;
+                        // newRotateY += 180;
+                        break;
+                    case "bottom-left":
                         newRotateX -= 180;
                         newRotateY -= 180;
                         break;
-                    case "bottom-left":
-                        newRotateX += 180;
-                        newRotateY += 180;
-                        break;
                     case "bottom-right":
-                        newRotateX += 180;
-                        newRotateY -= 180;
+                        newRotateX -= 180;
+                        newRotateY += 180;
                         break;
                 }
                 yield animateRotation(newRotateX, newRotateY);
@@ -186,13 +210,23 @@ function Cube() {
                         // onDragEnd={handleDragEnd}
                         style: {
                             display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
+                            // justifyContent:"center",
+                            // alignItems:"center",
+                            justifyContent: "flex-start",
+                            alignItems: "flex-start",
                             rotateX: compositeRotateX,
                             rotateY: compositeRotateY,
                             position: 'absolute',
                             transform: "translate(-50%,-50%)"
-                        }, whileTap: { scale: 0.8 } },
+                        }, whileTap: { scale: 0.95 } },
+                        react_1.default.createElement("div", { className: "cube", style: {
+                                position: 'absolute',
+                                justifySelf: 'left',
+                                backgroundColor: "rgba(50,50,50,0.5",
+                                width: 50,
+                                height: 50,
+                                margin: 6.25
+                            } }),
                         react_1.default.createElement(framer_motion_1.motion.div, { className: "cube", drag: true, dragConstraints: { left: 0, right: 0, top: 0, bottom: 0 }, onDragEnd: handleDragEnd, style: {
                                 // width: 200,
                                 // height: 200,
