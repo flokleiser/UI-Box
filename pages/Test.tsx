@@ -1,102 +1,225 @@
-import React, { useEffect, useState } from 'react';
-import { motion, useSpring, useMotionValue, useTransform, animate} from "framer-motion";
+import React, { useState, useEffect } from 'react';
+import { motion, useSpring, useMotionValue, useTransform, animate, transform } from "framer-motion";
 
 export default function Cube() {
     const [isInside, setIsInside] = useState(false);
-    const [isSpinning, setIsSpinning] = useState(false);
+    const [isSwitched, setIsSwitched] = useState(false)
 
-    const springConfig = { 
-        stiffness: 150
-    };
-    const x = useSpring(200, springConfig)
-    const y = useSpring(200, springConfig)
+    const springConfig = { stiffness: 150 };
+    const x = useSpring(200, springConfig);
+    const y = useSpring(200, springConfig);
 
-    const rotateX = useTransform(y, [0, 400], [90, -90]);
-    const rotateY = useTransform(x, [0, 400], [-90, 90]);
+    const rotateX = useMotionValue(0);
+    const rotateY = useMotionValue(0);
 
-// const spinVelocityX = useMotionValue(0);
-// const spinVelocityY = useMotionValue(0);
-// const spinVelocityX = useTransform(x, [0,400], [90, -90]);
-// const spinVelocityY = useTransform(y, [0,400], [90, -90]);
-
-const handleMouseDown = (e: React.MouseEvent) => {
-    setIsSpinning(true);
-    const startX = e.clientX;
-    const startY = e.clientY;
-
-    const handleMouseMove = (moveEvent: MouseEvent) => {
-        const deltaX = (moveEvent.clientX - startX)/25;
-        const deltaY = (moveEvent.clientY - startY)/25;
-        rotateX.set(rotateX.get() + deltaY * 0.5);
-        rotateY.set(rotateY.get() + deltaX * 0.5);
-    };
-
-    const handleMouseUp = () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            setIsSpinning(false);
-            window.removeEventListener('mouseup', handleMouseUp);
-            };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-};
+    const tiltX = useTransform(y, [0, 400], [45, -45]);
+    const tiltY = useTransform(x, [0, 400], [-45, 45]);
 
 
-// const handleMouse = (e: React.MouseEvent) => {
-//         const rect = document.getElementById("cubeContainer")!.getBoundingClientRect();
-//         const mouseX = e.clientX - rect.left;
-//         const mouseY = e.clientY - rect.top;
+    const compositeRotateX = useTransform(() => rotateX.get() + tiltX.get());
+    const compositeRotateY = useTransform(() => rotateY.get() + tiltY.get());
 
-//         if (mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
-//             setIsInside(true);
-//             x.set(mouseX);
-//             y.set(mouseY);
-//         } 
+    function handleSwitchClick() {
+        setIsSwitched(!isSwitched);
+    }
+
+    // const handleMouse = (e: React.MouseEvent) => {
+    //     const rect = document.getElementById("cubeContainer")!.getBoundingClientRect();
+    //     const mouseX = e.clientX - rect.left;
+    //     const mouseY = e.clientY - rect.top;
+
+    //     if (mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
+    //         setIsInside(true);
+    //         x.set(mouseX);
+    //         y.set(mouseY);
+    //     } else {
+    //         setIsInside(false);
+    //     }
+    // }
+
+    // function handleMouseLeave() {
+    //     setIsInside(false);
+    //     x.set(200);
+    //     y.set(200);
+    // }
+
+
+    function animateRotation(newRotateX:number, newRotateY:number) {
+        return new Promise<void>((resolve) => {
+            Promise.all([
+                animate(rotateY, newRotateY, {duration:0.8}),
+                animate(rotateX, newRotateX, {duration:0.8})
+            ]).then(() => resolve())
+        });
+    }
+
+
+    async function gridClick(event: React.MouseEvent<HTMLDivElement>) {
+        if (!isSwitched) {
+
+        const id = event.currentTarget.id;
+        let newRotateX = rotateX.get(); 
+        let newRotateY = rotateY.get(); 
+
+        
+        switch (id) {
+            case "top-center":
+                newRotateX += 180;
+                break;
+            case "bottom-center":
+                newRotateX -= 180;
+                break;
+            case "center-left":
+                newRotateY -= 180;
+                break;
+            case "center-right":
+                newRotateY += 180;
+                break;
+            case "top-left":
+                newRotateX -= 180;
+                newRotateY += 45;
+                break;
+            case "top-right":
+                newRotateX += 135;
+                // newRotateY += 135;
+                newRotateY += 225;
+                // newRotateX += 180;
+                // newRotateY += 180;
+                break;
+            case "bottom-left":
+                newRotateX -= 180;
+                newRotateY -= 180;
+                break;
+            case "bottom-right":
+                newRotateX -= 180;
+                newRotateY += 180;
+                break;
+            }
+
+        await animateRotation(newRotateX, newRotateY);
+
+        // rotateX.set(0)
+        // rotateY.set(0)
+        }
+    }
+
+    async function handleDragEnd(event:MouseEvent, info:any) {
+        if (isSwitched) {
+            const { offset } = info;
+            let newRotateX = 0;
+            let newRotateY = 0;
     
-// }
+            if (Math.abs(offset.x) > Math.abs(offset.y)) {
+                if (offset.x > 0) {
+                    newRotateY = 180; // Swipe right
+                } else {
+                    newRotateY = -180; // Swipe left
+                }
+            } else {
+                if (offset.y > 0) {
+                    newRotateX = -180; // Swipe down
+                } else {
+                    newRotateX = 180; // Swipe up
+                }
+            }
 
-function handleMouseLeave(e:React.MouseEvent) {
-        setIsInside(false)
-        x.set(200)
-        y.set(200)
-}
+        await animateRotation(newRotateX, newRotateY);
 
+        rotateX.set(0)
+        rotateY.set(0)
+        }
+    }
 
     return (
         <div className="bodyCenter">
-        <div>
-            <h1>Cube</h1>
+            <div>
+            <div style={{display:'flex',flexDirection:'row',justifyContent:'start', alignItems:'center'}}> 
+                <h1>Cube</h1>
+
+                <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} onMouseDown={handleSwitchClick}>
+                        <span className="material-symbols-outlined">
+                        {isSwitched? "web_traffic" : "drag_pan"} 
+                        </span>
+                    </motion.button>
+
+            </div>
+
+                <div style={{display:'flex', justifyContent:'center'}}>
+
+                    <div style={{position:"absolute", opacity:0.1, width:400, height:400}} 
+                    />
+
+                    <motion.div className="cubeContainer" id="cubeContainer"
+
+                        style={{
+                            width: 400,
+                            height: 400,
+                            display: "grid",
+                            placeItems: "center",
+                            placeContent: "center",
+                            borderRadius: 30,
+                            perspective: 400,
+                            position: 'relative' 
+                        }}
+                        // onMouseMove={handleMouse}
+                        // onMouseLeave={handleMouseLeave}
+                    >
+                        {["top-left", 
+                        "top-center", 
+                        "top-right", 
+                        "center-left", 
+                        "center-center", 
+                        "center-right", 
+                        "bottom-left", 
+                        "bottom-center", 
+                        "bottom-right"].map((id, index) => (
+                            <div key={id} className="section" data-section={index} id={id} 
+                            onMouseDown={gridClick}
+                             />
+                        ))}
+
+                        <motion.div className='cube'
+                            style={{
+                                display:"flex",
+                                justifyContent:"flex-start",
+                                alignItems:"flex-start",
+
+                                rotateX: compositeRotateX,
+                                rotateY: compositeRotateY,
+                                position:'absolute',
+                                transform:"translate(-50%,-50%)"
+                            }}
+                            whileTap={{scale:0.95}}
+                        >
+
+                        <div className="cube" 
+                            style={{
+                                position:'absolute', 
+                                justifySelf:'left', 
+                                backgroundColor:"rgba(50,50,50,0.5", 
+                                width:50, 
+                                height:50,
+                                margin:6.25
+                            }} 
+                        />
 
 
-        <div style={{display:'flex', justifyContent:'center'}}
-        >
-            <motion.div className="cubeContainer" id="cubeContainer"
-                style={{
-                    // width: 500,
-                    width: 400,
-                    height: 400,
-                    display: "flex",
-                    placeItems: "center",
-                    placeContent: "center",
-                    borderRadius: 30,
-                    perspective: 400
-                }}
-                // onMouseDown={handleSpin}
-                onMouseDown={handleMouseDown}
-                // onMouseMove={handleMouse}
-                onMouseLeave={handleMouseLeave}
-            >
+                        <motion.div className="cube"
+                            drag
+                            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                            onDragEnd={handleDragEnd} 
 
-            <motion.div className='cube'
-                style={{
-                    rotateX,
-                    rotateY
-                }}
-            />
-        </motion.div>
-        </div>
+                                style={{
+                                    position:'absolute',
+                                    justifySelf:"center",
+                                    backgroundColor:"rgba(50,50,50,0)"
+                                }}
+                            />
 
-        </div>
+                        </motion.div>
+                    </motion.div>
+                </div>
+            </div>
         </div>
     );
 }

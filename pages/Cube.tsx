@@ -77,8 +77,8 @@ export default function Cube() {
     function animateRotation(newRotateX:number, newRotateY:number) {
         return new Promise<void>((resolve) => {
             Promise.all([
-                animate(rotateY, newRotateY, {duration:0.8}),
-                animate(rotateX, newRotateX, {duration:0.8})
+                animate(rotateY, newRotateY, {duration:0.5}),
+                animate(rotateX, newRotateX, {duration:0.5})
             ]).then(() => resolve())
         });
     }
@@ -106,22 +106,19 @@ export default function Cube() {
                 break;
             case "top-left":
                 newRotateX += 180;
-                newRotateY -= 180;
+                newRotateY -= 135;
                 break;
             case "top-right":
-                newRotateX += 135;
-                // newRotateY += 135;
-                newRotateY += 225;
-                // newRotateX += 180;
-                // newRotateY += 180;
+                newRotateX += 180;
+                newRotateY += 135;
                 break;
             case "bottom-left":
                 newRotateX -= 180;
-                newRotateY -= 180;
+                newRotateY -= 135;
                 break;
             case "bottom-right":
                 newRotateX -= 180;
-                newRotateY += 180;
+                newRotateY += 135;
                 break;
             }
 
@@ -231,16 +228,15 @@ export default function Cube() {
                             whileTap={{scale:0.95}}
                         >
 
-                        <div className="cube" 
-                            style={{
-                                position:'absolute', 
+                        {/* <div className="cube"  */}
+                            {/* style={{ position:'absolute', 
                                 justifySelf:'left', 
                                 backgroundColor:"rgba(50,50,50,0.5", 
                                 width:50, 
                                 height:50,
                                 margin:6.25
                             }} 
-                        />
+                        /> */}
 
 
                         <motion.div className="cube"
