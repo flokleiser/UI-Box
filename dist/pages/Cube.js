@@ -217,8 +217,6 @@ function Cube() {
                             transform: "translate(-50%,-50%)"
                         }, whileTap: { scale: 0.95 } },
                         react_1.default.createElement(framer_motion_1.motion.div, { className: "cube", drag: true, dragConstraints: { left: 0, right: 0, top: 0, bottom: 0 }, onDragEnd: handleDragEnd, style: {
-                                // width: 200,
-                                // height: 200,
                                 position: 'absolute',
                                 justifySelf: "center",
                                 backgroundColor: "rgba(50,50,50,0)"

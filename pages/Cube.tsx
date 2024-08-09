@@ -245,8 +245,6 @@ export default function Cube() {
                             onDragEnd={handleDragEnd} 
 
                                 style={{
-                                    // width: 200,
-                                    // height: 200,
                                     position:'absolute',
                                     justifySelf:"center",
                                     backgroundColor:"rgba(50,50,50,0)"

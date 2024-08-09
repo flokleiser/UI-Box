@@ -47573,8 +47573,16 @@ function Ball() {
         const onMouseDown = (e) => {
             centerX = e.clientX;
             centerY = e.clientY;
-            ballX = centerX;
-            ballY = centerY;
+            if (e.clientY + radius > wh || e.clientY - radius < 0 + navbar.offsetHeight) {
+                ballX = ww / 2;
+                ballY = wh / 2;
+                console.log('test inside area');
+            }
+            else {
+                ballX = centerX;
+                ballY = centerY;
+                console.log('test outside area');
+            }
             vx = 0;
             vy = 0;
             isDragging = true;
@@ -47716,13 +47724,20 @@ function Ball() {
             }
             ctx.clearRect(0, 0, canvasBall.width, canvasBall.height);
             if (!isReleased) {
-                ctx.strokeStyle = color;
-                ctx.lineWidth = 10;
-                ctx.lineCap = "round";
-                ctx.beginPath();
-                ctx.moveTo(centerX, centerY);
-                ctx.lineTo(ballX, ballY);
-                ctx.stroke();
+                if (centerY + radius > wh || centerY - radius < 0 + navbar.offsetHeight) {
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.lineTo(ballX, ballY);
+                }
+                else {
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 10;
+                    ctx.lineCap = "round";
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.lineTo(ballX, ballY);
+                    ctx.stroke();
+                }
             }
             ctx.fillStyle = color;
             ctx.beginPath();
@@ -48084,8 +48099,6 @@ function Cube() {
                             transform: "translate(-50%,-50%)"
                         }, whileTap: { scale: 0.95 } },
                         react_1.default.createElement(framer_motion_1.motion.div, { className: "cube", drag: true, dragConstraints: { left: 0, right: 0, top: 0, bottom: 0 }, onDragEnd: handleDragEnd, style: {
-                                // width: 200,
-                                // height: 200,
                                 position: 'absolute',
                                 justifySelf: "center",
                                 backgroundColor: "rgba(50,50,50,0)"

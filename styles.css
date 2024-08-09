@@ -121,17 +121,23 @@ nav{
   /* border:1px solid rgba(0,0,0,0); */
   background-color: rgb(107, 107, 107);
 }
+.navbarButton:hover{
+  display:flex;
+  margin-left:auto;
+  color:rgba(22, 22, 22,0.9);
+  background-color: rgb(200, 200, 200);
+}
 
 .navbarButton.active{
   background-color:#333;
   color:rgba(255, 255, 255);
 
   scale:1.15;
-  transition:0.1s;
+  /* transition:0.1s ease-in-out; */
 
   /* border:1px solid #ddd; */
   /* padding-top:10px; */
-  /* margin-bottom:0; */
+  margin-bottom:-10px;
 }
 
 .buttonContainer{

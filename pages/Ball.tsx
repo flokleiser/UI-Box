@@ -112,8 +112,16 @@ export default function Ball() {
             centerX = e.clientX
             centerY = e.clientY
 
-            ballX = centerX
-            ballY = centerY
+            if (e.clientY + radius > wh|| e.clientY- radius < 0 + navbar.offsetHeight) {
+                ballX = ww/2
+                ballY = wh/2
+                console.log('test inside area')
+            } else {
+                ballX = centerX
+                ballY = centerY
+                console.log('test outside area')
+            }
+
 
             vx = 0
             vy = 0
@@ -274,13 +282,20 @@ export default function Ball() {
             ctx.clearRect(0, 0, canvasBall.width, canvasBall.height);
 
             if (!isReleased) {
-                ctx.strokeStyle = color;
-                ctx.lineWidth = 10;
-                ctx.lineCap = "round";
-                ctx.beginPath();
-                ctx.moveTo(centerX, centerY);
-                ctx.lineTo(ballX, ballY);
-                ctx.stroke();
+                if (centerY + radius > wh|| centerY - radius < 0 + navbar.offsetHeight) {
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.lineTo(ballX, ballY);
+                }
+                else {
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 10;
+                    ctx.lineCap = "round";
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.lineTo(ballX, ballY);
+                    ctx.stroke();
+                }
             }
 
             ctx.fillStyle = color;
