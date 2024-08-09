@@ -29,7 +29,9 @@ const Navbar = ({ activePage }) => {
     function toggleIcon() {
         setIsDark(!isDark);
     }
-    return (react_1.default.createElement("div", { className: "bodyCenter", style: { paddingTop: '1rem', paddingBottom: '0.5rem' } },
+    return (
+    // <div className="bodyCenter" style={{paddingTop:'1rem', paddingBottom:'0.5rem'}}>
+    react_1.default.createElement("div", { className: "bodyCenter", style: { paddingTop: '0.75rem', paddingBottom: '0.35rem' } },
         react_1.default.createElement("nav", null,
             react_1.default.createElement("div", { className: "navbarLeft" },
                 react_1.default.createElement("button", { className: activePage === 'Home' ? "navbarButton active" : "navbarButton", id: "homeButton" },

@@ -38,7 +38,8 @@ const framer_motion_1 = require("framer-motion");
 function Cube() {
     const [isInside, setIsInside] = (0, react_1.useState)(false);
     const [isSwitched, setIsSwitched] = (0, react_1.useState)(false);
-    const springConfig = { stiffness: 150 };
+    // const springConfig = { stiffness: 150 };
+    const springConfig = { stiffness: 150, damping: 25 };
     const x = (0, framer_motion_1.useSpring)(200, springConfig);
     const y = (0, framer_motion_1.useSpring)(200, springConfig);
     const rotateX = (0, framer_motion_1.useMotionValue)(0);
@@ -68,32 +69,6 @@ function Cube() {
         x.set(200);
         y.set(200);
     }
-    // function animateRotation(newRotateX: number, newRotateY: number) {
-    //     return new Promise<void>((resolve) => {
-    //         animate(rotateX, newRotateX, {
-    //             duration: 0.7,
-    //             onComplete: () => {
-    //                 animate(rotateY, newRotateY, {
-    //                     duration: 0.7,
-    //                     onComplete: resolve
-    //                 });
-    //             }
-    //         });
-    //     });
-    // }
-    // function animateRotation(newRotateX: number, newRotateY: number) {
-    //     return new Promise<void>((resolve) => {
-    //         animate(rotateY, newRotateY, {
-    //             duration: 0.7,
-    //             onComplete: () => {
-    //                 animate(rotateX, newRotateX, {
-    //                     duration: 0.7,
-    //                     onComplete: resolve
-    //                 });
-    //             }
-    //         });
-    //     });
-    // }
     function animateRotation(newRotateX, newRotateY) {
         return new Promise((resolve) => {
             Promise.all([

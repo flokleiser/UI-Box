@@ -5,7 +5,8 @@ export default function Cube() {
     const [isInside, setIsInside] = useState(false);
     const [isSwitched, setIsSwitched] = useState(false)
 
-    const springConfig = { stiffness: 150 };
+    // const springConfig = { stiffness: 150 };
+    const springConfig = { stiffness: 150,damping:25};
     const x = useSpring(200, springConfig);
     const y = useSpring(200, springConfig);
 
@@ -43,35 +44,6 @@ export default function Cube() {
         y.set(200);
     }
 
-
-
-    // function animateRotation(newRotateX: number, newRotateY: number) {
-    //     return new Promise<void>((resolve) => {
-    //         animate(rotateX, newRotateX, {
-    //             duration: 0.7,
-    //             onComplete: () => {
-    //                 animate(rotateY, newRotateY, {
-    //                     duration: 0.7,
-    //                     onComplete: resolve
-    //                 });
-    //             }
-    //         });
-    //     });
-    // }
-
-    // function animateRotation(newRotateX: number, newRotateY: number) {
-    //     return new Promise<void>((resolve) => {
-    //         animate(rotateY, newRotateY, {
-    //             duration: 0.7,
-    //             onComplete: () => {
-    //                 animate(rotateX, newRotateX, {
-    //                     duration: 0.7,
-    //                     onComplete: resolve
-    //                 });
-    //             }
-    //         });
-    //     });
-    // }
 
 
     function animateRotation(newRotateX:number, newRotateY:number) {

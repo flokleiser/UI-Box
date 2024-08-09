@@ -16,7 +16,8 @@ const Navbar: React.FC<NavbarProps> = ({ activePage }) => {
   }
 
     return (
-    <div className="bodyCenter" style={{paddingTop:'1rem', paddingBottom:'0.5rem'}}>
+    // <div className="bodyCenter" style={{paddingTop:'1rem', paddingBottom:'0.5rem'}}>
+    <div className="bodyCenter" style={{paddingTop:'0.75rem', paddingBottom:'0.35rem'}}>
       <nav>
         <div className="navbarLeft">
 

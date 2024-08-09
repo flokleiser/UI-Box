@@ -44,11 +44,16 @@ function Ball() {
         let ballY = centerY;
         let vx = 0;
         let vy = 0;
+        let clicks = 0;
         const damping = 0.7;
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3;
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
+        function IncreaseClicks() {
+            clicks += 1;
+            console.log(clicks);
+        }
         class Hoop {
             constructor(centerX, centerY, width, height, color) {
                 this.centerX = centerX;
@@ -88,19 +93,23 @@ function Ball() {
             return (dx * dx + dy * dy <= (radius * radius));
         }
         const onMouseMove = (e) => {
-            if (isDragging) {
-                mouse.x = e.clientX;
-                mouse.y = e.clientY;
-                ballX = mouse.x;
-                ballY = mouse.y;
+            if (clicks > 1) {
+                if (isDragging) {
+                    mouse.x = e.clientX;
+                    mouse.y = e.clientY;
+                    ballX = mouse.x;
+                    ballY = mouse.y;
+                }
             }
         };
         const onTouchMove = (e) => {
-            if (e.touches.length > 0 && isDragging) {
-                mouse.x = e.touches[0].clientX;
-                mouse.y = e.touches[0].clientY;
-                ballX = mouse.x;
-                ballY = mouse.y;
+            if (clicks > 1) {
+                if (e.touches.length > 0 && isDragging) {
+                    mouse.x = e.touches[0].clientX;
+                    mouse.y = e.touches[0].clientY;
+                    ballX = mouse.x;
+                    ballY = mouse.y;
+                }
             }
         };
         const onTouchEnd = () => {
@@ -111,15 +120,18 @@ function Ball() {
         const onMouseDown = (e) => {
             centerX = e.clientX;
             centerY = e.clientY;
-            if (e.clientY + radius > wh || e.clientY - radius < 0 + navbar.offsetHeight) {
-                ballX = ww / 2;
-                ballY = wh / 2;
-                console.log('test inside area');
-            }
-            else {
-                ballX = centerX;
-                ballY = centerY;
-                console.log('test outside area');
+            IncreaseClicks();
+            if (clicks > 1) {
+                if (e.clientY + radius > wh || e.clientY - radius < 0 + navbar.offsetHeight) {
+                    ballX = ww / 2;
+                    ballY = wh / 2;
+                    console.log('test inside area');
+                }
+                else {
+                    ballX = centerX;
+                    ballY = centerY;
+                    console.log('test outside area');
+                }
             }
             vx = 0;
             vy = 0;
@@ -127,13 +139,15 @@ function Ball() {
             isReleased = false;
         };
         const onMouseUp = (e) => {
-            if (isDragging) {
-                isDragging = false;
-                const dx = ballX - centerX;
-                const dy = ballY - centerY;
-                vx = -dx * 0.1;
-                vy = -dy * 0.1;
-                isReleased = true;
+            if (clicks > 1) {
+                if (isDragging) {
+                    isDragging = false;
+                    const dx = ballX - centerX;
+                    const dy = ballY - centerY;
+                    vx = -dx * 0.1;
+                    vy = -dy * 0.1;
+                    isReleased = true;
+                }
             }
         };
         const initscene = () => {

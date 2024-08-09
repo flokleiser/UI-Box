@@ -1,26 +1,16 @@
 :root {
-    color-scheme: light dark;
-    --particle-color-dark: #333;
-    --particle-color-light: #ddd; 
-    --canvas-colorelement-dark: #ddd;
-    --canvas-colorelement-light: #333;
-  }
+  color-scheme: light dark;
+  --particle-color-dark: #333;
+  --particle-color-light: #ddd; 
+  --canvas-colorelement-dark: #ddd;
+  --canvas-colorelement-light: #333;
+}
 
 body {
-
-  /* OLD STYLE: add below back to body and remove .bodyCenter */
-
-    /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-        Arial, sans-serif;
-    margin: auto;
-    max-width: 38rem;
-    padding: 1.5rem;
-    overflow:hidden; */
-
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
-    margin:0;
-    overflow:hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+  Arial, sans-serif;
+  margin:0;
+  overflow:hidden;
 }
 
 .bodyCenter {
@@ -28,50 +18,11 @@ body {
   max-width: 38rem;
   padding: 1.5rem;
   padding-top:0;
-  /* overflow:hidden; */
 }
 
 #navbarRoot {
   background-color: #494949;
 }
-
-/* TAB EXPERIMENTS */
-.tabs {
-  height:30px;
-  padding: 0 0 0 0;
-  overflow:visible;
-}
-.tab {
-  width:60px;
-  height:30px;
-  overflow:hidden;
-  float:left;
-  margin:0 -15px 0 0;
-}
-.tab-box {
-  height:50px;
-  background: rgb(221, 221, 221,0.5);
-  border-radius: 4px;
-  border:1px solid #ccc;
-  margin:0 10px 0;
-  box-shadow: 0 0 2px  #fff inset;
-}
-.tab.active {
-  z-index:110;
-  position:relative;
-}
-.tab.active .tab-box{
-  background-color:#333;
-}
-.content {
-  z-index:1;
-  padding:100px;
-  border:1px solid #ccc;
-  background:#ddd;
-  position:relative;
-  
-}
-/* END TAB EXPERIMENTS */
 
 nav{
   display: flex;
@@ -107,37 +58,60 @@ nav{
 .navbarButton{
   display:flex;
   margin-left:auto;
-  /* color:rgba(255, 255, 255); */
   color:rgba(221, 221, 221,0.9);
-  /* padding-top:1px; */
-  /* padding-bottom:1px; */
-
   padding-top: 3px;
   padding-bottom:3px;
   padding-left:7px;
   padding-right:7px;
   border-radius: 3px;
   border:0;
-  /* border:1px solid rgba(0,0,0,0); */
   background-color: rgb(107, 107, 107);
+  /* z-index: 1; */
 }
 .navbarButton:hover{
   display:flex;
   margin-left:auto;
-  color:rgba(22, 22, 22,0.9);
-  background-color: rgb(200, 200, 200);
+  color:rgba(150, 150, 150,0.7);
+  /* border:1px solid rgba(51,51,51,0.5); */
+  background-color:rgba(83, 83, 83);
 }
+
 
 .navbarButton.active{
   background-color:#333;
   color:rgba(255, 255, 255);
-
   scale:1.15;
   /* transition:0.1s ease-in-out; */
-
-  /* border:1px solid #ddd; */
-  /* padding-top:10px; */
+  padding-top:-10px;
   margin-bottom:-10px;
+  /* border-top-right-radius: 3px;
+  border-top-left-radius: 3px; */
+  z-index: 1;
+}
+
+.navbarButton.active:after,
+.navbarButton.active:before{
+    content:'';
+    width:10px;
+    height:10px;
+    /* border:1px solid white; */
+    border:5px solid #333;
+    position:absolute;
+    bottom:1.7px;
+    border-top:0;
+    z-index:-1;
+}
+.navbarButton.active:after{
+    border-left:0;
+    /* border-radius: 0 0 12px 0; */
+    border-radius: 0 0 10px 0;
+    left:-10px;
+}
+.navbarButton.active:before{
+    border-right:0;
+    /* border-radius: 0 0 0 12px; */
+    border-radius: 0 0 0 10px;
+    right:-10px;
 }
 
 .buttonContainer{
@@ -379,6 +353,7 @@ nav{
   align-items: center;
   justify-content: center;
 }
+
 .switcherCircleVerticalFill {
   position:absolute;
   height:50px;
@@ -457,60 +432,71 @@ nav{
   width:133px;
   height:133px;
   /* border:1px solid rgba(221, 221, 221,0.2) */
-
 }
 
-  @media (prefers-color-scheme: dark) {
-    body { background: #333; color: white; }
-    :root {
-      --particle-color: var(--particle-color-light);
-      --canvas-colorelement: var(--canvas-colorelement-light)
-    }
-    .logo {filter:invert()}
+@media (prefers-color-scheme: dark) {
+  body { background: #333; color: white; }
+  :root {
+    --particle-color: var(--particle-color-light);
+    --canvas-colorelement: var(--canvas-colorelement-light)
   }
-  
-  @media (prefers-color-scheme: light) {
-    body { background: #ddd; color: #333; }
+  .logo {filter:invert()}
+}
 
-    #navbarRoot {background-color:#c3c3c3} 
+@media (prefers-color-scheme: light) {
+  body { background: #ddd; color: #333; }
 
-    .navbarButton {background:rgba(51,51,51,0.1);color: rgba(51,51,51,0.8);}
-    .navbarButton.active {background:#ddd;color:#333}
-    .settingsButton{background:rgba(51,51,51,0.1); color: #333}
-
-    .tab.active .tab-box{background-color:#ddd}
-
-    .spinnerCircle {background-color: #333;}
-    .spinnerCircleCenter {background-color: rgb(51, 51, 51);}
-
-    .line {background-color: #333;}
-
-    .switcherDiv {border: 3px solid #333333}
-    .switcherDivFill {border:0}
-    .switcherDivHalf{border-radius: 0 20px 20px 0 ;}
-
-    .switcherCircleVerticalFill {background-color: #333}
-    .switcherCircleVerticalFillAlt {background-color: #ddd; border:3px solid #333}
-    .switcherDivVerticalLineFilled {background-color: #333;  border: 3px solid #333;}
-    .switcherDivVerticalLine {border:3px solid #333 }
-    .switcherCircleVerticalOutline {background-color: #ddd;}
-
-    .switcherCircleHorizontal {background-color:#333}
-
-    .button1 {background:#333; border: 0px solid #333;}
-    .button1:active{background: #ddd; border: 2px solid #333;} 
-
-    .button2{background:#333; border:0px solid}
-    .button2toggled {background:#ddd; border:2px solid #333}
-    .tetherCircle{background-color: #333;}
-
-    .dividerLine {background-color:#ddd ;}
-
-    .cube {background-color: #333;}
-    .cubeContainer {background-color:rgba(51,51,51,0.2)}
-
-    :root {
-      --particle-color: var(--particle-color-dark);
-      --canvas-colorelement: var(--canvas-colorelement-dark)
-    }
+  .navbarButton:hover{
+    display:flex;
+    margin-left:auto;
+    color:rgba(51,51,51,0.5);
+    background-color: rgba(200, 200, 200,0.5);
   }
+
+  #navbarRoot {background-color:#c3c3c3} 
+
+  .navbarButton {background:rgba(51,51,51,0.1);color: rgba(51,51,51,0.8);}
+  .navbarButton.active {background:#ddd;color:#333}
+  .settingsButton{background:rgba(51,51,51,0.1); color: #333}
+
+  .tab.active .tab-box{background-color:#ddd}
+
+  .spinnerCircle {background-color: #333;}
+  .spinnerCircleCenter {background-color: rgb(51, 51, 51);}
+
+  .line {background-color: #333;}
+
+  .switcherDiv {border: 3px solid #333333}
+  .switcherDivFill {border:0}
+  .switcherDivHalf{border-radius: 0 20px 20px 0 ;}
+
+  .switcherCircleVerticalFill {background-color: #333}
+  .switcherCircleVerticalFillAlt {background-color: #ddd; border:3px solid #333}
+  .switcherDivVerticalLineFilled {background-color: #333;  border: 3px solid #333;}
+  .switcherDivVerticalLine {border:3px solid #333 }
+  .switcherCircleVerticalOutline {background-color: #ddd;}
+
+  .switcherCircleHorizontal {background-color:#333}
+
+  .button1 {background:#333; border: 0px solid #333;}
+  .button1:active{background: #ddd; border: 2px solid #333;} 
+
+  .button2{background:#333; border:0px solid}
+  .button2toggled {background:#ddd; border:2px solid #333}
+  .tetherCircle{background-color: #333;}
+
+  .dividerLine {background-color:#ddd ;}
+
+  .cube {background-color: #333;}
+  .cubeContainer {background-color:rgba(51,51,51,0.2)}
+
+  .navbarButton.active:after,
+  .navbarButton.active:before{
+    border:5px solid #fff;
+}
+
+  :root {
+    --particle-color: var(--particle-color-dark);
+    --canvas-colorelement: var(--canvas-colorelement-dark)
+  }
+}
