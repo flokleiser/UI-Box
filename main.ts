@@ -1,6 +1,7 @@
 import { app, ipcMain, BrowserWindow, nativeTheme } from 'electron'
 import path from 'node:path'
 
+
 function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -17,11 +18,9 @@ function createWindow () {
   mainWindow.removeMenu()
 
 
-  //test
 nativeTheme.on('updated', () => {
   mainWindow.webContents.send('theme-changed');
 });
-//test end
 
 ipcMain.handle('dark-mode:toggle', () => {
   if (nativeTheme.shouldUseDarkColors) {

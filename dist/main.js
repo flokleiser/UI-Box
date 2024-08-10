@@ -26,11 +26,9 @@ function createWindow() {
     mainWindow.loadFile('./src/index.html');
     mainWindow.webContents.openDevTools();
     mainWindow.removeMenu();
-    //test
     electron_1.nativeTheme.on('updated', () => {
         mainWindow.webContents.send('theme-changed');
     });
-    //test end
     electron_1.ipcMain.handle('dark-mode:toggle', () => {
         if (electron_1.nativeTheme.shouldUseDarkColors) {
             electron_1.nativeTheme.themeSource = 'light';
