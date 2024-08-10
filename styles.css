@@ -457,6 +457,34 @@ nav{
 
   .navbarButton {background:rgba(51,51,51,0.1);color: rgba(51,51,51,0.8);}
   .navbarButton.active {background:#ddd;color:#333}
+  .navbarButton.active:after,
+  .navbarButton.active:before{
+      content:'';
+      width:10px;
+      height:10px;
+      /* border:1px solid white; */
+      border:5px solid #ddd;
+      position:absolute;
+      bottom:1.4px;
+      border-top:0;
+      z-index:-1;
+  }
+  .navbarButton.active:after{
+      border-left:0;
+      /* border-radius: 0 0 12px 0; */
+      border-radius: 0 0 10px 0;
+      left:-10px;
+  }
+  .navbarButton.active:before{
+      border-right:0;
+      /* border-radius: 0 0 0 12px; */
+      border-radius: 0 0 0 10px;
+      right:-10px;
+  }
+
+
+
+
   .settingsButton{background:rgba(51,51,51,0.1); color: #333}
 
   .tab.active .tab-box{background-color:#ddd}
@@ -490,10 +518,6 @@ nav{
   .cube {background-color: #333;}
   .cubeContainer {background-color:rgba(51,51,51,0.2)}
 
-  .navbarButton.active:after,
-  .navbarButton.active:before{
-    border:5px solid #fff;
-}
 
   :root {
     --particle-color: var(--particle-color-dark);
