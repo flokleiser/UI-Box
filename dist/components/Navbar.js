@@ -51,7 +51,9 @@ const Navbar = ({ activePage }) => {
                 react_1.default.createElement("button", { className: activePage === 'Joystick' ? "navbarButton active" : "navbarButton", id: "joystickpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
                 react_1.default.createElement("button", { className: activePage === 'Cube' ? "navbarButton active" : "navbarButton", id: "cubepageButton" },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "deployed_code"))),
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "deployed_code")),
+                react_1.default.createElement("button", { className: activePage === 'Musializer' ? "navbarButton active" : "navbarButton", id: "musializerpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "pause_circle"))),
             react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
                 react_1.default.createElement("span", { className: "material-symbols-outlined", 
                     // whileHover={{rotate:180}}

@@ -434,6 +434,19 @@ nav{
   /* border:1px solid rgba(221, 221, 221,0.2) */
 }
 
+.playButton{
+  width: 100px;
+  height: 100px;
+  padding: 10px 20px; 
+  border-radius: 50px;
+  margin:0.5rem;
+  border: 0px solid white;
+
+  background:rgba(255, 255, 255, 0.5);
+  transition: transform 0.3s ease, background 0.2s;
+}
+
+
 @media (prefers-color-scheme: dark) {
   body { background: #333; color: white; }
   :root {

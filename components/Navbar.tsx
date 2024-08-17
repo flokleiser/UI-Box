@@ -86,6 +86,12 @@ const Navbar: React.FC<NavbarProps> = ({ activePage }) => {
             </span>
           </button>
 
+          <button className={activePage === 'Musializer' ? "navbarButton active" : "navbarButton"} id="musializerpageButton">
+            <span className="material-symbols-outlined">
+              pause_circle
+            </span>
+          </button>
+
           </div>
 
             <button className="settingsButton" id="darkmodeToggleButton"

@@ -13,10 +13,11 @@ import Joystick from './pages/Joystick'
 import Lock from './pages/Lock'
 import Cube from './pages/Cube'
 import Test from './pages/Test'
+import Musializer from './pages/Musializer';
 
-export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Test' | 'Cube';
+export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Test' | 'Cube' | 'Musializer';
 
-const startPage = "Home"
+const startPage = "Musializer"
 
 declare global {
   interface Window {
@@ -73,6 +74,9 @@ const App: FC = () => {
         case 'Cube':
             CurrentPage = Cube
             break;
+        case 'Musializer':
+            CurrentPage = Musializer 
+            break;
         default:
             CurrentPage = Home;
     }
@@ -111,6 +115,7 @@ const attachEventListeners = () => {
         'joystickpageButton': 'Joystick',
         'testpageButton': 'Test',
         'cubepageButton': 'Cube',
+        'musializerpageButton': 'Musializer',
     };
     const darkmodeToggleButton= document.getElementById('darkmodeToggleButton');
 

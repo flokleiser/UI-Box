@@ -47445,7 +47445,9 @@ const Navbar = ({ activePage }) => {
                 react_1.default.createElement("button", { className: activePage === 'Joystick' ? "navbarButton active" : "navbarButton", id: "joystickpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
                 react_1.default.createElement("button", { className: activePage === 'Cube' ? "navbarButton active" : "navbarButton", id: "cubepageButton" },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "deployed_code"))),
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "deployed_code")),
+                react_1.default.createElement("button", { className: activePage === 'Musializer' ? "navbarButton active" : "navbarButton", id: "musializerpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "pause_circle"))),
             react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
                 react_1.default.createElement("span", { className: "material-symbols-outlined", 
                     // whileHover={{rotate:180}}
@@ -48469,6 +48471,34 @@ function Joystick() {
                     overflow: 'hidden',
                     zIndex: -10
                 }, id: "canvasKeyboard" }))));
+}
+
+
+/***/ }),
+
+/***/ "./src/pages/Musializer.tsx":
+/*!**********************************!*\
+  !*** ./src/pages/Musializer.tsx ***!
+  \**********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports["default"] = Musializer;
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function Musializer() {
+    const [isPlaying, setIsPlaying] = (0, react_2.useState)(false);
+    function handlePlayClick() {
+        setIsPlaying(!isPlaying);
+    }
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("h1", null, "Musializer"),
+        react_1.default.createElement("button", { className: "playButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: handlePlayClick },
+            react_1.default.createElement("span", { className: "material-symbols-outlined" }, isPlaying ? "pause" : "play_arrow"))));
 }
 
 
@@ -49670,7 +49700,8 @@ const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pa
 const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
 const Cube_1 = __importDefault(__webpack_require__(/*! ./pages/Cube */ "./src/pages/Cube.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
-const startPage = "Home";
+const Musializer_1 = __importDefault(__webpack_require__(/*! ./pages/Musializer */ "./src/pages/Musializer.tsx"));
+const startPage = "Musializer";
 const App = () => {
     const [page, setPage] = (0, react_1.useState)(startPage);
     const [active, setActive] = (0, react_1.useState)(page);
@@ -49712,6 +49743,9 @@ const App = () => {
         case 'Cube':
             CurrentPage = Cube_1.default;
             break;
+        case 'Musializer':
+            CurrentPage = Musializer_1.default;
+            break;
         default:
             CurrentPage = Home_1.default;
     }
@@ -49740,6 +49774,7 @@ const attachEventListeners = () => {
         'joystickpageButton': 'Joystick',
         'testpageButton': 'Test',
         'cubepageButton': 'Cube',
+        'musializerpageButton': 'Musializer',
     };
     const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
     Object.entries(buttons).forEach(([buttonId, pageName]) => {
