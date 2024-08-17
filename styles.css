@@ -20,6 +20,8 @@ body {
   padding-top:0;
 }
 
+
+
 #navbarRoot {
   background-color: #494949;
 }
@@ -438,13 +440,52 @@ nav{
   width: 100px;
   height: 100px;
   padding: 10px 20px; 
-  border-radius: 10px;
+  border-radius: 15px;
   margin:0.5rem;
   border: 0px solid white;
 
-  background:rgba(255, 255, 255, 0.5);
+  background:rgba(255, 255, 255, 0.4);
   transition: transform 0.3s ease, background 0.2s;
 }
+
+.volumeSliderDiv{
+  position:relative;
+  align-items: center;
+  display: grid;
+  /* width:100px; */
+  width:300px;
+  height:100px;
+  margin: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+.volumeSlider{
+  accent-color: white;
+  position:relative;
+  display:grid;
+  width:250px;
+  height:30px;
+  border-radius: 100px;
+  /* border: 3px solid white; */
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.visualizer {
+  display: flex;
+  /* align-items: flex-end; */
+  height: 300px;
+  width: 100%;
+  /* overflow: hidden; */
+  /* background: #222; */
+}
+
+.bar {
+  flex: 1;
+  margin: 0 1px;
+  background: #ddd;
+}
+
 
 
 @media (prefers-color-scheme: dark) {
@@ -524,7 +565,12 @@ nav{
 
   .button2{background:#333; border:0px solid}
   .button2toggled {background:#ddd; border:2px solid #333}
-  .tetherCircle{background-color: #333;}
+  .tetherCircle{background-color: #333333;}
+  .playButton {
+    background:rgba(51,51,51);
+    color: white
+  }
+  /* .volumeSlider{border: 3px solid #333333} */
 
   .dividerLine {background-color:#ddd ;}
 
