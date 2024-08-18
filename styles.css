@@ -480,6 +480,38 @@ nav{
   /* background: #222; */
 }
 
+input[type=range] {
+  -webkit-appearance: none;
+  background: transparent;
+  cursor:pointer;
+  height: 50px;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 1px solid white;
+  height: 50px;
+  width: 20px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: -15px;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  accent-color: #ddd;
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  background:rgba(255, 255, 255, 0.4);
+  border-radius: 15px;
+}
+
+
 .bar {
   flex: 1;
   margin: 0 1px;
@@ -571,6 +603,15 @@ nav{
     color: white
   }
   /* .volumeSlider{border: 3px solid #333333} */
+  input[type=range]::-webkit-slider-thumb {
+    border: 1px solid #333;
+    background: #333;
+    margin-top: -15px;
+  }
+  
+  input[type=range]::-webkit-slider-runnable-track {
+    background:rgba(51, 51, 51, 0.2);
+  }
 
   .dividerLine {background-color:#ddd ;}
 
