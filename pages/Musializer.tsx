@@ -3,13 +3,10 @@ import {useState, useEffect, useRef} from "react"
 import {motion, useAnimation, useDragControls} from "framer-motion"
 import { Slider } from '../components/Slider'
 
-
 export default function Musializer() {
 
     const [isPlaying, setIsPlaying] = useState(true)
     const [volume, setVolume] = useState(50)
-
-    // const [audioData, setAudioData] = useState(new Uint8Array(0));
     const [audioData, setAudioData] = useState<Uint8Array>(new Uint8Array(0));
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -17,29 +14,19 @@ export default function Musializer() {
     const audioContextRef = useRef<AudioContext | null>(null);
 
 
-
-
     useEffect(() => {
        if (!audioRef.current) {
         audioRef.current = new Audio("./media/sounds/check1.mp3") 
         audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
         const source = audioContextRef.current.createMediaElementSource(audioRef.current);
-
-
         analyserRef.current = audioContextRef.current.createAnalyser();
-        // analyserRef.current.maxDecibels = 25
-        // analyserRef.current.minDecibels= 2
-
         source.connect(analyserRef.current);
-
         analyserRef.current.connect(audioContextRef.current.destination);
         analyserRef.current.fftSize = 256; 
-        // analyserRef.current.fftSize = 32;
         const bufferLength = analyserRef.current.frequencyBinCount;
         setAudioData(new Uint8Array(bufferLength));
         }
     }, [])
-
 
     useEffect(() => {
         if (audioRef.current) {
@@ -71,7 +58,6 @@ export default function Musializer() {
         }
     }
 
-
     return(
         <div className="bodyCenter">
                 <h1>Musializer</h1>
@@ -95,17 +81,16 @@ export default function Musializer() {
 
                 <div className="visualizer">
                     {Array.from(audioData).map((value, index) => (
-                    // {/* {Array.from(audioData.slice(0, 20)).map((value, index) => ( */}
                         <motion.div
                         key={index}
                         className="bar"
                         initial={{ height: 0 }}
                         animate={{ height: value }}
-                        // animate={{ height: value*0.5 }}
                         transition={{ duration: 0.05 }}
                         />
                     ))}
-        </div>
+                </div>
+
                
 
         </div>
