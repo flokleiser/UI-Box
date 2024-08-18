@@ -437,15 +437,15 @@ nav{
 }
 
 .playButton{
-  width: 100px;
-  height: 100px;
-  padding: 10px 20px; 
-  border-radius: 15px;
+  /* width: 100px;
+  height: 100px; */
+  width: 50px;
+  height: 50px;
+  /* padding: 10px 20px;  */
+  border-radius: 10px;
   margin:0.5rem;
   border: 0px solid white;
-
   background:rgba(255, 255, 255, 0.4);
-  transition: transform 0.3s ease, background 0.2s;
 }
 
 .volumeSliderDiv{
