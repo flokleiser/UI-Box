@@ -15,21 +15,11 @@ import Cube from './pages/Cube'
 import Test from './pages/Test'
 import Musializer from './pages/Musializer';
 
-export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Test' | 'Cube' | 'Musializer';
+import Window from './components/Window'
+import {Page} from './components/Window'
+
 
 const startPage = "Musializer"
-
-declare global {
-  interface Window {
-      loadPage: (page: Page) => void;
-      setActivePage: (page: Page) => void;
-      darkMode: {
-            toggle: () => Promise<void>;
-            system: () => Promise<void>;
-            getThemeSource: () => Promise<string>;
-        }
-  }
-}
 
 const App: FC = () => {
     const [page, setPage] = useState<Page>(startPage);

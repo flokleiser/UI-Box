@@ -1,32 +1,8 @@
 import React from 'react'
 import {useState, useEffect, useRef} from "react"
 import {motion, useAnimation, useDragControls} from "framer-motion"
+import { Slider } from '../components/Slider'
 
-interface SliderProps{
-    value: number;
-    set: (newValue: number) => void;
-    min?: number;
-    max?: number;
-  }
-
-  export function Slider({
-    value,
-    set,
-    min = 0,
-    max = 100 
-  }: SliderProps) {
-    return (
-        <div className="volumeSliderDiv">
-        <input className="volumeSlider"
-          value={value}
-          type="range"
-          min={min}
-          max={max}
-          onChange={(e) => set(parseFloat(e.target.value))}
-        />
-        </div>
-    );
-  }
 
 export default function Musializer() {
 

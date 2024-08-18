@@ -47423,9 +47423,7 @@ const Navbar = ({ activePage }) => {
     function toggleIcon() {
         setIsDark(!isDark);
     }
-    return (
-    // <div className="bodyCenter" style={{paddingTop:'1rem', paddingBottom:'0.5rem'}}>
-    react_1.default.createElement("div", { className: "bodyCenter", style: { paddingTop: '0.75rem', paddingBottom: '0.35rem' } },
+    return (react_1.default.createElement("div", { className: "bodyCenter", style: { paddingTop: '0.75rem', paddingBottom: '0.35rem' } },
         react_1.default.createElement("nav", null,
             react_1.default.createElement("div", { className: "navbarLeft" },
                 react_1.default.createElement("button", { className: activePage === 'Home' ? "navbarButton active" : "navbarButton", id: "homeButton" },
@@ -47454,6 +47452,27 @@ const Navbar = ({ activePage }) => {
                     style: { transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' } }, "contrast")))));
 };
 exports["default"] = Navbar;
+
+
+/***/ }),
+
+/***/ "./src/components/Slider.tsx":
+/*!***********************************!*\
+  !*** ./src/components/Slider.tsx ***!
+  \***********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Slider = Slider;
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+function Slider({ value, set, min = 0, max = 100 }) {
+    return (react_1.default.createElement("div", { className: "volumeSliderDiv" },
+        react_1.default.createElement("input", { className: "volumeSlider", value: value, type: "range", min: min, max: max, onChange: (e) => set(parseFloat(e.target.value)) })));
+}
 
 
 /***/ }),
@@ -48487,15 +48506,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Slider = Slider;
 exports["default"] = Musializer;
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
-function Slider({ value, set, min = 0, max = 100 }) {
-    return (react_1.default.createElement("div", { className: "volumeSliderDiv" },
-        react_1.default.createElement("input", { className: "volumeSlider", value: value, type: "range", min: min, max: max, onChange: (e) => set(parseFloat(e.target.value)) })));
-}
+const Slider_1 = __webpack_require__(/*! ../components/Slider */ "./src/components/Slider.tsx");
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_2.useState)(true);
     const [volume, setVolume] = (0, react_2.useState)(50);
@@ -48555,7 +48570,7 @@ function Musializer() {
                 react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: '85px' } }, isPlaying ? "play_arrow" : "pause")),
             react_1.default.createElement("div", { className: "volumeSliderDiv" },
                 react_1.default.createElement("div", { className: "volumeSlider" },
-                    react_1.default.createElement(Slider, { value: volume, set: setVolume })))),
+                    react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume })))),
         react_1.default.createElement("div", { className: "visualizer" }, Array.from(audioData).map((value, index) => (
         // {/* {Array.from(audioData.slice(0, 20)).map((value, index) => ( */}
         react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0 }, animate: { height: value }, 

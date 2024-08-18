@@ -3,15 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Slider = Slider;
 exports.default = Musializer;
 const react_1 = __importDefault(require("react"));
 const react_2 = require("react");
 const framer_motion_1 = require("framer-motion");
-function Slider({ value, set, min = 0, max = 100 }) {
-    return (react_1.default.createElement("div", { className: "volumeSliderDiv" },
-        react_1.default.createElement("input", { className: "volumeSlider", value: value, type: "range", min: min, max: max, onChange: (e) => set(parseFloat(e.target.value)) })));
-}
+const Slider_1 = require("../components/Slider");
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_2.useState)(true);
     const [volume, setVolume] = (0, react_2.useState)(50);
@@ -71,7 +67,7 @@ function Musializer() {
                 react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: '85px' } }, isPlaying ? "play_arrow" : "pause")),
             react_1.default.createElement("div", { className: "volumeSliderDiv" },
                 react_1.default.createElement("div", { className: "volumeSlider" },
-                    react_1.default.createElement(Slider, { value: volume, set: setVolume })))),
+                    react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume })))),
         react_1.default.createElement("div", { className: "visualizer" }, Array.from(audioData).map((value, index) => (
         // {/* {Array.from(audioData.slice(0, 20)).map((value, index) => ( */}
         react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0 }, animate: { height: value }, 
