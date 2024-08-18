@@ -47386,6 +47386,115 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./src/components/App.tsx":
+/*!********************************!*\
+  !*** ./src/components/App.tsx ***!
+  \********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports["default"] = App;
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const Home_1 = __importDefault(__webpack_require__(/*! ../pages/Home */ "./src/pages/Home.tsx"));
+const Settings_1 = __importDefault(__webpack_require__(/*! ../pages/Settings */ "./src/pages/Settings.tsx"));
+const Buttons_1 = __importDefault(__webpack_require__(/*! ../pages/Buttons */ "./src/pages/Buttons.tsx"));
+const Spinner_1 = __importDefault(__webpack_require__(/*! ../pages/Spinner */ "./src/pages/Spinner.tsx"));
+const Particles_1 = __importDefault(__webpack_require__(/*! ../pages/Particles */ "./src/pages/Particles.tsx"));
+const Tether_1 = __importDefault(__webpack_require__(/*! ../pages/Tether */ "./src/pages/Tether.tsx"));
+const Switches_1 = __importDefault(__webpack_require__(/*! ../pages/Switches */ "./src/pages/Switches.tsx"));
+const Ball_1 = __importDefault(__webpack_require__(/*! ../pages/Ball */ "./src/pages/Ball.tsx"));
+const Joystick_1 = __importDefault(__webpack_require__(/*! ../pages/Joystick */ "./src/pages/Joystick.tsx"));
+const Cube_1 = __importDefault(__webpack_require__(/*! ../pages/Cube */ "./src/pages/Cube.tsx"));
+const Test_1 = __importDefault(__webpack_require__(/*! ../pages/Test */ "./src/pages/Test.tsx"));
+const Musializer_1 = __importDefault(__webpack_require__(/*! ../pages/Musializer */ "./src/pages/Musializer.tsx"));
+const Window_1 = __webpack_require__(/*! ./Window */ "./src/components/Window.tsx");
+function App() {
+    const [page, setPage] = (0, react_1.useState)(Window_1.startPage);
+    const [active, setActive] = (0, react_1.useState)(page);
+    let CurrentPage;
+    switch (page) {
+        case 'Home':
+            CurrentPage = Home_1.default;
+            break;
+        case 'Settings':
+            CurrentPage = Settings_1.default;
+            break;
+        case 'Buttons':
+            CurrentPage = Buttons_1.default;
+            break;
+        case 'Spinner':
+            CurrentPage = Spinner_1.default;
+            break;
+        case 'Particles':
+            CurrentPage = Particles_1.default;
+            break;
+        case 'Tether':
+            CurrentPage = Tether_1.default;
+            break;
+        case 'Switches':
+            CurrentPage = Switches_1.default;
+            break;
+        case 'Ball':
+            CurrentPage = Ball_1.default;
+            break;
+        case 'Joystick':
+            CurrentPage = Joystick_1.default;
+            break;
+        case 'Test':
+            CurrentPage = Test_1.default;
+            break;
+        case 'Cube':
+            CurrentPage = Cube_1.default;
+            break;
+        case 'Musializer':
+            CurrentPage = Musializer_1.default;
+            break;
+        default:
+            CurrentPage = Home_1.default;
+    }
+    const loadPage = (newPage) => {
+        setPage(newPage);
+        setActive(newPage);
+    };
+    window.loadPage = (page) => {
+        setPage(page);
+        setActive(page);
+    };
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement(CurrentPage, { loadPage: loadPage })));
+}
+;
+
+
+/***/ }),
+
 /***/ "./src/components/Navbar.tsx":
 /*!***********************************!*\
   !*** ./src/components/Navbar.tsx ***!
@@ -47473,6 +47582,21 @@ function Slider({ value, set, min = 0, max = 100 }) {
     return (react_1.default.createElement("div", { className: "volumeSliderDiv" },
         react_1.default.createElement("input", { className: "volumeSlider", value: value, type: "range", min: min, max: max, onChange: (e) => set(parseFloat(e.target.value)) })));
 }
+
+
+/***/ }),
+
+/***/ "./src/components/Window.tsx":
+/*!***********************************!*\
+  !*** ./src/components/Window.tsx ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.startPage = void 0;
+exports.startPage = "Musializer";
+exports["default"] = Window;
 
 
 /***/ }),
@@ -49728,107 +49852,134 @@ function Tether() {
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+// import React, { useState, useEffect, FC } from 'react';
+// import { createRoot } from 'react-dom/client';
+// import Home from './pages/Home';
+// import Navbar from './components/Navbar'
+// import Settings from './pages/Settings';
+// import Buttons from './pages/Buttons';
+// import Spinner from './pages/Spinner';
+// import Particles from './pages/Particles';
+// import Tether from './pages/Tether';
+// import Switches from './pages/Switches'
+// import Ball from './pages/Ball';
+// import Joystick from './pages/Joystick'
+// import Lock from './pages/Lock'
+// import Cube from './pages/Cube'
+// import Test from './pages/Test'
+// import Musializer from './pages/Musializer';
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+// import Window from './components/Window'
+// import {Page} from './components/Window'
+// const startPage = "Musializer"
+// const App: FC = () => {
+//     const [page, setPage] = useState<Page>(startPage);
+//     const [active, setActive] = useState<Page>(page);
+//     let CurrentPage: React.ComponentType<{ loadPage: (page: Page) => void }>;
+//     switch (page) {
+//         case 'Home':
+//             CurrentPage = Home;
+//             break;
+//         case 'Settings':
+//             CurrentPage = Settings;
+//             break;
+//         case 'Buttons':
+//             CurrentPage = Buttons;
+//             break;
+//         case 'Spinner':
+//             CurrentPage = Spinner;
+//             break;
+//         case 'Particles':
+//             CurrentPage = Particles;
+//             break;
+//         case 'Tether':
+//             CurrentPage = Tether;
+//             break;
+//         case 'Switches':
+//             CurrentPage = Switches;
+//             break;
+//         case 'Ball':
+//             CurrentPage = Ball;
+//             break;
+//         case 'Joystick':
+//             CurrentPage = Joystick;
+//             break;
+//         // case 'Lock':
+//         //     CurrentPage = Lock;
+//         //     break;
+//         case 'Test':
+//             CurrentPage = Test
+//             break;
+//         case 'Cube':
+//             CurrentPage = Cube
+//             break;
+//         case 'Musializer':
+//             CurrentPage = Musializer 
+//             break;
+//         default:
+//             CurrentPage = Home;
+//     }
+//     const loadPage = (newPage: Page) => {
+//         setPage(newPage)
+//         setActive(newPage)
+//     }
+//     window.loadPage = (page: Page) => {
+//         setPage(page);
+//         setActive(page);
+//     };
+//     return (
+//         <>
+//             <CurrentPage loadPage={loadPage} />
+//         </>
+//     )
+// };
+// const attachEventListeners = () => {
+//     const clickType = "mousedown";
+//     const buttons: {[key: string] : Page} = {
+//         'homeButton': 'Home',
+//         'settingsButton': 'Settings',
+//         'buttonspageButton': 'Buttons',
+//         'spinnerpageButton': 'Spinner',
+//         'particlespageButton': 'Particles',
+//         'tetherpageButton': 'Tether',
+//         'switchespageButton': 'Switches',
+//         'ballpageButton': 'Ball',
+//         'joystickpageButton': 'Joystick',
+//         'testpageButton': 'Test',
+//         'cubepageButton': 'Cube',
+//         'musializerpageButton': 'Musializer',
+//     };
+//     const darkmodeToggleButton= document.getElementById('darkmodeToggleButton');
+//     Object.entries(buttons).forEach(([buttonId, pageName]) => {
+//         const button = document.getElementById(buttonId);
+//         if (button) {
+//             button.addEventListener(clickType, () => {
+//                 window.loadPage(pageName as Page);
+//                 navbarRoot.render(<Navbar activePage={pageName} />);
+//             })
+//         }
+//     });
+//     if (darkmodeToggleButton) {
+//         darkmodeToggleButton!.addEventListener(clickType, () => {
+//             window.darkMode.toggle()
+//         });
+//     }
+// }
+// document.addEventListener('DOMContentLoaded', attachEventListeners);
+// const container = document.getElementById('root');
+// const root = createRoot(container!);
+// root.render(<App />);
+// const navbarContainer = document.getElementById('navbarRoot');
+// const navbarRoot = createRoot(navbarContainer!)
+// navbarRoot.render(<Navbar activePage={startPage}/>)
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const client_1 = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
-const Home_1 = __importDefault(__webpack_require__(/*! ./pages/Home */ "./src/pages/Home.tsx"));
 const Navbar_1 = __importDefault(__webpack_require__(/*! ./components/Navbar */ "./src/components/Navbar.tsx"));
-const Settings_1 = __importDefault(__webpack_require__(/*! ./pages/Settings */ "./src/pages/Settings.tsx"));
-const Buttons_1 = __importDefault(__webpack_require__(/*! ./pages/Buttons */ "./src/pages/Buttons.tsx"));
-const Spinner_1 = __importDefault(__webpack_require__(/*! ./pages/Spinner */ "./src/pages/Spinner.tsx"));
-const Particles_1 = __importDefault(__webpack_require__(/*! ./pages/Particles */ "./src/pages/Particles.tsx"));
-const Tether_1 = __importDefault(__webpack_require__(/*! ./pages/Tether */ "./src/pages/Tether.tsx"));
-const Switches_1 = __importDefault(__webpack_require__(/*! ./pages/Switches */ "./src/pages/Switches.tsx"));
-const Ball_1 = __importDefault(__webpack_require__(/*! ./pages/Ball */ "./src/pages/Ball.tsx"));
-const Joystick_1 = __importDefault(__webpack_require__(/*! ./pages/Joystick */ "./src/pages/Joystick.tsx"));
-const Cube_1 = __importDefault(__webpack_require__(/*! ./pages/Cube */ "./src/pages/Cube.tsx"));
-const Test_1 = __importDefault(__webpack_require__(/*! ./pages/Test */ "./src/pages/Test.tsx"));
-const Musializer_1 = __importDefault(__webpack_require__(/*! ./pages/Musializer */ "./src/pages/Musializer.tsx"));
-const startPage = "Musializer";
-const App = () => {
-    const [page, setPage] = (0, react_1.useState)(startPage);
-    const [active, setActive] = (0, react_1.useState)(page);
-    let CurrentPage;
-    switch (page) {
-        case 'Home':
-            CurrentPage = Home_1.default;
-            break;
-        case 'Settings':
-            CurrentPage = Settings_1.default;
-            break;
-        case 'Buttons':
-            CurrentPage = Buttons_1.default;
-            break;
-        case 'Spinner':
-            CurrentPage = Spinner_1.default;
-            break;
-        case 'Particles':
-            CurrentPage = Particles_1.default;
-            break;
-        case 'Tether':
-            CurrentPage = Tether_1.default;
-            break;
-        case 'Switches':
-            CurrentPage = Switches_1.default;
-            break;
-        case 'Ball':
-            CurrentPage = Ball_1.default;
-            break;
-        case 'Joystick':
-            CurrentPage = Joystick_1.default;
-            break;
-        // case 'Lock':
-        //     CurrentPage = Lock;
-        //     break;
-        case 'Test':
-            CurrentPage = Test_1.default;
-            break;
-        case 'Cube':
-            CurrentPage = Cube_1.default;
-            break;
-        case 'Musializer':
-            CurrentPage = Musializer_1.default;
-            break;
-        default:
-            CurrentPage = Home_1.default;
-    }
-    const loadPage = (newPage) => {
-        setPage(newPage);
-        setActive(newPage);
-    };
-    window.loadPage = (page) => {
-        setPage(page);
-        setActive(page);
-    };
-    return (react_1.default.createElement(react_1.default.Fragment, null,
-        react_1.default.createElement(CurrentPage, { loadPage: loadPage })));
-};
+const App_1 = __importDefault(__webpack_require__(/*! ./components/App */ "./src/components/App.tsx"));
+const Window_1 = __webpack_require__(/*! ./components/Window */ "./src/components/Window.tsx");
 const attachEventListeners = () => {
     const clickType = "mousedown";
     const buttons = {
@@ -49864,10 +50015,10 @@ const attachEventListeners = () => {
 document.addEventListener('DOMContentLoaded', attachEventListeners);
 const container = document.getElementById('root');
 const root = (0, client_1.createRoot)(container);
-root.render(react_1.default.createElement(App, null));
+root.render(react_1.default.createElement(App_1.default, null));
 const navbarContainer = document.getElementById('navbarRoot');
 const navbarRoot = (0, client_1.createRoot)(navbarContainer);
-navbarRoot.render(react_1.default.createElement(Navbar_1.default, { activePage: startPage }));
+navbarRoot.render(react_1.default.createElement(Navbar_1.default, { activePage: Window_1.startPage }));
 
 
 /***/ })
