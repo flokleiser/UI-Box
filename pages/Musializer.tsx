@@ -23,10 +23,8 @@ export default function Musializer() {
         analyserRef.current = audioContextRef.current.createAnalyser();
         source.connect(analyserRef.current);
         analyserRef.current.connect(audioContextRef.current.destination);
-        analyserRef.current.fftSize = 1024; 
-        // analyserRef.current.fftSize = 256; 
-        // analyserRef.current.fftSize = 128;
-        // analyserRef.current.fftSize = 64;
+        // analyserRef.current.fftSize = 1024; 
+        analyserRef.current.fftSize = 256; 
         const bufferLength = analyserRef.current.frequencyBinCount;
         setAudioData(new Uint8Array(bufferLength));
         }
@@ -45,20 +43,6 @@ export default function Musializer() {
             analyserRef.current.getByteFrequencyData(dataArray);
             setAudioData(dataArray);
 
-            // const bassRange = dataArray.slice(0, dataArray.length / 4); 
-            // const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-            // setBassIntensity(intensity);
-
-            // const sampleRate = audioContextRef.current?.sampleRate || 44100;
-            // const fftSize = analyserRef.current.fftSize;
-            // const startFreq = 20;
-            // const endFreq = 250;
-            // const startIndex = Math.floor((startFreq / sampleRate) * fftSize);
-            // const endIndex = Math.floor((endFreq / sampleRate) * fftSize);
-
-            // const bassRange = dataArray.slice(startIndex, endIndex);
-            // const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-            // setBassIntensity(intensity);
 
             const bassRange = dataArray.slice(0, 2);
             const intensity = bassRange.reduce((sum, value) => sum + value, 0);
@@ -82,14 +66,21 @@ export default function Musializer() {
 
     return(
         <div className="bodyCenter">
-                <h1>Musializer</h1>
+                <motion.h1
+                    // animate={{
+                    //     scale: 1+  bassIntensity/3000
+                    // }}
+                    // transition={{ duration: 0.001 }}  
+                >
+                    Musializer
+                    
+                </motion.h1>
 
                 <div style={{display:"flex", flexDirection:'row', justifyContent:'center',alignItems: 'center'}}>                
 
                     <motion.button className="playButton" style={{display:'flex', justifyContent:'center', alignItems:'center'}} onMouseDown={handlePlayClick}
                     animate={{
-                        // scale: 1 + bassIntensity / 5000, 
-                        scale: 1 + bassIntensity / 1000, 
+                        scale: 1 + bassIntensity / 750, 
                     }}
                     transition={{ duration: 0.001 }} 
                     >
@@ -104,28 +95,8 @@ export default function Musializer() {
                 </div>
 
                 <div style={{display:'flex', flexDirection:'row'}}>
-                    {/* <div className="visualizer">
-                        {Array.from(audioData).reverse().map((value, index) => (
-                            <motion.div
-                            key={index}
-                            className="bar"
-                            initial={{ height: 0 }}
-                            animate={{ height: value }}
-                            transition={{ duration: 0.05 }}
-                            />
-                        ))}
-                    </div> */}
 
                     <div className="visualizer">
-                        {/* {Array.from(audioData).slice(0, 64).map((value, index) => (
-                            <motion.div
-                            key={index}
-                            className="bar"
-                            initial={{ height: 0 }}
-                            animate={{ height: value }}
-                            transition={{ duration: 0.05 }}
-                            />
-                        ))} */}
                      {Array.from(audioData).slice(0, 64).map((value, index) => {
                         const bassValue = index < audioData.length / 4 ? value  : value; // Adjust multiplier for bass emphasis
                         return (

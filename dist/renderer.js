@@ -48651,10 +48651,8 @@ function Musializer() {
             analyserRef.current = audioContextRef.current.createAnalyser();
             source.connect(analyserRef.current);
             analyserRef.current.connect(audioContextRef.current.destination);
-            analyserRef.current.fftSize = 1024;
-            // analyserRef.current.fftSize = 256; 
-            // analyserRef.current.fftSize = 128;
-            // analyserRef.current.fftSize = 64;
+            // analyserRef.current.fftSize = 1024; 
+            analyserRef.current.fftSize = 256;
             const bufferLength = analyserRef.current.frequencyBinCount;
             setAudioData(new Uint8Array(bufferLength));
         }
@@ -48670,18 +48668,6 @@ function Musializer() {
                 const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
                 analyserRef.current.getByteFrequencyData(dataArray);
                 setAudioData(dataArray);
-                // const bassRange = dataArray.slice(0, dataArray.length / 4); 
-                // const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-                // setBassIntensity(intensity);
-                // const sampleRate = audioContextRef.current?.sampleRate || 44100;
-                // const fftSize = analyserRef.current.fftSize;
-                // const startFreq = 20;
-                // const endFreq = 250;
-                // const startIndex = Math.floor((startFreq / sampleRate) * fftSize);
-                // const endIndex = Math.floor((endFreq / sampleRate) * fftSize);
-                // const bassRange = dataArray.slice(startIndex, endIndex);
-                // const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-                // setBassIntensity(intensity);
                 const bassRange = dataArray.slice(0, 2);
                 const intensity = bassRange.reduce((sum, value) => sum + value, 0);
                 setBassIntensity(intensity);
@@ -48701,11 +48687,15 @@ function Musializer() {
         }
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement("h1", null, "Musializer"),
+        react_1.default.createElement(framer_motion_1.motion.h1
+        // animate={{
+        //     scale: 1+  bassIntensity/3000
+        // }}
+        // transition={{ duration: 0.001 }}  
+        , null, "Musializer"),
         react_1.default.createElement("div", { style: { display: "flex", flexDirection: 'row', justifyContent: 'center', alignItems: 'center' } },
             react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: 'flex', justifyContent: 'center', alignItems: 'center' }, onMouseDown: handlePlayClick, animate: {
-                    // scale: 1 + bassIntensity / 5000, 
-                    scale: 1 + bassIntensity / 1000,
+                    scale: 1 + bassIntensity / 750,
                 }, transition: { duration: 0.001 } },
                 react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: '50px' } }, isPlaying ? "play_arrow" : "pause")),
             react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume })),
