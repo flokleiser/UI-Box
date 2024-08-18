@@ -49,11 +49,9 @@ function Musializer() {
         setIsPlaying(!isPlaying);
         if (isPlaying) {
             (_a = audioRef.current) === null || _a === void 0 ? void 0 : _a.play();
-            console.log('playing');
         }
         else if (!isPlaying) {
             (_b = audioRef.current) === null || _b === void 0 ? void 0 : _b.pause();
-            console.log('paused');
         }
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },

@@ -13,7 +13,6 @@ export default function Musializer() {
     const analyserRef = useRef<AnalyserNode| null>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
 
-
     useEffect(() => {
        if (!audioRef.current) {
         audioRef.current = new Audio("./media/sounds/check1.mp3") 
@@ -50,11 +49,9 @@ export default function Musializer() {
         setIsPlaying(!isPlaying);
         if (isPlaying) {
             audioRef.current?.play()
-            console.log('playing')
         }
         else if (!isPlaying) {
             audioRef.current?.pause()
-            console.log('paused')
         }
     }
 
