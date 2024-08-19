@@ -1,10 +1,9 @@
 import React from 'react'
 import {useState, useEffect, useRef} from "react"
 import {motion, useAnimation, useDragControls} from "framer-motion"
-import { Slider } from '../components/Slider'
-// import MusicPlayer from '../components/MusicPlayer'
+// import { Slider } from '../components/Slider'
 
-export default function Musializer() {
+export default function MusicPlayer() {
 
     const [isPlaying, setIsPlaying] = useState(true)
     const [volume, setVolume] = useState(50)
@@ -25,6 +24,7 @@ export default function Musializer() {
         analyserRef.current = audioContextRef.current.createAnalyser();
         source.connect(analyserRef.current);
         analyserRef.current.connect(audioContextRef.current.destination);
+        // analyserRef.current.fftSize = 1024; 
         analyserRef.current.fftSize = 256; 
         const bufferLength = analyserRef.current.frequencyBinCount;
         setAudioData(new Uint8Array(bufferLength));
@@ -66,45 +66,43 @@ export default function Musializer() {
     }
 
     return(
-        <div className="bodyCenter">
-                <motion.h1
-                >
-                    Musializer
+        // <div className="bodyCenter">
+        //         <motion.h1
+        //         >
+        //             Musializer
                     
-                </motion.h1>
+        //         </motion.h1>
 
-                <div style={{display:"flex", flexDirection:'row', justifyContent:'center',alignItems: 'center'}}>                
+        //         <div style={{display:"flex", flexDirection:'row', justifyContent:'center',alignItems: 'center'}}>                
 
-                    <motion.button className="playButton" style={{display:'flex', justifyContent:'center', alignItems:'center'}} onMouseDown={handlePlayClick}
-                    animate={{
-                        scale: 1 + bassIntensity / 750, 
-                    }}
-                    transition={{ duration: 0.001 }} 
-                    >
-                        <span className="material-symbols-outlined" style={{fontSize: '50px'}}>
-                        {isPlaying? "play_arrow" : "pause"} 
-                        </span>
-                    </motion.button>
-
-
-
-                <div style={{display:'flex',flexDirection:'column', paddingLeft:'50px'}}>
-                    <Slider value={volume} set={setVolume}>
-                        Volume
-                    </Slider>
-
-                    <Slider value={bassIntensity} set={setBassIntensity}>
-                        Intensity
-                    </Slider>
-
-                    <Slider value={test} set={setTest}>
-                       Test 
-                    </Slider>
-                </div>
-                </div>
+        //             <motion.button className="playButton" style={{display:'flex', justifyContent:'center', alignItems:'center'}} onMouseDown={handlePlayClick}
+        //             animate={{
+        //                 scale: 1 + bassIntensity / 750, 
+        //             }}
+        //             transition={{ duration: 0.001 }} 
+        //             >
+        //                 <span className="material-symbols-outlined" style={{fontSize: '50px'}}>
+        //                 {isPlaying? "play_arrow" : "pause"} 
+        //                 </span>
+        //             </motion.button>
 
 
-                {/* <MusicPlayer></MusicPlayer> */}
+
+        //         <div style={{display:'flex',flexDirection:'column', paddingLeft:'50px'}}>
+        //             <Slider value={volume} set={setVolume}>
+        //                 Volume
+        //             </Slider>
+
+        //             <Slider value={bassIntensity} set={setBassIntensity}>
+        //                 Intensity
+        //             </Slider>
+
+        //             <Slider value={test} set={setTest}>
+        //                Test 
+        //             </Slider>
+        //         </div>
+        //         </div>
+
                 <div style={{display:'flex', flexDirection:'row'}}>
 
                     <div className="visualizer">
@@ -123,6 +121,6 @@ export default function Musializer() {
                         
                     </div>
                 </div>
-        </div>
+        // </div>
     )
 }

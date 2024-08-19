@@ -47578,9 +47578,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Slider = Slider;
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-function Slider({ value, set, min = 0, max = 100 }) {
-    return (react_1.default.createElement("div", { className: "volumeSliderDiv" },
-        react_1.default.createElement("input", { className: "volumeSlider", value: value, type: "range", min: min, max: max, onChange: (e) => set(parseFloat(e.target.value)) })));
+function Slider({ value, children, set, min = 0, max = 100 }) {
+    // return (
+    //     <div className="volumeSliderDiv">
+    //     <input className="volumeSlider"
+    //       value={value}
+    //       type="range"
+    //       min={min}
+    //       max={max}
+    //       onChange={(e) => set(parseFloat(e.target.value))}
+    //     />
+    //     </div>
+    // );
+    return (
+    // <label>
+    react_1.default.createElement("div", { style: { display: 'flex', alignItems: 'center' } },
+        react_1.default.createElement("input", { className: "volumeSlider", value: value, type: "range", min: min, max: max, onChange: (e) => set(parseFloat(e.target.value)) }),
+        react_1.default.createElement("h2", { className: "volumeSlider", style: { width: '100px', marginLeft: '25px' } }, children))
+    // </label>
+    );
 }
 
 
@@ -48635,9 +48651,11 @@ const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules
 const react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 const Slider_1 = __webpack_require__(/*! ../components/Slider */ "./src/components/Slider.tsx");
+// import MusicPlayer from '../components/MusicPlayer'
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_2.useState)(true);
     const [volume, setVolume] = (0, react_2.useState)(50);
+    const [test, setTest] = (0, react_2.useState)(0);
     const [audioData, setAudioData] = (0, react_2.useState)(new Uint8Array(0));
     const audioRef = (0, react_2.useRef)(null);
     const analyserRef = (0, react_2.useRef)(null);
@@ -48651,7 +48669,6 @@ function Musializer() {
             analyserRef.current = audioContextRef.current.createAnalyser();
             source.connect(analyserRef.current);
             analyserRef.current.connect(audioContextRef.current.destination);
-            // analyserRef.current.fftSize = 1024; 
             analyserRef.current.fftSize = 256;
             const bufferLength = analyserRef.current.frequencyBinCount;
             setAudioData(new Uint8Array(bufferLength));
@@ -48687,18 +48704,16 @@ function Musializer() {
         }
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement(framer_motion_1.motion.h1
-        // animate={{
-        //     scale: 1+  bassIntensity/3000
-        // }}
-        // transition={{ duration: 0.001 }}  
-        , null, "Musializer"),
+        react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
         react_1.default.createElement("div", { style: { display: "flex", flexDirection: 'row', justifyContent: 'center', alignItems: 'center' } },
             react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: 'flex', justifyContent: 'center', alignItems: 'center' }, onMouseDown: handlePlayClick, animate: {
                     scale: 1 + bassIntensity / 750,
                 }, transition: { duration: 0.001 } },
                 react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: '50px' } }, isPlaying ? "play_arrow" : "pause")),
-            react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume })),
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column', paddingLeft: '50px' } },
+                react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
+                react_1.default.createElement(Slider_1.Slider, { value: bassIntensity, set: setBassIntensity }, "Intensity"),
+                react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
             react_1.default.createElement("div", { className: "visualizer" }, Array.from(audioData).slice(0, 64).map((value, index) => {
                 const bassValue = index < audioData.length / 4 ? value : value; // Adjust multiplier for bass emphasis

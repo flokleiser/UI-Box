@@ -453,34 +453,30 @@ nav{
   align-items: center;
   display: grid;
   /* width:100px; */
-  width:300px;
+  width:200px;
   height:100px;
   margin: 0.5rem;
   justify-content: center;
   align-items: center;
 }
 .volumeSlider{
-  accent-color: white;
+  accent-color: #ddd;
   position:relative;
   display:grid;
-  width:250px;
+  width:150px;
   height:30px;
   border-radius: 100px;
-  /* border: 3px solid white; */
   justify-content: center;
   align-items: center;
   align-content: center;
 }
 .visualizer {
   display: flex;
-  /* align-items: flex-end; */
   height: 300px;
   width: 100%;
-  /* overflow: hidden; */
-  /* background: #222; */
 }
 
-input[type=range] {
+/* input[type=range] {
   -webkit-appearance: none;
   background: transparent;
   cursor:pointer;
@@ -509,6 +505,17 @@ input[type=range]::-webkit-slider-runnable-track {
   cursor: pointer;
   background:rgba(255, 255, 255, 0.4);
   border-radius: 15px;
+} */
+
+#progress {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  transform: rotate(-90deg);
+}
+
+#progress .indicator {
+  stroke: #ddd;
 }
 
 
@@ -602,15 +609,9 @@ input[type=range]::-webkit-slider-runnable-track {
     background:rgba(51,51,51);
     color: white
   }
-  /* .volumeSlider{border: 3px solid #333333} */
-  input[type=range]::-webkit-slider-thumb {
-    border: 1px solid #333;
-    background: #333;
-    margin-top: -15px;
-  }
-  
-  input[type=range]::-webkit-slider-runnable-track {
-    background:rgba(51, 51, 51, 0.2);
+
+  .volumeSlider{
+    accent-color: #333;
   }
 
   .dividerLine {background-color:#ddd ;}
