@@ -15,20 +15,10 @@ interface SliderProps{
     min = 0,
     max = 100 
   }: SliderProps) {
-    // return (
-    //     <div className="volumeSliderDiv">
-    //     <input className="volumeSlider"
-    //       value={value}
-    //       type="range"
-    //       min={min}
-    //       max={max}
-    //       onChange={(e) => set(parseFloat(e.target.value))}
-    //     />
-    //     </div>
-    // );
     return (
       // <label>
-      <div style={{display: 'flex',alignItems: 'center'}}>
+      // <div style={{display: 'flex',alignItems: 'center'}}>
+      <div className="volumeSliderDiv">
         {/* <h2 style={{width:'100px'}}>{children}</h2> */}
         <input className="volumeSlider"
           value={value}

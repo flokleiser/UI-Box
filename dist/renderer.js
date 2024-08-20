@@ -47579,20 +47579,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Slider = Slider;
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Slider({ value, children, set, min = 0, max = 100 }) {
-    // return (
-    //     <div className="volumeSliderDiv">
-    //     <input className="volumeSlider"
-    //       value={value}
-    //       type="range"
-    //       min={min}
-    //       max={max}
-    //       onChange={(e) => set(parseFloat(e.target.value))}
-    //     />
-    //     </div>
-    // );
     return (
     // <label>
-    react_1.default.createElement("div", { style: { display: 'flex', alignItems: 'center' } },
+    // <div style={{display: 'flex',alignItems: 'center'}}>
+    react_1.default.createElement("div", { className: "volumeSliderDiv" },
         react_1.default.createElement("input", { className: "volumeSlider", value: value, type: "range", min: min, max: max, onChange: (e) => set(parseFloat(e.target.value)) }),
         react_1.default.createElement("h2", { className: "volumeSlider", style: { width: '100px', marginLeft: '25px' } }, children))
     // </label>
@@ -48651,11 +48641,16 @@ const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules
 const react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 const Slider_1 = __webpack_require__(/*! ../components/Slider */ "./src/components/Slider.tsx");
-// import MusicPlayer from '../components/MusicPlayer'
 function Musializer() {
+    // const bassAnimation = {
+    //       type: "spring",
+    //       damping: 100,
+    //       stiffness: 100
+    // }
     const [isPlaying, setIsPlaying] = (0, react_2.useState)(true);
     const [volume, setVolume] = (0, react_2.useState)(50);
     const [test, setTest] = (0, react_2.useState)(0);
+    const [bass, setBass] = (0, react_2.useState)(false);
     const [audioData, setAudioData] = (0, react_2.useState)(new Uint8Array(0));
     const audioRef = (0, react_2.useRef)(null);
     const analyserRef = (0, react_2.useRef)(null);
@@ -48687,7 +48682,13 @@ function Musializer() {
                 setAudioData(dataArray);
                 const bassRange = dataArray.slice(0, 2);
                 const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-                setBassIntensity(intensity);
+                // setBassIntensity(intensity);
+                if (intensity > 509) {
+                    setBass(true);
+                }
+                else {
+                    setBass(false);
+                }
             }
             requestAnimationFrame(updateAudioData);
         };
@@ -48697,6 +48698,10 @@ function Musializer() {
         var _a, _b;
         setIsPlaying(!isPlaying);
         if (isPlaying) {
+            // audioRef.currentTime
+            if (audioRef.current) {
+                audioRef.current.currentTime = 15;
+            }
             (_a = audioRef.current) === null || _a === void 0 ? void 0 : _a.play();
         }
         else if (!isPlaying) {
@@ -48706,9 +48711,15 @@ function Musializer() {
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
         react_1.default.createElement("div", { style: { display: "flex", flexDirection: 'row', justifyContent: 'center', alignItems: 'center' } },
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: 'flex', justifyContent: 'center', alignItems: 'center' }, onMouseDown: handlePlayClick, animate: {
-                    scale: 1 + bassIntensity / 750,
-                }, transition: { duration: 0.001 } },
+            react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: 'flex', justifyContent: 'center', alignItems: 'center' }, onMouseDown: handlePlayClick, 
+                // animate={{
+                //     scale: 1 + bassIntensity / 750, 
+                // }}
+                // transition={{ duration: 0.001 }} 
+                animate: { scale: bass ? 1.5 : 1 }, 
+                // transition={{bassAnimation}}
+                // transition={{type:"spring",duration:0.6}}
+                transition: { type: "spring", duration: 0.8, stiffness: 50 } },
                 react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: '50px' } }, isPlaying ? "play_arrow" : "pause")),
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column', paddingLeft: '50px' } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
@@ -48716,7 +48727,7 @@ function Musializer() {
                 react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
             react_1.default.createElement("div", { className: "visualizer" }, Array.from(audioData).slice(0, 64).map((value, index) => {
-                const bassValue = index < audioData.length / 4 ? value : value; // Adjust multiplier for bass emphasis
+                const bassValue = index < audioData.length / 4 ? value : value;
                 return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0 }, animate: { height: bassValue }, transition: { duration: 0.05 } }));
             })))));
 }

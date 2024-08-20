@@ -451,22 +451,22 @@ nav{
 .volumeSliderDiv{
   position:relative;
   align-items: center;
-  display: grid;
-  /* width:100px; */
-  width:200px;
-  height:100px;
-  margin: 0.5rem;
-  justify-content: center;
-  align-items: center;
+  display: flex;
+  width:300px;
+  /* margin: 0.5rem; */
+  /* align-items: center; */
+  justify-content:flex-end;
 }
 .volumeSlider{
   accent-color: #ddd;
   position:relative;
-  display:grid;
+  /* display:grid */
+  display:flex;
   width:150px;
-  height:30px;
+  height:10px;
   border-radius: 100px;
-  justify-content: center;
+  /* justify-content: center; */
+  justify-content: flex-end;
   align-items: center;
   align-content: center;
 }

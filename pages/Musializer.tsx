@@ -2,13 +2,20 @@ import React from 'react'
 import {useState, useEffect, useRef} from "react"
 import {motion, useAnimation, useDragControls} from "framer-motion"
 import { Slider } from '../components/Slider'
-// import MusicPlayer from '../components/MusicPlayer'
 
 export default function Musializer() {
+
+
+    // const bassAnimation = {
+    //       type: "spring",
+    //       damping: 100,
+    //       stiffness: 100
+    // }
 
     const [isPlaying, setIsPlaying] = useState(true)
     const [volume, setVolume] = useState(50)
     const [test, setTest] = useState(0)
+    const [bass, setBass] = useState(false)
     const [audioData, setAudioData] = useState<Uint8Array>(new Uint8Array(0));
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -29,6 +36,7 @@ export default function Musializer() {
         const bufferLength = analyserRef.current.frequencyBinCount;
         setAudioData(new Uint8Array(bufferLength));
         }
+
     }, [])
 
     useEffect(() => {
@@ -47,7 +55,16 @@ export default function Musializer() {
 
             const bassRange = dataArray.slice(0, 2);
             const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-            setBassIntensity(intensity);
+            // setBassIntensity(intensity);
+
+
+
+            if (intensity> 509) {
+                setBass(true)
+            }
+            else {
+                setBass(false)
+            }
 
           }
           requestAnimationFrame(updateAudioData);
@@ -58,12 +75,18 @@ export default function Musializer() {
     function handlePlayClick() {
         setIsPlaying(!isPlaying);
         if (isPlaying) {
+            // audioRef.currentTime
+            if (audioRef.current) {
+                audioRef.current.currentTime = 15
+            }
             audioRef.current?.play()
+
         }
         else if (!isPlaying) {
             audioRef.current?.pause()
         }
     }
+
 
     return(
         <div className="bodyCenter">
@@ -76,10 +99,14 @@ export default function Musializer() {
                 <div style={{display:"flex", flexDirection:'row', justifyContent:'center',alignItems: 'center'}}>                
 
                     <motion.button className="playButton" style={{display:'flex', justifyContent:'center', alignItems:'center'}} onMouseDown={handlePlayClick}
-                    animate={{
-                        scale: 1 + bassIntensity / 750, 
-                    }}
-                    transition={{ duration: 0.001 }} 
+                    // animate={{
+                    //     scale: 1 + bassIntensity / 750, 
+                    // }}
+                    // transition={{ duration: 0.001 }} 
+                    animate={{ scale: bass? 1.5 : 1 }}
+                    // transition={{bassAnimation}}
+                    // transition={{type:"spring",duration:0.6}}
+                    transition={{type:"spring", duration: 0.8, stiffness: 50 }}
                     >
                         <span className="material-symbols-outlined" style={{fontSize: '50px'}}>
                         {isPlaying? "play_arrow" : "pause"} 
@@ -104,12 +131,11 @@ export default function Musializer() {
                 </div>
 
 
-                {/* <MusicPlayer></MusicPlayer> */}
                 <div style={{display:'flex', flexDirection:'row'}}>
 
                     <div className="visualizer">
                      {Array.from(audioData).slice(0, 64).map((value, index) => {
-                        const bassValue = index < audioData.length / 4 ? value  : value; // Adjust multiplier for bass emphasis
+                        const bassValue = index < audioData.length / 4 ? value  : value; 
                         return (
                             <motion.div
                                 key={index}
