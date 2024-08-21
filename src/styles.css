@@ -463,7 +463,8 @@ nav{
   /* display:grid */
   display:flex;
   width:150px;
-  height:10px;
+  /* height:10px; */
+  height:4px;
   border-radius: 100px;
   /* justify-content: center; */
   justify-content: flex-end;

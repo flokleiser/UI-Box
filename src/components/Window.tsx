@@ -2,7 +2,6 @@ export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | '
 
 export const startPage = "Musializer"
 
-// const startPage = "Musializer"
 
 declare global {
   interface Window {
