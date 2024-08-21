@@ -48753,23 +48753,13 @@ function Musializer() {
                 }
             }
         }
-        function initScene() {
-            // ww = canvas.width = window.innerWidth;
-            // wh = canvas.height = window.innerHeight;
-            // canvas.height = ww
-            // canvas.width = wh
-            ww = canvas.width = canvasDivRect.width;
-            wh = canvas.height = canvasDivRect.height;
-            // const rectWidth= ww /2
-            // const rectHeight= wh /2 
-            // const rectWidth= ww 
-            // const rectHeight= wh 
-            // const rectWidth= canvasDivRect.width - 100
+        function resizeCanvas() {
             const rectWidth = canvasDivRect.width;
             const rectHeight = canvasDivRect.height;
-            const centerX = ww / 2;
-            const centerY = (wh / 2) - 100;
-            // const particleSpacing = 15; 
+            canvas.width = rectWidth;
+            canvas.height = rectHeight;
+            const centerX = rectWidth / 2;
+            const centerY = (rectHeight / 2) - 100;
             const particleSpacing = 20;
             console.log(rectWidth, rectHeight);
             particles = [];
@@ -48779,6 +48769,25 @@ function Musializer() {
                 }
             }
             amount = particles.length;
+        }
+        function initScene() {
+            // const rectWidth = canvasDivRect.width;
+            // const rectHeight = canvasDivRect.height;
+            // canvas.width = rectWidth;
+            // canvas.height = rectHeight;
+            // const centerX = rectWidth / 2;
+            // const centerY = (rectHeight / 2) - 100;
+            // const particleSpacing = 20;
+            // console.log(rectWidth,rectHeight)
+            // particles = [];
+            // for (let x = -rectWidth; x <= rectWidth; x+= particleSpacing) {
+            //     for (let y = -rectHeight; y <= rectHeight; y+= particleSpacing) {
+            //         particles.push(new Particle(centerX + x, centerY + y))
+            //     }
+            // }
+            // amount = particles.length
+            resizeCanvas();
+            window.addEventListener("resize", resizeCanvas);
         }
         const updateAndRender = () => {
             if (analyserRef.current) {
