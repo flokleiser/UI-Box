@@ -1,225 +1,143 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useSpring, useMotionValue, useTransform, animate, transform } from "framer-motion";
+import React from 'react'
+import {useState, useEffect, useRef} from "react"
+import {motion, useAnimation, useDragControls} from "framer-motion"
+import { Slider } from '../components/Slider'
 
-export default function Cube() {
-    const [isInside, setIsInside] = useState(false);
-    const [isSwitched, setIsSwitched] = useState(false)
+export default function Musializer() {
 
-    const springConfig = { stiffness: 150 };
-    const x = useSpring(200, springConfig);
-    const y = useSpring(200, springConfig);
+    const [isPlaying, setIsPlaying] = useState(true)
+    const [volume, setVolume] = useState(50)
+    const [test, setTest] = useState(0)
+    const [bass, setBass] = useState(false)
+    const [audioData, setAudioData] = useState<Uint8Array>(new Uint8Array(0));
 
-    const rotateX = useMotionValue(0);
-    const rotateY = useMotionValue(0);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const analyserRef = useRef<AnalyserNode| null>(null);
+    const audioContextRef = useRef<AudioContext | null>(null);
 
-    const tiltX = useTransform(y, [0, 400], [45, -45]);
-    const tiltY = useTransform(x, [0, 400], [-45, 45]);
+    const [bassIntensity, setBassIntensity] = useState(0);
 
+    useEffect(() => {
+       if (!audioRef.current) {
+        audioRef.current = new Audio("./media/sounds/check1.mp3") 
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const source = audioContextRef.current.createMediaElementSource(audioRef.current);
+        analyserRef.current = audioContextRef.current.createAnalyser();
+        source.connect(analyserRef.current);
+        analyserRef.current.connect(audioContextRef.current.destination);
+        analyserRef.current.fftSize = 256; 
+        const bufferLength = analyserRef.current.frequencyBinCount;
+        setAudioData(new Uint8Array(bufferLength));
+        }
 
-    const compositeRotateX = useTransform(() => rotateX.get() + tiltX.get());
-    const compositeRotateY = useTransform(() => rotateY.get() + tiltY.get());
+        if (audioRef.current) {
+            audioRef.current.volume = volume / 100;
+          }
 
-    function handleSwitchClick() {
-        setIsSwitched(!isSwitched);
-    }
-
-    // const handleMouse = (e: React.MouseEvent) => {
-    //     const rect = document.getElementById("cubeContainer")!.getBoundingClientRect();
-    //     const mouseX = e.clientX - rect.left;
-    //     const mouseY = e.clientY - rect.top;
-
-    //     if (mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
-    //         setIsInside(true);
-    //         x.set(mouseX);
-    //         y.set(mouseY);
-    //     } else {
-    //         setIsInside(false);
-    //     }
-    // }
-
-    // function handleMouseLeave() {
-    //     setIsInside(false);
-    //     x.set(200);
-    //     y.set(200);
-    // }
+    const updateAudioData = () => {
+        if (analyserRef.current) {
+          const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+          analyserRef.current.getByteFrequencyData(dataArray);
+          setAudioData(dataArray);
 
 
-    function animateRotation(newRotateX:number, newRotateY:number) {
-        return new Promise<void>((resolve) => {
-            Promise.all([
-                animate(rotateY, newRotateY, {duration:0.8}),
-                animate(rotateX, newRotateX, {duration:0.8})
-            ]).then(() => resolve())
-        });
-    }
+          const bassRange = dataArray.slice(0, 2);
+          const intensity = bassRange.reduce((sum, value) => sum + value, 0);
 
+          if (intensity> 509) {
+              setBass(true)
+          }
+          else {
+              setBass(false)
+          }
 
-    async function gridClick(event: React.MouseEvent<HTMLDivElement>) {
-        if (!isSwitched) {
+        }
+        requestAnimationFrame(updateAudioData);
+      };
+      updateAudioData();
 
-        const id = event.currentTarget.id;
-        let newRotateX = rotateX.get(); 
-        let newRotateY = rotateY.get(); 
-
+      document.addEventListener('keydown', handleKeyDown);
         
-        switch (id) {
-            case "top-center":
-                newRotateX += 180;
-                break;
-            case "bottom-center":
-                newRotateX -= 180;
-                break;
-            case "center-left":
-                newRotateY -= 180;
-                break;
-            case "center-right":
-                newRotateY += 180;
-                break;
-            case "top-left":
-                newRotateX -= 180;
-                newRotateY += 45;
-                break;
-            case "top-right":
-                newRotateX += 135;
-                // newRotateY += 135;
-                newRotateY += 225;
-                // newRotateX += 180;
-                // newRotateY += 180;
-                break;
-            case "bottom-left":
-                newRotateX -= 180;
-                newRotateY -= 180;
-                break;
-            case "bottom-right":
-                newRotateX -= 180;
-                newRotateY += 180;
-                break;
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }, [volume, isPlaying]);
+
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.code === 'Space') {
+          event.preventDefault();
+          handlePlayClick();
+        }
+      };
+
+    function handlePlayClick() {
+        setIsPlaying(!isPlaying);
+        if (isPlaying) {
+            if (audioRef.current) {
+                audioRef.current.currentTime = 15
             }
-
-        await animateRotation(newRotateX, newRotateY);
-
-        // rotateX.set(0)
-        // rotateY.set(0)
+            audioRef.current?.play()
+        }
+        else {
+            audioRef.current?.pause()
         }
     }
 
-    async function handleDragEnd(event:MouseEvent, info:any) {
-        if (isSwitched) {
-            const { offset } = info;
-            let newRotateX = 0;
-            let newRotateY = 0;
-    
-            if (Math.abs(offset.x) > Math.abs(offset.y)) {
-                if (offset.x > 0) {
-                    newRotateY = 180; // Swipe right
-                } else {
-                    newRotateY = -180; // Swipe left
-                }
-            } else {
-                if (offset.y > 0) {
-                    newRotateX = -180; // Swipe down
-                } else {
-                    newRotateX = 180; // Swipe up
-                }
-            }
 
-        await animateRotation(newRotateX, newRotateY);
-
-        rotateX.set(0)
-        rotateY.set(0)
-        }
-    }
-
-    return (
+    return(
         <div className="bodyCenter">
-            <div>
-            <div style={{display:'flex',flexDirection:'row',justifyContent:'start', alignItems:'center'}}> 
-                <h1>Cube</h1>
+                <motion.h1>
+                    Musializer
+                </motion.h1>
 
-                <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} onMouseDown={handleSwitchClick}>
-                        <span className="material-symbols-outlined">
-                        {isSwitched? "web_traffic" : "drag_pan"} 
+                <div style={{display:"flex", flexDirection:'row', justifyContent:'center',alignItems: 'center'}}>                
+                    <motion.button className="playButton" style={{display:'flex', justifyContent:'center', alignItems:'center'}} onMouseDown={handlePlayClick}
+                    animate={{ scale: bass? 1.5 : 1 }}
+                    transition={{type:"spring", duration: 0.8, stiffness: 50 }}
+                    >
+                        <span className="material-symbols-outlined" style={{fontSize: '50px'}}>
+                        {isPlaying? "play_arrow" : "pause"} 
                         </span>
                     </motion.button>
 
-            </div>
+                <div style={{display:'flex',flexDirection:'column', paddingLeft:'50px'}}>
+                    <Slider value={volume} set={setVolume}>
+                        Volume
+                    </Slider>
 
-                <div style={{display:'flex', justifyContent:'center'}}>
+                    <Slider value={bassIntensity} set={setBassIntensity}>
+                        Intensity
+                    </Slider>
 
-                    <div style={{position:"absolute", opacity:0.1, width:400, height:400}} 
-                    />
-
-                    <motion.div className="cubeContainer" id="cubeContainer"
-
-                        style={{
-                            width: 400,
-                            height: 400,
-                            display: "grid",
-                            placeItems: "center",
-                            placeContent: "center",
-                            borderRadius: 30,
-                            perspective: 400,
-                            position: 'relative' 
-                        }}
-                        // onMouseMove={handleMouse}
-                        // onMouseLeave={handleMouseLeave}
-                    >
-                        {["top-left", 
-                        "top-center", 
-                        "top-right", 
-                        "center-left", 
-                        "center-center", 
-                        "center-right", 
-                        "bottom-left", 
-                        "bottom-center", 
-                        "bottom-right"].map((id, index) => (
-                            <div key={id} className="section" data-section={index} id={id} 
-                            onMouseDown={gridClick}
-                             />
-                        ))}
-
-                        <motion.div className='cube'
-                            style={{
-                                display:"flex",
-                                justifyContent:"flex-start",
-                                alignItems:"flex-start",
-
-                                rotateX: compositeRotateX,
-                                rotateY: compositeRotateY,
-                                position:'absolute',
-                                transform:"translate(-50%,-50%)"
-                            }}
-                            whileTap={{scale:0.95}}
-                        >
-
-                        <div className="cube" 
-                            style={{
-                                position:'absolute', 
-                                justifySelf:'left', 
-                                backgroundColor:"rgba(50,50,50,0.5", 
-                                width:50, 
-                                height:50,
-                                margin:6.25
-                            }} 
-                        />
-
-
-                        <motion.div className="cube"
-                            drag
-                            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                            onDragEnd={handleDragEnd} 
-
-                                style={{
-                                    position:'absolute',
-                                    justifySelf:"center",
-                                    backgroundColor:"rgba(50,50,50,0)"
-                                }}
-                            />
-
-                        </motion.div>
-                    </motion.div>
+                    <Slider value={test} set={setTest}>
+                       Test 
+                    </Slider>
                 </div>
-            </div>
+                </div>
+
+                <div style={{margin:'21.44px'}} />
+
+
+                <div style={{display:'flex', flexDirection:'row'}}>
+
+                    <div className="visualizer">
+                     {Array.from(audioData).slice(0, 64).map((value, index) => {
+                        const bassValue = index < audioData.length / 4 ? value  : value; 
+                        return (
+                            <motion.div
+                                key={index}
+                                className="bar"
+                                initial={{ height: 0 }}
+                                animate={{ height: bassValue }}
+                                transition={{ duration: 0.05 }}
+                            />
+                        );
+                    })} 
+                        
+                    </div>
+                </div>
+
         </div>
-    );
+    )
 }
