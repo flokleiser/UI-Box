@@ -33,14 +33,17 @@ function Musializer() {
     const [bass, setBass] = (0, react_1.useState)(false);
     const [test, setTest] = (0, react_1.useState)(0);
     const [audioData, setAudioData] = (0, react_1.useState)(new Uint8Array(0));
-    const [bassIntensity, setBassIntensity] = (0, react_1.useState)(0);
+    // const [bassIntensity, setBassIntensity] = useState(0);
     const canvasRef = (0, react_1.useRef)(null);
     const audioRef = (0, react_1.useRef)(null);
     const analyserRef = (0, react_1.useRef)(null);
     const audioContextRef = (0, react_1.useRef)(null);
+    const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
+    //audio setup
     (0, react_1.useEffect)(() => {
         if (!audioRef.current) {
             audioRef.current = new Audio("./media/sounds/check1.mp3");
+            // audioRef.current = new Audio("./media/sounds/didITellYou.mp3")
             audioContextRef.current = new (window.AudioContext ||
                 window.webkitAudioContext)();
             const source = audioContextRef.current.createMediaElementSource(audioRef.current);
@@ -59,20 +62,19 @@ function Musializer() {
             document.removeEventListener("keydown", handleKeyDown);
         };
     }, [volume, isPlaying]);
+    //canvas setup
     (0, react_1.useEffect)(() => {
         const canvas = canvasRef.current;
         const canvasDiv = document.getElementById("canvasDiv");
         if (!canvas || !canvasDiv)
             return;
-        const ctx = canvas.getContext("2d");
-        let particles = [];
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
         let animationFrameId;
-        let amount = 0;
+        let particles = [];
         let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
         let bounceRadius = 1;
-        const color = [
-            getComputedStyle(document.documentElement).getPropertyValue("--particle-color"),
-        ];
+        console.log('x: ', canvas.width, 'y: ', canvas.height);
+        const color = [getComputedStyle(document.documentElement).getPropertyValue("--particle-color")];
         class Particle {
             constructor(x, y) {
                 this.x = x;
@@ -124,6 +126,20 @@ function Musializer() {
             canvas.width = rect.width;
             canvas.height = rect.height;
         };
+        const initScene = () => {
+            const rect = canvasDiv.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const particleSpacing = 50;
+            particles = [];
+            for (let x = -rect.width; x <= rect.width; x += particleSpacing) {
+                for (let y = -rect.height; y <= rect.height; y += particleSpacing) {
+                    particles.push(new Particle(centerX + x, centerY + y));
+                }
+            }
+        };
         const render = () => {
             if (analyserRef.current) {
                 const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
@@ -131,12 +147,20 @@ function Musializer() {
                 setAudioData(dataArray);
                 const bassRange = dataArray.slice(0, 2);
                 const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-                setBass(intensity > 509);
-                setBassIntensity(intensity);
+                //   setBass(intensity > 509);
+                //   setBassIntensity(intensity);
+                const bass = intensity > 509;
+                setBass(bass);
+                bounceRadius = bass ? 2 : 0.5;
             }
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((particle) => {
+                particle.render();
+            });
+            // ctx.clearRect(0, 0, canvas.width, canvas.height);
             animationFrameId = requestAnimationFrame(render);
         };
+        initScene();
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
         render();
@@ -144,7 +168,8 @@ function Musializer() {
             window.removeEventListener("resize", resizeCanvas);
             cancelAnimationFrame(animationFrameId);
         };
-    }, [bassIntensity]);
+    }, []);
+    //handle keys
     const handleKeyDown = (event) => {
         if (event.code === "Space") {
             event.preventDefault();
@@ -164,6 +189,9 @@ function Musializer() {
             (_b = audioRef.current) === null || _b === void 0 ? void 0 : _b.pause();
         }
     };
+    function resetScene() {
+        setResetTrigger(prev => prev + 1);
+    }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
         react_1.default.createElement("div", { style: {
@@ -184,7 +212,7 @@ function Musializer() {
                     paddingLeft: "50px",
                 } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
-                react_1.default.createElement(Slider_1.Slider, { value: bassIntensity, set: setBassIntensity }, "Intensity"),
+                react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"),
                 react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
         react_1.default.createElement("div", { style: { margin: "10px" } }),
         react_1.default.createElement("div", { id: "canvasDiv", style: { height: "18rem", position: "relative" } },

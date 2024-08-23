@@ -1,7 +1,7 @@
 import React from 'react'
 import {useState, useEffect, useRef} from "react"
 import {motion, useAnimation, useDragControls} from "framer-motion"
-import { Slider } from '../components/Slider'
+import { Slider } from '../src/components/Slider'
 
 export default function Musializer() {
 
@@ -93,7 +93,7 @@ export default function Musializer() {
             "--particle-color"
             ),
         ];
-
+    
         class Particle {
             x: number;
             y: number;
