@@ -152,12 +152,20 @@ export default function Musializer() {
             const rect = canvasDiv.getBoundingClientRect();
             canvas.width = rect.width
             canvas.height = rect.height
+
+            //big canvas
+            // canvas.width = rect.width * 2
+            // canvas.height = rect.height * 2
         }
 
         const initScene = () => {
             const rect = canvasDiv.getBoundingClientRect();
-            canvas.width = rect.width
-            canvas.height = rect.height
+            // canvas.width = rect.width
+            // canvas.height = rect.height
+
+            //big canvas
+            // canvas.width = rect.width * 2
+            // canvas.height = rect.height * 2
 
             const centerX = rect.width/ 2;
             const centerY = rect.height/ 2;
@@ -169,6 +177,13 @@ export default function Musializer() {
                 particles.push(new Particle(centerX + x, centerY + y));
                 }
             }
+
+            // particles = [];
+            // for (let x = -rect.width/2; x <= rect.width/2; x += particleSpacing) {
+            //     for (let y = -rect.height/2; y <= rect.height/2; y += particleSpacing) {
+            //     particles.push(new Particle(centerX + x, centerY + y));
+            //     }
+            // }
         }
 
         const render = () => {
@@ -280,14 +295,20 @@ export default function Musializer() {
                     </Slider>
                 </div>
             </div>
-            <div style={{ margin: "10px" }} />
+            <div style={{ padding: "5px" }} />
             <div
                 id="canvasDiv"
-                style={{ height: "18rem", position: "relative" }}
+                // style={{ height: "17.5rem", position: "relative", border: "3px solid #ddd", borderRadius: "5px" }}
+                className="canvasDiv"
             >
                 <canvas
                     ref={canvasRef}
-                    style={{ position: "absolute" }}
+                    style={{ position: "absolute",
+                        // left: "50%", 
+                        // top: "50%",
+                        // transform: "translate(-50%, -50%)",
+                        // zIndex: -100
+                     }}
                 ></canvas>
             </div>
         </div>
