@@ -8,12 +8,33 @@ export default function Musializer() {
     const [bass, setBass] = useState(false);
     const [test, setTest] = useState(0);
     const [audioData, setAudioData] = useState<Uint8Array>(new Uint8Array(0));
-    // const [bassIntensity, setBassIntensity] = useState(0);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const analyserRef = useRef<AnalyserNode | null>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
     const [resetTrigger, setResetTrigger] = useState(0);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(resetScene, 100);
+        return () => clearTimeout(timeoutId);
+    }, []); 
+
+    useEffect(() => {
+        const handleThemeToggle = () => resetScene();
+        setTimeout(() => {
+            const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
+            if (darkmodeToggleButton) {
+                darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+            }
+        }, 1000);
+    
+        return () => {
+            const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
+            if (darkmodeToggleButton) {
+                darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
+            }
+        };
+    }, []);
 
     //audio setup
     useEffect(() => {
@@ -50,9 +71,8 @@ export default function Musializer() {
         const ctx = canvas.getContext("2d", {willReadFrequently: true}) as CanvasRenderingContext2D;
         let animationFrameId: number
         let particles: Particle[] = [];
-        let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+        let bounceCenter = { x: canvas.width / 2, y: canvas.height / 2 };
         let bounceRadius = 1;
-        console.log('x: ', canvas.width, 'y: ',canvas.height)
 
         const color = [getComputedStyle(document.documentElement).getPropertyValue("--particle-color")];
 
@@ -106,14 +126,14 @@ export default function Musializer() {
       
               ctx.fill();
       
-              let a = this.x - mouse.x;
-              let b = this.y - mouse.y;
+              let a = this.x - bounceCenter.x;
+              let b = this.y - bounceCenter.y;
       
               let distance = Math.sqrt(a * a + b * b);
       
               if (distance < bounceRadius * 60) {
-                this.accX = this.x - mouse.x;
-                this.accY = this.y - mouse.y;
+                this.accX = this.x - bounceCenter.x;
+                this.accY = this.y - bounceCenter.y;
       
                 this.vx += this.accX;
                 this.vy += this.accY;
@@ -141,7 +161,7 @@ export default function Musializer() {
 
             const centerX = rect.width/ 2;
             const centerY = rect.height/ 2;
-            const particleSpacing = 50;
+            const particleSpacing = 20;
 
             particles = [];
             for (let x = -rect.width; x <= rect.width; x += particleSpacing) {
@@ -152,6 +172,10 @@ export default function Musializer() {
         }
 
         const render = () => {
+
+            const rect = canvasDiv.getBoundingClientRect();
+            let bounceCenter = { x: rect.width / 2, y: rect.height / 2 };
+
             if (analyserRef.current) {
               const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
               analyserRef.current.getByteFrequencyData(dataArray);
@@ -159,11 +183,9 @@ export default function Musializer() {
       
               const bassRange = dataArray.slice(0, 2);
               const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-            //   setBass(intensity > 509);
-            //   setBassIntensity(intensity);
             const bass = intensity > 509;
             setBass(bass);
-            bounceRadius = bass ? 2 : 0.5;
+            bounceRadius = bass ? 2 : 0;
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -171,12 +193,12 @@ export default function Musializer() {
             particle.render();
         });
       
-            // ctx.clearRect(0, 0, canvas.width, canvas.height);
             animationFrameId = requestAnimationFrame(render);
           };
 
 
         initScene();
+
 
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
@@ -187,7 +209,7 @@ export default function Musializer() {
         cancelAnimationFrame(animationFrameId);
         };
 
-    }, []);
+    }, [resetTrigger]);
 
     //handle keys
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -250,9 +272,7 @@ export default function Musializer() {
                     <Slider value={volume} set={setVolume}>
                         Volume
                     </Slider>
-                    {/* <Slider value={bassIntensity} set={setBassIntensity}> */}
                     <Slider value={test} set={setTest}>
-                        {/* Intensity */}
                         Test
                     </Slider>
                     <Slider value={test} set={setTest}>
