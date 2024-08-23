@@ -48678,15 +48678,15 @@ function Musializer() {
     (0, react_1.useEffect)(() => {
         const handleThemeToggle = () => resetScene();
         setTimeout(() => {
-            const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
+            const darkmodeToggleButton = document.getElementById("darkmodeToggleButton");
             if (darkmodeToggleButton) {
-                darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+                darkmodeToggleButton.addEventListener("click", handleThemeToggle);
             }
         }, 1000);
         return () => {
-            const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
+            const darkmodeToggleButton = document.getElementById("darkmodeToggleButton");
             if (darkmodeToggleButton) {
-                darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
+                darkmodeToggleButton.removeEventListener("click", handleThemeToggle);
             }
         };
     }, []);
@@ -48719,12 +48719,16 @@ function Musializer() {
         const canvasDiv = document.getElementById("canvasDiv");
         if (!canvas || !canvasDiv)
             return;
-        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        const ctx = canvas.getContext("2d", {
+            willReadFrequently: true,
+        });
         let animationFrameId;
         let particles = [];
         let bounceCenter = { x: canvas.width / 2, y: canvas.height / 2 };
         let bounceRadius = 1;
-        const color = [getComputedStyle(document.documentElement).getPropertyValue("--particle-color")];
+        const color = [
+            getComputedStyle(document.documentElement).getPropertyValue("--particle-color"),
+        ];
         class Particle {
             constructor(x, y) {
                 this.x = x;
@@ -48738,10 +48742,16 @@ function Musializer() {
                 this.vy = 0;
                 this.accX = 0;
                 this.accY = 0;
-                this.friction = 0.7;
+                // this.friction = 0.7;
+                this.friction = 0.9;
                 this.color = color;
+                // this.frequency = 0.01;
+                // this.amplitude = 100;
             }
             render() {
+                // this.dest.x = this.x
+                // this.dest.y = canvas!.height/2 + Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
+                // this.dest.y = Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
                 this.accX = (this.dest.x - this.x) / 100;
                 this.accY = (this.dest.y - this.y) / 100;
                 this.vx += this.accX;
@@ -48758,8 +48768,10 @@ function Musializer() {
                 let b = this.y - bounceCenter.y;
                 let distance = Math.sqrt(a * a + b * b);
                 if (distance < bounceRadius * 60) {
-                    this.accX = this.x - bounceCenter.x;
-                    this.accY = this.y - bounceCenter.y;
+                    // this.accX = this.x - bounceCenter.x;
+                    // this.accY = this.y - bounceCenter.y;
+                    this.accX = (this.x - bounceCenter.x) / 10;
+                    this.accY = (this.y - bounceCenter.y) / 10;
                     this.vx += this.accX;
                     this.vy += this.accY;
                 }
@@ -48784,7 +48796,8 @@ function Musializer() {
             particles = [];
             for (let x = -rect.width; x <= rect.width; x += particleSpacing) {
                 for (let y = -rect.height; y <= rect.height; y += particleSpacing) {
-                    particles.push(new Particle(centerX + x, centerY + y));
+                    particles.push(new Particle(centerX + x, centerY
+                        + y));
                 }
             }
         };
@@ -48837,7 +48850,7 @@ function Musializer() {
         }
     };
     function resetScene() {
-        setResetTrigger(prev => prev + 1);
+        setResetTrigger((prev) => prev + 1);
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
@@ -48861,8 +48874,10 @@ function Musializer() {
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
                 react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"),
                 react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
+        react_1.default.createElement("div", { style: { padding: "5px" } }),
         react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" },
-            react_1.default.createElement("canvas", { ref: canvasRef, style: { position: "absolute",
+            react_1.default.createElement("canvas", { ref: canvasRef, style: {
+                    position: "absolute",
                     marginLeft: "-3px",
                     marginTop: "-3px",
                 } }))));

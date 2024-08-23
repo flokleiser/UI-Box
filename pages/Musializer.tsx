@@ -17,21 +17,31 @@ export default function Musializer() {
     useEffect(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
-    }, []); 
+    }, []);
 
     useEffect(() => {
         const handleThemeToggle = () => resetScene();
         setTimeout(() => {
-            const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
+            const darkmodeToggleButton = document.getElementById(
+                "darkmodeToggleButton"
+            );
             if (darkmodeToggleButton) {
-                darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+                darkmodeToggleButton.addEventListener(
+                    "click",
+                    handleThemeToggle
+                );
             }
         }, 1000);
-    
+
         return () => {
-            const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
+            const darkmodeToggleButton = document.getElementById(
+                "darkmodeToggleButton"
+            );
             if (darkmodeToggleButton) {
-                darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
+                darkmodeToggleButton.removeEventListener(
+                    "click",
+                    handleThemeToggle
+                );
             }
         };
     }, []);
@@ -68,13 +78,20 @@ export default function Musializer() {
         const canvasDiv = document.getElementById("canvasDiv");
         if (!canvas || !canvasDiv) return;
 
-        const ctx = canvas.getContext("2d", {willReadFrequently: true}) as CanvasRenderingContext2D;
-        let animationFrameId: number
+        const ctx = canvas.getContext("2d", {
+            willReadFrequently: true,
+        }) as CanvasRenderingContext2D;
+        let animationFrameId: number;
         let particles: Particle[] = [];
         let bounceCenter = { x: canvas.width / 2, y: canvas.height / 2 };
         let bounceRadius = 1;
 
-        const color = [getComputedStyle(document.documentElement).getPropertyValue("--particle-color")];
+
+        const color = [
+            getComputedStyle(document.documentElement).getPropertyValue(
+                "--particle-color"
+            ),
+        ];
 
         class Particle {
             x: number;
@@ -87,125 +104,144 @@ export default function Musializer() {
             accY: number;
             friction: number;
             color: string[];
-      
+
+
             constructor(x: number, y: number) {
-              this.x = x;
-              this.y = y;
-              this.dest = {
-                x: x,
-                y: y,
-              };
-      
-              this.r = 5;
-      
-              this.vx = 0;
-              this.vy = 0;
-      
-              this.accX = 0;
-              this.accY = 0;
-              this.friction = 0.7;
-      
-              this.color = color;
+                this.x = x;
+                this.y = y;
+                this.dest = {
+                    x: x,
+                    y: y,
+                };
+
+                this.r = 5;
+
+                this.vx = 0;
+                this.vy = 0;
+
+                this.accX = 0;
+                this.accY = 0;
+                // this.friction = 0.7;
+                this.friction = 0.9;
+
+                this.color = color;
+
+                // this.frequency = 0.01;
+                // this.amplitude = 100;
             }
-      
+
             render() {
-              this.accX = (this.dest.x - this.x) / 100;
-              this.accY = (this.dest.y - this.y) / 100;
-              this.vx += this.accX;
-              this.vy += this.accY;
-              this.vx *= this.friction;
-              this.vy *= this.friction;
-      
-              this.x += this.vx;
-              this.y += this.vy;
-      
-              ctx.fillStyle = this.color[0];
-              ctx.beginPath();
-      
-              ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      
-              ctx.fill();
-      
-              let a = this.x - bounceCenter.x;
-              let b = this.y - bounceCenter.y;
-      
-              let distance = Math.sqrt(a * a + b * b);
-      
-              if (distance < bounceRadius * 60) {
-                this.accX = this.x - bounceCenter.x;
-                this.accY = this.y - bounceCenter.y;
-      
+                // this.dest.x = this.x
+                // this.dest.y = canvas!.height/2 + Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
+                // this.dest.y = Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
+                this.accX = (this.dest.x - this.x) / 100;
+                this.accY = (this.dest.y - this.y) / 100;
+
                 this.vx += this.accX;
                 this.vy += this.accY;
-              }
-      
-              if (distance > bounceRadius * 250) {
-                this.accX = (this.dest.x - this.x) / 10;
-                this.accY = (this.dest.y - this.y) / 10;
-                this.vx += this.accX;
-                this.vy += this.accY;
-              }
-            }
-          }
+                this.vx *= this.friction;
+                this.vy *= this.friction;
 
-        const resizeCanvas = () => {
-            const rect = canvasDiv.getBoundingClientRect();
-            canvas.width = rect.width
-            canvas.height = rect.height
-        }
+                this.x += this.vx;
+                this.y += this.vy;
 
-        const initScene = () => {
-            const rect = canvasDiv.getBoundingClientRect();
-            const centerX = rect.width/ 2;
-            const centerY = rect.height/ 2;
-            const particleSpacing = 20;
+                ctx.fillStyle = this.color[0];
+                ctx.beginPath();
 
-            particles = [];
-            for (let x = -rect.width; x <= rect.width; x += particleSpacing) {
-                for (let y = -rect.height; y <= rect.height; y += particleSpacing) {
-                particles.push(new Particle(centerX + x, centerY + y));
+                ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+
+                ctx.fill();
+
+                let a = this.x - bounceCenter.x;
+                let b = this.y - bounceCenter.y;
+
+                let distance = Math.sqrt(a * a + b * b);
+
+                if (distance < bounceRadius * 60) {
+                    // this.accX = this.x - bounceCenter.x;
+                    // this.accY = this.y - bounceCenter.y;
+
+                    this.accX = (this.x - bounceCenter.x)/10;
+                    this.accY = (this.y - bounceCenter.y)/10;
+
+                    this.vx += this.accX;
+                    this.vy += this.accY;
+                }
+
+                if (distance > bounceRadius * 250) {
+                    this.accX = (this.dest.x - this.x) / 10;
+                    this.accY = (this.dest.y - this.y) / 10;
+                    this.vx += this.accX;
+                    this.vy += this.accY;
                 }
             }
         }
 
-        const render = () => {
+        const resizeCanvas = () => {
+            const rect = canvasDiv.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+        };
 
+        const initScene = () => {
+            const rect = canvasDiv.getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const particleSpacing = 20;
+
+            particles = [];
+            for (let x = -rect.width; x <= rect.width; x += particleSpacing) {
+                for (
+                    let y = -rect.height;
+                    y <= rect.height;
+                    y += particleSpacing
+                ) {
+                    particles.push(new Particle(centerX + x, centerY
+                         +y
+                        ));
+                }
+            }
+        };
+
+        const render = () => {
             const rect = canvasDiv.getBoundingClientRect();
             // let bounceCenter = { x: rect.width / 2, y: rect.height / 2 };
 
             if (analyserRef.current) {
-              const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-              analyserRef.current.getByteFrequencyData(dataArray);
-              setAudioData(dataArray);
-      
-              const bassRange = dataArray.slice(0, 2);
-              const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-            const bass = intensity > 509;
-            setBass(bass);
-            bounceRadius = bass ? 1.5 : 0;
+                const dataArray = new Uint8Array(
+                    analyserRef.current.frequencyBinCount
+                );
+                analyserRef.current.getByteFrequencyData(dataArray);
+                setAudioData(dataArray);
+
+                const bassRange = dataArray.slice(0, 2);
+                const intensity = bassRange.reduce(
+                    (sum, value) => sum + value,
+                    0
+                );
+                const bass = intensity > 509;
+                setBass(bass);
+                bounceRadius = bass ? 1.5 : 0;
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach((particle) => {
-            particle.render();
-        });
-      
-            animationFrameId = requestAnimationFrame(render);
-          };
+                particle.render();
+            });
 
+            animationFrameId = requestAnimationFrame(render);
+        };
 
         initScene();
-
 
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
         render();
 
         return () => {
-        window.removeEventListener("resize", resizeCanvas);
-        cancelAnimationFrame(animationFrameId);
+            window.removeEventListener("resize", resizeCanvas);
+            cancelAnimationFrame(animationFrameId);
         };
-
     }, [resetTrigger]);
 
     //handle keys
@@ -227,7 +263,7 @@ export default function Musializer() {
         }
     };
     function resetScene() {
-        setResetTrigger(prev => prev + 1);
+        setResetTrigger((prev) => prev + 1);
     }
 
     return (
@@ -277,14 +313,15 @@ export default function Musializer() {
                     </Slider>
                 </div>
             </div>
-            {/* <div style={{ padding: "5px" }} /> */}
+            <div style={{ padding: "5px" }} />
             <div id="canvasDiv" className="canvasDiv">
                 <canvas
                     ref={canvasRef}
-                    style={{ position: "absolute",
-                    marginLeft:"-3px",
-                    marginTop:"-3px",
-                     }}
+                    style={{
+                        position: "absolute",
+                        marginLeft: "-3px",
+                        marginTop: "-3px",
+                    }}
                 ></canvas>
             </div>
         </div>
