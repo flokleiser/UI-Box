@@ -48775,17 +48775,9 @@ function Musializer() {
             const rect = canvasDiv.getBoundingClientRect();
             canvas.width = rect.width;
             canvas.height = rect.height;
-            //big canvas
-            // canvas.width = rect.width * 2
-            // canvas.height = rect.height * 2
         };
         const initScene = () => {
             const rect = canvasDiv.getBoundingClientRect();
-            // canvas.width = rect.width
-            // canvas.height = rect.height
-            //big canvas
-            // canvas.width = rect.width * 2
-            // canvas.height = rect.height * 2
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             const particleSpacing = 20;
@@ -48795,16 +48787,10 @@ function Musializer() {
                     particles.push(new Particle(centerX + x, centerY + y));
                 }
             }
-            // particles = [];
-            // for (let x = -rect.width/2; x <= rect.width/2; x += particleSpacing) {
-            //     for (let y = -rect.height/2; y <= rect.height/2; y += particleSpacing) {
-            //     particles.push(new Particle(centerX + x, centerY + y));
-            //     }
-            // }
         };
         const render = () => {
             const rect = canvasDiv.getBoundingClientRect();
-            let bounceCenter = { x: rect.width / 2, y: rect.height / 2 };
+            // let bounceCenter = { x: rect.width / 2, y: rect.height / 2 };
             if (analyserRef.current) {
                 const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
                 analyserRef.current.getByteFrequencyData(dataArray);
@@ -48813,7 +48799,7 @@ function Musializer() {
                 const intensity = bassRange.reduce((sum, value) => sum + value, 0);
                 const bass = intensity > 509;
                 setBass(bass);
-                bounceRadius = bass ? 2 : 0;
+                bounceRadius = bass ? 1.5 : 0;
             }
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach((particle) => {
@@ -48875,15 +48861,10 @@ function Musializer() {
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
                 react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"),
                 react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
-        react_1.default.createElement("div", { style: { padding: "5px" } }),
-        react_1.default.createElement("div", { id: "canvasDiv", 
-            // style={{ height: "17.5rem", position: "relative", border: "3px solid #ddd", borderRadius: "5px" }}
-            className: "canvasDiv" },
+        react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" },
             react_1.default.createElement("canvas", { ref: canvasRef, style: { position: "absolute",
-                    // left: "50%", 
-                    // top: "50%",
-                    // transform: "translate(-50%, -50%)",
-                    // zIndex: -100
+                    marginLeft: "-3px",
+                    marginTop: "-3px",
                 } }))));
 }
 
