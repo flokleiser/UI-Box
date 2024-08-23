@@ -152,21 +152,10 @@ export default function Musializer() {
             const rect = canvasDiv.getBoundingClientRect();
             canvas.width = rect.width
             canvas.height = rect.height
-
-            //big canvas
-            // canvas.width = rect.width * 2
-            // canvas.height = rect.height * 2
         }
 
         const initScene = () => {
             const rect = canvasDiv.getBoundingClientRect();
-            // canvas.width = rect.width
-            // canvas.height = rect.height
-
-            //big canvas
-            // canvas.width = rect.width * 2
-            // canvas.height = rect.height * 2
-
             const centerX = rect.width/ 2;
             const centerY = rect.height/ 2;
             const particleSpacing = 20;
@@ -177,19 +166,12 @@ export default function Musializer() {
                 particles.push(new Particle(centerX + x, centerY + y));
                 }
             }
-
-            // particles = [];
-            // for (let x = -rect.width/2; x <= rect.width/2; x += particleSpacing) {
-            //     for (let y = -rect.height/2; y <= rect.height/2; y += particleSpacing) {
-            //     particles.push(new Particle(centerX + x, centerY + y));
-            //     }
-            // }
         }
 
         const render = () => {
 
             const rect = canvasDiv.getBoundingClientRect();
-            let bounceCenter = { x: rect.width / 2, y: rect.height / 2 };
+            // let bounceCenter = { x: rect.width / 2, y: rect.height / 2 };
 
             if (analyserRef.current) {
               const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
@@ -200,7 +182,7 @@ export default function Musializer() {
               const intensity = bassRange.reduce((sum, value) => sum + value, 0);
             const bass = intensity > 509;
             setBass(bass);
-            bounceRadius = bass ? 2 : 0;
+            bounceRadius = bass ? 1.5 : 0;
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -295,19 +277,13 @@ export default function Musializer() {
                     </Slider>
                 </div>
             </div>
-            <div style={{ padding: "5px" }} />
-            <div
-                id="canvasDiv"
-                // style={{ height: "17.5rem", position: "relative", border: "3px solid #ddd", borderRadius: "5px" }}
-                className="canvasDiv"
-            >
+            {/* <div style={{ padding: "5px" }} /> */}
+            <div id="canvasDiv" className="canvasDiv">
                 <canvas
                     ref={canvasRef}
                     style={{ position: "absolute",
-                        // left: "50%", 
-                        // top: "50%",
-                        // transform: "translate(-50%, -50%)",
-                        // zIndex: -100
+                    marginLeft:"-3px",
+                    marginTop:"-3px",
                      }}
                 ></canvas>
             </div>
