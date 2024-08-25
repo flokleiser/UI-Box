@@ -313,7 +313,7 @@ export default function Musializer() {
                         Test
                     </Slider>
                     <Slider value={test} set={setTest}>
-                        Test
+                        Testing?
                     </Slider>
                 </div>
             </div>
