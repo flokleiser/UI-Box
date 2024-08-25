@@ -143,10 +143,14 @@ function Musializer() {
                     this.vy += this.accY;
                 }
                 if (distance > bounceRadius * 250) {
-                    this.accX = (this.dest.x - this.x) / 10;
-                    this.accY = (this.dest.y - this.y) / 10;
+                    // this.accX = (this.dest.x - this.x) / 10;
+                    // this.accY = (this.dest.y - this.y) / 10;
                     this.vx += this.accX;
                     this.vy += this.accY;
+                    this.accX = (this.dest.x - this.x) / 5;
+                    this.accY = (this.dest.y - this.y) / 5;
+                    // this.vx += this.accX * 2;
+                    // this.vy += this.accY * 2;
                 }
             }
         }
