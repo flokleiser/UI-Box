@@ -48730,8 +48730,6 @@ function Musializer() {
             getComputedStyle(document.documentElement).getPropertyValue("--particle-color"),
         ];
         class Particle {
-            // frequency: number;
-            // amplitude: number;
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
@@ -48746,10 +48744,7 @@ function Musializer() {
                 this.accY = 0;
                 // this.friction = 0.7;
                 this.friction = 0.9;
-                // this.color = color;
-                // const hue = Math.round((this.x / canvas.width) * 360);
-                const hue = Math.round((this.x / window.innerWidth) * 360);
-                this.color = `hsl(${hue}, 100%, 50%)`;
+                this.color = color;
                 // this.frequency = 0.01;
                 // this.amplitude = 100;
             }
@@ -48781,10 +48776,14 @@ function Musializer() {
                     this.vy += this.accY;
                 }
                 if (distance > bounceRadius * 250) {
-                    this.accX = (this.dest.x - this.x) / 10;
-                    this.accY = (this.dest.y - this.y) / 10;
+                    // this.accX = (this.dest.x - this.x) / 10;
+                    // this.accY = (this.dest.y - this.y) / 10;
                     this.vx += this.accX;
                     this.vy += this.accY;
+                    this.accX = (this.dest.x - this.x) / 5;
+                    this.accY = (this.dest.y - this.y) / 5;
+                    // this.vx += this.accX * 2;
+                    // this.vy += this.accY * 2;
                 }
             }
         }
