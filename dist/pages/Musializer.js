@@ -244,7 +244,7 @@ function Musializer() {
                 } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
                 react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"),
-                react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
+                react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Testing?"))),
         react_1.default.createElement("div", { style: { padding: "5px" } }),
         react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" },
             react_1.default.createElement("canvas", { ref: canvasRef, style: {
