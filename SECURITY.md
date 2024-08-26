@@ -25,9 +25,10 @@ https://github.com/codesbiome/electron-react-webpack-typescript-2024
 https://github.com/codesbiome/react-webpack-typescript-2023
 
   Things to try out:
-  - Move webpack.config to seperate folder
-  - set "--config ./folder/webpack.config" flag for "npm run dev"
-  - Look into "webpack serve"
+  - ts-node/register/transpile-only
+  - cross-env
+  - NODE_ENV=development
+  - "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts"
 ___
 
 <br>
