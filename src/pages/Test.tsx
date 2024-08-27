@@ -19,7 +19,7 @@ export default function Musializer() {
 
     useEffect(() => {
        if (!audioRef.current) {
-        audioRef.current = new Audio("./media/sounds/check1.mp3") 
+        audioRef.current = new Audio("../../assets/media/sounds/check1.mp3") 
         audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
         const source = audioContextRef.current.createMediaElementSource(audioRef.current);
         analyserRef.current = audioContextRef.current.createAnalyser();

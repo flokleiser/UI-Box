@@ -1,12 +1,5 @@
-# UI-Box
+# Things to test:
 
-A simple UI-sandbox/playground,
-Built with Typescript, React and Electron.
+- Change "release" into "dist" and move to src
 
-
-### Web version: https://flokleiser.github.io/UI-Box/
-
-___
-
-![preview](/src/media/uibox-dark.png)
-
+- Get app to transpile with tsc && webpack (?)

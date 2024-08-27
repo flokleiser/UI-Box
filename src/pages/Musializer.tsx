@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
+import check1 from '../../assets/media/sounds/check1.mp3';
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -49,8 +50,8 @@ export default function Musializer() {
     //audio setup
     useEffect(() => {
         if (!audioRef.current) {
-            audioRef.current = new Audio("./media/sounds/check1.mp3");
-            // audioRef.current = new Audio("./media/sounds/didITellYou.mp3")
+            // audioRef.current = new Audio("./media/sounds/check1.mp3");
+            audioRef.current = new Audio(check1);
             audioContextRef.current = new (window.AudioContext ||
                 (window as any).webkitAudioContext)();
             const source = audioContextRef.current.createMediaElementSource(
@@ -272,7 +273,7 @@ export default function Musializer() {
 
     return (
         <div className="bodyCenter">
-            <motion.h1>Musializer</motion.h1>
+            <motion.h1>Musializer Test</motion.h1>
             <div
                 style={{
                     display: "flex",
@@ -313,7 +314,7 @@ export default function Musializer() {
                         Test
                     </Slider>
                     <Slider value={test} set={setTest}>
-                        Testing?
+                        Test
                     </Slider>
                 </div>
             </div>
