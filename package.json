@@ -35,8 +35,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
     "framer-motion": "^11.2.12"
   }
 }
