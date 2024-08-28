@@ -2,7 +2,7 @@ import'../styles.css'
 
 import React, { useState, useEffect, FC } from 'react';
 import Home from '../pages/Home';
-import Navbar from '../components/Navbar'
+import Navbar from './Navbar'
 import Settings from '../pages/Settings';
 import Buttons from '../pages/Buttons';
 import Spinner from '../pages/Spinner';
@@ -15,8 +15,8 @@ import Cube from '../pages/Cube'
 import Test from '../pages/Test'
 import Musializer from '../pages/Musializer';
 
-import {Page} from '../components/Window'
-import { startPage } from '../components/Window';
+import {Page} from './Window'
+import { startPage } from './Window';
 
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 

@@ -23,12 +23,13 @@ const configuration: webpack.Configuration = {
   entry: [
     `webpack-dev-server/client?http://localhost:${port}/dist`,
     'webpack/hot/only-dev-server',
-    path.join(webpackPaths.srcRendererPath, 'renderer.tsx'),
+    // path.join(webpackPaths.srcRendererPath, 'renderer.tsx'),
+    path.join(webpackPaths.srcRendererPath)
   ],
   output: {
     path: webpackPaths.distRendererPath,
     publicPath: '/',
-    filename: 'renderer.dev.js',
+    filename: 'renderer.js',
     library: {
       type: 'umd',
     },

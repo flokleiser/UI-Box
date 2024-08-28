@@ -1,0 +1,56 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const jsx_runtime_1 = require("react/jsx-runtime");
+const client_1 = require("react-dom/client");
+const Navbar_1 = __importDefault(require("./components/Navbar"));
+const App_1 = __importDefault(require("./components/App"));
+const Window_1 = require("./components/Window");
+const clickType = 'click';
+const handleNavigate = (page) => {
+    window.loadPage(page);
+};
+const attachEventListeners = () => {
+    // const clickType = 'mousedown';
+    const buttons = {
+        homeButton: 'Home',
+        settingsButton: 'Settings',
+        buttonspageButton: 'Buttons',
+        spinnerpageButton: 'Spinner',
+        particlespageButton: 'Particles',
+        tetherpageButton: 'Tether',
+        switchespageButton: 'Switches',
+        ballpageButton: 'Ball',
+        joystickpageButton: 'Joystick',
+        testpageButton: 'Test',
+        cubepageButton: 'Cube',
+        musializerpageButton: 'Musializer',
+    };
+    const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
+    Object.entries(buttons).forEach(([buttonId, pageName]) => {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.addEventListener(clickType, () => {
+                window.loadPage(pageName);
+                navbarRoot.render((0, jsx_runtime_1.jsx)(Navbar_1.default, { activePage: pageName, onNavigate: handleNavigate }));
+            });
+        }
+    });
+    if (darkmodeToggleButton) {
+        darkmodeToggleButton.addEventListener(clickType, () => {
+            window.darkMode.toggle();
+        });
+    }
+};
+document.addEventListener('DOMContentLoaded', () => {
+    attachEventListeners();
+});
+const container = document.getElementById('root');
+const root = (0, client_1.createRoot)(container);
+root.render((0, jsx_runtime_1.jsx)(App_1.default, {}));
+const navbarContainer = document.getElementById('navbarRoot');
+const navbarRoot = (0, client_1.createRoot)(navbarContainer);
+navbarRoot.render((0, jsx_runtime_1.jsx)(Navbar_1.default, { activePage: Window_1.startPage, onNavigate: handleNavigate }));
+//# sourceMappingURL=renderer.js.map

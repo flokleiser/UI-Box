@@ -2,27 +2,25 @@ const path = require('path');
 
 const rootPath = path.join(__dirname, '../..');
 
-const dllPath = path.join(__dirname, '../dll');
-
 const srcPath = path.join(rootPath, 'src');
-const srcMainPath = path.join(srcPath, 'main');
-const srcRendererPath = path.join(srcPath, 'renderer');
+const srcMainPath = path.join(srcPath);
+const srcRendererPath = path.join(srcPath);
 
-const releasePath = path.join(rootPath, 'release');
-const appPath = path.join(releasePath, 'app');
+const releasePath = path.join(rootPath, 'src');
+const appPath = path.join(releasePath, 'dist');
 const appPackagePath = path.join(appPath, 'package.json');
 const appNodeModulesPath = path.join(appPath, 'node_modules');
 const srcNodeModulesPath = path.join(srcPath, 'node_modules');
 
-const distPath = path.join(appPath, 'dist');
+const distPath = path.join(rootPath, 'dist')
 const distMainPath = path.join(distPath, 'main');
-const distRendererPath = path.join(distPath, 'renderer');
+// const distRendererPath = path.join(distPath, 'renderer');
+const distRendererPath = path.join(distPath);
 
 const buildPath = path.join(releasePath, 'build');
 
 export default {
   rootPath,
-  dllPath,
   srcPath,
   srcMainPath,
   srcRendererPath,

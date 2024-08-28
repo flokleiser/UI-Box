@@ -61,9 +61,10 @@ const configuration: webpack.Configuration = {
   devtool: 'inline-source-map',
   mode: 'development',
   target: 'electron-preload',
-  entry: path.join(webpackPaths.srcMainPath, 'preload.ts'),
+//   entry: path.join(webpackPaths.srcMainPath, 'preload.ts'),
+  entry: path.join(webpackPaths.srcMainPath),
   output: {
-    path: webpackPaths.dllPath,
+    path: webpackPaths.distPath,
     filename: 'preload.js',
     library: {
       type: 'umd',

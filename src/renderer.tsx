@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect, FC } from 'react';
 import { createRoot } from 'react-dom/client';
-import Navbar from '../components/Navbar';
-import App from './App'
+import Navbar from './components/Navbar';
+import App from './components/App'
 
-import { Page } from '../components/Window';
-import { startPage } from '../components/Window';
+import { Page } from './components/Window';
+import { startPage } from './components/Window';
 
 
 const clickType = 'click';

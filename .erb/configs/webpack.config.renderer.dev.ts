@@ -20,8 +20,10 @@ const configuration: webpack.Configuration = {
   ],
   output: {
     path: webpackPaths.distRendererPath,
+    // path: './src/dist',
+    // path: 'src/dist',
     publicPath: '/',
-    filename: 'renderer.dev.js',
+    filename: 'renderer.js',
     library: {
       type: 'umd',
     },
