@@ -13,11 +13,13 @@ export default function Musializer() {
     const analyserRef = useRef<AnalyserNode | null>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
     const [resetTrigger, setResetTrigger] = useState(0);
+    const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(1)
 
     useEffect(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
     }, []);
+
 
     useEffect(() => {
         const handleThemeToggle = () => resetScene();
@@ -219,6 +221,7 @@ export default function Musializer() {
                 const bass = intensity > 509;
                 setBass(bass);
                 bounceRadius = bass ? 1.5 : 0;
+                // bounceRadius = bass ? bounceRadiusIntensity : 0;
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -302,8 +305,9 @@ export default function Musializer() {
                     <Slider value={volume} set={setVolume}>
                         Volume
                     </Slider>
-                    <Slider value={test} set={setTest}>
-                        Test
+                    {/* <Slider value={test} set={setTest}> */}
+                    <Slider value={bounceRadiusIntensity} set={setBounceRadiusIntensity} min={0} max={3}>
+                       Intensity 
                     </Slider>
                     <Slider value={test} set={setTest}>
                         Testing?
