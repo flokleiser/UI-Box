@@ -12,8 +12,8 @@ const configuration: webpack.Configuration = {
 //   entry: path.resolve(webpackPaths.srcMainPath),
   entry: path.resolve(webpackPaths.srcMainPath, 'preload.ts'),
   output: {
-    // path: webpackPaths.distPath,
-    path: path.resolve(__dirname, '../dist'),
+    path: webpackPaths.distPath,
+    // path: path.resolve(__dirname, '../dist'),
     publicPath: './',
     filename: 'preload.js',
     library: {

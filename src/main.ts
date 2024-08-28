@@ -24,9 +24,7 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: app.isPackaged
-        ? path.join(__dirname, 'preload.js')
-        : path.join(__dirname, '../../.erb/dll/preload.js'),
+        preload: path.join(__dirname, 'preload.js'),
     },
   });
 

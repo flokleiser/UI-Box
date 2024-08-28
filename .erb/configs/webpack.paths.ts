@@ -12,7 +12,7 @@ const appPackagePath = path.join(appPath, 'package.json');
 const appNodeModulesPath = path.join(appPath, 'node_modules');
 const srcNodeModulesPath = path.join(srcPath, 'node_modules');
 
-const distPath = path.join(rootPath, 'dist')
+const distPath = path.join(srcPath, 'dist')
 const distMainPath = path.join(distPath, 'main');
 // const distRendererPath = path.join(distPath, 'renderer');
 const distRendererPath = path.join(distPath);
