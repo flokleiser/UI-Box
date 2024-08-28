@@ -19,9 +19,8 @@ const configuration: webpack.Configuration = {
     path.join(webpackPaths.srcRendererPath, 'renderer.tsx'),
   ],
   output: {
-    path: webpackPaths.distRendererPath,
-    // path: './src/dist',
-    // path: 'src/dist',
+    // path: webpackPaths.distRendererPath,
+    path: path.resolve(__dirname, '../dist'),
     publicPath: '/',
     filename: 'renderer.js',
     library: {
