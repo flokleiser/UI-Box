@@ -48743,16 +48743,10 @@ function Musializer() {
                 this.vy = 0;
                 this.accX = 0;
                 this.accY = 0;
-                // this.friction = 0.7;
                 this.friction = 0.9;
                 this.color = color;
-                // this.frequency = 0.01;
-                // this.amplitude = 100;
             }
             render() {
-                // this.dest.x = this.x
-                // this.dest.y = canvas!.height/2 + Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
-                // this.dest.y = Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
                 this.accX = (this.dest.x - this.x) / 100;
                 this.accY = (this.dest.y - this.y) / 100;
                 this.vx += this.accX;
