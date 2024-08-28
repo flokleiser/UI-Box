@@ -4,6 +4,26 @@ ___
 - ### Currently working on
 
 
+___
+
+- [ ] Hot Reloading:
+
+  Things to do:
+    - completely remove "webpack.paths.ts" and replace with "path.resolve"
+
+  Things to try out:
+    - ts-node/register/transpile-only
+    - cross-env
+    - NODE_ENV=development
+    - "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts"
+___
+
+<br>
+
+
+- **Pages + Functionality**
+
+
   - [ ] **Visualizer**
     - [x] Get mp3 to play
     - [x] Get mp3 to pause
@@ -17,24 +37,6 @@ ___
     https://github.com/TylerStanish/electron-audio-visualizer
 
     - [ ] Volume slider --> https://codesandbox.io/p/sandbox/framer-motion-animate-on-state-update-ns67ib?file=%2Fsrc%2Fcomponents%2FInput.tsx&from-embed=
-
-___
-
-- [ ] Hot Reloading:
-https://github.com/codesbiome/electron-react-webpack-typescript-2024
-https://github.com/codesbiome/react-webpack-typescript-2023
-
-  Things to try out:
-  - ts-node/register/transpile-only
-  - cross-env
-  - NODE_ENV=development
-  - "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts"
-___
-
-<br>
-
-
-- **Pages + Functionality**
 
 
   - [ ] **Cube**
