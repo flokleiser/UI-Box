@@ -30,9 +30,7 @@ const createWindow = () => {
         width: 800,
         height: 600,
         webPreferences: {
-            preload: electron_1.app.isPackaged
-                ? path_1.default.join(__dirname, 'preload.js')
-                : path_1.default.join(__dirname, '../../.erb/dll/preload.js'),
+            preload: path_1.default.join(__dirname, 'preload.js'),
         },
     });
     mainWindow.loadURL(resolveHtmlPath('index.html'));

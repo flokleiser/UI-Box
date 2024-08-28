@@ -275,7 +275,7 @@ export default function Musializer() {
 
     return (
         <div className="bodyCenter">
-            <motion.h1>Musializer Test</motion.h1>
+            <motion.h1>Musializer Test Test</motion.h1>
             <div
                 style={{
                     display: "flex",

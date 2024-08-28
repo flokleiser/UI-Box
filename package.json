@@ -11,12 +11,10 @@
     "hot",
     "reload"
   ],
-  "main" : "src/dist/main.js",
+  "main": "src/dist/main.js",
   "scripts": {
-
-    "build" : "tsc && webpack --config ./webpack.config.js",
-    "go" : "npm run build && electron .",
-
+    "build": "tsc && webpack --config ./webpack.config.js",
+    "go": "npm run build && electron .",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
@@ -69,6 +67,8 @@
     "react-router-dom": "^6.16.0"
   },
   "devDependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@electron/rebuild": "^3.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@svgr/webpack": "^8.1.0",
