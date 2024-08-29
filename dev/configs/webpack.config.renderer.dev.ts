@@ -51,8 +51,9 @@ const configuration: webpack.Configuration = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      //works
+      // might be causing the middleware problem
       template: path.resolve(__dirname, '../../src/index.ejs'),
+      // template: path.resolve(__dirname, '../src/index.ejs'),
     }),
     new ReactRefreshWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -64,7 +65,6 @@ const configuration: webpack.Configuration = {
     hot: true,
     static: {
       directory: path.resolve(__dirname, '../src/dist'),
-
     },
     historyApiFallback: true,
   setupMiddlewares(middlewares) {
