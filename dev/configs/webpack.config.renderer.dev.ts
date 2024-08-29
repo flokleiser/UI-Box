@@ -59,7 +59,6 @@ const configuration: webpack.Configuration = {
   ],
 
 
-  //works
   devServer: {
     port,
     hot: true,
