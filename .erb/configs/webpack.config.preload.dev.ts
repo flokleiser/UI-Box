@@ -2,18 +2,16 @@ import path from 'path';
 import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 import baseConfig from './webpack.config.base';
-import webpackPaths from './webpack.paths';
 
 const configuration: webpack.Configuration = {
   devtool: 'inline-source-map',
   mode: 'development',
   target: 'electron-preload',
-//   entry: path.join(webpackPaths.srcMainPath, 'preload.ts'),
-//   entry: path.resolve(webpackPaths.srcMainPath),
-  entry: path.resolve(webpackPaths.srcMainPath, 'preload.ts'),
+  //works
+  entry: path.resolve(__dirname, '../../src/preload.ts'),
   output: {
-    path: webpackPaths.distPath,
-    // path: path.resolve(__dirname, '../dist'),
+    //works
+    path: path.resolve(__dirname, '../../src/dist'),
     publicPath: './',
     filename: 'preload.js',
     library: {

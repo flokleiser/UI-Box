@@ -6,21 +6,23 @@ import { spawn } from 'child_process';
 import { merge } from 'webpack-merge';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import baseConfig from './webpack.config.base';
-import webpackPaths from './webpack.paths';
 
 const port = process.env.PORT || 1212;
 const configuration: webpack.Configuration = {
   devtool: 'inline-source-map',
   mode: 'development',
   target: ['web', 'electron-renderer'],
+  //works
   entry: [
     `webpack-dev-server/client?http://localhost:${port}/dist`,
     'webpack/hot/only-dev-server',
-    path.join(webpackPaths.srcRendererPath, 'renderer.tsx'),
+    path.join(__dirname, '../../src/renderer.tsx'),
+
   ],
+
+  //works
   output: {
-    // path: webpackPaths.distRendererPath,
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(__dirname, '../src/dist'),
     publicPath: '/',
     filename: 'renderer.js',
     library: {
@@ -49,16 +51,21 @@ const configuration: webpack.Configuration = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(webpackPaths.srcRendererPath, 'index.ejs'),
+      //works
+      template: path.resolve(__dirname, '../../src/index.ejs'),
     }),
     new ReactRefreshWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],
+
+
+  //works
   devServer: {
     port,
     hot: true,
     static: {
-      directory: webpackPaths.distRendererPath,
+      directory: path.resolve(__dirname, '../src/dist'),
+
     },
     historyApiFallback: true,
   setupMiddlewares(middlewares) {

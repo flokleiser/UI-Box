@@ -1,22 +1,6 @@
 {
-  "description": "A foundation for scalable desktop apps",
-  "keywords": [
-    "electron",
-    "boilerplate",
-    "react",
-    "typescript",
-    "ts",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
-  ],
   "main": "src/dist/main.js",
   "scripts": {
-    "build": "tsc && webpack --config ./webpack.config.js",
-    "go": "npm run build && electron .",
-    "build2": "tsc && webpack",
-    "go2": "npm run build2 && electron .",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",

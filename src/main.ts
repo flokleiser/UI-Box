@@ -30,6 +30,7 @@ const createWindow = () => {
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
   mainWindow.webContents.openDevTools();
+  
 
   mainWindow.on('ready-to-show', () => {
     mainWindow!.show();
