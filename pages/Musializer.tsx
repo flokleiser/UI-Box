@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
-// import check1 from "../media/sounds/check1.mp3";
+import check1 from "../media/sounds/check1.mp3";
 
-// import {music} from "../components/Music";
-// import { check1Sound } from "../components/Music";
-// import { music} from "../components/Music";
+import { check1Sound } from "../components/Music";
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -46,11 +44,14 @@ export default function Musializer() {
     //     }
     // }, [currentSong]);
 
+
+    //reload for proper alignment of canvas
     useEffect(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
     }, []);
 
+    //reset scene on theme toggle for proper darkmode
     useEffect(() => {
         const handleThemeToggle = () => resetScene();
         setTimeout(() => {
@@ -78,6 +79,7 @@ export default function Musializer() {
         };
     }, []);
 
+    //setup for audio duration and current time
     useEffect(() => {
         let audio = audioRef.current;
         if (!audio) return;
@@ -105,8 +107,8 @@ export default function Musializer() {
     //audio setup
     useEffect(() => {
         if (!audioRef.current) {
-            audioRef.current = new Audio("./media/sounds/check1.mp3");
-            // audioRef.current = new Audio(check1);
+            // audioRef.current = new Audio("./media/sounds/check1.mp3");
+            audioRef.current = new Audio(check1);
             // audioRef.current = new Audio(check1Sound.file);
             // audioRef.current = new Audio(currentSong.file);
             audioContextRef.current = new (window.AudioContext ||
@@ -336,71 +338,33 @@ export default function Musializer() {
 
     return (
         <div className="bodyCenter">
-            <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'start',
-              alignItems: 'center',
-            }}
-          >
-            <motion.h1>Musializer</motion.h1>
+            <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'start',alignItems: 'center',}}>
+                <motion.h1>Musializer</motion.h1>
 
-            <motion.button
-              className="navbarButton"
-              style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-            //   onMouseDown={nextSong}
-              whileHover={{scale: 1.1}}
-              animate={{ scale: bass ? 1.5 : 1 }}
-              transition={{ type: "spring", duration: 0.2 }}
-            >
-              <span className="material-symbols-outlined">library_music</span>
-            </motion.button>
-          </div>
+                <motion.button
+                    className="navbarButton"
+                    style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+                    //   onMouseDown={nextSong}
+                    whileHover={{scale: 1.1}}
+                    animate={{ scale: bass ? 1.5 : 1 }}
+                    transition={{ type: "spring", duration: 0.2 }}
+                    >
+                    <span className="material-symbols-outlined">
+                        library_music
+                    </span>
+                </motion.button>
+            </div>
 
 
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-
-
-
-                <div
-                    style={{
-                        position: "relative",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                    }}
-                >
-
-                    <div style={{
-                       position: "relative",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                        >
-                    <motion.button
-                        className="playButton"
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
+            <div style={{display: "flex",flexDirection: "row",justifyContent: "center",alignItems: "center"}}>
+                <div style={{position: "relative",display: "flex",flexDirection: "column",justifyContent: "center"}}>
+                    <div style={{position: "relative",display: "flex",justifyContent: "center",alignItems: "center"}}>
+                    <motion.button className="playButton" style={{display: "flex",justifyContent: "center",alignItems: "center"}}
                         onMouseDown={handlePlayClick}
                         animate={{ scale: bass ? 1.5 : 1 }}
                         transition={{ type: "spring", duration: 0.2 }}
                     >
-                        <span
-                            className="material-symbols-outlined"
-                            style={{ fontSize: "50px" }}
-                        >
+                        <span className="material-symbols-outlined"style={{ fontSize: "50px" }}>
                             {isPlaying ? "play_arrow" : "pause"}
                         </span>
                     </motion.button>
@@ -459,6 +423,7 @@ export default function Musializer() {
             </div>
             <div style={{ padding: "5px" }} />
 
+            {/* CANVAS */}
             <div id="canvasDiv" className="canvasDiv">
                 <canvas
                     ref={canvasRef}
