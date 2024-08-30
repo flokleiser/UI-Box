@@ -362,10 +362,10 @@ export default function Musializer() {
                         width="200"
                         height="200"
                     >
-                        <motion.circle
-                            stroke="#ddd"
+                        <motion.circle className="progressCircle"
+                            // stroke="#ddd"
                             strokeWidth="5"
-                            fill="rgba(255,255,255,0.1)"
+                            // fill="rgba(255,255,255,0.1)"
                             r={radius/2}
                             cx="100"
                             cy="100"
