@@ -49027,7 +49027,11 @@ function Musializer() {
                             position: "absolute",
                             zIndex: -10,
                         }, width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
+                        react_1.default.createElement(framer_motion_1.motion.circle, { className: "progressCircle", 
+                            // stroke="#ddd"
+                            strokeWidth: "5", 
+                            // fill="rgba(255,255,255,0.1)"
+                            r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
                 react_1.default.createElement("div", { style: { marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
                     react_1.default.createElement("h3", null, currentSong.name))),
             react_1.default.createElement("div", { style: {

@@ -500,6 +500,11 @@ nav{
   background: #ddd;
 }
 
+.progressCircle {
+  stroke:#ddd;
+  fill:rgba(255,255,255,0.1)
+}
+
 @media (prefers-color-scheme: dark) {
   body { background: #333; color: white; }
   :root {
@@ -596,6 +601,11 @@ nav{
   .cube {background-color: #333;}
   .cubeContainer {background-color:rgba(51,51,51,0.2)}
 
+  .progressCircle {
+    stroke:#333;
+    /* fill:rgba(255,255,255,0.9) */
+    fill:rgba(51,51,51,0.1)
+  }
 
   :root {
     --particle-color: var(--particle-color-dark);
