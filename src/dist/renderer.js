@@ -1,4 +1,5 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./node_modules/@emotion/is-prop-valid/dist/emotion-is-prop-valid.esm.js":
@@ -7,7 +8,6 @@
   \*******************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ isPropValid)
@@ -39,7 +39,6 @@ var isPropValid = /* #__PURE__ */(0,_emotion_memoize__WEBPACK_IMPORTED_MODULE_0_
   \*******************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ memoize)
@@ -57,13 +56,40 @@ function memoize(fn) {
 
 /***/ }),
 
+/***/ "./src/media/sounds/check1.mp3":
+/*!*************************************!*\
+  !*** ./src/media/sounds/check1.mp3 ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("dist/5f620bd7db358da89e3cef16a21d8ac6.mp3");
+
+/***/ }),
+
+/***/ "./src/media/sounds/didITellYou.mp3":
+/*!******************************************!*\
+  !*** ./src/media/sounds/didITellYou.mp3 ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("dist/c4131430129cc51513222013b87e76a9.mp3");
+
+/***/ }),
+
 /***/ "./node_modules/framer-motion/dist/cjs/index.js":
 /*!******************************************************!*\
   !*** ./node_modules/framer-motion/dist/cjs/index.js ***!
   \******************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
@@ -12693,7 +12719,6 @@ exports.wrap = wrap;
   \*************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 /**
  * @license React
  * react-dom.development.js
@@ -42622,7 +42647,6 @@ if (
   \******************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 var m = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -42655,7 +42679,6 @@ if (false) {} else {
   \*****************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 
 function checkDCE() {
@@ -42699,7 +42722,6 @@ if (false) {} else {
   \*****************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 /**
  * @license React
  * react-jsx-runtime.development.js
@@ -44043,7 +44065,6 @@ exports.jsxs = jsxs;
   \*****************************************************/
 /***/ ((module, exports, __webpack_require__) => {
 
-"use strict";
 /* module decorator */ module = __webpack_require__.nmd(module);
 /**
  * @license React
@@ -46795,7 +46816,6 @@ if (
   \*************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 
 if (false) {} else {
@@ -46811,7 +46831,6 @@ if (false) {} else {
   \*******************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 
 if (false) {} else {
@@ -46827,7 +46846,6 @@ if (false) {} else {
   \*************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 /**
  * @license React
  * scheduler.development.js
@@ -47472,7 +47490,6 @@ if (
   \*****************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 
 if (false) {} else {
@@ -47488,7 +47505,6 @@ if (false) {} else {
   \********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -47598,7 +47614,6 @@ function App() {
   \**********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -47630,7 +47645,6 @@ exports.music = music;
   \***********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -47701,7 +47715,6 @@ exports["default"] = Navbar;
   \***********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -47729,7 +47742,6 @@ function Slider({ value, children, set, min = 0, max = 100 }) {
   \***********************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.startPage = void 0;
@@ -47745,7 +47757,6 @@ exports["default"] = Window;
   \****************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -48101,7 +48112,6 @@ function Ball() {
   \*******************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -48181,7 +48191,6 @@ function Buttons() {
   \****************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -48392,7 +48401,6 @@ function Cube() {
   \****************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -48424,7 +48432,6 @@ function Home() {
   \********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 //https://github.com/bobboteck/JoyStick?tab=readme-ov-file
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -48768,7 +48775,6 @@ function Joystick() {
   \**********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -49057,7 +49063,7 @@ function Musializer() {
                 alignItems: 'center',
             } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "settingsButton", onMouseDown: nextSong, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: nextSong, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music"))),
         react_1.default.createElement("div", { style: {
                 display: "flex",
@@ -49116,7 +49122,6 @@ function Musializer() {
   \*********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49302,7 +49307,6 @@ function Particles() {
   \********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -49381,7 +49385,6 @@ function Settings() {
   \*******************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -49535,7 +49538,6 @@ function Spinner() {
   \********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -49704,7 +49706,6 @@ function Switches() {
   \****************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -50041,7 +50042,6 @@ function Musializer() {
   \******************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -50396,7 +50396,6 @@ function Tether() {
   \**************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -50447,26 +50446,6 @@ const navbarContainer = document.getElementById('navbarRoot');
 const navbarRoot = (0, client_1.createRoot)(navbarContainer);
 navbarRoot.render(react_1.default.createElement(Navbar_1.default, { activePage: Window_1.startPage }));
 
-
-/***/ }),
-
-/***/ "./src/media/sounds/check1.mp3":
-/*!*************************************!*\
-  !*** ./src/media/sounds/check1.mp3 ***!
-  \*************************************/
-/***/ (() => {
-
-throw new Error("Module parse failed: Unexpected character '�' (1:0)\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\n(Source code omitted for this binary file)");
-
-/***/ }),
-
-/***/ "./src/media/sounds/didITellYou.mp3":
-/*!******************************************!*\
-  !*** ./src/media/sounds/didITellYou.mp3 ***!
-  \******************************************/
-/***/ (() => {
-
-throw new Error("Module parse failed: Unexpected character '�' (1:0)\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\n(Source code omitted for this binary file)");
 
 /***/ })
 

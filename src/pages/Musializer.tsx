@@ -352,7 +352,6 @@ export default function Musializer() {
             <motion.button
               className="navbarButton"
               style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-              id="settingsButton"
               onMouseDown={nextSong}
               whileHover={{scale: 1.1}}
               animate={{ scale: bass ? 1.5 : 1 }}
