@@ -22,15 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Musializer;
 const react_1 = __importStar(require("react"));
 const framer_motion_1 = require("framer-motion");
 const Slider_1 = require("../components/Slider");
-// import check1 from "../media/sounds/check1.mp3";
-// import {music} from "../components/Music";
-// import { check1Sound } from "../components/Music";
-// import { music} from "../components/Music";
+const check1_mp3_1 = __importDefault(require("../media/sounds/check1.mp3"));
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);
@@ -62,10 +62,12 @@ function Musializer() {
     //         // console.log(audioRef.current.)
     //     }
     // }, [currentSong]);
+    //reload for proper alignment of canvas
     (0, react_1.useEffect)(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
     }, []);
+    //reset scene on theme toggle for proper darkmode
     (0, react_1.useEffect)(() => {
         const handleThemeToggle = () => resetScene();
         setTimeout(() => {
@@ -81,6 +83,7 @@ function Musializer() {
             }
         };
     }, []);
+    //setup for audio duration and current time
     (0, react_1.useEffect)(() => {
         let audio = audioRef.current;
         if (!audio)
@@ -103,8 +106,8 @@ function Musializer() {
     //audio setup
     (0, react_1.useEffect)(() => {
         if (!audioRef.current) {
-            audioRef.current = new Audio("./media/sounds/check1.mp3");
-            // audioRef.current = new Audio(check1);
+            // audioRef.current = new Audio("./media/sounds/check1.mp3");
+            audioRef.current = new Audio(check1_mp3_1.default);
             // audioRef.current = new Audio(check1Sound.file);
             // audioRef.current = new Audio(currentSong.file);
             audioContextRef.current = new (window.AudioContext ||
@@ -276,40 +279,16 @@ function Musializer() {
         setResetTrigger((prev) => prev + 1);
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement("div", { style: {
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'start',
-                alignItems: 'center',
-            } },
+        react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center', } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
             react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, 
                 //   onMouseDown={nextSong}
                 whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music"))),
-        react_1.default.createElement("div", { style: {
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-            } },
-            react_1.default.createElement("div", { style: {
-                    position: "relative",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                } },
-                react_1.default.createElement("div", { style: {
-                        position: "relative",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    } },
-                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: {
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+        react_1.default.createElement("div", { style: { display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
+            react_1.default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "center" } },
+                react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center" } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center" }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
                     react_1.default.createElement(framer_motion_1.motion.svg, { style: {
                             position: "absolute",
