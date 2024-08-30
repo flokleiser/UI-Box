@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
-import check1 from "../../assets/media/sounds/check1.mp3";
+// import check1 from "../../assets/media/sounds/check1.mp3";
+
+// import {music} from "../components/Music";
+import { check1Sound } from "../components/Music";
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -19,7 +22,6 @@ export default function Musializer() {
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
 
-    //visualizer for duration
     const radius = 100;
     const circumference = 2 * Math.PI * radius;
     const initialOffset = circumference;
@@ -58,7 +60,6 @@ export default function Musializer() {
         };
     }, []);
 
-    //duration setup
     useEffect(() => {
         let audio = audioRef.current;
         if (!audio) return;
@@ -86,7 +87,8 @@ export default function Musializer() {
     useEffect(() => {
         if (!audioRef.current) {
             // audioRef.current = new Audio("./media/sounds/check1.mp3");
-            audioRef.current = new Audio(check1);
+            // audioRef.current = new Audio(check1);
+            audioRef.current = new Audio(check1Sound.file);
             audioContextRef.current = new (window.AudioContext ||
                 (window as any).webkitAudioContext)();
             const source = audioContextRef.current.createMediaElementSource(
@@ -107,6 +109,15 @@ export default function Musializer() {
             document.removeEventListener("keydown", handleKeyDown);
         };
     }, [volume, isPlaying, audioRef.current]);
+
+    // function switchMusic() {
+    //     if (audioRef.current === check1Sound.file) {
+    //         audioRef.current.pause();
+    //         audioRef.current.currentTime = 0;
+    //         audioRef.current.play();
+    //     }
+    // }
+    
 
     //canvas setup
     useEffect(() => {
@@ -305,7 +316,30 @@ export default function Musializer() {
 
     return (
         <div className="bodyCenter">
-            <motion.h1>Musializer Test</motion.h1>
+            <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'start',
+              alignItems: 'center',
+            }}
+          >
+            <motion.h1>Musializer</motion.h1>
+
+            <motion.button
+              className="navbarButton"
+              style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+              id="settingsButton"
+            //   onMouseDown={handleSettingsClick}
+              whileHover={{scale: 1.1}}
+              animate={{ scale: bass ? 1.5 : 1 }}
+              transition={{ type: "spring", duration: 0.2 }}
+            >
+              <span className="material-symbols-outlined">library_music</span>
+            </motion.button>
+          </div>
+
+
             <div
                 style={{
                     display: "flex",
@@ -323,7 +357,6 @@ export default function Musializer() {
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "center",
-                        // alignItems: "center",
                     }}
                 >
 
@@ -360,13 +393,12 @@ export default function Musializer() {
                         }}
                         width="200"
                         height="200"
-                        xmlns="http://www.w3.org/2000/svg"
                     >
                         <motion.circle
                             stroke="#ddd"
                             strokeWidth="5"
                             fill="rgba(255,255,255,0.1)"
-                            r={radius - 50}
+                            r={radius/2}
                             cx="100"
                             cy="100"
                             strokeDasharray={circumference}
@@ -378,11 +410,10 @@ export default function Musializer() {
                     </div>
 
                     <div 
-                    style={{marginBottom: "-25px"}}
+                    style={{marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}
                     >
-                        <h3>
-                            now playing
-                        </h3>
+                        <h3 
+                        >{check1Sound.name}</h3> 
                     </div>
                 </div>
 
@@ -410,9 +441,6 @@ export default function Musializer() {
                 </div>
             </div>
             <div style={{ padding: "5px" }} />
-
-            {/* <div>Duration: {duration}</div>
-            <div>Current Time: {currentTime}</div> */}
 
             <div id="canvasDiv" className="canvasDiv">
                 <canvas
