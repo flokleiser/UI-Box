@@ -6,21 +6,6 @@ ___
 
 ___
 
-- [ ] Hot Reloading:
-
-  Things to do:
-    - completely remove "webpack.paths.ts" and replace with "path.resolve"
-
-  Things to try out:
-    - ts-node/register/transpile-only
-    - cross-env
-    - NODE_ENV=development
-    - "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts"
-___
-
-<br>
-
-
 - **Pages + Functionality**
 
 
@@ -30,8 +15,11 @@ ___
     - [x] Better styles for the button
     - [x] Volume slider
     - [ ] Volume slider --> range/progress bar
+    - [ ] Lenght of music visualized --> progress bar
+    - [ ] Adjustable bassIntensity (bounceRadiusIntensity) thingy
 
-    - [ ] **Particles instead of waveform**
+
+    - [x] **Particles instead of waveform**
 
     https://www.twilio.com/en-us/blog/audio-visualisation-web-audio-api--react
     https://github.com/TylerStanish/electron-audio-visualizer
@@ -76,6 +64,19 @@ ___
   - [ ] Consistent fps 
   - [ ] fix DOM cant find darkmodeToggle when it starts on canvas page
   - [ ] Page transitions --> https://vuejs.org/guide/built-ins/transition.html
+
+
+  - **Hot Reloading shit**
+    - [ ] Hot Reloading:
+        Things to do:
+            - completely remove "webpack.paths.ts" and replace with "path.resolve"
+
+        Things to try out:
+            - ts-node/register/transpile-only
+            - cross-env
+            - NODE_ENV=development
+            - "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts"
+___
 
 ___
 
