@@ -22,15 +22,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Musializer;
 const react_1 = __importStar(require("react"));
 const framer_motion_1 = require("framer-motion");
 const Slider_1 = require("../components/Slider");
-const check1_mp3_1 = __importDefault(require("../media/sounds/check1.mp3"));
+const Music_1 = require("../components/Music");
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);
@@ -49,19 +46,18 @@ function Musializer() {
     const circumference = 2 * Math.PI * radius;
     const initialOffset = circumference;
     const [offset, setOffset] = (0, react_1.useState)(initialOffset);
-    // const [currentSongIndex, setCurrentSongIndex] = useState(0);
-    // const currentSong = music[currentSongIndex];
-    // const nextSong = () => {
-    //     setCurrentSongIndex((currentSongIndex + 1) % music.length);
-    // }
-    // useEffect(() => {
-    //     if (audioRef.current) {
-    //         audioRef.current.pause();
-    //         audioRef.current.src = currentSong.file;
-    //         audioRef.current.load();
-    //         // console.log(audioRef.current.)
-    //     }
-    // }, [currentSong]);
+    const [currentSongIndex, setCurrentSongIndex] = (0, react_1.useState)(0);
+    const currentSong = Music_1.music[currentSongIndex];
+    const nextSong = () => {
+        setCurrentSongIndex((currentSongIndex + 1) % Music_1.music.length);
+    };
+    (0, react_1.useEffect)(() => {
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.src = currentSong.file;
+            audioRef.current.load();
+        }
+    }, [currentSong]);
     //reload for proper alignment of canvas
     (0, react_1.useEffect)(() => {
         const timeoutId = setTimeout(resetScene, 100);
@@ -106,10 +102,7 @@ function Musializer() {
     //audio setup
     (0, react_1.useEffect)(() => {
         if (!audioRef.current) {
-            // audioRef.current = new Audio("./media/sounds/check1.mp3");
-            audioRef.current = new Audio(check1_mp3_1.default);
-            // audioRef.current = new Audio(check1Sound.file);
-            // audioRef.current = new Audio(currentSong.file);
+            audioRef.current = new Audio(currentSong.file);
             audioContextRef.current = new (window.AudioContext ||
                 window.webkitAudioContext)();
             const source = audioContextRef.current.createMediaElementSource(audioRef.current);
@@ -128,13 +121,6 @@ function Musializer() {
             document.removeEventListener("keydown", handleKeyDown);
         };
     }, [volume, isPlaying, audioRef.current]);
-    // function switchMusic() {
-    //     if (audioRef.current === check1Sound.file) {
-    //         audioRef.current.pause();
-    //         audioRef.current.currentTime = 0;
-    //         audioRef.current.play();
-    //     }
-    // }
     //canvas setup
     (0, react_1.useEffect)(() => {
         const canvas = canvasRef.current;
@@ -281,9 +267,7 @@ function Musializer() {
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center', } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, 
-                //   onMouseDown={nextSong}
-                whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: nextSong, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music"))),
         react_1.default.createElement("div", { style: { display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
             react_1.default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "center" } },
@@ -294,7 +278,9 @@ function Musializer() {
                             position: "absolute",
                             zIndex: -10,
                         }, width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } })))),
+                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
+                react_1.default.createElement("div", { style: { marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
+                    react_1.default.createElement("h3", null, currentSong.name))),
             react_1.default.createElement("div", { style: {
                     display: "flex",
                     flexDirection: "column",

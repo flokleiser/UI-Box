@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
-import check1 from "../media/sounds/check1.mp3";
-
-import { check1Sound } from "../components/Music";
+import {music} from "../components/Music";
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -27,22 +25,21 @@ export default function Musializer() {
 
     const [offset, setOffset] = useState(initialOffset);
 
-    // const [currentSongIndex, setCurrentSongIndex] = useState(0);
-    // const currentSong = music[currentSongIndex];
+    const [currentSongIndex, setCurrentSongIndex] = useState(0);
+    const currentSong = music[currentSongIndex];
 
 
-    // const nextSong = () => {
-    //     setCurrentSongIndex((currentSongIndex + 1) % music.length);
-    // }
+    const nextSong = () => {
+        setCurrentSongIndex((currentSongIndex + 1) % music.length);
+    }
 
-    // useEffect(() => {
-    //     if (audioRef.current) {
-    //         audioRef.current.pause();
-    //         audioRef.current.src = currentSong.file;
-    //         audioRef.current.load();
-    //         // console.log(audioRef.current.)
-    //     }
-    // }, [currentSong]);
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.src = currentSong.file;
+            audioRef.current.load();
+        }
+    }, [currentSong]);
 
 
     //reload for proper alignment of canvas
@@ -107,10 +104,7 @@ export default function Musializer() {
     //audio setup
     useEffect(() => {
         if (!audioRef.current) {
-            // audioRef.current = new Audio("./media/sounds/check1.mp3");
-            audioRef.current = new Audio(check1);
-            // audioRef.current = new Audio(check1Sound.file);
-            // audioRef.current = new Audio(currentSong.file);
+            audioRef.current = new Audio(currentSong.file);
             audioContextRef.current = new (window.AudioContext ||
                 (window as any).webkitAudioContext)();
             const source = audioContextRef.current.createMediaElementSource(
@@ -131,15 +125,6 @@ export default function Musializer() {
             document.removeEventListener("keydown", handleKeyDown);
         };
     }, [volume, isPlaying, audioRef.current]);
-
-    // function switchMusic() {
-    //     if (audioRef.current === check1Sound.file) {
-    //         audioRef.current.pause();
-    //         audioRef.current.currentTime = 0;
-    //         audioRef.current.play();
-    //     }
-    // }
-    
 
     //canvas setup
     useEffect(() => {
@@ -344,7 +329,7 @@ export default function Musializer() {
                 <motion.button
                     className="navbarButton"
                     style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-                    //   onMouseDown={nextSong}
+                      onMouseDown={nextSong}
                     whileHover={{scale: 1.1}}
                     animate={{ scale: bass ? 1.5 : 1 }}
                     transition={{ type: "spring", duration: 0.2 }}
@@ -392,10 +377,9 @@ export default function Musializer() {
                     </motion.svg>
                     </div>
 
-                   {/* <div style={{marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>*/} 
-
-                        {/* <h3 >{currentSong.name}</h3>  */}
-                    {/* // </div> */}
+                   <div style={{marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}> 
+                        <h3 >{currentSong.name}</h3> 
+                     </div>
                 </div>
 
                 <div
