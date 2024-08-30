@@ -4926,7 +4926,7 @@ class MotionValue {
          * This will be replaced by the build step with the latest version number.
          * When MotionValues are provided to motion components, warn if versions are mixed.
          */
-        this.version = "11.3.30";
+        this.version = "11.3.31";
         /**
          * Tracks whether this value can output a velocity. Currently this is only true
          * if the value is numerical, but we might be able to widen the scope here and support
@@ -5231,7 +5231,7 @@ function setTarget(visualElement, definition) {
 }
 
 function getOptimisedAppearId(visualElement) {
-    return visualElement.getProps()[optimizedAppearDataAttribute];
+    return visualElement.props[optimizedAppearDataAttribute];
 }
 
 class WillChangeMotionValue extends MotionValue {
@@ -7387,7 +7387,7 @@ function updateMotionValuesFromProps(element, next, prev) {
              * and warn against mismatches.
              */
             if (true) {
-                warnOnce(nextValue.version === "11.3.30", `Attempting to mix Framer Motion versions ${nextValue.version} with 11.3.30 may not work as expected.`);
+                warnOnce(nextValue.version === "11.3.31", `Attempting to mix Framer Motion versions ${nextValue.version} with 11.3.31 may not work as expected.`);
             }
         }
         else if (isMotionValue(prevValue)) {
@@ -7603,6 +7603,7 @@ class VisualElement {
         cancelFrame(this.notifyUpdate);
         cancelFrame(this.render);
         this.valueSubscriptions.forEach((remove) => remove());
+        this.valueSubscriptions.clear();
         this.removeFromVariantTree && this.removeFromVariantTree();
         this.parent && this.parent.children.delete(this);
         for (const key in this.events) {
@@ -7630,9 +7631,15 @@ class VisualElement {
             }
         });
         const removeOnRenderRequest = value.on("renderRequest", this.scheduleRender);
+        let removeSyncCheck;
+        if (window.MotionCheckAppearSync) {
+            removeSyncCheck = window.MotionCheckAppearSync(this, key, value);
+        }
         this.valueSubscriptions.set(key, () => {
             removeOnChange();
             removeOnRenderRequest();
+            if (removeSyncCheck)
+                removeSyncCheck();
             if (value.owner)
                 value.stop();
         });
@@ -9033,8 +9040,9 @@ function cancelTreeOptimisedTransformAnimations(projectionNode) {
     if (!visualElement)
         return;
     const appearId = getOptimisedAppearId(visualElement);
-    if (window.MotionHasOptimisedTransformAnimation(appearId)) {
-        window.MotionCancelOptimisedTransform(appearId);
+    if (window.MotionHasOptimisedAnimation(appearId, "transform")) {
+        const { layout, layoutId } = projectionNode.options;
+        window.MotionCancelOptimisedAnimation(appearId, "transform", frame, !(layout || layoutId));
     }
     const { parent } = projectionNode;
     if (parent && !parent.hasCheckedOptimisedAppear) {
@@ -9362,7 +9370,7 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
              * snapshots in startUpdate(), but we only want to cancel optimised animations
              * if a layout animation measurement is actually going to be affected by them.
              */
-            if (window.MotionCancelOptimisedTransform &&
+            if (window.MotionCancelOptimisedAnimation &&
                 !this.hasCheckedOptimisedAppear) {
                 cancelTreeOptimisedTransformAnimations(this);
             }
@@ -12245,21 +12253,33 @@ function useResetProjection() {
     return reset;
 }
 
-const appearStoreId = (id, value) => `${id}: ${value}`;
+const appearStoreId = (elementId, valueName) => {
+    const key = transformProps.has(valueName) ? "transform" : valueName;
+    return `${elementId}: ${key}`;
+};
 
 const appearAnimationStore = new Map();
 const elementsWithAppearAnimations = new Set();
 
 function handoffOptimizedAppearAnimation(elementId, valueName, frame) {
-    const optimisedValueName = transformProps.has(valueName)
-        ? "transform"
-        : valueName;
-    const storeId = appearStoreId(elementId, optimisedValueName);
+    const storeId = appearStoreId(elementId, valueName);
     const optimisedAnimation = appearAnimationStore.get(storeId);
     if (!optimisedAnimation) {
         return null;
     }
     const { animation, startTime } = optimisedAnimation;
+    function cancelAnimation() {
+        var _a;
+        (_a = window.MotionCancelOptimisedAnimation) === null || _a === void 0 ? void 0 : _a.call(window, elementId, valueName, frame);
+    }
+    /**
+     * We can cancel the animation once it's finished now that we've synced
+     * with Motion.
+     *
+     * Prefer onfinish over finished as onfinish is backwards compatible with
+     * older browsers.
+     */
+    animation.onfinish = cancelAnimation;
     if (startTime === null || window.MotionHandoffIsComplete) {
         /**
          * If the startTime is null, this animation is the Paint Ready detection animation
@@ -12268,13 +12288,7 @@ function handoffOptimizedAppearAnimation(elementId, valueName, frame) {
          * Or if we've already handed off the animation then we're now interrupting it.
          * In which case we need to cancel it.
          */
-        appearAnimationStore.delete(storeId);
-        frame.render(() => frame.render(() => {
-            try {
-                animation.cancel();
-            }
-            catch (error) { }
-        }));
+        cancelAnimation();
         return null;
     }
     else {
@@ -12295,6 +12309,18 @@ let startFrameTime;
  * https://bugs.chromium.org/p/chromium/issues/detail?id=1406850
  */
 let readyAnimation;
+/**
+ * Keep track of animations that were suspended vs cancelled so we
+ * can easily resume them when we're done measuring layout.
+ */
+const suspendedAnimations = new Set();
+function resumeSuspendedAnimations() {
+    suspendedAnimations.forEach((data) => {
+        data.animation.play();
+        data.animation.startTime = data.startTime;
+    });
+    suspendedAnimations.clear();
+}
 function startOptimizedAppearAnimation(element, name, keyframes, options, onReady) {
     // Prevent optimised appear animations if Motion has already started animating.
     if (window.MotionHandoffIsComplete) {
@@ -12322,10 +12348,22 @@ function startOptimizedAppearAnimation(element, name, keyframes, options, onRead
          * of handoff animations.
          */
         window.MotionHandoffAnimation = handoffOptimizedAppearAnimation;
-        window.MotionHasOptimisedTransformAnimation = (elementId) => {
+        window.MotionHasOptimisedAnimation = (elementId, valueName) => {
             if (!elementId)
                 return false;
-            const animationId = appearStoreId(elementId, "transform");
+            /**
+             * Keep a map of elementIds that have started animating. We check
+             * via ID instead of Element because of hydration errors and
+             * pre-hydration checks. We also actively record IDs as they start
+             * animating rather than simply checking for data-appear-id as
+             * this attrbute might be present but not lead to an animation, for
+             * instance if the element's appear animation is on a different
+             * breakpoint.
+             */
+            if (!valueName) {
+                return elementsWithAppearAnimations.has(elementId);
+            }
+            const animationId = appearStoreId(elementId, valueName);
             return Boolean(appearAnimationStore.get(animationId));
         };
         /**
@@ -12333,24 +12371,59 @@ function startOptimizedAppearAnimation(element, name, keyframes, options, onRead
          * they're the ones that will interfere with the
          * layout animation measurements.
          */
-        window.MotionCancelOptimisedTransform = (elementId) => {
-            const animationId = appearStoreId(elementId, "transform");
+        window.MotionCancelOptimisedAnimation = (elementId, valueName, frame, canResume) => {
+            const animationId = appearStoreId(elementId, valueName);
             const data = appearAnimationStore.get(animationId);
-            if (data) {
+            if (!data)
+                return;
+            if (frame && canResume === undefined) {
+                /**
+                 * Wait until the end of the subsequent frame to cancel the animation
+                 * to ensure we don't remove the animation before the main thread has
+                 * had a chance to resolve keyframes and render.
+                 */
+                frame.postRender(() => {
+                    frame.postRender(() => {
+                        data.animation.cancel();
+                    });
+                });
+            }
+            else {
                 data.animation.cancel();
+            }
+            if (frame && canResume) {
+                suspendedAnimations.add(data);
+                frame.render(resumeSuspendedAnimations);
+            }
+            else {
                 appearAnimationStore.delete(animationId);
+                /**
+                 * If there are no more animations left, we can remove the cancel function.
+                 * This will let us know when we can stop checking for conflicting layout animations.
+                 */
+                if (!appearAnimationStore.size) {
+                    window.MotionCancelOptimisedAnimation = undefined;
+                }
             }
         };
-        /**
-         * Keep a map of elementIds that have started animating. We check
-         * via ID instead of Element because of hydration errors and
-         * pre-hydration checks. We also actively record IDs as they start
-         * animating rather than simply checking for data-appear-id as
-         * this attrbute might be present but not lead to an animation, for
-         * instance if the element's appear animation is on a different
-         * breakpoint.
-         */
-        window.MotionHasOptimisedAnimation = (elementId) => Boolean(elementId && elementsWithAppearAnimations.has(elementId));
+        window.MotionCheckAppearSync = (visualElement, valueName, value) => {
+            var _a, _b;
+            const appearId = getOptimisedAppearId(visualElement);
+            if (!appearId)
+                return;
+            const valueIsOptimised = (_a = window.MotionHasOptimisedAnimation) === null || _a === void 0 ? void 0 : _a.call(window, appearId, valueName);
+            const externalAnimationValue = (_b = visualElement.props.values) === null || _b === void 0 ? void 0 : _b[valueName];
+            if (!valueIsOptimised || !externalAnimationValue)
+                return;
+            const removeSyncCheck = value.on("change", (latestValue) => {
+                var _a;
+                if (externalAnimationValue.get() !== latestValue) {
+                    (_a = window.MotionCancelOptimisedAnimation) === null || _a === void 0 ? void 0 : _a.call(window, appearId, valueName);
+                    removeSyncCheck();
+                }
+            });
+            return removeSyncCheck;
+        };
     }
     const startAnimation = () => {
         readyAnimation.cancel();
@@ -48644,6 +48717,9 @@ function Joystick() {
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+// import React, { useState, useEffect, useRef } from "react";
+// import { motion } from "framer-motion";
+// import { Slider } from "../components/Slider";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -48669,9 +48745,295 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Musializer;
+// export default function Musializer() {
+//     const [isPlaying, setIsPlaying] = useState(true);
+//     const [volume, setVolume] = useState(50);
+//     const [bass, setBass] = useState(false);
+//     const [test, setTest] = useState(0);
+//     const [audioData, setAudioData] = useState<Uint8Array>(new Uint8Array(0));
+//     const canvasRef = useRef<HTMLCanvasElement>(null);
+//     const audioRef = useRef<HTMLAudioElement | null>(null);
+//     const analyserRef = useRef<AnalyserNode | null>(null);
+//     const audioContextRef = useRef<AudioContext | null>(null);
+//     const [resetTrigger, setResetTrigger] = useState(0);
+//     const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(1)
+//     useEffect(() => {
+//         const timeoutId = setTimeout(resetScene, 100);
+//         return () => clearTimeout(timeoutId);
+//     }, []);
+//     useEffect(() => {
+//         const handleThemeToggle = () => resetScene();
+//         setTimeout(() => {
+//             const darkmodeToggleButton = document.getElementById(
+//                 "darkmodeToggleButton"
+//             );
+//             if (darkmodeToggleButton) {
+//                 darkmodeToggleButton.addEventListener(
+//                     "click",
+//                     handleThemeToggle
+//                 );
+//             }
+//         }, 1000);
+//         return () => {
+//             const darkmodeToggleButton = document.getElementById(
+//                 "darkmodeToggleButton"
+//             );
+//             if (darkmodeToggleButton) {
+//                 darkmodeToggleButton.removeEventListener(
+//                     "click",
+//                     handleThemeToggle
+//                 );
+//             }
+//         };
+//     }, []);
+//     //audio setup
+//     useEffect(() => {
+//         if (!audioRef.current) {
+//             audioRef.current = new Audio("./media/sounds/check1.mp3");
+//             // audioRef.current = new Audio("./media/sounds/didITellYou.mp3")
+//             audioContextRef.current = new (window.AudioContext ||
+//                 (window as any).webkitAudioContext)();
+//             const source = audioContextRef.current.createMediaElementSource(
+//                 audioRef.current
+//             );
+//             analyserRef.current = audioContextRef.current.createAnalyser();
+//             source.connect(analyserRef.current);
+//             analyserRef.current.connect(audioContextRef.current.destination);
+//             analyserRef.current.fftSize = 256;
+//             const bufferLength = analyserRef.current.frequencyBinCount;
+//             setAudioData(new Uint8Array(bufferLength));
+//         }
+//         if (audioRef.current) {
+//             audioRef.current.volume = volume / 100;
+//         }
+//         document.addEventListener("keydown", handleKeyDown);
+//         return () => {
+//             document.removeEventListener("keydown", handleKeyDown);
+//         };
+//     }, [volume, isPlaying]);
+//     //canvas setup
+//     useEffect(() => {
+//         const canvas = canvasRef.current;
+//         const canvasDiv = document.getElementById("canvasDiv");
+//         if (!canvas || !canvasDiv) return;
+//         const ctx = canvas.getContext("2d", {
+//             willReadFrequently: true,
+//         }) as CanvasRenderingContext2D;
+//         let animationFrameId: number;
+//         let particles: Particle[] = [];
+//         let bounceCenter = { x: canvas.width / 2, y: canvas.height / 2 };
+//         let bounceRadius = 1;
+//         const color = [
+//             getComputedStyle(document.documentElement).getPropertyValue(
+//                 "--particle-color"
+//             ),
+//         ];
+//         class Particle {
+//             x: number;
+//             y: number;
+//             dest: { x: number; y: number };
+//             r: number;
+//             vx: number;
+//             vy: number;
+//             accX: number;
+//             accY: number;
+//             friction: number;
+//             color: string[];
+//             constructor(x: number, y: number) {
+//                 this.x = x;
+//                 this.y = y;
+//                 this.dest = {
+//                     x: x,
+//                     y: y,
+//                 };
+//                 this.r = 5;
+//                 this.vx = 0;
+//                 this.vy = 0;
+//                 this.accX = 0;
+//                 this.accY = 0;
+//                 this.friction = 0.9;
+//                 this.color = color;
+//             }
+//             render() {
+//                 this.accX = (this.dest.x - this.x) / 100;
+//                 this.accY = (this.dest.y - this.y) / 100;
+//                 this.vx += this.accX;
+//                 this.vy += this.accY;
+//                 this.vx *= this.friction;
+//                 this.vy *= this.friction;
+//                 this.x += this.vx;
+//                 this.y += this.vy;
+//                 ctx.fillStyle = this.color[0];
+//                 ctx.beginPath();
+//                 ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+//                 ctx.fill();
+//                 let a = this.x - bounceCenter.x;
+//                 let b = this.y - bounceCenter.y;
+//                 let distance = Math.sqrt(a * a + b * b);
+//                 if (distance < bounceRadius * 60) {
+//                     // this.accX = this.x - bounceCenter.x;
+//                     // this.accY = this.y - bounceCenter.y;
+//                     this.accX = (this.x - bounceCenter.x)/10;
+//                     this.accY = (this.y - bounceCenter.y)/10;
+//                     this.vx += this.accX;
+//                     this.vy += this.accY;
+//                 }
+//                 if (distance > bounceRadius * 250) {
+//                   // this.accX = (this.dest.x - this.x) / 10;
+//                   // this.accY = (this.dest.y - this.y) / 10;
+//                   this.vx += this.accX;
+//                   this.vy += this.accY;
+//                   this.accX = (this.dest.x - this.x) / 5;
+//                   this.accY = (this.dest.y - this.y) / 5;
+//                   // this.vx += this.accX * 2;
+//                   // this.vy += this.accY * 2;
+//                 }
+//             }
+//         }
+//         const resizeCanvas = () => {
+//             const rect = canvasDiv.getBoundingClientRect();
+//             canvas.width = rect.width;
+//             canvas.height = rect.height;
+//         };
+//         const initScene = () => {
+//             const rect = canvasDiv.getBoundingClientRect();
+//             const centerX = rect.width / 2;
+//             const centerY = rect.height / 2;
+//             const particleSpacing = 20;
+//             particles = [];
+//             for (let x = -rect.width; x <= rect.width; x += particleSpacing) {
+//                 for (
+//                     let y = -rect.height;
+//                     y <= rect.height;
+//                     y += particleSpacing
+//                 ) {
+//                     particles.push(new Particle(centerX + x, centerY
+//                          +y
+//                         ));
+//                 }
+//             }
+//         };
+//         const render = () => {
+//             const rect = canvasDiv.getBoundingClientRect();
+//             // let bounceCenter = { x: rect.width / 2, y: rect.height / 2 };
+//             if (analyserRef.current) {
+//                 const dataArray = new Uint8Array(
+//                     analyserRef.current.frequencyBinCount
+//                 );
+//                 analyserRef.current.getByteFrequencyData(dataArray);
+//                 setAudioData(dataArray);
+//                 const bassRange = dataArray.slice(0, 2);
+//                 const intensity = bassRange.reduce(
+//                     (sum, value) => sum + value,
+//                     0
+//                 );
+//                 const bass = intensity > 509;
+//                 setBass(bass);
+//                 bounceRadius = bass ? 1.5 : 0;
+//                 // bounceRadius = bass ? bounceRadiusIntensity : 0;
+//             }
+//             ctx.clearRect(0, 0, canvas.width, canvas.height);
+//             particles.forEach((particle) => {
+//                 particle.render();
+//             });
+//             animationFrameId = requestAnimationFrame(render);
+//         };
+//         initScene();
+//         window.addEventListener("resize", resizeCanvas);
+//         resizeCanvas();
+//         render();
+//         return () => {
+//             window.removeEventListener("resize", resizeCanvas);
+//             cancelAnimationFrame(animationFrameId);
+//         };
+//     }, [resetTrigger]);
+//     //handle keys
+//     const handleKeyDown = (event: KeyboardEvent) => {
+//         if (event.code === "Space") {
+//             event.preventDefault();
+//             handlePlayClick();
+//         }
+//     };
+//     const handlePlayClick = () => {
+//         setIsPlaying(!isPlaying);
+//         if (isPlaying) {
+//             if (audioRef.current) {
+//                 audioRef.current.currentTime = 15;
+//             }
+//             audioRef.current?.play();
+//         } else {
+//             audioRef.current?.pause();
+//         }
+//     };
+//     function resetScene() {
+//         setResetTrigger((prev) => prev + 1);
+//     }
+//     return (
+//         <div className="bodyCenter">
+//             <motion.h1>Musializer</motion.h1>
+//             <div
+//                 style={{
+//                     display: "flex",
+//                     flexDirection: "row",
+//                     justifyContent: "center",
+//                     alignItems: "center",
+//                 }}
+//             >
+//                 <motion.button
+//                     className="playButton"
+//                     style={{
+//                         display: "flex",
+//                         justifyContent: "center",
+//                         alignItems: "center",
+//                     }}
+//                     onMouseDown={handlePlayClick}
+//                     animate={{ scale: bass ? 1.5 : 1 }}
+//                     transition={{ type: "spring", duration: 0.2 }}
+//                 >
+//                     <span
+//                         className="material-symbols-outlined"
+//                         style={{ fontSize: "50px" }}
+//                     >
+//                         {isPlaying ? "play_arrow" : "pause"}
+//                     </span>
+//                 </motion.button>
+//                 <div
+//                     style={{
+//                         display: "flex",
+//                         flexDirection: "column",
+//                         paddingLeft: "50px",
+//                     }}
+//                 >
+//                     <Slider value={volume} set={setVolume}>
+//                         Volume
+//                     </Slider>
+//                     {/* <Slider value={test} set={setTest}> */}
+//                     <Slider value={bounceRadiusIntensity} set={setBounceRadiusIntensity} min={0} max={3}>
+//                        Intensity 
+//                     </Slider>
+//                     <Slider value={test} set={setTest}>
+//                         Testing?
+//                     </Slider>
+//                 </div>
+//             </div>
+//             <div style={{ padding: "5px" }} />
+//             <div id="canvasDiv" className="canvasDiv">
+//                 <canvas
+//                     ref={canvasRef}
+//                     style={{
+//                         position: "absolute",
+//                         marginLeft: "-3px",
+//                         marginTop: "-3px",
+//                     }}
+//                 ></canvas>
+//             </div>
+//         </div>
+//     );
+// }
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 const Slider_1 = __webpack_require__(/*! ../components/Slider */ "./src/components/Slider.tsx");
+// import check1 from "../../assets/media/sounds/check1.mp3";
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);
@@ -48684,6 +49046,13 @@ function Musializer() {
     const audioContextRef = (0, react_1.useRef)(null);
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     const [bounceRadiusIntensity, setBounceRadiusIntensity] = (0, react_1.useState)(1);
+    const [duration, setDuration] = (0, react_1.useState)(0);
+    const [currentTime, setCurrentTime] = (0, react_1.useState)(0);
+    //visualizer for duration
+    const radius = 100;
+    const circumference = 2 * Math.PI * radius;
+    const initialOffset = circumference;
+    const [offset, setOffset] = (0, react_1.useState)(initialOffset);
     (0, react_1.useEffect)(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
@@ -48703,11 +49072,30 @@ function Musializer() {
             }
         };
     }, []);
+    //duration setup
+    (0, react_1.useEffect)(() => {
+        let audio = audioRef.current;
+        if (!audio)
+            return;
+        const setAudioDuration = () => {
+            setDuration(audio.duration);
+        };
+        const setAudioTime = () => {
+            setCurrentTime(audio.currentTime);
+            const offset = circumference - (currentTime / duration) * circumference;
+            setOffset(offset);
+        };
+        audio.addEventListener("durationchange", setAudioDuration);
+        audio.addEventListener("timeupdate", setAudioTime);
+        return () => {
+            audio.removeEventListener("durationchange", setAudioDuration);
+            audio.removeEventListener("timeupdate", setAudioTime);
+        };
+    });
     //audio setup
     (0, react_1.useEffect)(() => {
         if (!audioRef.current) {
             audioRef.current = new Audio("./media/sounds/check1.mp3");
-            // audioRef.current = new Audio("./media/sounds/didITellYou.mp3")
             audioContextRef.current = new (window.AudioContext ||
                 window.webkitAudioContext)();
             const source = audioContextRef.current.createMediaElementSource(audioRef.current);
@@ -48725,7 +49113,7 @@ function Musializer() {
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
         };
-    }, [volume, isPlaying]);
+    }, [volume, isPlaying, audioRef.current]);
     //canvas setup
     (0, react_1.useEffect)(() => {
         const canvas = canvasRef.current;
@@ -48755,10 +49143,16 @@ function Musializer() {
                 this.vy = 0;
                 this.accX = 0;
                 this.accY = 0;
+                // this.friction = 0.7;
                 this.friction = 0.9;
                 this.color = color;
+                // this.frequency = 0.01;
+                // this.amplitude = 100;
             }
             render() {
+                // this.dest.x = this.x
+                // this.dest.y = canvas!.height/2 + Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
+                // this.dest.y = Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
                 this.accX = (this.dest.x - this.x) / 100;
                 this.accY = (this.dest.y - this.y) / 100;
                 this.vx += this.accX;
@@ -48807,8 +49201,7 @@ function Musializer() {
             particles = [];
             for (let x = -rect.width; x <= rect.width; x += particleSpacing) {
                 for (let y = -rect.height; y <= rect.height; y += particleSpacing) {
-                    particles.push(new Particle(centerX + x, centerY
-                        + y));
+                    particles.push(new Particle(centerX + x, centerY + y));
                 }
             }
         };
@@ -48824,7 +49217,7 @@ function Musializer() {
                 const bass = intensity > 509;
                 setBass(bass);
                 bounceRadius = bass ? 1.5 : 0;
-                // bounceRadius = bass ? bounceRadiusIntensity : 0;
+                bounceRadius = bass ? bounceRadiusIntensity : 0;
             }
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach((particle) => {
@@ -48865,19 +49258,39 @@ function Musializer() {
         setResetTrigger((prev) => prev + 1);
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
+        react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer Test"),
         react_1.default.createElement("div", { style: {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
             } },
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: {
+            react_1.default.createElement("div", { style: {
+                    position: "relative",
                     display: "flex",
+                    flexDirection: "column",
                     justifyContent: "center",
-                    alignItems: "center",
-                }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
-                react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
+                    // alignItems: "center",
+                } },
+                react_1.default.createElement("div", { style: {
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: {
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
+                    react_1.default.createElement(framer_motion_1.motion.svg, { style: {
+                            position: "absolute",
+                            zIndex: -10,
+                        }, width: "200", height: "200" },
+                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius - 50, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
+                react_1.default.createElement("div", { style: { marginBottom: "-25px" } },
+                    react_1.default.createElement("h3", null, "now playing"))),
             react_1.default.createElement("div", { style: {
                     display: "flex",
                     flexDirection: "column",
@@ -48885,7 +49298,7 @@ function Musializer() {
                 } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
                 react_1.default.createElement(Slider_1.Slider, { value: bounceRadiusIntensity, set: setBounceRadiusIntensity, min: 0, max: 3 }, "Intensity"),
-                react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Testing?"))),
+                react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
         react_1.default.createElement("div", { style: { padding: "5px" } }),
         react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" },
             react_1.default.createElement("canvas", { ref: canvasRef, style: {
