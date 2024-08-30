@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
-import check1 from '../../assets/media/sounds/check1.mp3';
+import check1 from "../../assets/media/sounds/check1.mp3";
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -14,7 +14,17 @@ export default function Musializer() {
     const analyserRef = useRef<AnalyserNode | null>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
     const [resetTrigger, setResetTrigger] = useState(0);
-    const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState (1);
+    const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(1);
+
+    const [duration, setDuration] = useState(0);
+    const [currentTime, setCurrentTime] = useState(0);
+
+    //visualizer for duration
+    const radius = 100;
+    const circumference = 2 * Math.PI * radius;
+    const initialOffset = circumference;
+
+    const [offset, setOffset] = useState(initialOffset);
 
     useEffect(() => {
         const timeoutId = setTimeout(resetScene, 100);
@@ -48,6 +58,30 @@ export default function Musializer() {
         };
     }, []);
 
+    //duration setup
+    useEffect(() => {
+        let audio = audioRef.current;
+        if (!audio) return;
+
+        const setAudioDuration = () => {
+            setDuration(audio.duration);
+        };
+        const setAudioTime = () => {
+            setCurrentTime(audio.currentTime);
+            const offset =
+                circumference - (currentTime / duration) * circumference;
+            setOffset(offset);
+        };
+
+        audio.addEventListener("durationchange", setAudioDuration);
+        audio.addEventListener("timeupdate", setAudioTime);
+
+        return () => {
+            audio.removeEventListener("durationchange", setAudioDuration);
+            audio.removeEventListener("timeupdate", setAudioTime);
+        };
+    });
+
     //audio setup
     useEffect(() => {
         if (!audioRef.current) {
@@ -72,7 +106,7 @@ export default function Musializer() {
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
         };
-    }, [volume, isPlaying]);
+    }, [volume, isPlaying, audioRef.current]);
 
     //canvas setup
     useEffect(() => {
@@ -87,7 +121,6 @@ export default function Musializer() {
         let particles: Particle[] = [];
         let bounceCenter = { x: canvas.width / 2, y: canvas.height / 2 };
         let bounceRadius = 1;
-
 
         const color = [
             getComputedStyle(document.documentElement).getPropertyValue(
@@ -106,7 +139,6 @@ export default function Musializer() {
             accY: number;
             friction: number;
             color: string[];
-
 
             constructor(x: number, y: number) {
                 this.x = x;
@@ -163,22 +195,22 @@ export default function Musializer() {
                     // this.accX = this.x - bounceCenter.x;
                     // this.accY = this.y - bounceCenter.y;
 
-                    this.accX = (this.x - bounceCenter.x)/10;
-                    this.accY = (this.y - bounceCenter.y)/10;
+                    this.accX = (this.x - bounceCenter.x) / 10;
+                    this.accY = (this.y - bounceCenter.y) / 10;
 
                     this.vx += this.accX;
                     this.vy += this.accY;
                 }
 
                 if (distance > bounceRadius * 250) {
-                  // this.accX = (this.dest.x - this.x) / 10;
-                  // this.accY = (this.dest.y - this.y) / 10;
-                  this.vx += this.accX;
-                  this.vy += this.accY;
-                  this.accX = (this.dest.x - this.x) / 5;
-                  this.accY = (this.dest.y - this.y) / 5;
-                  // this.vx += this.accX * 2;
-                  // this.vy += this.accY * 2;
+                    // this.accX = (this.dest.x - this.x) / 10;
+                    // this.accY = (this.dest.y - this.y) / 10;
+                    this.vx += this.accX;
+                    this.vy += this.accY;
+                    this.accX = (this.dest.x - this.x) / 5;
+                    this.accY = (this.dest.y - this.y) / 5;
+                    // this.vx += this.accX * 2;
+                    // this.vy += this.accY * 2;
                 }
             }
         }
@@ -202,9 +234,7 @@ export default function Musializer() {
                     y <= rect.height;
                     y += particleSpacing
                 ) {
-                    particles.push(new Particle(centerX + x, centerY
-                         +y
-                        ));
+                    particles.push(new Particle(centerX + x, centerY + y));
                 }
             }
         };
@@ -228,7 +258,7 @@ export default function Musializer() {
                 const bass = intensity > 509;
                 setBass(bass);
                 bounceRadius = bass ? 1.5 : 0;
-                bounceRadius = bass ? bounceRadiusIntensity: 0;
+                bounceRadius = bass ? bounceRadiusIntensity : 0;
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -275,7 +305,7 @@ export default function Musializer() {
 
     return (
         <div className="bodyCenter">
-            <motion.h1>Musializer</motion.h1>
+            <motion.h1>Musializer Test</motion.h1>
             <div
                 style={{
                     display: "flex",
@@ -284,24 +314,78 @@ export default function Musializer() {
                     alignItems: "center",
                 }}
             >
-                <motion.button
-                    className="playButton"
+
+
+
+                <div
                     style={{
+                        position: "relative",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        // alignItems: "center",
+                    }}
+                >
+
+                    <div style={{
+                       position: "relative",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                     }}
-                    onMouseDown={handlePlayClick}
-                    animate={{ scale: bass ? 1.5 : 1 }}
-                    transition={{ type: "spring", duration: 0.2 }}
-                >
-                    <span
-                        className="material-symbols-outlined"
-                        style={{ fontSize: "50px" }}
+                        >
+                    <motion.button
+                        className="playButton"
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                        onMouseDown={handlePlayClick}
+                        animate={{ scale: bass ? 1.5 : 1 }}
+                        transition={{ type: "spring", duration: 0.2 }}
                     >
-                        {isPlaying ? "play_arrow" : "pause"}
-                    </span>
-                </motion.button>
+                        <span
+                            className="material-symbols-outlined"
+                            style={{ fontSize: "50px" }}
+                        >
+                            {isPlaying ? "play_arrow" : "pause"}
+                        </span>
+                    </motion.button>
+
+                    <motion.svg
+                        style={{
+                            position: "absolute",
+                            zIndex: -10,
+                        }}
+                        width="200"
+                        height="200"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <motion.circle
+                            stroke="#ddd"
+                            strokeWidth="5"
+                            fill="rgba(255,255,255,0.1)"
+                            r={radius - 50}
+                            cx="100"
+                            cy="100"
+                            strokeDasharray={circumference}
+                            strokeDashoffset={offset}
+                            initial={{ strokeDashoffset: initialOffset }}
+                            animate={{ strokeDashoffset: offset }}
+                        />
+                    </motion.svg>
+                    </div>
+
+                    <div 
+                    style={{marginBottom: "-35px"}}
+                    >
+                        <h3>
+                            now playing
+                        </h3>
+                    </div>
+                </div>
+
                 <div
                     style={{
                         display: "flex",
@@ -312,8 +396,13 @@ export default function Musializer() {
                     <Slider value={volume} set={setVolume}>
                         Volume
                     </Slider>
-                    <Slider value={bounceRadiusIntensity} set={setBounceRadiusIntensity} min={0} max={3}>
-                       Intensity 
+                    <Slider
+                        value={bounceRadiusIntensity}
+                        set={setBounceRadiusIntensity}
+                        min={0}
+                        max={3}
+                    >
+                        Intensity
                     </Slider>
                     <Slider value={test} set={setTest}>
                         Test
@@ -321,6 +410,10 @@ export default function Musializer() {
                 </div>
             </div>
             <div style={{ padding: "5px" }} />
+
+            {/* <div>Duration: {duration}</div>
+            <div>Current Time: {currentTime}</div> */}
+
             <div id="canvasDiv" className="canvasDiv">
                 <canvas
                     ref={canvasRef}

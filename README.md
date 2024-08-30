@@ -1,5 +1,11 @@
 # Things to test:
 
-- Change "release" into "dist" and move to src
 
-- Get app to transpile with tsc && webpack (?)
+- [ ] **Visualizer**
+- [x] Get mp3 to play
+- [x] Get mp3 to pause
+- [x] Better styles for the button
+- [x] Volume slider
+- [ ] Volume slider --> range/progress bar
+- [ ] Lenght of music visualized --> progress bar
+
