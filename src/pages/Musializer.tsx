@@ -4,7 +4,8 @@ import { Slider } from "../components/Slider";
 // import check1 from "../../assets/media/sounds/check1.mp3";
 
 // import {music} from "../components/Music";
-import { check1Sound } from "../components/Music";
+// import { check1Sound } from "../components/Music";
+import { music} from "../components/Music";
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -27,6 +28,26 @@ export default function Musializer() {
     const initialOffset = circumference;
 
     const [offset, setOffset] = useState(initialOffset);
+
+    const [currentSongIndex, setCurrentSongIndex] = useState(0);
+    const currentSong = music[currentSongIndex];
+
+    // const [switchSong, setSwitchSong] = useState(0);
+
+    const nextSong = () => {
+        // setCurrentSongIndex(prevIndex) => (prevIndex + 1) % music.length;
+        // setCurrentSongIndex(currentSongIndex) => (currentSongIndex+ 1) % music.length;
+        setCurrentSongIndex((currentSongIndex + 1) % music.length);
+    }
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.src = currentSong.file;
+            audioRef.current.load();
+            // console.log(audioRef.current.)
+        }
+    }, [currentSong]);
 
     useEffect(() => {
         const timeoutId = setTimeout(resetScene, 100);
@@ -74,6 +95,7 @@ export default function Musializer() {
             setOffset(offset);
         };
 
+
         audio.addEventListener("durationchange", setAudioDuration);
         audio.addEventListener("timeupdate", setAudioTime);
 
@@ -88,7 +110,8 @@ export default function Musializer() {
         if (!audioRef.current) {
             // audioRef.current = new Audio("./media/sounds/check1.mp3");
             // audioRef.current = new Audio(check1);
-            audioRef.current = new Audio(check1Sound.file);
+            // audioRef.current = new Audio(check1Sound.file);
+            audioRef.current = new Audio(currentSong.file);
             audioContextRef.current = new (window.AudioContext ||
                 (window as any).webkitAudioContext)();
             const source = audioContextRef.current.createMediaElementSource(
@@ -330,7 +353,7 @@ export default function Musializer() {
               className="navbarButton"
               style={{ backgroundColor: 'rgba(0,0,0,0)' }}
               id="settingsButton"
-            //   onMouseDown={handleSettingsClick}
+              onMouseDown={nextSong}
               whileHover={{scale: 1.1}}
               animate={{ scale: bass ? 1.5 : 1 }}
               transition={{ type: "spring", duration: 0.2 }}
@@ -413,7 +436,7 @@ export default function Musializer() {
                     style={{marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}
                     >
                         <h3 
-                        >{check1Sound.name}</h3> 
+                        >{currentSong.name}</h3> 
                     </div>
                 </div>
 
