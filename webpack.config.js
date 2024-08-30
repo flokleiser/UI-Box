@@ -101,7 +101,7 @@ module.exports = {
   output: {
     filename:'[name].js',
     path: path.resolve(__dirname, 'src/dist'),
-    publicPath: './',
-    assetModuleFilename: 'media/[hash][ext][query]'
+    publicPath: './dist/',
+    assetModuleFilename: '[hash][ext][query]'
   },
 };
