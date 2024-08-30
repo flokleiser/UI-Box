@@ -27,6 +27,7 @@ exports.default = Musializer;
 const react_1 = __importStar(require("react"));
 const framer_motion_1 = require("framer-motion");
 const Slider_1 = require("../components/Slider");
+// import check1 from "../../assets/media/sounds/check1.mp3";
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);
@@ -39,6 +40,13 @@ function Musializer() {
     const audioContextRef = (0, react_1.useRef)(null);
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     const [bounceRadiusIntensity, setBounceRadiusIntensity] = (0, react_1.useState)(1);
+    const [duration, setDuration] = (0, react_1.useState)(0);
+    const [currentTime, setCurrentTime] = (0, react_1.useState)(0);
+    //visualizer for duration
+    const radius = 100;
+    const circumference = 2 * Math.PI * radius;
+    const initialOffset = circumference;
+    const [offset, setOffset] = (0, react_1.useState)(initialOffset);
     (0, react_1.useEffect)(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
@@ -58,11 +66,30 @@ function Musializer() {
             }
         };
     }, []);
+    //duration setup
+    (0, react_1.useEffect)(() => {
+        let audio = audioRef.current;
+        if (!audio)
+            return;
+        const setAudioDuration = () => {
+            setDuration(audio.duration);
+        };
+        const setAudioTime = () => {
+            setCurrentTime(audio.currentTime);
+            const offset = circumference - (currentTime / duration) * circumference;
+            setOffset(offset);
+        };
+        audio.addEventListener("durationchange", setAudioDuration);
+        audio.addEventListener("timeupdate", setAudioTime);
+        return () => {
+            audio.removeEventListener("durationchange", setAudioDuration);
+            audio.removeEventListener("timeupdate", setAudioTime);
+        };
+    });
     //audio setup
     (0, react_1.useEffect)(() => {
         if (!audioRef.current) {
             audioRef.current = new Audio("./media/sounds/check1.mp3");
-            // audioRef.current = new Audio("./media/sounds/didITellYou.mp3")
             audioContextRef.current = new (window.AudioContext ||
                 window.webkitAudioContext)();
             const source = audioContextRef.current.createMediaElementSource(audioRef.current);
@@ -80,7 +107,7 @@ function Musializer() {
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
         };
-    }, [volume, isPlaying]);
+    }, [volume, isPlaying, audioRef.current]);
     //canvas setup
     (0, react_1.useEffect)(() => {
         const canvas = canvasRef.current;
@@ -110,10 +137,16 @@ function Musializer() {
                 this.vy = 0;
                 this.accX = 0;
                 this.accY = 0;
+                // this.friction = 0.7;
                 this.friction = 0.9;
                 this.color = color;
+                // this.frequency = 0.01;
+                // this.amplitude = 100;
             }
             render() {
+                // this.dest.x = this.x
+                // this.dest.y = canvas!.height/2 + Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
+                // this.dest.y = Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
                 this.accX = (this.dest.x - this.x) / 100;
                 this.accY = (this.dest.y - this.y) / 100;
                 this.vx += this.accX;
@@ -162,8 +195,7 @@ function Musializer() {
             particles = [];
             for (let x = -rect.width; x <= rect.width; x += particleSpacing) {
                 for (let y = -rect.height; y <= rect.height; y += particleSpacing) {
-                    particles.push(new Particle(centerX + x, centerY
-                        + y));
+                    particles.push(new Particle(centerX + x, centerY + y));
                 }
             }
         };
@@ -179,7 +211,7 @@ function Musializer() {
                 const bass = intensity > 509;
                 setBass(bass);
                 bounceRadius = bass ? 1.5 : 0;
-                // bounceRadius = bass ? bounceRadiusIntensity : 0;
+                bounceRadius = bass ? bounceRadiusIntensity : 0;
             }
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach((particle) => {
@@ -220,19 +252,39 @@ function Musializer() {
         setResetTrigger((prev) => prev + 1);
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
+        react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer Test"),
         react_1.default.createElement("div", { style: {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
             } },
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: {
+            react_1.default.createElement("div", { style: {
+                    position: "relative",
                     display: "flex",
+                    flexDirection: "column",
                     justifyContent: "center",
-                    alignItems: "center",
-                }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
-                react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
+                    // alignItems: "center",
+                } },
+                react_1.default.createElement("div", { style: {
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: {
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
+                    react_1.default.createElement(framer_motion_1.motion.svg, { style: {
+                            position: "absolute",
+                            zIndex: -10,
+                        }, width: "200", height: "200" },
+                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius - 50, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
+                react_1.default.createElement("div", { style: { marginBottom: "-25px" } },
+                    react_1.default.createElement("h3", null, "now playing"))),
             react_1.default.createElement("div", { style: {
                     display: "flex",
                     flexDirection: "column",
@@ -240,7 +292,7 @@ function Musializer() {
                 } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
                 react_1.default.createElement(Slider_1.Slider, { value: bounceRadiusIntensity, set: setBounceRadiusIntensity, min: 0, max: 3 }, "Intensity"),
-                react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Testing?"))),
+                react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
         react_1.default.createElement("div", { style: { padding: "5px" } }),
         react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" },
             react_1.default.createElement("canvas", { ref: canvasRef, style: {
