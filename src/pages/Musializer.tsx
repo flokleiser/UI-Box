@@ -378,7 +378,7 @@ export default function Musializer() {
                     </div>
 
                     <div 
-                    style={{marginBottom: "-35px"}}
+                    style={{marginBottom: "-25px"}}
                     >
                         <h3>
                             now playing
