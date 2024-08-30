@@ -19,7 +19,7 @@ export default function Home() {
               alignItems: 'center',
             }}
           >
-            <h1> UI-Box Test</h1>
+            <h1> UI-Box Test Test</h1>
 
             <motion.button
               className="navbarButton"
