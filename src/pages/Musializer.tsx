@@ -3,6 +3,10 @@ import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
 // import check1 from "../../assets/media/sounds/check1.mp3";
 
+// import {music} from "../components/Music";
+// import { check1Sound } from "../components/Music";
+import { music} from "../components/Music";
+
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
     const [volume, setVolume] = useState(50);
@@ -19,12 +23,31 @@ export default function Musializer() {
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
 
-    //visualizer for duration
     const radius = 100;
     const circumference = 2 * Math.PI * radius;
     const initialOffset = circumference;
 
     const [offset, setOffset] = useState(initialOffset);
+
+    const [currentSongIndex, setCurrentSongIndex] = useState(0);
+    const currentSong = music[currentSongIndex];
+
+    // const [switchSong, setSwitchSong] = useState(0);
+
+    const nextSong = () => {
+        // setCurrentSongIndex(prevIndex) => (prevIndex + 1) % music.length;
+        // setCurrentSongIndex(currentSongIndex) => (currentSongIndex+ 1) % music.length;
+        setCurrentSongIndex((currentSongIndex + 1) % music.length);
+    }
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.src = currentSong.file;
+            audioRef.current.load();
+            // console.log(audioRef.current.)
+        }
+    }, [currentSong]);
 
     useEffect(() => {
         const timeoutId = setTimeout(resetScene, 100);
@@ -58,7 +81,6 @@ export default function Musializer() {
         };
     }, []);
 
-    //duration setup
     useEffect(() => {
         let audio = audioRef.current;
         if (!audio) return;
@@ -73,6 +95,7 @@ export default function Musializer() {
             setOffset(offset);
         };
 
+
         audio.addEventListener("durationchange", setAudioDuration);
         audio.addEventListener("timeupdate", setAudioTime);
 
@@ -85,7 +108,10 @@ export default function Musializer() {
     //audio setup
     useEffect(() => {
         if (!audioRef.current) {
-            audioRef.current = new Audio("./media/sounds/check1.mp3");
+            // audioRef.current = new Audio("./media/sounds/check1.mp3");
+            // audioRef.current = new Audio(check1);
+            // audioRef.current = new Audio(check1Sound.file);
+            audioRef.current = new Audio(currentSong.file);
             audioContextRef.current = new (window.AudioContext ||
                 (window as any).webkitAudioContext)();
             const source = audioContextRef.current.createMediaElementSource(
@@ -106,6 +132,15 @@ export default function Musializer() {
             document.removeEventListener("keydown", handleKeyDown);
         };
     }, [volume, isPlaying, audioRef.current]);
+
+    // function switchMusic() {
+    //     if (audioRef.current === check1Sound.file) {
+    //         audioRef.current.pause();
+    //         audioRef.current.currentTime = 0;
+    //         audioRef.current.play();
+    //     }
+    // }
+    
 
     //canvas setup
     useEffect(() => {
@@ -304,7 +339,30 @@ export default function Musializer() {
 
     return (
         <div className="bodyCenter">
-            <motion.h1>Musializer Test</motion.h1>
+            <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'start',
+              alignItems: 'center',
+            }}
+          >
+            <motion.h1>Musializer</motion.h1>
+
+            <motion.button
+              className="navbarButton"
+              style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+              id="settingsButton"
+              onMouseDown={nextSong}
+              whileHover={{scale: 1.1}}
+              animate={{ scale: bass ? 1.5 : 1 }}
+              transition={{ type: "spring", duration: 0.2 }}
+            >
+              <span className="material-symbols-outlined">library_music</span>
+            </motion.button>
+          </div>
+
+
             <div
                 style={{
                     display: "flex",
@@ -322,7 +380,6 @@ export default function Musializer() {
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "center",
-                        // alignItems: "center",
                     }}
                 >
 
@@ -364,7 +421,7 @@ export default function Musializer() {
                             stroke="#ddd"
                             strokeWidth="5"
                             fill="rgba(255,255,255,0.1)"
-                            r={radius - 50}
+                            r={radius/2}
                             cx="100"
                             cy="100"
                             strokeDasharray={circumference}
@@ -376,11 +433,10 @@ export default function Musializer() {
                     </div>
 
                     <div 
-                    style={{marginBottom: "-25px"}}
+                    style={{marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}
                     >
-                        <h3>
-                            now playing
-                        </h3>
+                        <h3 
+                        >{currentSong.name}</h3> 
                     </div>
                 </div>
 
@@ -408,9 +464,6 @@ export default function Musializer() {
                 </div>
             </div>
             <div style={{ padding: "5px" }} />
-
-            {/* <div>Duration: {duration}</div>
-            <div>Current Time: {currentTime}</div> */}
 
             <div id="canvasDiv" className="canvasDiv">
                 <canvas
