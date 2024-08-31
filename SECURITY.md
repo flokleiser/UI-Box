@@ -3,6 +3,7 @@ ___
 
 - ### Currently working on
 
+- [ ] Remove "focus" blue border
 
 ___
 
