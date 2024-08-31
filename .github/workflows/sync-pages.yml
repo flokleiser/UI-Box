@@ -1,5 +1,9 @@
 name: Sync src/pages from dev to merge-test 
 
+permissions:
+  contents: write
+
+
 on:
   push:
     branches:
