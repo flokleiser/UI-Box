@@ -1,5 +1,6 @@
 import React from 'react'
 import {motion} from 'framer-motion'
+import icon from '../media/icon.png';
 
 export default function Home() {
 
@@ -7,26 +8,34 @@ export default function Home() {
         window.loadPage('Settings');
     };
 
-    return(
-        <div className="bodyCenter">
-            <div>
-                <div style={{display:'flex',flexDirection:'row',justifyContent:'start', alignItems:'center'}}> 
-            
-                    <h1> UI-Box</h1>
+    return (
+      <div className="bodyCenter">
+        <div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'start',
+              alignItems: 'center',
+            }}
+          >
+            <h1> UI-Box (Merged)</h1>
 
-                    <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} id="settingsButton" onMouseDown={handleSettingsClick} whileHover={{rotate:180}}>
-                        <span className="material-symbols-outlined">
-                       settings 
-                        </span>
-                    </motion.button>
+            <motion.button
+              className="navbarButton"
+              style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+              id="settingsButton"
+              onMouseDown={handleSettingsClick}
+              whileHover={{ rotate: 180 }}
+            >
+              <span className="material-symbols-outlined">settings</span>
+            </motion.button>
+          </div>
 
-
-                </div>
-
-                <div className="logo">
-                    <img className="logoImg" src="./media/icon.png" />
-                </div>
-            </div>    
+          <div className="logo">
+            <img className='logoImg' src={icon} />
+          </div>
         </div>
-    )
+      </div>
+    );
 }

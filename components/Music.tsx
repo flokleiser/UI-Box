@@ -14,7 +14,7 @@ const music: Audio[] = [
         file: check1
     },
     {
-        name: "didITellYou",
+        name: "did I Tell You",
         artist: "Kettema",
         file: didITellYou
     }

@@ -47517,7 +47517,7 @@ const music = [
         file: check1_mp3_1.default
     },
     {
-        name: "didITellYou",
+        name: "did I Tell You",
         artist: "Kettema",
         file: didITellYou_mp3_1.default
     }
@@ -47634,6 +47634,12 @@ function Slider({ value, children, set, min = 0, max = 100 }) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.startPage = void 0;
 exports.startPage = "Musializer";
+const setActivePage = (page) => {
+    console.log('setActivePage', page);
+    const event = new CustomEvent('pageChange', { detail: { page } });
+    window.dispatchEvent(event);
+};
+window.setActivePage = setActivePage;
 exports["default"] = Window;
 
 
@@ -48297,18 +48303,24 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Home;
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
+const icon_png_1 = __importDefault(__webpack_require__(/*! ../media/icon.png */ "./src/media/icon.png"));
 function Home() {
     const handleSettingsClick = () => {
         window.loadPage('Settings');
     };
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
-                react_1.default.createElement("h1", null, " UI-Box"),
+            react_1.default.createElement("div", { style: {
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'start',
+                    alignItems: 'center',
+                } },
+                react_1.default.createElement("h1", null, " UI-Box (Merged)"),
                 react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "settingsButton", onMouseDown: handleSettingsClick, whileHover: { rotate: 180 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "settings"))),
             react_1.default.createElement("div", { className: "logo" },
-                react_1.default.createElement("img", { className: "logoImg", src: "./media/icon.png" })))));
+                react_1.default.createElement("img", { className: 'logoImg', src: icon_png_1.default })))));
 }
 
 
@@ -48348,6 +48360,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Joystick;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+// import
 function Joystick() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     (0, react_1.useEffect)(() => {
@@ -48723,12 +48736,10 @@ function Musializer() {
             audioRef.current.load();
         }
     }, [currentSong]);
-    //reload for proper alignment of canvas
     (0, react_1.useEffect)(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
     }, []);
-    //reset scene on theme toggle for proper darkmode
     (0, react_1.useEffect)(() => {
         const handleThemeToggle = () => resetScene();
         setTimeout(() => {
@@ -48744,7 +48755,6 @@ function Musializer() {
             }
         };
     }, []);
-    //setup for audio duration and current time
     (0, react_1.useEffect)(() => {
         let audio = audioRef.current;
         if (!audio)
@@ -48930,24 +48940,44 @@ function Musializer() {
         setResetTrigger((prev) => prev + 1);
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center', } },
-            react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
+        react_1.default.createElement("div", { style: {
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'start',
+                alignItems: 'center',
+            } },
+            react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer (Merged)"),
             react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: nextSong, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music"))),
-        react_1.default.createElement("div", { style: { display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
-            react_1.default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "center" } },
-                react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center" } },
-                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center" }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+        react_1.default.createElement("div", { style: {
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+            } },
+            react_1.default.createElement("div", { style: {
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                } },
+                react_1.default.createElement("div", { style: {
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: {
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
                     react_1.default.createElement(framer_motion_1.motion.svg, { style: {
                             position: "absolute",
                             zIndex: -10,
                         }, width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { className: "progressCircle", 
-                            // stroke="#ddd"
-                            strokeWidth: "5", 
-                            // fill="rgba(255,255,255,0.1)"
-                            r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
+                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
                 react_1.default.createElement("div", { style: { marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
                     react_1.default.createElement("h3", null, currentSong.name))),
             react_1.default.createElement("div", { style: {
@@ -49565,327 +49595,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports["default"] = Musializer;
+exports["default"] = Test;
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
-const Slider_1 = __webpack_require__(/*! ../components/Slider */ "./src/components/Slider.tsx");
-function Musializer() {
-    const [isPlaying, setIsPlaying] = (0, react_2.useState)(true);
-    const [volume, setVolume] = (0, react_2.useState)(50);
-    const [test, setTest] = (0, react_2.useState)(0);
-    const [bass, setBass] = (0, react_2.useState)(false);
-    const [audioData, setAudioData] = (0, react_2.useState)(new Uint8Array(0));
-    const audioRef = (0, react_2.useRef)(null);
-    const analyserRef = (0, react_2.useRef)(null);
-    const audioContextRef = (0, react_2.useRef)(null);
-    const [bassIntensity, setBassIntensity] = (0, react_2.useState)(0);
-    (0, react_2.useEffect)(() => {
-        if (!audioRef.current) {
-            audioRef.current = new Audio("./media/sounds/check1.mp3");
-            audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
-            const source = audioContextRef.current.createMediaElementSource(audioRef.current);
-            analyserRef.current = audioContextRef.current.createAnalyser();
-            source.connect(analyserRef.current);
-            analyserRef.current.connect(audioContextRef.current.destination);
-            analyserRef.current.fftSize = 256;
-            const bufferLength = analyserRef.current.frequencyBinCount;
-            setAudioData(new Uint8Array(bufferLength));
-        }
-        if (audioRef.current) {
-            audioRef.current.volume = volume / 100;
-        }
-        const updateAudioData = () => {
-            if (analyserRef.current) {
-                const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-                analyserRef.current.getByteFrequencyData(dataArray);
-                setAudioData(dataArray);
-                const bassRange = dataArray.slice(0, 2);
-                const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-                if (intensity > 509) {
-                    setBass(true);
-                }
-                else {
-                    setBass(false);
-                }
-            }
-            requestAnimationFrame(updateAudioData);
-        };
-        updateAudioData();
-        document.addEventListener('keydown', handleKeyDown);
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [volume, isPlaying]);
-    const handleKeyDown = (event) => {
-        if (event.code === 'Space') {
-            event.preventDefault();
-            handlePlayClick();
-        }
-    };
-    function handlePlayClick() {
-        var _a, _b;
-        setIsPlaying(!isPlaying);
-        if (isPlaying) {
-            if (audioRef.current) {
-                audioRef.current.currentTime = 15;
-            }
-            (_a = audioRef.current) === null || _a === void 0 ? void 0 : _a.play();
-        }
-        else {
-            (_b = audioRef.current) === null || _b === void 0 ? void 0 : _b.pause();
-        }
-    }
+function Test() {
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
-        react_1.default.createElement("div", { style: { display: "flex", flexDirection: 'row', justifyContent: 'center', alignItems: 'center' } },
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: 'flex', justifyContent: 'center', alignItems: 'center' }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.8, stiffness: 50 } },
-                react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: '50px' } }, isPlaying ? "play_arrow" : "pause")),
-            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column', paddingLeft: '50px' } },
-                react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
-                react_1.default.createElement(Slider_1.Slider, { value: bassIntensity, set: setBassIntensity }, "Intensity"),
-                react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
-        react_1.default.createElement("div", { style: { margin: '21.44px' } }),
-        react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
-            react_1.default.createElement("div", { className: "visualizer" }, Array.from(audioData).slice(0, 64).map((value, index) => {
-                const bassValue = index < audioData.length / 4 ? value : value;
-                return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0 }, animate: { height: bassValue }, transition: { duration: 0.05 } }));
-            })))));
+        react_1.default.createElement(framer_motion_1.motion.h1, null, "Test")));
 }
-// import React from 'react'
-// import {useState, useEffect, useRef} from "react"
-// import {motion, useAnimation, useDragControls} from "framer-motion"
-// import { Slider } from '../components/Slider'
-// export default function Musializer() {
-//     const [isPlaying, setIsPlaying] = useState(true)
-//     const [volume, setVolume] = useState(50)
-//     const [test, setTest] = useState(0)
-//     const [bass, setBass] = useState(false)
-//     const [audioData, setAudioData] = useState<Uint8Array>(new Uint8Array(0));
-//     const audioRef = useRef<HTMLAudioElement | null>(null);
-//     const analyserRef = useRef<AnalyserNode| null>(null);
-//     const audioContextRef = useRef<AudioContext | null>(null);
-//     const [bassIntensity, setBassIntensity] = useState(0);
-//     const canvasRef = useRef<HTMLCanvasElement>(null);
-//     const [resetTrigger, setResetTrigger] = useState(0);
-//   useEffect(() => {
-//     const handleThemeToggle = () => resetScene();
-//     setTimeout(() => {
-//         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
-//         if (darkmodeToggleButton) {
-//             darkmodeToggleButton.addEventListener('click', handleThemeToggle);
-//         }
-//     }, 1000);
-//     return () => {
-//         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
-//         if (darkmodeToggleButton) {
-//             darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
-//         }
-//     };
-// }, []);
-//     useEffect(() => {
-//        if (!audioRef.current) {
-//         audioRef.current = new Audio("./media/sounds/check1.mp3") 
-//         // audioRef.current = new Audio("./media/sounds/didITellYou.mp3") 
-//         audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-//         const source = audioContextRef.current.createMediaElementSource(audioRef.current);
-//         analyserRef.current = audioContextRef.current.createAnalyser();
-//         source.connect(analyserRef.current);
-//         analyserRef.current.connect(audioContextRef.current.destination);
-//         analyserRef.current.fftSize = 256; 
-//         const bufferLength = analyserRef.current.frequencyBinCount;
-//         setAudioData(new Uint8Array(bufferLength));
-//         }
-//         if (audioRef.current) {
-//             audioRef.current.volume = volume / 100;
-//           }
-//       document.addEventListener('keydown', handleKeyDown);
-//       return () => {
-//         document.removeEventListener('keydown', handleKeyDown);
-//       };
-//     }, [volume, isPlaying]);
-//     useEffect(() => {
-//       const canvasDiv= document.getElementById("canvasDiv")
-//       if (!canvasRef.current || !canvasDiv|| !audioRef.current) return;
-//       const canvasDivRect = canvasDiv.getBoundingClientRect()
-//       let ww = canvasDivRect.width
-//       let wh = canvasDivRect.height
-//       console.log(canvasDivRect.width,canvasDivRect.height)
-//         const canvas = canvasRef.current 
-//         const ctx = canvas.getContext("2d", {willReadFrequently: true,}) as CanvasRenderingContext2D
-//         var particles: Particle[] = []
-//         let amount = 0
-//         let mouse = {x:ww/2, y:wh/2}
-//         let bounceRadius = 1;
-//         let radius = 0.5
-//         const color = [
-//             getComputedStyle(document.documentElement).getPropertyValue(
-//               "--particle-color"
-//             ),
-//           ];
-//         class Particle {
-//             x: number;
-//             y: number;
-//             dest: { x: number; y: number };
-//             r: number;
-//             vx: number;
-//             vy: number;
-//             accX: number;
-//             accY: number;
-//             friction: number;
-//             color: string[];
-//             constructor(x: number, y: number) {
-//               this.x = x;
-//               this.y = y;
-//               this.dest = {
-//                 x: x,
-//                 y: y,
-//               };
-//               this.r = 5;
-//               this.vx = 0;
-//               this.vy = 0;
-//               this.accX = 0;
-//               this.accY = 0;
-//               this.friction = 0.7;
-//               this.color = color;
-//             }
-//             render() {
-//               this.accX = (this.dest.x - this.x) / 100;
-//               this.accY = (this.dest.y - this.y) / 100;
-//               this.vx += this.accX;
-//               this.vy += this.accY;
-//               this.vx *= this.friction;
-//               this.vy *= this.friction;
-//               this.x += this.vx;
-//               this.y += this.vy;
-//               ctx.fillStyle = this.color[0];
-//               ctx.beginPath();
-//               ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-//               ctx.fill();
-//               let a = this.x - mouse.x;
-//               let b = this.y - mouse.y;
-//               let distance = Math.sqrt(a * a + b * b);
-//               if (distance < bounceRadius * 60) {
-//                 this.accX = this.x - mouse.x;
-//                 this.accY = this.y - mouse.y;
-//                 this.vx += this.accX;
-//                 this.vy += this.accY;
-//               }
-//               if (distance > bounceRadius * 250) {
-//                 this.accX = (this.dest.x - this.x) / 10;
-//                 this.accY = (this.dest.y - this.y) / 10;
-//                 this.vx += this.accX;
-//                 this.vy += this.accY;
-//               }
-//             }
-//           }
-//     function resizeCanvas() {
-//         const rectWidth = canvasDivRect.width;
-//         const rectHeight = canvasDivRect.height;
-//         canvas.width = rectWidth;
-//         canvas.height = rectHeight;
-//         const centerX = rectWidth / 2;
-//         const centerY = (rectHeight / 2) - 100;
-//         const particleSpacing = 20;
-//         console.log(rectWidth, rectHeight);
-//         particles = [];
-//         for (let x = -rectWidth; x <= rectWidth; x += particleSpacing) {
-//             for (let y = -rectHeight; y <= rectHeight; y += particleSpacing) {
-//                 particles.push(new Particle(centerX + x, centerY + y));
-//             }
-//         }
-//         amount = particles.length;
-//     }
-//     function initScene() {
-//         resizeCanvas();
-//         window.addEventListener("resize", resizeCanvas);
-//     }
-//     const updateAndRender = () => {
-//         if (analyserRef.current) {
-//             const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-//             analyserRef.current.getByteFrequencyData(dataArray);
-//             setAudioData(dataArray);
-//             const bassRange = dataArray.slice(0, 2);
-//             const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-//             const bass = intensity > 509;
-//             setBass(bass);
-//             bounceRadius = bass ? 2 : 0.5;
-//         }
-//         ctx.clearRect(0, 0, canvas.width, canvas.height);
-//         particles.forEach((particle) => {
-//             particle.render();
-//         });
-//         requestAnimationFrame(updateAndRender);
-//     };
-//     window.addEventListener("resize", initScene);
-//     initScene();
-//     requestAnimationFrame(updateAndRender);
-//     return () => {
-//         window.removeEventListener("resize", initScene);
-//     };
-// }, [resetTrigger]);
-// function resetScene() {
-//     setResetTrigger(prev => prev + 1);
-//     console.log('reset')
-// }
-//     const handleKeyDown = (event: KeyboardEvent) => {
-//         if (event.code === 'Space') {
-//           event.preventDefault();
-//           handlePlayClick();
-//         }
-//       };
-//     function handlePlayClick() {
-//         setIsPlaying(!isPlaying);
-//         if (isPlaying) {
-//             if (audioRef.current) {
-//                 audioRef.current.currentTime = 15
-//             }
-//             audioRef.current?.play()
-//         }
-//         else {
-//             audioRef.current?.pause()
-//         }
-//     }
-//     return(
-//         <div className="bodyCenter">
-//                 <motion.h1>
-//                     Musializer
-//                 </motion.h1>
-//                 <div style={{display:"flex", flexDirection:'row', justifyContent:'center',alignItems: 'center'}}>                
-//                     <motion.button className="playButton" style={{display:'flex', justifyContent:'center', alignItems:'center'}} onMouseDown={handlePlayClick}
-//                     animate={{ scale: bass? 1.5 : 1 }}
-//                     transition={{type:"spring", duration: 0.2}}
-//                     >
-//                         <span className="material-symbols-outlined" style={{fontSize: '50px'}}>
-//                         {isPlaying? "play_arrow" : "pause"} 
-//                         </span>
-//                     </motion.button>
-//                 <div style={{display:'flex',flexDirection:'column', paddingLeft:'50px'}}>
-//                     <Slider value={volume} set={setVolume}>
-//                         Volume
-//                     </Slider>
-//                     <Slider value={bassIntensity} set={setBassIntensity}>
-//                         Intensity
-//                     </Slider>
-//                     <Slider value={test} set={setTest}>
-//                        Test 
-//                     </Slider>
-//                 </div>
-//                 </div>
-//                 <div style={{margin:'10px'}} />
-//             <div id="canvasDiv" style={{height:'18rem', position:'relative'}}>
-//                 <canvas
-//                     ref={canvasRef}
-//                     style={{
-//                         position:'absolute',
-//                         width: '100%',
-//                         height: '100%',
-//                     }}
-//                 ></canvas>
-//               </div>
-//         </div>
-//     )
-// }
 
 
 /***/ }),
@@ -50300,6 +50016,16 @@ const navbarContainer = document.getElementById('navbarRoot');
 const navbarRoot = (0, client_1.createRoot)(navbarContainer);
 navbarRoot.render(react_1.default.createElement(Navbar_1.default, { activePage: Window_1.startPage }));
 
+
+/***/ }),
+
+/***/ "./src/media/icon.png":
+/*!****************************!*\
+  !*** ./src/media/icon.png ***!
+  \****************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "ce9e9dc140ab5f5fea27.png";
 
 /***/ }),
 
