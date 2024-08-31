@@ -43,9 +43,9 @@ export default function Musializer() {
         setIsEqualizer(!isEqualizer);
         console.log('equalizer',isEqualizer);
 
-        // setTimeout(() => {
-        //     resetScene()
-        // }, 100);
+        setTimeout(() => {
+            resetScene()
+        }, 100);
         }
 
 
