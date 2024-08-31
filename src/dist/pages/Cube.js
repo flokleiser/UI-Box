@@ -176,14 +176,8 @@ function Cube() {
                         "bottom-left",
                         "bottom-center",
                         "bottom-right"].map((id, index) => (react_1.default.createElement("div", { key: id, className: "section", "data-section": index, id: id, onMouseDown: gridClick }))),
-                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', 
-                        // drag
-                        // dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                        // onDragEnd={handleDragEnd}
-                        style: {
+                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', style: {
                             display: "flex",
-                            // justifyContent:"center",
-                            // alignItems:"center",
                             justifyContent: "flex-start",
                             alignItems: "flex-start",
                             rotateX: compositeRotateX,
@@ -195,6 +189,5 @@ function Cube() {
                                 position: 'absolute',
                                 justifySelf: "center",
                                 backgroundColor: "rgba(50,50,50,0)"
-                                // transform:"translate(-50%,-50%)"
                             } })))))));
 }

@@ -47681,6 +47681,68 @@ exports["default"] = Navbar;
 
 /***/ }),
 
+/***/ "./src/components/Overlay.tsx":
+/*!************************************!*\
+  !*** ./src/components/Overlay.tsx ***!
+  \************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const Overlay = ({ isVisible, onClose, children }) => {
+    (0, react_1.useEffect)(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                onClose();
+            }
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [onClose]);
+    const handleOverlayClick = (event) => {
+        if (event.target === event.currentTarget) {
+            onClose();
+        }
+    };
+    if (!isVisible)
+        return null;
+    return (react_1.default.createElement("div", { className: "overlay", onClick: handleOverlayClick },
+        react_1.default.createElement("div", { className: "overlay-div" },
+            react_1.default.createElement("button", { className: "close-button", onClick: onClose },
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "close")),
+            react_1.default.createElement("div", { className: "overlay-content-inner" }, children))));
+};
+exports["default"] = Overlay;
+
+
+/***/ }),
+
 /***/ "./src/components/Slider.tsx":
 /*!***********************************!*\
   !*** ./src/components/Slider.tsx ***!
@@ -48347,14 +48409,8 @@ function Cube() {
                         "bottom-left",
                         "bottom-center",
                         "bottom-right"].map((id, index) => (react_1.default.createElement("div", { key: id, className: "section", "data-section": index, id: id, onMouseDown: gridClick }))),
-                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', 
-                        // drag
-                        // dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                        // onDragEnd={handleDragEnd}
-                        style: {
+                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', style: {
                             display: "flex",
-                            // justifyContent:"center",
-                            // alignItems:"center",
                             justifyContent: "flex-start",
                             alignItems: "flex-start",
                             rotateX: compositeRotateX,
@@ -48366,7 +48422,6 @@ function Cube() {
                                 position: 'absolute',
                                 justifySelf: "center",
                                 backgroundColor: "rgba(50,50,50,0)"
-                                // transform:"translate(-50%,-50%)"
                             } })))))));
 }
 
@@ -48784,12 +48839,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Musializer;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 const Slider_1 = __webpack_require__(/*! ../components/Slider */ "./src/components/Slider.tsx");
 const Music_1 = __webpack_require__(/*! ../components/Music */ "./src/components/Music.tsx");
+const Overlay_1 = __importDefault(__webpack_require__(/*! ../components/Overlay */ "./src/components/Overlay.tsx"));
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);
@@ -48809,9 +48868,21 @@ function Musializer() {
     const initialOffset = circumference;
     const [offset, setOffset] = (0, react_1.useState)(initialOffset);
     const [currentSongIndex, setCurrentSongIndex] = (0, react_1.useState)(0);
-    const currentSong = Music_1.music[currentSongIndex];
+    // const currentSong = music[currentSongIndex];
+    const [isOverlayVisible, setOverlayVisible] = (0, react_1.useState)(false);
+    const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
     const nextSong = () => {
         setCurrentSongIndex((currentSongIndex + 1) % Music_1.music.length);
+    };
+    const handleMusicLibraryClick = () => {
+        setOverlayVisible(true);
+    };
+    const handleCloseOverlay = () => {
+        setOverlayVisible(false);
+    };
+    const handleSongSelect = (song) => {
+        setCurrentSong(song);
+        setOverlayVisible(false);
     };
     (0, react_1.useEffect)(() => {
         if (audioRef.current) {
@@ -48839,6 +48910,7 @@ function Musializer() {
             }
         };
     }, []);
+    //audio duration and time
     (0, react_1.useEffect)(() => {
         let audio = audioRef.current;
         if (!audio)
@@ -49024,61 +49096,36 @@ function Musializer() {
         setResetTrigger((prev) => prev + 1);
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement("div", { style: {
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'start',
-                alignItems: 'center',
-            } },
+        react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: nextSong, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music"))),
-        react_1.default.createElement("div", { style: {
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-            } },
-            react_1.default.createElement("div", { style: {
-                    position: "relative",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                } },
-                react_1.default.createElement("div", { style: {
-                        position: "relative",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    } },
-                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: {
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, 
+                // onMouseDown={nextSong}
+                onClick: handleMusicLibraryClick, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music")),
+            react_1.default.createElement(Overlay_1.default, { isVisible: isOverlayVisible, onClose: handleCloseOverlay },
+                react_1.default.createElement("h3", null,
+                    react_1.default.createElement("div", null, Music_1.music.map((song, index) => (react_1.default.createElement("div", { className: "overlayContent", style: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }, key: index, onClick: () => handleSongSelect(song) },
+                        song.name,
+                        " - ",
+                        song.artist))))))),
+        react_1.default.createElement("div", { style: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", } },
+            react_1.default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start" } },
+                react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "30px" } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
-                    react_1.default.createElement(framer_motion_1.motion.svg, { style: {
-                            position: "absolute",
-                            zIndex: -10,
-                        }, width: "200", height: "200" },
+                    react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
                         react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
-                react_1.default.createElement("div", { style: { marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
-                    react_1.default.createElement("h3", null, currentSong.name))),
-            react_1.default.createElement("div", { style: {
-                    display: "flex",
-                    flexDirection: "column",
-                    paddingLeft: "50px",
-                } },
+                react_1.default.createElement("div", { style: { marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-start" } },
+                    react_1.default.createElement("h3", { style: { display: "flex", width: '150px', marginLeft: "10px" } },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "music_note"),
+                        currentSong.name))),
+            react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column", paddingLeft: "50px", } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
                 react_1.default.createElement(Slider_1.Slider, { value: bounceRadiusIntensity, set: setBounceRadiusIntensity, min: 0, max: 3 }, "Intensity"),
                 react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
         react_1.default.createElement("div", { style: { padding: "5px" } }),
         react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" },
-            react_1.default.createElement("canvas", { ref: canvasRef, style: {
-                    position: "absolute",
-                    marginLeft: "-3px",
-                    marginTop: "-3px",
-                } }))));
+            react_1.default.createElement("canvas", { ref: canvasRef, style: { position: "absolute", marginLeft: "-3px", marginTop: "-3px", } }))));
 }
 
 
