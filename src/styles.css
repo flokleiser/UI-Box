@@ -6,6 +6,10 @@
   --canvas-colorelement-light: #333;
 }
 
+* {
+  outline:none
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
   Arial, sans-serif;
