@@ -2,7 +2,6 @@ export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | '
 
 export const startPage = "Musializer"
 
-
 declare global {
   interface Window {
       loadPage: (page: Page) => void;
@@ -14,5 +13,14 @@ declare global {
         }
   }
 }
+
+const setActivePage = (page: Page) => {
+  console.log('setActivePage', page);
+  const event = new CustomEvent('pageChange', {detail: {page}})
+  window.dispatchEvent(event)
+}
+
+window.setActivePage = setActivePage
+
 
 export default Window
