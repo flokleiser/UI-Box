@@ -32,4 +32,4 @@ jobs:
       - name: Push changes to merge-test
         run: git push origin merge-test 
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
