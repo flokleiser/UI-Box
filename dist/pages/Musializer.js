@@ -22,12 +22,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Musializer;
 const react_1 = __importStar(require("react"));
 const framer_motion_1 = require("framer-motion");
 const Slider_1 = require("../components/Slider");
 const Music_1 = require("../components/Music");
+const Overlay_1 = __importDefault(require("../components/Overlay"));
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);
@@ -47,9 +51,21 @@ function Musializer() {
     const initialOffset = circumference;
     const [offset, setOffset] = (0, react_1.useState)(initialOffset);
     const [currentSongIndex, setCurrentSongIndex] = (0, react_1.useState)(0);
-    const currentSong = Music_1.music[currentSongIndex];
+    // const currentSong = music[currentSongIndex];
+    const [isOverlayVisible, setOverlayVisible] = (0, react_1.useState)(false);
+    const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
     const nextSong = () => {
         setCurrentSongIndex((currentSongIndex + 1) % Music_1.music.length);
+    };
+    const handleMusicLibraryClick = () => {
+        setOverlayVisible(true);
+    };
+    const handleCloseOverlay = () => {
+        setOverlayVisible(false);
+    };
+    const handleSongSelect = (song) => {
+        setCurrentSong(song);
+        setOverlayVisible(false);
     };
     (0, react_1.useEffect)(() => {
         if (audioRef.current) {
@@ -77,6 +93,7 @@ function Musializer() {
             }
         };
     }, []);
+    //audio duration and time
     (0, react_1.useEffect)(() => {
         let audio = audioRef.current;
         if (!audio)
@@ -262,59 +279,34 @@ function Musializer() {
         setResetTrigger((prev) => prev + 1);
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement("div", { style: {
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'start',
-                alignItems: 'center',
-            } },
+        react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: nextSong, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music"))),
-        react_1.default.createElement("div", { style: {
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-            } },
-            react_1.default.createElement("div", { style: {
-                    position: "relative",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                } },
-                react_1.default.createElement("div", { style: {
-                        position: "relative",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    } },
-                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: {
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, 
+                // onMouseDown={nextSong}
+                onClick: handleMusicLibraryClick, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music")),
+            react_1.default.createElement(Overlay_1.default, { isVisible: isOverlayVisible, onClose: handleCloseOverlay },
+                react_1.default.createElement("h3", null,
+                    react_1.default.createElement("div", null, Music_1.music.map((song, index) => (react_1.default.createElement("div", { className: "overlayContent", style: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }, key: index, onClick: () => handleSongSelect(song) },
+                        song.name,
+                        " - ",
+                        song.artist))))))),
+        react_1.default.createElement("div", { style: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", } },
+            react_1.default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start" } },
+                react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "30px" } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
-                    react_1.default.createElement(framer_motion_1.motion.svg, { style: {
-                            position: "absolute",
-                            zIndex: -10,
-                        }, width: "200", height: "200" },
+                    react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
                         react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
-                react_1.default.createElement("div", { style: { marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
-                    react_1.default.createElement("h3", null, currentSong.name))),
-            react_1.default.createElement("div", { style: {
-                    display: "flex",
-                    flexDirection: "column",
-                    paddingLeft: "50px",
-                } },
+                react_1.default.createElement("div", { style: { marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-start" } },
+                    react_1.default.createElement("h3", { style: { display: "flex", width: '150px', marginLeft: "10px" } },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "music_note"),
+                        currentSong.name))),
+            react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column", paddingLeft: "50px", } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
                 react_1.default.createElement(Slider_1.Slider, { value: bounceRadiusIntensity, set: setBounceRadiusIntensity, min: 0, max: 3 }, "Intensity"),
                 react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
         react_1.default.createElement("div", { style: { padding: "5px" } }),
         react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" },
-            react_1.default.createElement("canvas", { ref: canvasRef, style: {
-                    position: "absolute",
-                    marginLeft: "-3px",
-                    marginTop: "-3px",
-                } }))));
+            react_1.default.createElement("canvas", { ref: canvasRef, style: { position: "absolute", marginLeft: "-3px", marginTop: "-3px", } }))));
 }

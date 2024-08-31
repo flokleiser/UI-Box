@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
 import { music} from "../components/Music";
+import Overlay from "../components/Overlay";
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -26,11 +27,27 @@ export default function Musializer() {
     const [offset, setOffset] = useState(initialOffset);
 
     const [currentSongIndex, setCurrentSongIndex] = useState(0);
-    const currentSong = music[currentSongIndex];
+    // const currentSong = music[currentSongIndex];
+
+    const [isOverlayVisible, setOverlayVisible] = useState(false);
+    const [currentSong, setCurrentSong] = useState(music[0]);
 
     const nextSong = () => {
         setCurrentSongIndex((currentSongIndex + 1) % music.length);
     }
+
+    const handleMusicLibraryClick = () => {
+        setOverlayVisible(true)
+    }
+    const handleCloseOverlay = () => {
+        setOverlayVisible(false)
+    }
+
+  const handleSongSelect = (song: typeof music[0]) => {
+    setCurrentSong(song);
+    setOverlayVisible(false);
+  };
+
 
     useEffect(() => {
         if (audioRef.current) {
@@ -48,30 +65,22 @@ export default function Musializer() {
     useEffect(() => {
         const handleThemeToggle = () => resetScene();
         setTimeout(() => {
-            const darkmodeToggleButton = document.getElementById(
-                "darkmodeToggleButton"
-            );
+            const darkmodeToggleButton = document.getElementById("darkmodeToggleButton");
             if (darkmodeToggleButton) {
-                darkmodeToggleButton.addEventListener(
-                    "click",
-                    handleThemeToggle
-                );
+                darkmodeToggleButton.addEventListener("click",handleThemeToggle);
             }
         }, 1000);
 
         return () => {
-            const darkmodeToggleButton = document.getElementById(
-                "darkmodeToggleButton"
-            );
+            const darkmodeToggleButton = document.getElementById("darkmodeToggleButton");
             if (darkmodeToggleButton) {
-                darkmodeToggleButton.removeEventListener(
-                    "click",
-                    handleThemeToggle
-                );
+                darkmodeToggleButton.removeEventListener("click",handleThemeToggle);
             }
         };
     }, []);
 
+
+    //audio duration and time
     useEffect(() => {
         let audio = audioRef.current;
         if (!audio) return;
@@ -318,80 +327,51 @@ export default function Musializer() {
 
     return (
         <div className="bodyCenter">
-            <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'start',
-              alignItems: 'center',
-            }}
-          >
-            <motion.h1>Musializer</motion.h1>
+            <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'start',alignItems: 'center'}}>
+                <motion.h1>Musializer</motion.h1>
 
-            <motion.button
-              className="navbarButton"
-              style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-              onMouseDown={nextSong}
-              whileHover={{scale: 1.1}}
-              animate={{ scale: bass ? 1.5 : 1 }}
-              transition={{ type: "spring", duration: 0.2 }}
-            >
-              <span className="material-symbols-outlined">library_music</span>
-            </motion.button>
-          </div>
-
-
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-
-
-
-                <div
-                    style={{
-                        position: "relative",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                    }}
+                <motion.button className="navbarButton"
+                style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+                // onMouseDown={nextSong}
+                onClick={handleMusicLibraryClick}
+                whileHover={{scale: 1.1}}
+                animate={{ scale: bass ? 1.5 : 1 }}
+                transition={{ type: "spring", duration: 0.2 }}
                 >
+                    <span className="material-symbols-outlined">library_music</span>
+                </motion.button>
+                <Overlay isVisible={isOverlayVisible} onClose={handleCloseOverlay}>
+                    <h3>
+                    <div>
+                    {music.map((song, index) => (
+                        <div className="overlayContent" style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"center"}} key={index} onClick={() => handleSongSelect(song)}>
+                        {song.name} - {song.artist}
+                        </div>
+                    ))}
+                    </div>
+                    </h3>
+                </Overlay>
+            </div>
 
-                    <div style={{
-                       position: "relative",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                        >
+
+            <div
+                style={{display: "flex",flexDirection: "row",justifyContent: "space-between",alignItems: "center",}}>
+                <div style={{position: "relative",display: "flex",flexDirection: "column",justifyContent: "center",alignItems:"flex-start"}}>
+                    <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"30px" }}>
                     <motion.button
                         className="playButton"
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
+                        style={{ display: "flex", justifyContent: "center", alignItems: "center", }}
                         onMouseDown={handlePlayClick}
                         animate={{ scale: bass ? 1.5 : 1 }}
                         transition={{ type: "spring", duration: 0.2 }}
                     >
-                        <span
-                            className="material-symbols-outlined"
-                            style={{ fontSize: "50px" }}
-                        >
+                        <span className="material-symbols-outlined" style={{ fontSize: "50px" }} >
                             {isPlaying ? "play_arrow" : "pause"}
                         </span>
                     </motion.button>
 
                     <motion.svg
-                        style={{
-                            position: "absolute",
-                            zIndex: -10,
-                        }}
+                        style={{ position: "absolute", zIndex: -10, }}
                         width="200"
                         height="200"
                     >
@@ -410,23 +390,22 @@ export default function Musializer() {
                     </motion.svg>
                     </div>
 
-                    <div 
-                    style={{marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}
-                    >
-                        <h3 
-                        >{currentSong.name}</h3> 
+                    <div style={{marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center",alignItems: "flex-start"}} >
+                        <h3 style={{display:"flex", width:'150px', marginLeft:"10px"}}>
+                        <span className="material-symbols-outlined">
+                            music_note
+                        </span>
+                            {currentSong.name}
+                        </h3> 
                     </div>
                 </div>
 
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        paddingLeft: "50px",
-                    }}
-                >
-                    <Slider value={volume} set={setVolume}>
+                <div style={{ display: "flex", flexDirection: "column", paddingLeft: "50px", }} >
+                    <Slider value={volume} set={setVolume} 
+                    // className="material-symbols-outlined"
+                    >
                         Volume
+                        {/* volume_up */}
                     </Slider>
                     <Slider
                         value={bounceRadiusIntensity}
@@ -444,14 +423,7 @@ export default function Musializer() {
             <div style={{ padding: "5px" }} />
 
             <div id="canvasDiv" className="canvasDiv">
-                <canvas
-                    ref={canvasRef}
-                    style={{
-                        position: "absolute",
-                        marginLeft: "-3px",
-                        marginTop: "-3px",
-                    }}
-                ></canvas>
+                <canvas ref={canvasRef} style={{ position: "absolute", marginLeft: "-3px", marginTop: "-3px", }}></canvas>
             </div>
         </div>
     );

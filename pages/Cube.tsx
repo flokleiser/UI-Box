@@ -180,14 +180,9 @@ export default function Cube() {
 
                         <motion.div className='cube'
 
-                            // drag
-                            // dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                            // onDragEnd={handleDragEnd}
 
                             style={{
                                 display:"flex",
-                                // justifyContent:"center",
-                                // alignItems:"center",
 
                                 justifyContent:"flex-start",
                                 alignItems:"flex-start",
@@ -200,16 +195,6 @@ export default function Cube() {
                             whileTap={{scale:0.95}}
                         >
 
-                        {/* <div className="cube"  */}
-                            {/* style={{ position:'absolute', 
-                                justifySelf:'left', 
-                                backgroundColor:"rgba(50,50,50,0.5", 
-                                width:50, 
-                                height:50,
-                                margin:6.25
-                            }} 
-                        /> */}
-
 
                         <motion.div className="cube"
                             drag
@@ -220,7 +205,6 @@ export default function Cube() {
                                     position:'absolute',
                                     justifySelf:"center",
                                     backgroundColor:"rgba(50,50,50,0)"
-                                    // transform:"translate(-50%,-50%)"
 
                                 }}
                             />
