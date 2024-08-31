@@ -19,7 +19,7 @@ export default function Home() {
               alignItems: 'center',
             }}
           >
-            <h1> UI-Box (Merged)</h1>
+            <h1> UI-Box</h1>
 
             <motion.button
               className="navbarButton"
