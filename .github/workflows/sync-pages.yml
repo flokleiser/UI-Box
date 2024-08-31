@@ -3,7 +3,6 @@ name: Sync src/pages from dev to main
 permissions:
   contents: write
 
-
 on:
   push:
     branches:
@@ -25,7 +24,7 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
       - name: Checkout main branch
-        run: git checkout merge-test
+        run: git checkout merge
 
       - name: Sync pages, components and styles
         run: |
@@ -34,6 +33,6 @@ jobs:
           git commit -m "Sync src/pages and src/styles.css from dev branch" || echo "No changes to commit"
 
       - name: Push changes to main
-        run: git push merge-test
+        run: git push merge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
