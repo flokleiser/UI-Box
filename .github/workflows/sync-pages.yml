@@ -24,7 +24,7 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
       - name: Checkout merge branch
-        run: git checkout merge
+        run: git checkout merging-test
 
       - name: Sync pages, components and styles
         run: |
@@ -33,6 +33,6 @@ jobs:
           git commit -m "Sync src/pages and src/styles.css from dev branch" || echo "No changes to commit"
 
       - name: Push changes to merge
-        run: git push origin/merge
+        run: git push merging-test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
