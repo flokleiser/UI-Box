@@ -33,6 +33,6 @@ jobs:
           git commit -m "Sync src/pages and src/styles.css from dev branch" || echo "No changes to commit"
 
       - name: Push changes to merge
-        run: git push merging-test
+        run: git push origin merging-test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
