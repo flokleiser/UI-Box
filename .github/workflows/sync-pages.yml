@@ -1,0 +1,35 @@
+name: Sync src/pages from dev to merge-test 
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  sync-pages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Checkout merge-test branch
+        run: git checkout merge-test 
+
+      - name: Sync src/pages folder
+        run: |
+          git checkout dev -- src/pages
+          git add src/pages
+          git commit -m "Sync src/pages from dev branch" || echo "No changes to commit"
+
+      - name: Push changes to merge-test
+        run: git push origin merge-test 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
