@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
-// import check1 from "../../assets/media/sounds/check1.mp3";
-
-// import {music} from "../components/Music";
-// import { check1Sound } from "../components/Music";
 import { music} from "../components/Music";
 
 export default function Musializer() {

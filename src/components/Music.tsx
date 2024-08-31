@@ -1,5 +1,5 @@
-import check1 from "../../assets/media/sounds/check1.mp3";
-import didITellYou from "../../assets/media/sounds/didITellYou.mp3";
+import check1 from "../media/sounds/check1.mp3";
+import didITellYou from "../media/sounds/didITellYou.mp3";
 
 interface Audio {
     name: string;
@@ -14,7 +14,7 @@ const music: Audio[] = [
         file: check1
     },
     {
-        name: "didITellYou",
+        name: "did I Tell You",
         artist: "Kettema",
         file: didITellYou
     }

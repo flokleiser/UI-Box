@@ -1,6 +1,6 @@
 import React from 'react'
 import {motion} from 'framer-motion'
-import icon from '../../assets/media/icon.png';
+import icon from '../media/icon.png';
 
 export default function Home() {
 
@@ -19,7 +19,7 @@ export default function Home() {
               alignItems: 'center',
             }}
           >
-            <h1> UI-Box Test Test</h1>
+            <h1> UI-Box Test Merge</h1>
 
             <motion.button
               className="navbarButton"
@@ -33,7 +33,6 @@ export default function Home() {
           </div>
 
           <div className="logo">
-            {/* <img className="logoImg" src="../../assets/media/icon.png" /> */}
             <img className='logoImg' src={icon} />
           </div>
         </div>
