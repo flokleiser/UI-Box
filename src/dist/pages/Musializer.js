@@ -58,12 +58,10 @@ function Musializer() {
             audioRef.current.load();
         }
     }, [currentSong]);
-    //reload for proper alignment of canvas
     (0, react_1.useEffect)(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
     }, []);
-    //reset scene on theme toggle for proper darkmode
     (0, react_1.useEffect)(() => {
         const handleThemeToggle = () => resetScene();
         setTimeout(() => {
@@ -79,7 +77,6 @@ function Musializer() {
             }
         };
     }, []);
-    //setup for audio duration and current time
     (0, react_1.useEffect)(() => {
         let audio = audioRef.current;
         if (!audio)
@@ -265,24 +262,44 @@ function Musializer() {
         setResetTrigger((prev) => prev + 1);
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center', } },
-            react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: nextSong, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+        react_1.default.createElement("div", { style: {
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'start',
+                alignItems: 'center',
+            } },
+            react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer (Merged)"),
+            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "settingsButton", onMouseDown: nextSong, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music"))),
-        react_1.default.createElement("div", { style: { display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
-            react_1.default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "center" } },
-                react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center" } },
-                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center" }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+        react_1.default.createElement("div", { style: {
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+            } },
+            react_1.default.createElement("div", { style: {
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                } },
+                react_1.default.createElement("div", { style: {
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: {
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
                     react_1.default.createElement(framer_motion_1.motion.svg, { style: {
                             position: "absolute",
                             zIndex: -10,
                         }, width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { className: "progressCircle", 
-                            // stroke="#ddd"
-                            strokeWidth: "5", 
-                            // fill="rgba(255,255,255,0.1)"
-                            r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
+                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
                 react_1.default.createElement("div", { style: { marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
                     react_1.default.createElement("h3", null, currentSong.name))),
             react_1.default.createElement("div", { style: {

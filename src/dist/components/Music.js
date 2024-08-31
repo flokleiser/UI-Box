@@ -13,7 +13,7 @@ const music = [
         file: check1_mp3_1.default
     },
     {
-        name: "didITellYou",
+        name: "did I Tell You",
         artist: "Kettema",
         file: didITellYou_mp3_1.default
     }

@@ -27,6 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = App;
+require("../styles.css");
 const react_1 = __importStar(require("react"));
 const Home_1 = __importDefault(require("../pages/Home"));
 const Settings_1 = __importDefault(require("../pages/Settings"));
@@ -41,9 +42,20 @@ const Cube_1 = __importDefault(require("../pages/Cube"));
 const Test_1 = __importDefault(require("../pages/Test"));
 const Musializer_1 = __importDefault(require("../pages/Musializer"));
 const Window_1 = require("./Window");
-function App() {
+const react_router_dom_1 = require("react-router-dom");
+function Content() {
     const [page, setPage] = (0, react_1.useState)(Window_1.startPage);
     const [active, setActive] = (0, react_1.useState)(page);
+    const [activePage, setActivePage] = (0, react_1.useState)(Window_1.startPage);
+    (0, react_1.useEffect)(() => {
+        const handlePageChange = (event) => {
+            setActivePage(event.detail.page);
+        };
+        window.addEventListener('pageChange', handlePageChange);
+        return () => {
+            window.removeEventListener('pageChange', handlePageChange);
+        };
+    }, []);
     let CurrentPage;
     switch (page) {
         case 'Home':
@@ -97,3 +109,8 @@ function App() {
         react_1.default.createElement(CurrentPage, { loadPage: loadPage })));
 }
 ;
+function App() {
+    return (react_1.default.createElement(react_router_dom_1.MemoryRouter, null,
+        react_1.default.createElement(react_router_dom_1.Routes, null,
+            react_1.default.createElement(react_router_dom_1.Route, { path: "/", element: react_1.default.createElement(Content, null) }))));
+}
