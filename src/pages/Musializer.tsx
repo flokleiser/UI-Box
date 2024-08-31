@@ -1,3 +1,5 @@
+// to check out: https://github.com/hvianna/audioMotion-analyzer
+
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
