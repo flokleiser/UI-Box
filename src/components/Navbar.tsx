@@ -2,29 +2,13 @@ import React, { useState, useEffect, FC } from 'react';
 // import { Page } from '../renderer';
 import { Page } from './Window'
 import {motion} from 'framer-motion'
-// import 'material-icons/iconfont/outlined.css';
 
 
 interface NavbarProps {
   activePage: Page;
-  onNavigate: (page: Page) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
-
-  const [activeThemeSource, setThemeSource] = useState('system')
-
-  function toggleDarkMode() {
-    window.darkMode.toggle().then(() => {
-        window.darkMode.getThemeSource().then(setThemeSource)
-    })
-}
-
-  const handlePageChange = (page: Page) => {
-    if (window.setActivePage) {
-        window.setActivePage(page);
-    }
-};
+const Navbar: React.FC<NavbarProps> = ({ activePage }) => {
 
   const [isDark, setIsDark] = useState(false)
 
@@ -37,87 +21,72 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
       <nav>
         <div className="navbarLeft">
 
-          <button className={activePage === 'Home' ? "navbarButton active" : "navbarButton"} id="homeButton"
-          onClick={() => {
-            onNavigate('Home');
-          }} 
-          >
-            {/* <span className="material-symbols-outlined"> */}
-            {/* <span className="material-symbols-outlined"> */}
+          <button className={activePage === 'Home' ? "navbarButton active" : "navbarButton"} id="homeButton">
             <span className="material-symbols-outlined">
               home
             </span>
           </button>
 
-          <button className={activePage === 'Buttons' ? "navbarButton active" : "navbarButton"} id="buttonspageButton"
-          onClick={() => {
-            onNavigate('Buttons');
-          }}  
-          >
+          <button className={activePage === 'Buttons' ? "navbarButton active" : "navbarButton"} id="buttonspageButton">
             <span className="material-symbols-outlined">
               apps
             </span>
           </button>
 
-          <button className={activePage === 'Spinner' ? "navbarButton active" : "navbarButton"} id="spinnerpageButton"
-          onClick={() => onNavigate('Spinner')}  
-          >
+          <button className={activePage === 'Spinner' ? "navbarButton active" : "navbarButton"} id="spinnerpageButton">
             <span className="material-symbols-outlined">
               network_node
             </span>
           </button>
 
-          <button className={activePage === 'Particles' ? "navbarButton active" : "navbarButton"} id="particlespageButton"
-          onClick={() => onNavigate('Particles')}           
-          >
+          <button className={activePage === 'Particles' ? "navbarButton active" : "navbarButton"} id="particlespageButton">
             <span className="material-symbols-outlined">
               lens_blur
             </span>
           </button>
 
-          <button className={activePage === 'Switches' ? "navbarButton active" : "navbarButton"} id="switchespageButton"
-          onClick={() => onNavigate('Switches')}           
-          >
+          <button className={activePage === 'Switches' ? "navbarButton active" : "navbarButton"} id="switchespageButton">
             <span className="material-symbols-outlined">
               toggle_on 
             </span>
           </button>
 
-          <button className={activePage === 'Tether' ? "navbarButton active" : "navbarButton"} id="tetherpageButton"
-          onClick={() => onNavigate('Tether')} 
-          >
+          <button className={activePage === 'Tether' ? "navbarButton active" : "navbarButton"} id="tetherpageButton">
             <span className="material-symbols-outlined">
               tenancy
             </span>
           </button>
 
-          <button className={activePage === 'Ball' ? "navbarButton active" : "navbarButton"} id="ballpageButton"
-          onClick={() => onNavigate('Ball')} 
-          >
+          <button className={activePage === 'Ball' ? "navbarButton active" : "navbarButton"} id="ballpageButton">
             <span className="material-symbols-outlined">
               airline_stops
             </span>
           </button>
 
-          <button className={activePage === 'Joystick' ? "navbarButton active" : "navbarButton"} id="joystickpageButton"
-          onClick={() => onNavigate('Joystick')} 
-          >
+          <button className={activePage === 'Joystick' ? "navbarButton active" : "navbarButton"} id="joystickpageButton">
             <span className="material-symbols-outlined">
               joystick 
             </span>
           </button>
 
-          <button className={activePage === 'Cube' ? "navbarButton active" : "navbarButton"} id="cubepageButton"
-          onClick={() => onNavigate('Cube')} 
-          >
+          {/* <button className="navbarButton" id="lockpageButton">
+            <span className="material-symbols-outlined">
+                refresh
+            </span>
+          </button> */}
+
+          {/* <button className={activePage === 'Test' ? "navbarButton active" : "navbarButton"} id="testpageButton">
+            <span className="material-symbols-outlined">
+              quiz
+            </span>
+          </button> */}
+          <button className={activePage === 'Cube' ? "navbarButton active" : "navbarButton"} id="cubepageButton">
             <span className="material-symbols-outlined">
               deployed_code
             </span>
           </button>
 
-          <button className={activePage === 'Musializer' ? "navbarButton active" : "navbarButton"} id="musializerpageButton"
-          onClick={() => onNavigate('Musializer')} 
-          >
+          <button className={activePage === 'Musializer' ? "navbarButton active" : "navbarButton"} id="musializerpageButton">
             <span className="material-symbols-outlined">
               pause_circle
             </span>
@@ -127,10 +96,6 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
 
             <button className="settingsButton" id="darkmodeToggleButton"
             onMouseDown={toggleIcon}
-            onClick={() => {
-              toggleDarkMode();
-            }}
-
             >
               <span className="material-symbols-outlined" 
               // whileHover={{rotate:180}}

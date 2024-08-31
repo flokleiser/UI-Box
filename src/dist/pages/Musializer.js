@@ -269,7 +269,7 @@ function Musializer() {
                 alignItems: 'center',
             } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer (Merged)"),
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "settingsButton", onMouseDown: nextSong, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: nextSong, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                 react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music"))),
         react_1.default.createElement("div", { style: {
                 display: "flex",

@@ -1,8 +1,6 @@
-import'../styles.css'
-
 import React, { useState, useEffect, FC } from 'react';
 import Home from '../pages/Home';
-import Navbar from './Navbar'
+import Navbar from '../components/Navbar'
 import Settings from '../pages/Settings';
 import Buttons from '../pages/Buttons';
 import Spinner from '../pages/Spinner';
@@ -18,23 +16,10 @@ import Musializer from '../pages/Musializer';
 import {Page} from './Window'
 import { startPage } from './Window';
 
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 
-function Content() {
+export default function App() {
     const [page, setPage] = useState<Page>(startPage);
     const [active, setActive] = useState<Page>(page);
-
-    const [activePage, setActivePage] = useState<Page>(startPage);
-
-    useEffect(() => {
-        const handlePageChange = (event: CustomEvent) => {
-            setActivePage(event.detail.page);
-        }
-        window.addEventListener('pageChange', handlePageChange as EventListener);
-        return () => {
-            window.removeEventListener('pageChange', handlePageChange as EventListener);
-        }
-    }, []);
 
     let CurrentPage: React.ComponentType<{ loadPage: (page: Page) => void }>;
 
@@ -95,14 +80,3 @@ function Content() {
         </>
     )
 };
-
-export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Content/>} />
-      </Routes>
-    </Router>
-  );
-}
-
