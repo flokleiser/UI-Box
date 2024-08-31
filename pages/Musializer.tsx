@@ -27,14 +27,27 @@ export default function Musializer() {
     const [offset, setOffset] = useState(initialOffset);
 
     const [currentSongIndex, setCurrentSongIndex] = useState(0);
+    const [bassIntensity, setBassIntensity] = useState(0);
     // const currentSong = music[currentSongIndex];
 
     const [isOverlayVisible, setOverlayVisible] = useState(false);
     const [currentSong, setCurrentSong] = useState(music[0]);
 
+    const [isEqualizer, setIsEqualizer] = useState(false);  
+
     const nextSong = () => {
         setCurrentSongIndex((currentSongIndex + 1) % music.length);
     }
+
+    const handleEqualizerClick = () => {
+        setIsEqualizer(!isEqualizer);
+        console.log('equalizer',isEqualizer);
+
+        setTimeout(() => {
+            resetScene()
+        }, 100);
+        }
+
 
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true)
@@ -104,6 +117,26 @@ export default function Musializer() {
             audio.removeEventListener("timeupdate", setAudioTime);
         };
     });
+
+    //Old visualizer audio-updates
+    // if (isEqualizer) {
+    useEffect(() => {
+        const updateAudioData = () => {
+          if (analyserRef.current) {
+            const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+            analyserRef.current.getByteFrequencyData(dataArray);
+            setAudioData(dataArray);
+
+            const bassRange = dataArray.slice(0, 2);
+            const intensity = bassRange.reduce((sum, value) => sum + value, 0);
+            setBassIntensity(intensity);
+
+          }
+          requestAnimationFrame(updateAudioData);
+        };
+        updateAudioData();
+      }, []);
+    // }
 
     //audio setup
     useEffect(() => {
@@ -327,8 +360,19 @@ export default function Musializer() {
 
     return (
         <div className="bodyCenter">
-            <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'start',alignItems: 'center'}}>
+            <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
                 <motion.h1>Musializer</motion.h1>
+
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                <motion.button className="navbarButton"
+                style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+                onClick={handleEqualizerClick}
+                whileHover={{scale: 1.1}}
+                animate={{ scale: bass ? 1.5 : 1 }}
+                transition={{ type: "spring", duration: 0.2 }}
+                >
+                    <span className="material-symbols-outlined">equalizer</span>
+                </motion.button>
 
                 <motion.button className="navbarButton"
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
@@ -351,6 +395,8 @@ export default function Musializer() {
                     </div>
                     </h3>
                 </Overlay>
+                </div>
+
             </div>
 
 
@@ -422,9 +468,34 @@ export default function Musializer() {
             </div>
             <div style={{ padding: "5px" }} />
 
-            <div id="canvasDiv" className="canvasDiv">
+            {/* <div id="canvasDiv" className="canvasDiv" >
                 <canvas ref={canvasRef} style={{ position: "absolute", marginLeft: "-3px", marginTop: "-3px", }}></canvas>
+            </div> */}
+
+            <div id="canvasDiv" className="canvasDiv" 
+            // style={{display:'flex', flexDirection:'row'}}>
+            >
+                {isEqualizer ? (
+                    <div className="visualizer">
+                    {Array.from(audioData).slice(0, 64).map((value, index) => {
+                        return (
+                            <motion.div
+                                key={index}
+                                className="bar"
+                                // initial={{ height: 0 }}
+                                initial={{ height: 0.5 }}
+                                animate={{ height: value}}
+                                transition={{ duration: 0.05 }}
+                            />
+                        );
+                    })} 
+                </div>
+                ):(
+                    <canvas ref={canvasRef} style={{ position: "absolute", marginLeft: "-3px", marginTop: "-3px", }}></canvas>
+                )}
             </div>
+
+
         </div>
     );
 }
