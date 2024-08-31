@@ -326,11 +326,12 @@ export default function Musializer() {
               alignItems: 'center',
             }}
           >
-            <motion.h1>Musializer (Merged)</motion.h1>
+            <motion.h1>Musializer</motion.h1>
 
             <motion.button
               className="navbarButton"
               style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+              id="settingsButton"
               onMouseDown={nextSong}
               whileHover={{scale: 1.1}}
               animate={{ scale: bass ? 1.5 : 1 }}
