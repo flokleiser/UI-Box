@@ -1,4 +1,4 @@
-name: Sync src/pages from dev to merge-test 
+name: Sync src/pages from dev to main
 
 permissions:
   contents: write
@@ -24,16 +24,16 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Checkout merge-test branch
-        run: git checkout merge-test 
+      - name: Checkout main branch
+        run: git checkout main
 
-      - name: Sync src/pages folder
+      - name: Sync pages, components and styles
         run: |
-          git checkout dev -- src/pages
-          git add src/pages
-          git commit -m "Sync src/pages from dev branch" || echo "No changes to commit"
+          git checkout dev -- src/pages src/components src/styles.css
+          git add src/pages src/components src/styles.css
+          git commit -m "Sync src/pages, src/components, and src/styles.css from dev branch" || echo "No changes to commit"
 
-      - name: Push changes to merge-test
-        run: git push origin merge-test 
+      - name: Push changes to main
+        run: git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

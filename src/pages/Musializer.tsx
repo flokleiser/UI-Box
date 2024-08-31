@@ -28,11 +28,7 @@ export default function Musializer() {
     const [currentSongIndex, setCurrentSongIndex] = useState(0);
     const currentSong = music[currentSongIndex];
 
-    // const [switchSong, setSwitchSong] = useState(0);
-
     const nextSong = () => {
-        // setCurrentSongIndex(prevIndex) => (prevIndex + 1) % music.length;
-        // setCurrentSongIndex(currentSongIndex) => (currentSongIndex+ 1) % music.length;
         setCurrentSongIndex((currentSongIndex + 1) % music.length);
     }
 
@@ -41,7 +37,6 @@ export default function Musializer() {
             audioRef.current.pause();
             audioRef.current.src = currentSong.file;
             audioRef.current.load();
-            // console.log(audioRef.current.)
         }
     }, [currentSong]);
 
@@ -104,9 +99,6 @@ export default function Musializer() {
     //audio setup
     useEffect(() => {
         if (!audioRef.current) {
-            // audioRef.current = new Audio("./media/sounds/check1.mp3");
-            // audioRef.current = new Audio(check1);
-            // audioRef.current = new Audio(check1Sound.file);
             audioRef.current = new Audio(currentSong.file);
             audioContextRef.current = new (window.AudioContext ||
                 (window as any).webkitAudioContext)();
@@ -128,15 +120,6 @@ export default function Musializer() {
             document.removeEventListener("keydown", handleKeyDown);
         };
     }, [volume, isPlaying, audioRef.current]);
-
-    // function switchMusic() {
-    //     if (audioRef.current === check1Sound.file) {
-    //         audioRef.current.pause();
-    //         audioRef.current.currentTime = 0;
-    //         audioRef.current.play();
-    //     }
-    // }
-    
 
     //canvas setup
     useEffect(() => {
@@ -343,7 +326,7 @@ export default function Musializer() {
               alignItems: 'center',
             }}
           >
-            <motion.h1>Musializer Test merge</motion.h1>
+            <motion.h1>Musializer (Merged)</motion.h1>
 
             <motion.button
               className="navbarButton"
