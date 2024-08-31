@@ -326,7 +326,7 @@ export default function Musializer() {
               alignItems: 'center',
             }}
           >
-            <motion.h1>Musializer (Merged)</motion.h1>
+            <motion.h1>Musializer</motion.h1>
 
             <motion.button
               className="navbarButton"
