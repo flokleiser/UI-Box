@@ -16,56 +16,40 @@ export default function Musializer() {
     const audioContextRef = useRef<AudioContext | null>(null);
     const [resetTrigger, setResetTrigger] = useState(0);
     const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(1);
-
-    const [progress, setProgress] = useState(0)
-
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
-
     const radius = 100;
-    // const circumference = 2 * Math.PI * radius;
     const circumference = 2 * Math.PI * radius/2;
-    const initialOffset = circumference/4;
-
+    const initialOffset = circumference;
     const [offset, setOffset] = useState(initialOffset);
-
     const [currentSongIndex, setCurrentSongIndex] = useState(0);
     const [bassIntensity, setBassIntensity] = useState(0);
-    // const currentSong = music[currentSongIndex];
-
     const [isOverlayVisible, setOverlayVisible] = useState(false);
     const [currentSong, setCurrentSong] = useState(music[0]);
-
-
     const [isEqualizer, setIsEqualizer] = useState(false);  
 
     const nextSong = () => {
         setCurrentSongIndex((currentSongIndex + 1) % music.length);
     }
 
+    //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
         console.log('equalizer',isEqualizer);
-
-        // setTimeout(() => {
-        //     resetScene()
-        // }, 100);
-        }
-
-
+    }
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true)
     }
     const handleCloseOverlay = () => {
         setOverlayVisible(false)
     }
+    const handleSongSelect = (song: typeof music[0]) => {
+        setCurrentSong(song);
+        setOverlayVisible(false);
+    };
 
-  const handleSongSelect = (song: typeof music[0]) => {
-    setCurrentSong(song);
-    setOverlayVisible(false);
-  };
 
-
+    //song selection and duration
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.pause();
@@ -73,12 +57,10 @@ export default function Musializer() {
             audioRef.current.load();
         }
     }, [currentSong]);
-
     useEffect(() => {
         const audio = audioRef.current;
         const updateAudioDuration = () => {
             setDuration(audio!.duration);
-            // setDuration(audio.duration);
         }
 
         if (audio) {
@@ -93,11 +75,13 @@ export default function Musializer() {
 
 
 
+    //reset canvas to center it
     useEffect(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
     }, []);
 
+    //reset canvas on theme change
     useEffect(() => {
         const handleThemeToggle = () => resetScene();
         setTimeout(() => {
@@ -130,8 +114,6 @@ export default function Musializer() {
                 circumference - (currentTime / duration) * circumference;
             setOffset(offset);
         };
-
-
         audio.addEventListener("durationchange", setAudioDuration);
         audio.addEventListener("timeupdate", setAudioTime);
 
@@ -142,7 +124,6 @@ export default function Musializer() {
     });
 
     //Old visualizer audio-updates
-    // if (isEqualizer) {
     useEffect(() => {
         const updateAudioData = () => {
           if (analyserRef.current) {
@@ -159,7 +140,6 @@ export default function Musializer() {
         };
         updateAudioData();
       }, []);
-    // }
 
     //audio setup
     useEffect(() => {
@@ -233,19 +213,11 @@ export default function Musializer() {
 
                 this.accX = 0;
                 this.accY = 0;
-                // this.friction = 0.7;
                 this.friction = 0.9;
-
                 this.color = color;
-
-                // this.frequency = 0.01;
-                // this.amplitude = 100;
             }
 
             render() {
-                // this.dest.x = this.x
-                // this.dest.y = canvas!.height/2 + Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
-                // this.dest.y = Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
                 this.accX = (this.dest.x - this.x) / 100;
                 this.accY = (this.dest.y - this.y) / 100;
 
@@ -270,9 +242,6 @@ export default function Musializer() {
                 let distance = Math.sqrt(a * a + b * b);
 
                 if (distance < bounceRadius * 60) {
-                    // this.accX = this.x - bounceCenter.x;
-                    // this.accY = this.y - bounceCenter.y;
-
                     this.accX = (this.x - bounceCenter.x) / 10;
                     this.accY = (this.y - bounceCenter.y) / 10;
 
@@ -281,14 +250,10 @@ export default function Musializer() {
                 }
 
                 if (distance > bounceRadius * 250) {
-                    // this.accX = (this.dest.x - this.x) / 10;
-                    // this.accY = (this.dest.y - this.y) / 10;
                     this.vx += this.accX;
                     this.vy += this.accY;
                     this.accX = (this.dest.x - this.x) / 5;
                     this.accY = (this.dest.y - this.y) / 5;
-                    // this.vx += this.accX * 2;
-                    // this.vy += this.accY * 2;
                 }
             }
         }
@@ -369,9 +334,6 @@ export default function Musializer() {
     const handlePlayClick = () => {
         setIsPlaying(!isPlaying);
         if (isPlaying) {
-            // if (audioRef.current) {
-            //     audioRef.current.currentTime = 15;
-            // }
             audioRef.current?.play();
         } else {
             audioRef.current?.pause();
@@ -399,7 +361,6 @@ export default function Musializer() {
 
                 <motion.button className="navbarButton"
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-                // onMouseDown={nextSong}
                 onClick={handleMusicLibraryClick}
                 whileHover={{scale: 1.1}}
                 animate={{ scale: bass ? 1.5 : 1 }}
@@ -453,10 +414,8 @@ export default function Musializer() {
                             cy="100"
                             strokeDasharray={circumference}
                             strokeDashoffset={offset}
-                            // strokeDashoffset={initialOffset - progress}
                             initial={{ strokeDashoffset: initialOffset }}
                             animate={{ strokeDashoffset: offset }}
-                            // animate={{ strokeDashoffset: initialOffset - progress }}
                         />
                     </motion.svg>
                     </div>
@@ -473,10 +432,8 @@ export default function Musializer() {
 
                 <div style={{ display: "flex", flexDirection: "column", paddingLeft: "50px", }} >
                     <Slider value={volume} set={setVolume} 
-                    // className="material-symbols-outlined"
                     >
                         Volume
-                        {/* volume_up */}
                     </Slider>
                     <Slider
                         value={bounceRadiusIntensity}
@@ -493,12 +450,7 @@ export default function Musializer() {
             </div>
             <div style={{ padding: "5px" }} />
 
-            {/* <div id="canvasDiv" className="canvasDiv" >
-                <canvas ref={canvasRef} style={{ position: "absolute", marginLeft: "-3px", marginTop: "-3px", }}></canvas>
-            </div> */}
-
             <div id="canvasDiv" className="canvasDiv" 
-            // style={{display:'flex', flexDirection:'row'}}>
             >
                 {isEqualizer ? (
                     <div className="visualizer">
@@ -507,7 +459,6 @@ export default function Musializer() {
                             <motion.div
                                 key={index}
                                 className="bar"
-                                // initial={{ height: 0 }}
                                 initial={{ height: 0.5 }}
                                 animate={{ height: value}}
                                 transition={{ duration: 0.05 }}
