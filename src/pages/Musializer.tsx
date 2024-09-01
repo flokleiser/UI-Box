@@ -1,5 +1,3 @@
-// to check out: https://github.com/hvianna/audioMotion-analyzer
-
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
@@ -19,12 +17,15 @@ export default function Musializer() {
     const [resetTrigger, setResetTrigger] = useState(0);
     const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(1);
 
+    const [progress, setProgress] = useState(0)
+
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
 
     const radius = 100;
-    const circumference = 2 * Math.PI * radius;
-    const initialOffset = circumference;
+    // const circumference = 2 * Math.PI * radius;
+    const circumference = 2 * Math.PI * radius/2;
+    const initialOffset = circumference/4;
 
     const [offset, setOffset] = useState(initialOffset);
 
@@ -34,6 +35,7 @@ export default function Musializer() {
 
     const [isOverlayVisible, setOverlayVisible] = useState(false);
     const [currentSong, setCurrentSong] = useState(music[0]);
+
 
     const [isEqualizer, setIsEqualizer] = useState(false);  
 
@@ -45,9 +47,9 @@ export default function Musializer() {
         setIsEqualizer(!isEqualizer);
         console.log('equalizer',isEqualizer);
 
-        setTimeout(() => {
-            resetScene()
-        }, 100);
+        // setTimeout(() => {
+        //     resetScene()
+        // }, 100);
         }
 
 
@@ -71,6 +73,25 @@ export default function Musializer() {
             audioRef.current.load();
         }
     }, [currentSong]);
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        const updateAudioDuration = () => {
+            setDuration(audio!.duration);
+            // setDuration(audio.duration);
+        }
+
+        if (audio) {
+            audio.addEventListener('loadedmetadata', updateAudioDuration);
+        }
+        return () => {  
+            if (audio) {
+            audio?.removeEventListener('loadedmetadata', updateAudioDuration);
+            }
+        }
+    })
+
+
 
     useEffect(() => {
         const timeoutId = setTimeout(resetScene, 100);
@@ -348,9 +369,9 @@ export default function Musializer() {
     const handlePlayClick = () => {
         setIsPlaying(!isPlaying);
         if (isPlaying) {
-            if (audioRef.current) {
-                audioRef.current.currentTime = 15;
-            }
+            // if (audioRef.current) {
+            //     audioRef.current.currentTime = 15;
+            // }
             audioRef.current?.play();
         } else {
             audioRef.current?.pause();
@@ -432,8 +453,10 @@ export default function Musializer() {
                             cy="100"
                             strokeDasharray={circumference}
                             strokeDashoffset={offset}
+                            // strokeDashoffset={initialOffset - progress}
                             initial={{ strokeDashoffset: initialOffset }}
                             animate={{ strokeDashoffset: offset }}
+                            // animate={{ strokeDashoffset: initialOffset - progress }}
                         />
                     </motion.svg>
                     </div>
