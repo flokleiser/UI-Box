@@ -1,5 +1,4 @@
 "use strict";
-// to check out: https://github.com/hvianna/audioMotion-analyzer
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -48,24 +47,21 @@ function Musializer() {
     const [duration, setDuration] = (0, react_1.useState)(0);
     const [currentTime, setCurrentTime] = (0, react_1.useState)(0);
     const radius = 100;
-    const circumference = 2 * Math.PI * radius;
+    const circumference = 2 * Math.PI * radius / 2;
     const initialOffset = circumference;
     const [offset, setOffset] = (0, react_1.useState)(initialOffset);
     const [currentSongIndex, setCurrentSongIndex] = (0, react_1.useState)(0);
     const [bassIntensity, setBassIntensity] = (0, react_1.useState)(0);
-    // const currentSong = music[currentSongIndex];
     const [isOverlayVisible, setOverlayVisible] = (0, react_1.useState)(false);
     const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
     const [isEqualizer, setIsEqualizer] = (0, react_1.useState)(false);
     const nextSong = () => {
         setCurrentSongIndex((currentSongIndex + 1) % Music_1.music.length);
     };
+    //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
         console.log('equalizer', isEqualizer);
-        setTimeout(() => {
-            resetScene();
-        }, 100);
     };
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true);
@@ -77,6 +73,7 @@ function Musializer() {
         setCurrentSong(song);
         setOverlayVisible(false);
     };
+    //song selection and duration
     (0, react_1.useEffect)(() => {
         if (audioRef.current) {
             audioRef.current.pause();
@@ -85,9 +82,25 @@ function Musializer() {
         }
     }, [currentSong]);
     (0, react_1.useEffect)(() => {
+        const audio = audioRef.current;
+        const updateAudioDuration = () => {
+            setDuration(audio.duration);
+        };
+        if (audio) {
+            audio.addEventListener('loadedmetadata', updateAudioDuration);
+        }
+        return () => {
+            if (audio) {
+                audio === null || audio === void 0 ? void 0 : audio.removeEventListener('loadedmetadata', updateAudioDuration);
+            }
+        };
+    });
+    //reset canvas to center it
+    (0, react_1.useEffect)(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
     }, []);
+    //reset canvas on theme change
     (0, react_1.useEffect)(() => {
         const handleThemeToggle = () => resetScene();
         setTimeout(() => {
@@ -124,7 +137,6 @@ function Musializer() {
         };
     });
     //Old visualizer audio-updates
-    // if (isEqualizer) {
     (0, react_1.useEffect)(() => {
         const updateAudioData = () => {
             if (analyserRef.current) {
@@ -139,7 +151,6 @@ function Musializer() {
         };
         updateAudioData();
     }, []);
-    // }
     //audio setup
     (0, react_1.useEffect)(() => {
         if (!audioRef.current) {
@@ -191,16 +202,10 @@ function Musializer() {
                 this.vy = 0;
                 this.accX = 0;
                 this.accY = 0;
-                // this.friction = 0.7;
                 this.friction = 0.9;
                 this.color = color;
-                // this.frequency = 0.01;
-                // this.amplitude = 100;
             }
             render() {
-                // this.dest.x = this.x
-                // this.dest.y = canvas!.height/2 + Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
-                // this.dest.y = Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
                 this.accX = (this.dest.x - this.x) / 100;
                 this.accY = (this.dest.y - this.y) / 100;
                 this.vx += this.accX;
@@ -217,22 +222,16 @@ function Musializer() {
                 let b = this.y - bounceCenter.y;
                 let distance = Math.sqrt(a * a + b * b);
                 if (distance < bounceRadius * 60) {
-                    // this.accX = this.x - bounceCenter.x;
-                    // this.accY = this.y - bounceCenter.y;
                     this.accX = (this.x - bounceCenter.x) / 10;
                     this.accY = (this.y - bounceCenter.y) / 10;
                     this.vx += this.accX;
                     this.vy += this.accY;
                 }
                 if (distance > bounceRadius * 250) {
-                    // this.accX = (this.dest.x - this.x) / 10;
-                    // this.accY = (this.dest.y - this.y) / 10;
                     this.vx += this.accX;
                     this.vy += this.accY;
                     this.accX = (this.dest.x - this.x) / 5;
                     this.accY = (this.dest.y - this.y) / 5;
-                    // this.vx += this.accX * 2;
-                    // this.vy += this.accY * 2;
                 }
             }
         }
@@ -293,9 +292,6 @@ function Musializer() {
         var _a, _b;
         setIsPlaying(!isPlaying);
         if (isPlaying) {
-            if (audioRef.current) {
-                audioRef.current.currentTime = 15;
-            }
             (_a = audioRef.current) === null || _a === void 0 ? void 0 : _a.play();
         }
         else {
@@ -311,9 +307,7 @@ function Musializer() {
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
                 react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: handleEqualizerClick, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "equalizer")),
-                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, 
-                    // onMouseDown={nextSong}
-                    onClick: handleMusicLibraryClick, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: handleMusicLibraryClick, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music")),
                 react_1.default.createElement(Overlay_1.default, { isVisible: isOverlayVisible, onClose: handleCloseOverlay },
                     react_1.default.createElement("h3", null,
@@ -338,8 +332,6 @@ function Musializer() {
                 react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
         react_1.default.createElement("div", { style: { padding: "5px" } }),
         react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" }, isEqualizer ? (react_1.default.createElement("div", { className: "visualizer" }, Array.from(audioData).slice(0, 64).map((value, index) => {
-            return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", 
-                // initial={{ height: 0 }}
-                initial: { height: 0.5 }, animate: { height: value }, transition: { duration: 0.05 } }));
+            return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0.5 }, animate: { height: value }, transition: { duration: 0.05 } }));
         }))) : (react_1.default.createElement("canvas", { ref: canvasRef, style: { position: "absolute", marginLeft: "-3px", marginTop: "-3px", } })))));
 }
