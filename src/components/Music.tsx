@@ -23,7 +23,6 @@ const music: Audio[] = [
         name: "psyche",
         artist: "Babii",
         file: psyche
-
     }
 
 ]
