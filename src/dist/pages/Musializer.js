@@ -44,11 +44,13 @@ function Musializer() {
     const audioContextRef = (0, react_1.useRef)(null);
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     const [bounceRadiusIntensity, setBounceRadiusIntensity] = (0, react_1.useState)(1);
+    const [progress, setProgress] = (0, react_1.useState)(0);
     const [duration, setDuration] = (0, react_1.useState)(0);
     const [currentTime, setCurrentTime] = (0, react_1.useState)(0);
     const radius = 100;
-    const circumference = 2 * Math.PI * radius;
-    const initialOffset = circumference;
+    // const circumference = 2 * Math.PI * radius;
+    const circumference = 2 * Math.PI * radius / 2;
+    const initialOffset = circumference / 4;
     const [offset, setOffset] = (0, react_1.useState)(initialOffset);
     const [currentSongIndex, setCurrentSongIndex] = (0, react_1.useState)(0);
     const [bassIntensity, setBassIntensity] = (0, react_1.useState)(0);
@@ -62,9 +64,9 @@ function Musializer() {
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
         console.log('equalizer', isEqualizer);
-        setTimeout(() => {
-            resetScene();
-        }, 100);
+        // setTimeout(() => {
+        //     resetScene()
+        // }, 100);
     };
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true);
@@ -83,6 +85,21 @@ function Musializer() {
             audioRef.current.load();
         }
     }, [currentSong]);
+    (0, react_1.useEffect)(() => {
+        const audio = audioRef.current;
+        const updateAudioDuration = () => {
+            setDuration(audio.duration);
+            // setDuration(audio.duration);
+        };
+        if (audio) {
+            audio.addEventListener('loadedmetadata', updateAudioDuration);
+        }
+        return () => {
+            if (audio) {
+                audio === null || audio === void 0 ? void 0 : audio.removeEventListener('loadedmetadata', updateAudioDuration);
+            }
+        };
+    });
     (0, react_1.useEffect)(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
@@ -292,9 +309,9 @@ function Musializer() {
         var _a, _b;
         setIsPlaying(!isPlaying);
         if (isPlaying) {
-            if (audioRef.current) {
-                audioRef.current.currentTime = 15;
-            }
+            // if (audioRef.current) {
+            //     audioRef.current.currentTime = 15;
+            // }
             (_a = audioRef.current) === null || _a === void 0 ? void 0 : _a.play();
         }
         else {
@@ -326,7 +343,9 @@ function Musializer() {
                     react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
                     react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
+                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, 
+                            // strokeDashoffset={initialOffset - progress}
+                            initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
                 react_1.default.createElement("div", { style: { marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-start" } },
                     react_1.default.createElement("h3", { style: { display: "flex", width: '150px', marginLeft: "10px" } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined" }, "music_note"),
