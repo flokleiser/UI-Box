@@ -5,7 +5,6 @@ export default function Cube() {
     const [isInside, setIsInside] = useState(false);
     const [isSwitched, setIsSwitched] = useState(false)
 
-    // const springConfig = { stiffness: 150 };
     const springConfig = { stiffness: 150,damping:25};
     const x = useSpring(200, springConfig);
     const y = useSpring(200, springConfig);
@@ -13,8 +12,11 @@ export default function Cube() {
     const rotateX = useMotionValue(0);
     const rotateY = useMotionValue(0);
 
-    const tiltX = useTransform(y, [0, 400], [45, -45]);
-    const tiltY = useTransform(x, [0, 400], [-45, 45]);
+    // const tiltX = useTransform(y, [0, 400], [45, -45]);
+    // const tiltY = useTransform(x, [0, 400], [-45, 45]);
+
+    const tiltX = useTransform(y, [0, 400], [15, -15]);
+    const tiltY = useTransform(x, [0, 400], [-15, 15]);
 
 
     const compositeRotateX = useTransform(() => rotateX.get() + tiltX.get());
@@ -55,6 +57,15 @@ export default function Cube() {
         });
     }
 
+    // function animateDiagonalRotation() {
+    //     const diagonalAxis = {x:1, y:1, z:0}
+    //     // const angle = 90;
+    //     const angle = 180;
+
+    //     animate(rotateX, angle * diagonalAxis.x, {duration:0.5});
+    //     animate(rotateY, angle * diagonalAxis.y, {duration:0.5});
+    // }
+
 
     async function gridClick(event: React.MouseEvent<HTMLDivElement>) {
         if (!isSwitched) {
@@ -79,18 +90,22 @@ export default function Cube() {
             case "top-left":
                 newRotateX += 180;
                 newRotateY -= 135;
+                // newRotateY -= 180;
                 break;
             case "top-right":
                 newRotateX += 180;
                 newRotateY += 135;
+                // newRotateY += 180;
                 break;
             case "bottom-left":
                 newRotateX -= 180;
                 newRotateY -= 135;
+                // newRotateY -= 180;
                 break;
             case "bottom-right":
                 newRotateX -= 180;
                 newRotateY += 135;
+                // newRotateY += 180;
                 break;
             }
 
@@ -158,8 +173,9 @@ export default function Cube() {
                             placeItems: "center",
                             placeContent: "center",
                             borderRadius: 30,
-                            perspective: 400,
-                            position: 'relative' 
+                            // perspective: 400,
+                            perspective: '1000px',
+                            position: 'relative',
                         }}
                         onMouseMove={handleMouse}
                         onMouseLeave={handleMouseLeave}
@@ -179,19 +195,18 @@ export default function Cube() {
                         ))}
 
                         <motion.div className='cube'
-
-
                             style={{
                                 display:"flex",
 
                                 justifyContent:"flex-start",
                                 alignItems:"flex-start",
-
                                 rotateX: compositeRotateX,
                                 rotateY: compositeRotateY,
                                 position:'absolute',
                                 transform:"translate(-50%,-50%)"
+
                             }}
+                            // onClick={animateDiagonalRotation}
                             whileTap={{scale:0.95}}
                         >
 
