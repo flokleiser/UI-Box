@@ -50310,7 +50310,7 @@ function Slider({ value, children, set, min = 0, max = 100 }) {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.startPage = void 0;
-exports.startPage = "Musializer";
+exports.startPage = "Test";
 const setActivePage = (page) => {
     console.log('setActivePage', page);
     const event = new CustomEvent('pageChange', { detail: { page } });
@@ -51398,29 +51398,24 @@ function Musializer() {
     const audioContextRef = (0, react_1.useRef)(null);
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     const [bounceRadiusIntensity, setBounceRadiusIntensity] = (0, react_1.useState)(1);
-    const [progress, setProgress] = (0, react_1.useState)(0);
     const [duration, setDuration] = (0, react_1.useState)(0);
     const [currentTime, setCurrentTime] = (0, react_1.useState)(0);
     const radius = 100;
-    // const circumference = 2 * Math.PI * radius;
     const circumference = 2 * Math.PI * radius / 2;
-    const initialOffset = circumference / 4;
+    const initialOffset = circumference;
     const [offset, setOffset] = (0, react_1.useState)(initialOffset);
     const [currentSongIndex, setCurrentSongIndex] = (0, react_1.useState)(0);
     const [bassIntensity, setBassIntensity] = (0, react_1.useState)(0);
-    // const currentSong = music[currentSongIndex];
     const [isOverlayVisible, setOverlayVisible] = (0, react_1.useState)(false);
     const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
     const [isEqualizer, setIsEqualizer] = (0, react_1.useState)(false);
     const nextSong = () => {
         setCurrentSongIndex((currentSongIndex + 1) % Music_1.music.length);
     };
+    //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
         console.log('equalizer', isEqualizer);
-        // setTimeout(() => {
-        //     resetScene()
-        // }, 100);
     };
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true);
@@ -51432,6 +51427,7 @@ function Musializer() {
         setCurrentSong(song);
         setOverlayVisible(false);
     };
+    //song selection and duration
     (0, react_1.useEffect)(() => {
         if (audioRef.current) {
             audioRef.current.pause();
@@ -51443,7 +51439,6 @@ function Musializer() {
         const audio = audioRef.current;
         const updateAudioDuration = () => {
             setDuration(audio.duration);
-            // setDuration(audio.duration);
         };
         if (audio) {
             audio.addEventListener('loadedmetadata', updateAudioDuration);
@@ -51454,10 +51449,12 @@ function Musializer() {
             }
         };
     });
+    //reset canvas to center it
     (0, react_1.useEffect)(() => {
         const timeoutId = setTimeout(resetScene, 100);
         return () => clearTimeout(timeoutId);
     }, []);
+    //reset canvas on theme change
     (0, react_1.useEffect)(() => {
         const handleThemeToggle = () => resetScene();
         setTimeout(() => {
@@ -51494,7 +51491,6 @@ function Musializer() {
         };
     });
     //Old visualizer audio-updates
-    // if (isEqualizer) {
     (0, react_1.useEffect)(() => {
         const updateAudioData = () => {
             if (analyserRef.current) {
@@ -51509,7 +51505,6 @@ function Musializer() {
         };
         updateAudioData();
     }, []);
-    // }
     //audio setup
     (0, react_1.useEffect)(() => {
         if (!audioRef.current) {
@@ -51561,16 +51556,10 @@ function Musializer() {
                 this.vy = 0;
                 this.accX = 0;
                 this.accY = 0;
-                // this.friction = 0.7;
                 this.friction = 0.9;
                 this.color = color;
-                // this.frequency = 0.01;
-                // this.amplitude = 100;
             }
             render() {
-                // this.dest.x = this.x
-                // this.dest.y = canvas!.height/2 + Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
-                // this.dest.y = Math.sin((this.x * this.frequency) + (Date.now() * 0.001)) * this.amplitude;
                 this.accX = (this.dest.x - this.x) / 100;
                 this.accY = (this.dest.y - this.y) / 100;
                 this.vx += this.accX;
@@ -51587,22 +51576,16 @@ function Musializer() {
                 let b = this.y - bounceCenter.y;
                 let distance = Math.sqrt(a * a + b * b);
                 if (distance < bounceRadius * 60) {
-                    // this.accX = this.x - bounceCenter.x;
-                    // this.accY = this.y - bounceCenter.y;
                     this.accX = (this.x - bounceCenter.x) / 10;
                     this.accY = (this.y - bounceCenter.y) / 10;
                     this.vx += this.accX;
                     this.vy += this.accY;
                 }
                 if (distance > bounceRadius * 250) {
-                    // this.accX = (this.dest.x - this.x) / 10;
-                    // this.accY = (this.dest.y - this.y) / 10;
                     this.vx += this.accX;
                     this.vy += this.accY;
                     this.accX = (this.dest.x - this.x) / 5;
                     this.accY = (this.dest.y - this.y) / 5;
-                    // this.vx += this.accX * 2;
-                    // this.vy += this.accY * 2;
                 }
             }
         }
@@ -51663,9 +51646,6 @@ function Musializer() {
         var _a, _b;
         setIsPlaying(!isPlaying);
         if (isPlaying) {
-            // if (audioRef.current) {
-            //     audioRef.current.currentTime = 15;
-            // }
             (_a = audioRef.current) === null || _a === void 0 ? void 0 : _a.play();
         }
         else {
@@ -51675,15 +51655,20 @@ function Musializer() {
     function resetScene() {
         setResetTrigger((prev) => prev + 1);
     }
+    const handleProgressClick = (e) => {
+        if (audioRef.current) {
+            const progressBar = e.target;
+            const newTime = (e.nativeEvent.offsetX / progressBar.offsetWidth) * duration;
+            audioRef.current.currentTime = newTime;
+        }
+    };
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
                 react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: handleEqualizerClick, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "equalizer")),
-                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, 
-                    // onMouseDown={nextSong}
-                    onClick: handleMusicLibraryClick, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: handleMusicLibraryClick, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music")),
                 react_1.default.createElement(Overlay_1.default, { isVisible: isOverlayVisible, onClose: handleCloseOverlay },
                     react_1.default.createElement("h3", null,
@@ -51693,26 +51678,24 @@ function Musializer() {
                             song.artist)))))))),
         react_1.default.createElement("div", { style: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", } },
             react_1.default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start" } },
-                react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "30px" } },
+                react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "30px", marginTop: "15px" } },
                     react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
                     react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, 
-                            // strokeDashoffset={initialOffset - progress}
-                            initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
+                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: bass ? "5" : "0", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100" }))),
                 react_1.default.createElement("div", { style: { marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-start" } },
                     react_1.default.createElement("h3", { style: { display: "flex", width: '150px', marginLeft: "10px" } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined" }, "music_note"),
                         currentSong.name))),
-            react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column", paddingLeft: "50px", } },
+            react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column" } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
                 react_1.default.createElement(Slider_1.Slider, { value: bounceRadiusIntensity, set: setBounceRadiusIntensity, min: 0, max: 3 }, "Intensity"),
-                react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
+                react_1.default.createElement("div", { className: "custom-audio-controls", style: { marginTop: "10px", marginBottom: "5px" } },
+                    react_1.default.createElement("div", { className: "progress-bar", onClick: handleProgressClick },
+                        react_1.default.createElement("div", { className: "progress", style: { width: `${(currentTime / duration) * 100}%` } }))))),
         react_1.default.createElement("div", { style: { padding: "5px" } }),
         react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" }, isEqualizer ? (react_1.default.createElement("div", { className: "visualizer" }, Array.from(audioData).slice(0, 64).map((value, index) => {
-            return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", 
-                // initial={{ height: 0 }}
-                initial: { height: 0.5 }, animate: { height: value }, transition: { duration: 0.05 } }));
+            return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0.5 }, animate: { height: value }, transition: { duration: 0.05 } }));
         }))) : (react_1.default.createElement("canvas", { ref: canvasRef, style: { position: "absolute", marginLeft: "-3px", marginTop: "-3px", } })))));
 }
 
@@ -52315,82 +52298,107 @@ function Switches() {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Test;
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
+const Music_1 = __webpack_require__(/*! ../components/Music */ "./src/components/Music.tsx");
 const audiomotion_analyzer_1 = __importDefault(__webpack_require__(/*! audiomotion-analyzer */ "./node_modules/audiomotion-analyzer/dist/index.js"));
-const check1_mp3_1 = __importDefault(__webpack_require__(/*! ../media/sounds/check1.mp3 */ "./src/media/sounds/check1.mp3"));
 function Test() {
-    const containerRef = (0, react_2.useRef)(null);
-    const audioRef = (0, react_2.useRef)(null);
-    (0, react_2.useEffect)(() => {
-        if (containerRef.current) {
-            const audioMotion = new audiomotion_analyzer_1.default(containerRef.current, {
-                source: audioRef.current || undefined
-            });
-            if (audioRef.current) {
-                audioRef.current.src = check1_mp3_1.default;
-                audioRef.current.play();
-            }
-            return () => {
-                audioMotion.destroy();
-            };
+    // export default function Musializer() {
+    const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
+    const [volume, setVolume] = (0, react_1.useState)(50);
+    const [bass, setBass] = (0, react_1.useState)(false);
+    const [test, setTest] = (0, react_1.useState)(0);
+    const [audioData, setAudioData] = (0, react_1.useState)(new Uint8Array(0));
+    // const canvasRef = useRef<HTMLCanvasElement>(null);
+    const canvasRef = (0, react_1.useRef)(null);
+    const audioRef = (0, react_1.useRef)(null);
+    const analyserRef = (0, react_1.useRef)(null);
+    const audioContextRef = (0, react_1.useRef)(null);
+    const audioMotionRef = (0, react_1.useRef)(null);
+    const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
+    const [audioMotion, setAudioMotion] = (0, react_1.useState)(null);
+    // let audioMotion
+    //song selection and duration
+    (0, react_1.useEffect)(() => {
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.src = currentSong.file;
+            audioRef.current.load();
         }
-    });
+    }, [currentSong]);
+    //audio setup
+    // useEffect(() => {
+    //     if (!audioRef.current) {
+    //         audioRef.current = new Audio(currentSong.file);
+    //         // audioContextRef.current = new (window.AudioContext ||
+    //         //     (window as any).webkitAudioContext)();
+    //         // const source = audioContextRef.current.createMediaElementSource(
+    //         //     audioRef.current
+    //         // );
+    //         audioRef.current.controls = true;
+    //         audioRef.current.crossOrigin = 'anonymous';
+    //         // audioContainer?.append(audioRef.current);
+    //         // analyserRef.current = audioContextRef.current.createAnalyser();
+    //         // source.connect(analyserRef.current);
+    //         // analyserRef.current.connect(audioContextRef.current.destination);
+    //         // analyserRef.current.fftSize = 256;
+    //         // const bufferLength = analyserRef.current.frequencyBinCount;
+    //         // setAudioData(new Uint8Array(bufferLength));
+    //             if (canvasRef.current) {
+    //                 canvasRef.current.append(audioRef.current);
+    //                 console.log('canvasRef found')
+    //                 audioMotion = new AudioMotionAnalyzer(canvasRef.current, {
+    //                 source: audioRef.current,
+    //             })
+    //         }
+    //     }
+    // }, [audioRef.current]);
+    (0, react_1.useEffect)(() => {
+        if (audioRef.current && canvasRef.current && !audioMotion) {
+            // console.log('canvasRef found');
+            console.log('init');
+            const analyzer = new audiomotion_analyzer_1.default(canvasRef.current, {
+                source: audioRef.current,
+            });
+            setAudioMotion(analyzer);
+        }
+    }, [audioRef.current, canvasRef.current, audioMotion]);
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement("h1", null, "Test"),
-        react_1.default.createElement("div", { id: "testContainer", style: { width: 100, height: 100 } })));
+        react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
+            react_1.default.createElement(framer_motion_1.motion.h1, null, "Test")),
+        react_1.default.createElement("audio", { ref: audioRef, controls: true },
+            react_1.default.createElement("source", { src: currentSong.file, type: "audio/mpeg" })),
+        react_1.default.createElement("div", { style: { padding: "5px" } }),
+        react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv", ref: canvasRef })));
 }
-// import AudioMotionAnalyzer from 'audiomotion-analyzer'; 
-// const container = document.getElementById('container');
-// // audio source
-// const audioEl = document.getElementById('audio');
-// // instantiate analyzer
-// const audioMotion = new AudioMotionAnalyzer( null, {
-//   source: audioEl,
-//   mode: 2,
-//   useCanvas: false, // don't use the canvas
-//   onCanvasDraw: instance => {
-//     const maxHeight = container.clientHeight;
-//     let html = '';
-//     // get analyzer bars data
-//     for ( const bar of instance.getBars() ) {
-//       const value    = bar.value[0],
-//             peak     = bar.peak[0],
-//             hold     = bar.hold[0],
-//             isPeakUp = hold > 0 && peak > 0; // if hold < 0 the peak is falling down
-//       // build our visualization using only DIVs
-//       html += `<div class="bar" style="height: ${ value * 100 }%; background: rgba( 255, 255, 255, ${ value } )">
-// 								<div class="peak" style="bottom: ${ ( peak - value ) * -maxHeight }px; ${ isPeakUp ? 'box-shadow: 0 0 10px 1px #f00' : 'opacity: ' + ( peak > 0 ? .7 : 0 ) }"></div>
-// 							 </div>`;
-//     }
-//     container.innerHTML = html;
-//     document.getElementById('fps').innerText = instance.fps.toFixed(1);
-//   }
-// });
-// // visualization mode selection
-// const elMode = document.getElementById('mode');
-// elMode.value = audioMotion.mode;
-// elMode.addEventListener( 'change', () => audioMotion.mode = elMode.value );
-// // display module version
-// document.getElementById('version').innerText = `v${AudioMotionAnalyzer.version}`;
-// // play stream
-// document.getElementById('live').addEventListener( 'click', () => {
-//   audioEl.src = 'https://icecast2.ufpel.edu.br/live';
-//   audioEl.play();
-// });
-// // file upload
-// document.getElementById('upload').addEventListener( 'change', e => {
-// 	const fileBlob = e.target.files[0];
-// 	if ( fileBlob ) {
-// 		audioEl.src = URL.createObjectURL( fileBlob );
-// 		audioEl.play();
-// 	}
-// });
 
 
 /***/ }),
