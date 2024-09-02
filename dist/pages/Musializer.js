@@ -301,6 +301,13 @@ function Musializer() {
     function resetScene() {
         setResetTrigger((prev) => prev + 1);
     }
+    const handleProgressClick = (e) => {
+        if (audioRef.current) {
+            const progressBar = e.target;
+            const newTime = (e.nativeEvent.offsetX / progressBar.offsetWidth) * duration;
+            audioRef.current.currentTime = newTime;
+        }
+    };
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
@@ -317,19 +324,21 @@ function Musializer() {
                             song.artist)))))))),
         react_1.default.createElement("div", { style: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", } },
             react_1.default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start" } },
-                react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "30px" } },
+                react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "30px", marginTop: "15px" } },
                     react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "50px" } }, isPlaying ? "play_arrow" : "pause")),
                     react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: "5", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100", strokeDasharray: circumference, strokeDashoffset: offset, initial: { strokeDashoffset: initialOffset }, animate: { strokeDashoffset: offset } }))),
+                        react_1.default.createElement(framer_motion_1.motion.circle, { stroke: "#ddd", strokeWidth: bass ? "5" : "0", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100" }))),
                 react_1.default.createElement("div", { style: { marginBottom: "-25px", textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-start" } },
                     react_1.default.createElement("h3", { style: { display: "flex", width: '150px', marginLeft: "10px" } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined" }, "music_note"),
                         currentSong.name))),
-            react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column", paddingLeft: "50px", } },
+            react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column" } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
                 react_1.default.createElement(Slider_1.Slider, { value: bounceRadiusIntensity, set: setBounceRadiusIntensity, min: 0, max: 3 }, "Intensity"),
-                react_1.default.createElement(Slider_1.Slider, { value: test, set: setTest }, "Test"))),
+                react_1.default.createElement("div", { className: "custom-audio-controls", style: { marginTop: "10px", marginBottom: "5px" } },
+                    react_1.default.createElement("div", { className: "progress-bar", onClick: handleProgressClick },
+                        react_1.default.createElement("div", { className: "progress", style: { width: `${(currentTime / duration) * 100}%` } }))))),
         react_1.default.createElement("div", { style: { padding: "5px" } }),
         react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" }, isEqualizer ? (react_1.default.createElement("div", { className: "visualizer" }, Array.from(audioData).slice(0, 64).map((value, index) => {
             return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0.5 }, animate: { height: value }, transition: { duration: 0.05 } }));
