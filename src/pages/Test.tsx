@@ -25,6 +25,7 @@ export default function Test() {
     const audioContextRef = useRef<AudioContext | null>(null);
     const audioMotionRef = useRef<AudioMotionAnalyzer| null>(null);
 
+    const audioContainer = document.getElementById("canvasDiv");
 
 
     const [resetTrigger, setResetTrigger] = useState(0);
@@ -165,6 +166,12 @@ export default function Test() {
             const source = audioContextRef.current.createMediaElementSource(
                 audioRef.current
             );
+
+            audioRef.current.controls = true;
+            audioRef.current.crossOrigin = 'anonymous';
+
+            // audioContainer?.append(audioRef.current);
+
             analyserRef.current = audioContextRef.current.createAnalyser();
             source.connect(analyserRef.current);
             analyserRef.current.connect(audioContextRef.current.destination);
@@ -200,21 +207,29 @@ export default function Test() {
         setResetTrigger((prev) => prev + 1);
     }
 
-        useEffect(() => {
-        if (canvasRef.current && audioRef.current) {
-            const audioMotion= new AudioMotionAnalyzer(canvasRef.current)
-            audioMotion.connectInput(audioRef.current);
-            audioMotionRef.current = audioMotion;
-            }        
+    const handleProgressClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (audioRef.current) {
+            const progressBar = e.target;
+            const newTime = (e.nativeEvent.offsetX / (progressBar as HTMLDivElement).offsetWidth) * duration;
+            audioRef.current.currentTime = newTime;
+        }
+      };
 
-            return () => {
-                if (audioMotionRef.current) {
-                    audioMotionRef.current.disconnectInput();
-                    audioMotionRef.current.destroy();
-                    audioMotionRef.current = null;
-                }
-            }
-        }, [])
+        // useEffect(() => {
+        // if (canvasRef.current && audioRef.current) {
+        //     const audioMotion= new AudioMotionAnalyzer(canvasRef.current)
+        //     audioMotion.connectInput(audioRef.current);
+        //     audioMotionRef.current = audioMotion;
+        //     }        
+
+        //     return () => {
+        //         if (audioMotionRef.current) {
+        //             audioMotionRef.current.disconnectInput();
+        //             audioMotionRef.current.destroy();
+        //             audioMotionRef.current = null;
+        //         }
+        //     }
+        // }, [])
  
     return (
         <div className="bodyCenter">
@@ -250,7 +265,7 @@ export default function Test() {
             <div
                 style={{display: "flex",flexDirection: "row",justifyContent: "space-between",alignItems: "center",}}>
                 <div style={{position: "relative",display: "flex",flexDirection: "column",justifyContent: "center",alignItems:"flex-start"}}>
-                    <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"30px" }}>
+                    <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"30px",  marginTop:"15px" }}>
                     <motion.button
                         className="playButton"
                         style={{ display: "flex", justifyContent: "center", alignItems: "center", }}
@@ -270,15 +285,12 @@ export default function Test() {
                     >
                         <motion.circle
                             stroke="#ddd"
-                            strokeWidth="5"
+                            // strokeWidth="5"
+                            strokeWidth= {bass ? "5" : "0" }
                             fill="rgba(255,255,255,0.1)"
                             r={radius/2}
                             cx="100"
                             cy="100"
-                            strokeDasharray={circumference}
-                            strokeDashoffset={offset}
-                            initial={{ strokeDashoffset: initialOffset }}
-                            animate={{ strokeDashoffset: offset }}
                         />
                     </motion.svg>
                     </div>
@@ -293,7 +305,7 @@ export default function Test() {
                     </div>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", paddingLeft: "50px", }} >
+                <div style={{ display: "flex", flexDirection: "column"}} >
                     <Slider value={volume} set={setVolume} 
                     >
                         Volume
@@ -306,13 +318,26 @@ export default function Test() {
                     >
                         Intensity
                     </Slider>
-                    <Slider value={test} set={setTest}>
-                        Test
-                    </Slider>
+                
+
+            {/* <audio ref={audioRef}>
+                <source src={currentSong.file} type="audio/mpeg" />
+            </audio> */}
+
+            <div className="custom-audio-controls" style={{marginTop:"10px", marginBottom:"5px"}}>
+                <div className="progress-bar" onClick={handleProgressClick}>
+                <div
+                    className="progress"
+                    style={{ width: `${(currentTime / duration) * 100}%` }}
+                ></div>
+                </div>
+            </div>
+
                 </div>
             </div>
 
             <div style={{ padding: "5px" }} />
+
 
             <div id="canvasDiv" className="canvasDiv" ref={canvasRef}>
             </div>
