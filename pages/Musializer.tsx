@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
 import { music} from "../components/Music";
 import Overlay from "../components/Overlay";
+import AudioMotionAnalyzer from 'audiomotion-analyzer';
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -11,6 +12,7 @@ export default function Musializer() {
     const [test, setTest] = useState(0);
     const [audioData, setAudioData] = useState<Uint8Array>(new Uint8Array(0));
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const divRef= useRef<HTMLDivElement>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const analyserRef = useRef<AnalyserNode | null>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
@@ -28,15 +30,32 @@ export default function Musializer() {
     const [currentSong, setCurrentSong] = useState(music[0]);
     const [isEqualizer, setIsEqualizer] = useState(false);  
 
+    const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
+
     const nextSong = () => {
         setCurrentSongIndex((currentSongIndex + 1) % music.length);
     }
+
+    // useEffect(() => {
+    //     if (audioRef.current && canvasRef.current && !audioMotion && isEqualizer) {
+    //         console.log('init')
+    //         const analyzer = new AudioMotionAnalyzer(canvasRef.current, {
+    //           source: audioRef.current,
+    //         });
+    //         setAudioMotion(analyzer);
+    //       }
+    //     }, [audioRef.current, canvasRef.current, audioMotion]);
 
     //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
         console.log('equalizer',isEqualizer);
+
+        setTimeout(() => {
+            resetScene()
+        },100)
     }
+
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true)
     }
@@ -447,10 +466,6 @@ export default function Musializer() {
                     </Slider>
                 
 
-            {/* <audio ref={audioRef}>
-                <source src={currentSong.file} type="audio/mpeg" />
-            </audio> */}
-
             <div className="custom-audio-controls" style={{marginTop:"10px", marginBottom:"5px"}}>
                 <div className="progress-bar" onClick={handleProgressClick}>
                 <div
@@ -468,10 +483,9 @@ export default function Musializer() {
 
             <div style={{ padding: "5px" }} />
 
-            <div id="canvasDiv" className="canvasDiv" 
-            >
+            <div id="canvasDiv" className="canvasDiv"> 
                 {isEqualizer ? (
-                    <div className="visualizer">
+                     <div className="visualizer">
                     {Array.from(audioData).slice(0, 64).map((value, index) => {
                         return (
                             <motion.div
@@ -483,7 +497,7 @@ export default function Musializer() {
                             />
                         );
                     })} 
-                </div>
+                 </div>
                 ):(
                     <canvas ref={canvasRef} style={{ position: "absolute", marginLeft: "-3px", marginTop: "-3px", }}></canvas>
                 )}

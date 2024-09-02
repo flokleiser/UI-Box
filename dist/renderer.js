@@ -50300,7 +50300,7 @@ function Slider({ value, children, set, min = 0, max = 100 }) {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.startPage = void 0;
-exports.startPage = "Home";
+exports.startPage = "Musializer";
 const setActivePage = (page) => {
     console.log('setActivePage', page);
     const event = new CustomEvent('pageChange', { detail: { page } });
@@ -51383,6 +51383,7 @@ function Musializer() {
     const [test, setTest] = (0, react_1.useState)(0);
     const [audioData, setAudioData] = (0, react_1.useState)(new Uint8Array(0));
     const canvasRef = (0, react_1.useRef)(null);
+    const divRef = (0, react_1.useRef)(null);
     const audioRef = (0, react_1.useRef)(null);
     const analyserRef = (0, react_1.useRef)(null);
     const audioContextRef = (0, react_1.useRef)(null);
@@ -51399,13 +51400,26 @@ function Musializer() {
     const [isOverlayVisible, setOverlayVisible] = (0, react_1.useState)(false);
     const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
     const [isEqualizer, setIsEqualizer] = (0, react_1.useState)(false);
+    const [audioMotion, setAudioMotion] = (0, react_1.useState)(null);
     const nextSong = () => {
         setCurrentSongIndex((currentSongIndex + 1) % Music_1.music.length);
     };
+    // useEffect(() => {
+    //     if (audioRef.current && canvasRef.current && !audioMotion && isEqualizer) {
+    //         console.log('init')
+    //         const analyzer = new AudioMotionAnalyzer(canvasRef.current, {
+    //           source: audioRef.current,
+    //         });
+    //         setAudioMotion(analyzer);
+    //       }
+    //     }, [audioRef.current, canvasRef.current, audioMotion]);
     //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
         console.log('equalizer', isEqualizer);
+        setTimeout(() => {
+            resetScene();
+        }, 100);
     };
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true);
@@ -52325,7 +52339,6 @@ function Test() {
     const audioRef = (0, react_1.useRef)(null);
     const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
     const [audioMotion, setAudioMotion] = (0, react_1.useState)(null);
-    //song selection and duration
     (0, react_1.useEffect)(() => {
         if (audioRef.current) {
             audioRef.current.pause();
@@ -52333,39 +52346,18 @@ function Test() {
             audioRef.current.load();
         }
     }, [currentSong]);
-    //audio setup
-    // useEffect(() => {
-    //     if (!audioRef.current) {
-    //         audioRef.current = new Audio(currentSong.file);
-    //         // audioContextRef.current = new (window.AudioContext ||
-    //         //     (window as any).webkitAudioContext)();
-    //         // const source = audioContextRef.current.createMediaElementSource(
-    //         //     audioRef.current
-    //         // );
-    //         audioRef.current.controls = true;
-    //         audioRef.current.crossOrigin = 'anonymous';
-    //         // audioContainer?.append(audioRef.current);
-    //         // analyserRef.current = audioContextRef.current.createAnalyser();
-    //         // source.connect(analyserRef.current);
-    //         // analyserRef.current.connect(audioContextRef.current.destination);
-    //         // analyserRef.current.fftSize = 256;
-    //         // const bufferLength = analyserRef.current.frequencyBinCount;
-    //         // setAudioData(new Uint8Array(bufferLength));
-    //             if (canvasRef.current) {
-    //                 canvasRef.current.append(audioRef.current);
-    //                 console.log('canvasRef found')
-    //                 audioMotion = new AudioMotionAnalyzer(canvasRef.current, {
-    //                 source: audioRef.current,
-    //             })
-    //         }
-    //     }
-    // }, [audioRef.current]);
     (0, react_1.useEffect)(() => {
         if (audioRef.current && canvasRef.current && !audioMotion) {
-            // console.log('canvasRef found');
             console.log('init');
             const analyzer = new audiomotion_analyzer_1.default(canvasRef.current, {
                 source: audioRef.current,
+                mode: 4,
+                //   mode: 3,
+                //   radial:true
+                roundBars: true,
+                lumiBars: true,
+                showScaleX: false,
+                // loRes: true,
             });
             setAudioMotion(analyzer);
         }
