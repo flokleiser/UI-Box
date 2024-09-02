@@ -343,6 +343,14 @@ export default function Musializer() {
         setResetTrigger((prev) => prev + 1);
     }
 
+    const handleProgressClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (audioRef.current) {
+            const progressBar = e.target;
+            const newTime = (e.nativeEvent.offsetX / (progressBar as HTMLDivElement).offsetWidth) * duration;
+            audioRef.current.currentTime = newTime;
+        }
+      };
+
     return (
         <div className="bodyCenter">
             <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
@@ -382,12 +390,10 @@ export default function Musializer() {
                 </div>
 
             </div>
-
-
             <div
                 style={{display: "flex",flexDirection: "row",justifyContent: "space-between",alignItems: "center",}}>
                 <div style={{position: "relative",display: "flex",flexDirection: "column",justifyContent: "center",alignItems:"flex-start"}}>
-                    <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"30px" }}>
+                    <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"30px",  marginTop:"15px" }}>
                     <motion.button
                         className="playButton"
                         style={{ display: "flex", justifyContent: "center", alignItems: "center", }}
@@ -407,15 +413,11 @@ export default function Musializer() {
                     >
                         <motion.circle
                             stroke="#ddd"
-                            strokeWidth="5"
+                            strokeWidth= {bass ? "5" : "0" }
                             fill="rgba(255,255,255,0.1)"
                             r={radius/2}
                             cx="100"
                             cy="100"
-                            strokeDasharray={circumference}
-                            strokeDashoffset={offset}
-                            initial={{ strokeDashoffset: initialOffset }}
-                            animate={{ strokeDashoffset: offset }}
                         />
                     </motion.svg>
                     </div>
@@ -430,7 +432,7 @@ export default function Musializer() {
                     </div>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", paddingLeft: "50px", }} >
+                <div style={{ display: "flex", flexDirection: "column"}} >
                     <Slider value={volume} set={setVolume} 
                     >
                         Volume
@@ -443,11 +445,27 @@ export default function Musializer() {
                     >
                         Intensity
                     </Slider>
-                    <Slider value={test} set={setTest}>
-                        Test
-                    </Slider>
+                
+
+            {/* <audio ref={audioRef}>
+                <source src={currentSong.file} type="audio/mpeg" />
+            </audio> */}
+
+            <div className="custom-audio-controls" style={{marginTop:"10px", marginBottom:"5px"}}>
+                <div className="progress-bar" onClick={handleProgressClick}>
+                <div
+                    className="progress"
+                    style={{ width: `${(currentTime / duration) * 100}%` }}
+                ></div>
                 </div>
             </div>
+
+                </div>
+            </div>
+
+
+
+
             <div style={{ padding: "5px" }} />
 
             <div id="canvasDiv" className="canvasDiv" 
