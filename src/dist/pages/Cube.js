@@ -38,14 +38,15 @@ const framer_motion_1 = require("framer-motion");
 function Cube() {
     const [isInside, setIsInside] = (0, react_1.useState)(false);
     const [isSwitched, setIsSwitched] = (0, react_1.useState)(false);
-    // const springConfig = { stiffness: 150 };
     const springConfig = { stiffness: 150, damping: 25 };
     const x = (0, framer_motion_1.useSpring)(200, springConfig);
     const y = (0, framer_motion_1.useSpring)(200, springConfig);
     const rotateX = (0, framer_motion_1.useMotionValue)(0);
     const rotateY = (0, framer_motion_1.useMotionValue)(0);
-    const tiltX = (0, framer_motion_1.useTransform)(y, [0, 400], [45, -45]);
-    const tiltY = (0, framer_motion_1.useTransform)(x, [0, 400], [-45, 45]);
+    // const tiltX = useTransform(y, [0, 400], [45, -45]);
+    // const tiltY = useTransform(x, [0, 400], [-45, 45]);
+    const tiltX = (0, framer_motion_1.useTransform)(y, [0, 400], [15, -15]);
+    const tiltY = (0, framer_motion_1.useTransform)(x, [0, 400], [-15, 15]);
     const compositeRotateX = (0, framer_motion_1.useTransform)(() => rotateX.get() + tiltX.get());
     const compositeRotateY = (0, framer_motion_1.useTransform)(() => rotateY.get() + tiltY.get());
     function handleSwitchClick() {
@@ -77,6 +78,13 @@ function Cube() {
             ]).then(() => resolve());
         });
     }
+    // function animateDiagonalRotation() {
+    //     const diagonalAxis = {x:1, y:1, z:0}
+    //     // const angle = 90;
+    //     const angle = 180;
+    //     animate(rotateX, angle * diagonalAxis.x, {duration:0.5});
+    //     animate(rotateY, angle * diagonalAxis.y, {duration:0.5});
+    // }
     function gridClick(event) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!isSwitched) {
@@ -99,18 +107,22 @@ function Cube() {
                     case "top-left":
                         newRotateX += 180;
                         newRotateY -= 135;
+                        // newRotateY -= 180;
                         break;
                     case "top-right":
                         newRotateX += 180;
                         newRotateY += 135;
+                        // newRotateY += 180;
                         break;
                     case "bottom-left":
                         newRotateX -= 180;
                         newRotateY -= 135;
+                        // newRotateY -= 180;
                         break;
                     case "bottom-right":
                         newRotateX -= 180;
                         newRotateY += 135;
+                        // newRotateY += 180;
                         break;
                 }
                 yield animateRotation(newRotateX, newRotateY);
@@ -164,8 +176,9 @@ function Cube() {
                         placeItems: "center",
                         placeContent: "center",
                         borderRadius: 30,
-                        perspective: 400,
-                        position: 'relative'
+                        // perspective: 400,
+                        perspective: '1000px',
+                        position: 'relative',
                     }, onMouseMove: handleMouse, onMouseLeave: handleMouseLeave },
                     ["top-left",
                         "top-center",
@@ -184,7 +197,9 @@ function Cube() {
                             rotateY: compositeRotateY,
                             position: 'absolute',
                             transform: "translate(-50%,-50%)"
-                        }, whileTap: { scale: 0.95 } },
+                        }, 
+                        // onClick={animateDiagonalRotation}
+                        whileTap: { scale: 0.95 } },
                         react_1.default.createElement(framer_motion_1.motion.div, { className: "cube", drag: true, dragConstraints: { left: 0, right: 0, top: 0, bottom: 0 }, onDragEnd: handleDragEnd, style: {
                                 position: 'absolute',
                                 justifySelf: "center",
