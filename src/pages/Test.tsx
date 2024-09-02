@@ -16,7 +16,6 @@ export default function Test() {
 
     const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
 
-    //song selection and duration
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.pause();
@@ -25,48 +24,19 @@ export default function Test() {
         }
     }, [currentSong]);
 
-    //audio setup
-    // useEffect(() => {
-    //     if (!audioRef.current) {
-    //         audioRef.current = new Audio(currentSong.file);
-
-    //         // audioContextRef.current = new (window.AudioContext ||
-    //         //     (window as any).webkitAudioContext)();
-
-    //         // const source = audioContextRef.current.createMediaElementSource(
-    //         //     audioRef.current
-    //         // );
-
-    //         audioRef.current.controls = true;
-    //         audioRef.current.crossOrigin = 'anonymous';
-
-    //         // audioContainer?.append(audioRef.current);
-
-    //         // analyserRef.current = audioContextRef.current.createAnalyser();
-    //         // source.connect(analyserRef.current);
-    //         // analyserRef.current.connect(audioContextRef.current.destination);
-    //         // analyserRef.current.fftSize = 256;
-    //         // const bufferLength = analyserRef.current.frequencyBinCount;
-    //         // setAudioData(new Uint8Array(bufferLength));
-
-    //             if (canvasRef.current) {
-
-    //                 canvasRef.current.append(audioRef.current);
-
-    //                 console.log('canvasRef found')
-    //                 audioMotion = new AudioMotionAnalyzer(canvasRef.current, {
-    //                 source: audioRef.current,
-    //             })
-    //         }
-    //     }
-    // }, [audioRef.current]);
-
     useEffect(() => {
     if (audioRef.current && canvasRef.current && !audioMotion) {
-        // console.log('canvasRef found');
         console.log('init')
         const analyzer = new AudioMotionAnalyzer(canvasRef.current, {
           source: audioRef.current,
+          mode:4, 
+        //   mode: 3,
+        //   radial:true
+        roundBars: true,
+        lumiBars: true,
+        showScaleX: false,
+        // loRes: true,
+
         });
         setAudioMotion(analyzer);
       }
