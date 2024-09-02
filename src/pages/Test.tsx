@@ -8,32 +8,14 @@ import AudioMotionAnalyzer from 'audiomotion-analyzer';
 import check1 from '../media/sounds/check1.mp3'
 
 export default function Test() {
-
-
-// export default function Musializer() {
-    const [isPlaying, setIsPlaying] = useState(true);
-    const [volume, setVolume] = useState(50);
-    const [bass, setBass] = useState(false);
-    const [test, setTest] = useState(0);
-
-    const [audioData, setAudioData] = useState<Uint8Array>(new Uint8Array(0));
-    // const canvasRef = useRef<HTMLCanvasElement>(null);
     const canvasRef = useRef<HTMLDivElement>(null);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const analyserRef = useRef<AnalyserNode | null>(null);
-    const audioContextRef = useRef<AudioContext | null>(null);
-    const audioMotionRef = useRef<AudioMotionAnalyzer| null>(null);
 
     const [currentSong, setCurrentSong] = useState(music[0]);
 
     const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
 
-    // let audioMotion
-
-
-
-    //song selection and duration
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.pause();
@@ -42,48 +24,19 @@ export default function Test() {
         }
     }, [currentSong]);
 
-    //audio setup
-    // useEffect(() => {
-    //     if (!audioRef.current) {
-    //         audioRef.current = new Audio(currentSong.file);
-
-    //         // audioContextRef.current = new (window.AudioContext ||
-    //         //     (window as any).webkitAudioContext)();
-
-    //         // const source = audioContextRef.current.createMediaElementSource(
-    //         //     audioRef.current
-    //         // );
-
-    //         audioRef.current.controls = true;
-    //         audioRef.current.crossOrigin = 'anonymous';
-
-    //         // audioContainer?.append(audioRef.current);
-
-    //         // analyserRef.current = audioContextRef.current.createAnalyser();
-    //         // source.connect(analyserRef.current);
-    //         // analyserRef.current.connect(audioContextRef.current.destination);
-    //         // analyserRef.current.fftSize = 256;
-    //         // const bufferLength = analyserRef.current.frequencyBinCount;
-    //         // setAudioData(new Uint8Array(bufferLength));
-
-    //             if (canvasRef.current) {
-
-    //                 canvasRef.current.append(audioRef.current);
-
-    //                 console.log('canvasRef found')
-    //                 audioMotion = new AudioMotionAnalyzer(canvasRef.current, {
-    //                 source: audioRef.current,
-    //             })
-    //         }
-    //     }
-    // }, [audioRef.current]);
-
     useEffect(() => {
     if (audioRef.current && canvasRef.current && !audioMotion) {
-        // console.log('canvasRef found');
         console.log('init')
         const analyzer = new AudioMotionAnalyzer(canvasRef.current, {
           source: audioRef.current,
+          mode:4, 
+        //   mode: 3,
+        //   radial:true
+        roundBars: true,
+        lumiBars: true,
+        showScaleX: false,
+        // loRes: true,
+
         });
         setAudioMotion(analyzer);
       }
