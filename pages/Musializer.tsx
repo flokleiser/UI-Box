@@ -32,9 +32,9 @@ export default function Musializer() {
 
     const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
 
-    const nextSong = () => {
-        setCurrentSongIndex((currentSongIndex + 1) % music.length);
-    }
+    // const nextSong = () => {
+    //     setCurrentSongIndex((currentSongIndex + 1) % music.length);
+    // }
 
     // useEffect(() => {
     //     if (audioRef.current && canvasRef.current && !audioMotion && isEqualizer) {

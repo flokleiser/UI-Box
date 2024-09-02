@@ -50300,7 +50300,7 @@ function Slider({ value, children, set, min = 0, max = 100 }) {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.startPage = void 0;
-exports.startPage = "Musializer";
+exports.startPage = "Home";
 const setActivePage = (page) => {
     console.log('setActivePage', page);
     const event = new CustomEvent('pageChange', { detail: { page } });
@@ -50795,14 +50795,15 @@ const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules
 function Cube() {
     const [isInside, setIsInside] = (0, react_1.useState)(false);
     const [isSwitched, setIsSwitched] = (0, react_1.useState)(false);
-    // const springConfig = { stiffness: 150 };
     const springConfig = { stiffness: 150, damping: 25 };
     const x = (0, framer_motion_1.useSpring)(200, springConfig);
     const y = (0, framer_motion_1.useSpring)(200, springConfig);
     const rotateX = (0, framer_motion_1.useMotionValue)(0);
     const rotateY = (0, framer_motion_1.useMotionValue)(0);
-    const tiltX = (0, framer_motion_1.useTransform)(y, [0, 400], [45, -45]);
-    const tiltY = (0, framer_motion_1.useTransform)(x, [0, 400], [-45, 45]);
+    // const tiltX = useTransform(y, [0, 400], [45, -45]);
+    // const tiltY = useTransform(x, [0, 400], [-45, 45]);
+    const tiltX = (0, framer_motion_1.useTransform)(y, [0, 400], [15, -15]);
+    const tiltY = (0, framer_motion_1.useTransform)(x, [0, 400], [-15, 15]);
     const compositeRotateX = (0, framer_motion_1.useTransform)(() => rotateX.get() + tiltX.get());
     const compositeRotateY = (0, framer_motion_1.useTransform)(() => rotateY.get() + tiltY.get());
     function handleSwitchClick() {
@@ -50834,6 +50835,13 @@ function Cube() {
             ]).then(() => resolve());
         });
     }
+    // function animateDiagonalRotation() {
+    //     const diagonalAxis = {x:1, y:1, z:0}
+    //     // const angle = 90;
+    //     const angle = 180;
+    //     animate(rotateX, angle * diagonalAxis.x, {duration:0.5});
+    //     animate(rotateY, angle * diagonalAxis.y, {duration:0.5});
+    // }
     function gridClick(event) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!isSwitched) {
@@ -50856,18 +50864,22 @@ function Cube() {
                     case "top-left":
                         newRotateX += 180;
                         newRotateY -= 135;
+                        // newRotateY -= 180;
                         break;
                     case "top-right":
                         newRotateX += 180;
                         newRotateY += 135;
+                        // newRotateY += 180;
                         break;
                     case "bottom-left":
                         newRotateX -= 180;
                         newRotateY -= 135;
+                        // newRotateY -= 180;
                         break;
                     case "bottom-right":
                         newRotateX -= 180;
                         newRotateY += 135;
+                        // newRotateY += 180;
                         break;
                 }
                 yield animateRotation(newRotateX, newRotateY);
@@ -50921,8 +50933,9 @@ function Cube() {
                         placeItems: "center",
                         placeContent: "center",
                         borderRadius: 30,
-                        perspective: 400,
-                        position: 'relative'
+                        // perspective: 400,
+                        perspective: '1000px',
+                        position: 'relative',
                     }, onMouseMove: handleMouse, onMouseLeave: handleMouseLeave },
                     ["top-left",
                         "top-center",
@@ -50941,7 +50954,9 @@ function Cube() {
                             rotateY: compositeRotateY,
                             position: 'absolute',
                             transform: "translate(-50%,-50%)"
-                        }, whileTap: { scale: 0.95 } },
+                        }, 
+                        // onClick={animateDiagonalRotation}
+                        whileTap: { scale: 0.95 } },
                         react_1.default.createElement(framer_motion_1.motion.div, { className: "cube", drag: true, dragConstraints: { left: 0, right: 0, top: 0, bottom: 0 }, onDragEnd: handleDragEnd, style: {
                                 position: 'absolute',
                                 justifySelf: "center",
@@ -51024,10 +51039,18 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Joystick;
+const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 // import
 function Joystick() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
+    // const [showCar, setShowCar] = useState(true);
+    // const [carPosition, setCarPosition] = useState({ x: 0, y: 0 });
+    const [carPosition, setCarPosition] = (0, react_1.useState)({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+    // const handleCarToggle = () => {
+    //     setShowCar(!showCar);
+    //     console.log('car', showCar);
+    // }
     (0, react_1.useEffect)(() => {
         const canvasKeyboard = document.querySelector("#canvasKeyboard");
         const ctx = canvasKeyboard.getContext("2d", { willReadFrequently: true });
@@ -51153,19 +51176,23 @@ function Joystick() {
                 circleX2 = centerX2 + maxDistance * Math.cos(angle2);
                 circleY2 = centerY2 + maxDistance * Math.sin(angle2);
             }
+            carPosition.x = circleX2 - centerX2;
+            carPosition.y = circleY2 - centerY2;
         };
         const initscene = () => {
             ww = canvasKeyboard.width = window.innerWidth;
             wh = canvasKeyboard.height = window.innerHeight;
             // centerX = ww / 2;
             centerX = (ww / 2) - 135;
-            centerY = wh / 2;
+            // centerY = wh / 2;
+            centerY = wh / 1.5;
             circleX = centerX;
             circleY = centerY;
             vx = 0;
             vy = 0;
             centerX2 = (ww / 2) + 135;
-            centerY2 = wh / 2;
+            // centerY2 = wh / 2;
+            centerY2 = wh / 1.5;
             circleX2 = centerX2;
             circleY2 = centerY2;
             vx2 = 0;
@@ -51284,8 +51311,12 @@ function Joystick() {
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(centerX2, centerY2, maxDistance + (radius / 2), 0, Math.PI * 2);
-            ctx.stroke(),
-                animationFrameId = requestAnimationFrame(render);
+            ctx.stroke();
+            // if (showCar) {
+            //     ctx.fillStyle = 'red';
+            //     ctx.fillRect(carPosition.x + centerX2 - 25, carPosition.y + centerY2 - 25, 50, 50);
+            // }
+            animationFrameId = requestAnimationFrame(render);
         };
         const handleThemeToggle = () => { resetScene(); };
         if (darkmodeToggleButton) {
@@ -51319,17 +51350,24 @@ function Joystick() {
         setResetTrigger(prev => prev + 1);
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement("div", null,
-            react_1.default.createElement("h1", null, "Joystick"),
-            react_1.default.createElement("canvas", { style: {
-                    width: '100vw',
-                    height: '100vh',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    overflow: 'hidden',
-                    zIndex: -10
-                }, id: "canvasKeyboard" }))));
+        react_1.default.createElement("div", { style: {
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'start',
+                alignItems: 'center',
+            } },
+            react_1.default.createElement("h1", null, " Joystick "),
+            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, whileHover: { scale: 1.1 } },
+                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toys"))),
+        react_1.default.createElement("canvas", { style: {
+                width: '100vw',
+                height: '100vh',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                overflow: 'hidden',
+                zIndex: -10
+            }, id: "canvasKeyboard" })));
 }
 
 
@@ -51401,9 +51439,9 @@ function Musializer() {
     const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
     const [isEqualizer, setIsEqualizer] = (0, react_1.useState)(false);
     const [audioMotion, setAudioMotion] = (0, react_1.useState)(null);
-    const nextSong = () => {
-        setCurrentSongIndex((currentSongIndex + 1) % Music_1.music.length);
-    };
+    // const nextSong = () => {
+    //     setCurrentSongIndex((currentSongIndex + 1) % music.length);
+    // }
     // useEffect(() => {
     //     if (audioRef.current && canvasRef.current && !audioMotion && isEqualizer) {
     //         console.log('init')

@@ -57,9 +57,9 @@ function Musializer() {
     const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
     const [isEqualizer, setIsEqualizer] = (0, react_1.useState)(false);
     const [audioMotion, setAudioMotion] = (0, react_1.useState)(null);
-    const nextSong = () => {
-        setCurrentSongIndex((currentSongIndex + 1) % Music_1.music.length);
-    };
+    // const nextSong = () => {
+    //     setCurrentSongIndex((currentSongIndex + 1) % music.length);
+    // }
     // useEffect(() => {
     //     if (audioRef.current && canvasRef.current && !audioMotion && isEqualizer) {
     //         console.log('init')
