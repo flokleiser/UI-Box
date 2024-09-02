@@ -1,11 +1,20 @@
 //https://github.com/bobboteck/JoyStick?tab=readme-ov-file
 
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 // import
 
 export default function Joystick() {
 
     const [resetTrigger, setResetTrigger] = useState(0);
+    // const [showCar, setShowCar] = useState(true);
+    // const [carPosition, setCarPosition] = useState({ x: 0, y: 0 });
+    const [carPosition, setCarPosition] = useState({ x: window.innerWidth/2, y: window.innerHeight/2 });
+
+    // const handleCarToggle = () => {
+    //     setShowCar(!showCar);
+    //     console.log('car', showCar);
+    // }
 
     useEffect(() => {
         const canvasKeyboard= document.querySelector("#canvasKeyboard") as HTMLCanvasElement;
@@ -153,6 +162,9 @@ export default function Joystick() {
                 circleX2 = centerX2 + maxDistance * Math.cos(angle2);
                 circleY2 = centerY2 + maxDistance * Math.sin(angle2);
             }
+
+            carPosition.x = circleX2 - centerX2;
+            carPosition.y = circleY2 - centerY2;
         };
         
 
@@ -161,14 +173,16 @@ export default function Joystick() {
             wh = canvasKeyboard.height = window.innerHeight;
             // centerX = ww / 2;
             centerX = (ww / 2) - 135; 
-            centerY = wh / 2;
+            // centerY = wh / 2;
+            centerY = wh / 1.5;
             circleX = centerX;
             circleY = centerY;
             vx = 0;
             vy = 0;
 
             centerX2 = (ww / 2) + 135; 
-            centerY2 = wh / 2;
+            // centerY2 = wh / 2;
+            centerY2 = wh / 1.5;
             circleX2 = centerX2;
             circleY2 = centerY2;
             vx2 = 0;
@@ -303,7 +317,13 @@ export default function Joystick() {
             ctx.lineWidth = 2
             ctx.beginPath();
             ctx.arc(centerX2,centerY2, maxDistance + (radius/2), 0 , Math.PI*2)
-            ctx.stroke(),
+            ctx.stroke();
+
+            // if (showCar) {
+            //     ctx.fillStyle = 'red';
+            //     ctx.fillRect(carPosition.x + centerX2 - 25, carPosition.y + centerY2 - 25, 50, 50);
+            // }
+
 
 
             animationFrameId = requestAnimationFrame(render);
@@ -351,8 +371,25 @@ export default function Joystick() {
 
     return (
         <div className="bodyCenter">
-        <div>
-            <h1>Joystick</h1>
+        <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'start',
+              alignItems: 'center',
+            }}
+          >
+            <h1> Joystick </h1>
+
+            <motion.button
+              className="navbarButton"
+              style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+            whileHover={{scale: 1.1}}
+            // onClick={handleCarToggle}
+            >
+              <span className="material-symbols-outlined">toys</span>
+            </motion.button>
+          </div>
             <canvas
                 style={{
                     width: '100vw',
@@ -365,7 +402,6 @@ export default function Joystick() {
                 }}
                 id="canvasKeyboard">
             </canvas>
-        </div>
         </div>
     );
 }
