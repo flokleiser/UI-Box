@@ -39,6 +39,7 @@ function Musializer() {
     const [test, setTest] = (0, react_1.useState)(0);
     const [audioData, setAudioData] = (0, react_1.useState)(new Uint8Array(0));
     const canvasRef = (0, react_1.useRef)(null);
+    const divRef = (0, react_1.useRef)(null);
     const audioRef = (0, react_1.useRef)(null);
     const analyserRef = (0, react_1.useRef)(null);
     const audioContextRef = (0, react_1.useRef)(null);
@@ -55,13 +56,26 @@ function Musializer() {
     const [isOverlayVisible, setOverlayVisible] = (0, react_1.useState)(false);
     const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
     const [isEqualizer, setIsEqualizer] = (0, react_1.useState)(false);
+    const [audioMotion, setAudioMotion] = (0, react_1.useState)(null);
     const nextSong = () => {
         setCurrentSongIndex((currentSongIndex + 1) % Music_1.music.length);
     };
+    // useEffect(() => {
+    //     if (audioRef.current && canvasRef.current && !audioMotion && isEqualizer) {
+    //         console.log('init')
+    //         const analyzer = new AudioMotionAnalyzer(canvasRef.current, {
+    //           source: audioRef.current,
+    //         });
+    //         setAudioMotion(analyzer);
+    //       }
+    //     }, [audioRef.current, canvasRef.current, audioMotion]);
     //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
         console.log('equalizer', isEqualizer);
+        setTimeout(() => {
+            resetScene();
+        }, 100);
     };
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true);

@@ -36,21 +36,26 @@ export default function Musializer() {
         setCurrentSongIndex((currentSongIndex + 1) % music.length);
     }
 
-    useEffect(() => {
-        if (audioRef.current && canvasRef.current && !audioMotion && isEqualizer) {
-            console.log('init')
-            const analyzer = new AudioMotionAnalyzer(canvasRef.current, {
-              source: audioRef.current,
-            });
-            setAudioMotion(analyzer);
-          }
-        }, [audioRef.current, canvasRef.current, audioMotion]);
+    // useEffect(() => {
+    //     if (audioRef.current && canvasRef.current && !audioMotion && isEqualizer) {
+    //         console.log('init')
+    //         const analyzer = new AudioMotionAnalyzer(canvasRef.current, {
+    //           source: audioRef.current,
+    //         });
+    //         setAudioMotion(analyzer);
+    //       }
+    //     }, [audioRef.current, canvasRef.current, audioMotion]);
 
     //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
         console.log('equalizer',isEqualizer);
+
+        setTimeout(() => {
+            resetScene()
+        },100)
     }
+
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true)
     }
@@ -461,10 +466,6 @@ export default function Musializer() {
                     </Slider>
                 
 
-            {/* <audio ref={audioRef}>
-                <source src={currentSong.file} type="audio/mpeg" />
-            </audio> */}
-
             <div className="custom-audio-controls" style={{marginTop:"10px", marginBottom:"5px"}}>
                 <div className="progress-bar" onClick={handleProgressClick}>
                 <div
@@ -484,7 +485,6 @@ export default function Musializer() {
 
             <div id="canvasDiv" className="canvasDiv"> 
                 {isEqualizer ? (
-                    // <div ref={divRef}>
                      <div className="visualizer">
                     {Array.from(audioData).slice(0, 64).map((value, index) => {
                         return (
