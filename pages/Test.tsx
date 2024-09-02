@@ -8,30 +8,13 @@ import AudioMotionAnalyzer from 'audiomotion-analyzer';
 import check1 from '../media/sounds/check1.mp3'
 
 export default function Test() {
-
-
-// export default function Musializer() {
-    const [isPlaying, setIsPlaying] = useState(true);
-    const [volume, setVolume] = useState(50);
-    const [bass, setBass] = useState(false);
-    const [test, setTest] = useState(0);
-
-    const [audioData, setAudioData] = useState<Uint8Array>(new Uint8Array(0));
-    // const canvasRef = useRef<HTMLCanvasElement>(null);
     const canvasRef = useRef<HTMLDivElement>(null);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const analyserRef = useRef<AnalyserNode | null>(null);
-    const audioContextRef = useRef<AudioContext | null>(null);
-    const audioMotionRef = useRef<AudioMotionAnalyzer| null>(null);
 
     const [currentSong, setCurrentSong] = useState(music[0]);
 
     const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
-
-    // let audioMotion
-
-
 
     //song selection and duration
     useEffect(() => {

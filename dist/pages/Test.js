@@ -32,21 +32,10 @@ const framer_motion_1 = require("framer-motion");
 const Music_1 = require("../components/Music");
 const audiomotion_analyzer_1 = __importDefault(require("audiomotion-analyzer"));
 function Test() {
-    // export default function Musializer() {
-    const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
-    const [volume, setVolume] = (0, react_1.useState)(50);
-    const [bass, setBass] = (0, react_1.useState)(false);
-    const [test, setTest] = (0, react_1.useState)(0);
-    const [audioData, setAudioData] = (0, react_1.useState)(new Uint8Array(0));
-    // const canvasRef = useRef<HTMLCanvasElement>(null);
     const canvasRef = (0, react_1.useRef)(null);
     const audioRef = (0, react_1.useRef)(null);
-    const analyserRef = (0, react_1.useRef)(null);
-    const audioContextRef = (0, react_1.useRef)(null);
-    const audioMotionRef = (0, react_1.useRef)(null);
     const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
     const [audioMotion, setAudioMotion] = (0, react_1.useState)(null);
-    // let audioMotion
     //song selection and duration
     (0, react_1.useEffect)(() => {
         if (audioRef.current) {
