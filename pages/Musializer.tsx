@@ -32,19 +32,14 @@ export default function Musializer() {
 
     const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
 
-    // const nextSong = () => {
-    //     setCurrentSongIndex((currentSongIndex + 1) % music.length);
-    // }
-
-    // useEffect(() => {
-    //     if (audioRef.current && canvasRef.current && !audioMotion && isEqualizer) {
-    //         console.log('init')
-    //         const analyzer = new AudioMotionAnalyzer(canvasRef.current, {
-    //           source: audioRef.current,
-    //         });
-    //         setAudioMotion(analyzer);
-    //       }
-    //     }, [audioRef.current, canvasRef.current, audioMotion]);
+    const logScale = (index: number, total: number) => {
+        const minp = 0;
+        const maxp = Math.log10(total);
+        const minv = Math.log10(1);
+        const maxv = Math.log10(total);
+        const scale = (maxv - minv) / (maxp - minp);
+        return Math.log10(index + 1) * scale;
+    };
 
     //gui/equalizer
     const handleEqualizerClick = () => {
@@ -364,9 +359,23 @@ export default function Musializer() {
 
     const handleProgressClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (audioRef.current) {
-            const progressBar = e.target;
-            const newTime = (e.nativeEvent.offsetX / (progressBar as HTMLDivElement).offsetWidth) * duration;
-            audioRef.current.currentTime = newTime;
+        //     const progressBar = e.target;
+        //     const newTime = (e.nativeEvent.offsetX / (progressBar as HTMLDivElement).offsetWidth) * duration;
+        //     audioRef.current.currentTime = newTime;
+        // }
+        const progressBar = e.target as HTMLDivElement;
+        const clickPosition = e.nativeEvent.offsetX;
+        const progressBarWidth = progressBar.offsetWidth;
+        const newTime = (clickPosition / progressBarWidth) * duration;
+
+        console.log('Click position:', clickPosition);
+        console.log('Progress bar width:', progressBarWidth);
+        console.log('Duration:', duration);
+        console.log('New time:', newTime);
+
+            if (!isNaN(newTime) && newTime >= 0 && newTime <= duration) {
+                audioRef.current.currentTime = newTime;
+            }
         }
       };
 
@@ -466,7 +475,7 @@ export default function Musializer() {
                     </Slider>
                 
 
-            <div className="custom-audio-controls" style={{marginTop:"10px", marginBottom:"5px"}}>
+            <div className="custom-audio-controls" style={{marginTop:"10px", marginBottom:"5px", width:'100%'}}>
                 <div className="progress-bar" onClick={handleProgressClick}>
                 <div
                     className="progress"
@@ -487,12 +496,14 @@ export default function Musializer() {
                 {isEqualizer ? (
                      <div className="visualizer">
                     {Array.from(audioData).slice(0, 64).map((value, index) => {
+                          const logValue = value * logScale(index, 64);
                         return (
                             <motion.div
                                 key={index}
                                 className="bar"
                                 initial={{ height: 0.5 }}
                                 animate={{ height: value}}
+                                // animate={{ height: logValue }}
                                 transition={{ duration: 0.05 }}
                             />
                         );
