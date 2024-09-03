@@ -35,13 +35,11 @@ export default function Test() {
                 showBgColor: false,
                 overlay: true,
                 mode:4,
-                //   mode:10,
                 roundBars: true,
                 alphaBars: true,
                 reflexFit: true,
                 reflexBright: 1,
                 mirror: 0,
-                //   gradient: 'test'
                 reflexAlpha: 1,
                 reflexRatio: 0.5,
                 gradient: 'prism',
