@@ -3,7 +3,7 @@ ___
 
 - ### Currently working on
 
-- [ ] Remove "focus" blue border
+- [x] Remove "focus" blue border
 
 ___
 
@@ -15,8 +15,9 @@ ___
     - [x] Get mp3 to pause
     - [x] Better styles for the button
     - [x] Volume slider
-    - [ ] Volume slider --> range/progress bar
-    - [ ] Lenght of music visualized --> progress bar
+    - [x] Volume slider --> range/progress bar
+    - [x] Lenght of music visualized --> progress bar
+
     - [ ] Adjustable bassIntensity (bounceRadiusIntensity) thingy
 
 
