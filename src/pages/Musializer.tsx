@@ -25,6 +25,8 @@ export default function Musializer() {
     const [currentSong, setCurrentSong] = useState(music[1]);
     const [isEqualizer, setIsEqualizer] = useState(false);  
     const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
+    const [initSceneCount, setInitSceneCount] = useState(0);
+
 
     const radius = 85;
     const circumference = 2 * Math.PI * radius/2;
@@ -35,15 +37,10 @@ export default function Musializer() {
     //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
-
-        // if (isEqualizer) {
-        //     analyzer.destroy();
-        // }
-
-        setTimeout(() => {
-            resetScene()
-        },100)
+        console.log('init thing')
+        setInitSceneCount(count => count + 1);
     }
+
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true)
     }
@@ -63,12 +60,6 @@ export default function Musializer() {
             audioRef.current.load();
         }
     }, [currentSong]);
-
-    //reset canvas to center it
-    useEffect(() => {
-        const timeoutId = setTimeout(resetScene, 100);
-        return () => clearTimeout(timeoutId);
-    }, []);
 
     //reset canvas on theme change
     useEffect(() => {
@@ -139,14 +130,20 @@ export default function Musializer() {
     useEffect(() => {
         const canvas = canvasRef.current;
         const canvasDiv = document.getElementById("canvasDiv");
+
         if (!canvas || !canvasDiv) return;
+
+        const rect = canvasDiv.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
 
         const ctx = canvas.getContext("2d", {
             willReadFrequently: true,
         }) as CanvasRenderingContext2D;
         let animationFrameId: number;
         let particles: Particle[] = [];
-        let bounceCenter = { x: canvas.width / 2, y: canvas.height / 2 };
+        let bounceCenter = { x: canvas.width/ 2, y: canvas.height/ 2 };
+        console.log("BounceCenter: ",bounceCenter.x, bounceCenter.y, "Should be here: ", rect.width/2, rect.height/2);
         let bounceRadius = 1;
 
         const color = [
@@ -234,6 +231,9 @@ export default function Musializer() {
         };
 
         const initScene = () => {
+
+            // setTimeout(() => {
+
             const rect = canvasDiv.getBoundingClientRect();
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
@@ -249,11 +249,11 @@ export default function Musializer() {
                     particles.push(new Particle(centerX + x, centerY + y));
                 }
             }
+        // }, 1000)
         };
 
+
         const render = () => {
-            const rect = canvasDiv.getBoundingClientRect();
-            // let bounceCenter = { x: rect.width / 2, y: rect.height / 2 };
 
             if (analyserRef.current) {
                 const dataArray = new Uint8Array(
@@ -270,7 +270,6 @@ export default function Musializer() {
                 const bass = intensity > 509;
                 setBass(bass);
                 bounceRadius = bass ? 1.5 : 0;
-                // bounceRadius = bass ? bounceRadiusIntensity : 0;
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -291,7 +290,7 @@ export default function Musializer() {
             window.removeEventListener("resize", resizeCanvas);
             cancelAnimationFrame(animationFrameId);
         };
-    }, [resetTrigger]);
+    }, [resetTrigger,initSceneCount]);
 
     //handle keys
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -310,6 +309,7 @@ export default function Musializer() {
     };
     function resetScene() {
         setResetTrigger((prev) => prev + 1);
+        setInitSceneCount(count => count + 1);
     }
     const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newTime = (parseFloat(e.target.value) / 100) * duration;
