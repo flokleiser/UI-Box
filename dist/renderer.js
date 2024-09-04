@@ -51442,23 +51442,7 @@ function Musializer() {
     const circumference = 2 * Math.PI * radius / 2;
     const initialOffset = circumference;
     const [offset, setOffset] = (0, react_1.useState)(initialOffset);
-    // const waveIdRef = useRef<HTMLDivElement>(null);
-    // useEffect(() => {
-    //     if (waveIdRef.current) {
-    //         let audio = new Audio
-    //         audio.src = URL.createObjectURL(new Blob([currentSong.file], {type: 'audio/mpeg'}));
-    //         const wavesurfer = WaveSurfer.create({
-    //             container: waveIdRef.current,
-    //             // waveColor: '#ddd',
-    //             waveColor : [
-    //                 getComputedStyle(document.documentElement).getPropertyValue(
-    //                     "--particle-color"),],
-    //             progressColor: 'rgba(204,204,204,0.1)',
-    //             url: currentSong.file,
-    //             height:70
-    //         })
-    //     }
-    // }, [currentSong]);
+    const [progress, setProgress] = (0, react_1.useState)(0);
     //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
@@ -51476,28 +51460,20 @@ function Musializer() {
         setCurrentSong(song);
         setOverlayVisible(false);
     };
-    //song selection and duration
+    //song selection
     (0, react_1.useEffect)(() => {
         if (audioRef.current) {
             audioRef.current.pause();
             audioRef.current.src = currentSong.file;
             audioRef.current.load();
         }
-    }, [currentSong]);
-    (0, react_1.useEffect)(() => {
-        const audio = audioRef.current;
-        const updateAudioDuration = () => {
-            setDuration(audio.duration);
-        };
-        if (audio) {
-            audio.addEventListener('loadedmetadata', updateAudioDuration);
+        if (currentSong.file === Music_1.music[0].file) {
+            audioRef.current.currentTime = 20;
         }
-        return () => {
-            if (audio) {
-                audio === null || audio === void 0 ? void 0 : audio.removeEventListener('loadedmetadata', updateAudioDuration);
-            }
-        };
-    });
+        if (currentSong.file === Music_1.music[2].file) {
+            audioRef.current.currentTime = 49;
+        }
+    }, [currentSong]);
     //reset canvas to center it
     (0, react_1.useEffect)(() => {
         const timeoutId = setTimeout(resetScene, 100);
@@ -51529,8 +51505,7 @@ function Musializer() {
         };
         const setAudioTime = () => {
             setCurrentTime(audio.currentTime);
-            const offset = circumference - (currentTime / duration) * circumference;
-            setOffset(offset);
+            setProgress((audio.currentTime / audio.duration) * 100);
         };
         audio.addEventListener("durationchange", setAudioDuration);
         audio.addEventListener("timeupdate", setAudioTime);
@@ -51689,6 +51664,12 @@ function Musializer() {
     function resetScene() {
         setResetTrigger((prev) => prev + 1);
     }
+    const handleSeek = (e) => {
+        const newTime = (parseFloat(e.target.value) / 100) * duration;
+        if (audioRef.current) {
+            audioRef.current.currentTime = newTime;
+        }
+    };
     //new audiomotion-analyzer
     (0, react_1.useEffect)(() => {
         if (audioRef.current && divRef.current && !audioMotion) {
@@ -51733,20 +51714,17 @@ function Musializer() {
                 react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "15px", marginRight: '15px' } },
                     react_1.default.createElement(framer_motion_1.motion.button, { className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "35px" } }, isPlaying ? "play_arrow" : "pause")),
-                    react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, 
-                        // width="150"
-                        // height="150"
-                        width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { className: "progressCircle", stroke: "#ddd", strokeWidth: bass ? "5" : "0", fill: "rgba(255,255,255,0.1)", r: radius / 2, 
-                            // r={radius}
-                            cx: "100", cy: "100" })))),
+                    react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
+                        react_1.default.createElement(framer_motion_1.motion.circle, { className: "progressCircle", stroke: "#ddd", strokeWidth: bass ? "5" : "0", fill: "rgba(255,255,255,0.1)", r: radius / 2, cx: "100", cy: "100" })))),
             react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column" } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume },
                     react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "35px" } }, volume > 66 ? "volume_up" : volume > 33 ? "volume_down" : volume > 0 ? "volume_mute" : "no_sound")),
                 react_1.default.createElement(Slider_1.Slider, { value: bounceRadiusIntensity, set: setBounceRadiusIntensity, min: 0, max: 3 },
                     react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "35px" } }, "earthquake")))),
-        react_1.default.createElement("div", { style: { padding: "20px" } }),
-        react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" }, isEqualizer ? (react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv", ref: divRef },
+        react_1.default.createElement("div", { className: "volumeSlider", style: { width: '100%', marginTop: '15px', color: '#ddd' } },
+            react_1.default.createElement("input", { type: "range", min: "0", max: "100", value: progress, onChange: handleSeek, style: { width: '100%' } })),
+        react_1.default.createElement("div", { style: { padding: "10px" } }),
+        react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" }, isEqualizer ? (react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv", style: { border: 0 }, ref: divRef },
             react_1.default.createElement("audio", { ref: audioRef, style: { width: "100%" } },
                 react_1.default.createElement("source", { src: currentSong.file, type: "audio/mpeg" })))) : (react_1.default.createElement("canvas", { ref: canvasRef, style: { position: "absolute", marginLeft: "-3px", marginTop: "-3px", } })))));
 }
@@ -52359,7 +52337,14 @@ const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules
 function Test() {
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
-            react_1.default.createElement("h1", null, "Test"))));
+            react_1.default.createElement("h1", null, "Test")),
+        react_1.default.createElement("div", { className: "music-progress" },
+            react_1.default.createElement("div", { className: "progress-bar" },
+                react_1.default.createElement("span", { className: "progress-line" }),
+                react_1.default.createElement("input", { type: 'range', min: '0', max: '100', value: '0', className: "progress", id: "progress" })),
+            react_1.default.createElement("div", { className: "duration" },
+                react_1.default.createElement("span", { className: "current-time" }, "00:00"),
+                react_1.default.createElement("span", { className: "duration-time" }, "00:00")))));
 }
 
 
