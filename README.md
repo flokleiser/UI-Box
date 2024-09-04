@@ -3,7 +3,12 @@
 ### Todo:
 - [ ] Musializer
 
-    - [ ] Clean up GUI
+    - [x] Clean up GUI
+    - [x] Replace "Volume" & "Intensity" with material symbols
+
+    - [ ] Maybe add wavesurfer.js?
+
+
 
     - [ ] Progress bar start from middle top
     - [ ] Way to click around the song

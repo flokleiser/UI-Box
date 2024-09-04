@@ -417,8 +417,10 @@ nav{
 }
 
 .playButton{
-  width: 50px;
-  height: 50px;
+  /* width: 50px;
+  height: 50px; */
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
   margin:0.5rem;
   border: 0px solid white;
@@ -436,7 +438,7 @@ nav{
   accent-color: #ddd;
   position:relative;
   display:flex;
-  width:150px;
+  width:100px;
   height:4px;
   border-radius: 100px;
   justify-content: flex-end;

@@ -20,16 +20,18 @@ export default function Musializer() {
     const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(1);
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
-    const radius = 100;
-    const circumference = 2 * Math.PI * radius/2;
-    const initialOffset = circumference;
-    const [offset, setOffset] = useState(initialOffset);
     const [bassIntensity, setBassIntensity] = useState(0);
     const [isOverlayVisible, setOverlayVisible] = useState(false);
     const [currentSong, setCurrentSong] = useState(music[1]);
     const [isEqualizer, setIsEqualizer] = useState(false);  
-
     const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
+
+    // const radius = 100;
+    const radius = 85;
+    const circumference = 2 * Math.PI * radius/2;
+    const initialOffset = circumference;
+    const [offset, setOffset] = useState(initialOffset);
+
 
     //gui/equalizer
     const handleEqualizerClick = () => {
@@ -75,8 +77,6 @@ export default function Musializer() {
             }
         }
     })
-
-
 
     //reset canvas to center it
     useEffect(() => {
@@ -125,24 +125,6 @@ export default function Musializer() {
             audio.removeEventListener("timeupdate", setAudioTime);
         };
     });
-
-    //Old visualizer audio-updates
-    useEffect(() => {
-        const updateAudioData = () => {
-          if (analyserRef.current) {
-            const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-            analyserRef.current.getByteFrequencyData(dataArray);
-            setAudioData(dataArray);
-
-            const bassRange = dataArray.slice(0, 2);
-            const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-            setBassIntensity(intensity);
-
-          }
-          requestAnimationFrame(updateAudioData);
-        };
-        updateAudioData();
-      }, []);
 
     //audio setup
     useEffect(() => {
@@ -346,16 +328,8 @@ export default function Musializer() {
         setResetTrigger((prev) => prev + 1);
     }
 
-    const handleProgressClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        if (audioRef.current) {
-            const progressBar = e.target;
-            const newTime = (e.nativeEvent.offsetX / (progressBar as HTMLDivElement).offsetWidth) * duration;
-            audioRef.current.currentTime = newTime;
-        }
-      };
-
-      useEffect(() => {
-
+    //new audiomotion-analyzer
+    useEffect(() => {
         if (audioRef.current && divRef.current && !audioMotion) {
             const analyzer = new AudioMotionAnalyzer(divRef.current, {
                 source: audioRef.current,
@@ -376,14 +350,6 @@ export default function Musializer() {
                 linearAmplitude: true,
                 linearBoost: 1.5
             });
-
-            // function energy() {
-            //     const 
-            // }
-
-            // const getBassEnergy = audioMotion!.getEnergy('bass');
-
-            // console.log(getBassEnergy);
             setAudioMotion(analyzer);
         }
     }, [audioRef.current, divRef.current, audioMotion]);
@@ -404,6 +370,7 @@ export default function Musializer() {
                 </div> */}
 
                 <div style={{display: 'flex', flexDirection: 'row'}}>
+                {/* analyzer switch */}
                 <motion.button className="navbarButton"
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
                 onClick={handleEqualizerClick}
@@ -411,9 +378,13 @@ export default function Musializer() {
                 animate={{ scale: bass ? 1.5 : 1 }}
                 transition={{ type: "spring", duration: 0.2 }}
                 >
-                    <span className="material-symbols-outlined">equalizer</span>
+                    <span className="material-symbols-outlined">
+                        {/* equalizer */}
+                        {isEqualizer ? "snowing" : "equalizer"}
+                    </span>
                 </motion.button>
 
+                {/* music library */}
                 <motion.button className="navbarButton"
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
                 onClick={handleMusicLibraryClick}
@@ -435,12 +406,15 @@ export default function Musializer() {
                     </h3>
                 </Overlay>
                 </div>
-
             </div>
+
+
+            {/* GUI */}
             <div
                 style={{display: "flex",flexDirection: "row",justifyContent: "space-between",alignItems: "center",}}>
                 <div style={{position: "relative",display: "flex",flexDirection: "column",justifyContent: "center",alignItems:"flex-start"}}>
-                    <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"30px",  marginTop:"15px" }}>
+                    <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"15px"}}>
+                    {/* Playbutton */}
                     <motion.button
                         className="playButton"
                         style={{ display: "flex", justifyContent: "center", alignItems: "center", }}
@@ -448,21 +422,26 @@ export default function Musializer() {
                         animate={{ scale: bass ? 1.5 : 1 }}
                         transition={{ type: "spring", duration: 0.2 }}
                     >
-                        <span className="material-symbols-outlined" style={{ fontSize: "50px" }} >
+                        <span className="material-symbols-outlined" style={{ fontSize: "35px" }} >
                             {isPlaying ? "play_arrow" : "pause"}
                         </span>
                     </motion.button>
 
+                    {/* circle thingy */}
                     <motion.svg
                         style={{ position: "absolute", zIndex: -10, }}
+                        // width="150"
+                        // height="150"
                         width="200"
                         height="200"
                     >
                         <motion.circle
+                            className="progressCircle"
                             stroke="#ddd"
                             strokeWidth= {bass ? "5" : "0" }
                             fill="rgba(255,255,255,0.1)"
                             r={radius/2}
+                            // r={radius}
                             cx="100"
                             cy="100"
                         />
@@ -474,7 +453,9 @@ export default function Musializer() {
                 <div style={{ display: "flex", flexDirection: "column"}} >
                     <Slider value={volume} set={setVolume} 
                     >
-                        Volume
+                        <span className="material-symbols-outlined" style={{ fontSize: "35px" }}>
+                            {volume > 66 ? "volume_up" : volume > 33 ? "volume_down" : volume > 0 ? "volume_mute" : "no_sound"}
+                        </span>
                     </Slider>
                     <Slider
                         value={bounceRadiusIntensity}
@@ -482,11 +463,14 @@ export default function Musializer() {
                         min={0}
                         max={3}
                     >
-                        Intensity
+                        <span className="material-symbols-outlined" style={{ fontSize: "35px" }}>
+                            earthquake
+                        </span>
                     </Slider>
 
                 </div>
             </div>
+
 
             <div style={{ padding: "20px" }} />
 
