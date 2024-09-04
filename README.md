@@ -6,10 +6,7 @@
     - [x] Clean up GUI
     - [x] Replace "Volume" & "Intensity" with material symbols
 
-    - [ ] Progress bar
-    --> https://codepen.io/saransh1399/pen/XWMyRxG
-    --> https://codepen.io/yondmn/pen/wOYYvd
-    - [ ] Maybe add wavesurfer.js?
+    - [x] Progress bar
 
     - audioanalyzer waveform is broken after second switch
     - [ ] Canvas is broken after switch back
