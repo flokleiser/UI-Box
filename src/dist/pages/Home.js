@@ -7,6 +7,8 @@ exports.default = Home;
 const react_1 = __importDefault(require("react"));
 const framer_motion_1 = require("framer-motion");
 const icon_png_1 = __importDefault(require("../media/icon.png"));
+// import Lottie from 'react-lottie-player';
+// import { LottiePlayer } from '@lottiefiles/lottie-player';
 function Home() {
     const handleSettingsClick = () => {
         window.loadPage('Settings');

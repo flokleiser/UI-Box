@@ -4,6 +4,7 @@ import { Slider } from "../components/Slider";
 import { music} from "../components/Music";
 import Overlay from "../components/Overlay";
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
+import { Url } from "url";
 
 import WaveSurfer from "wavesurfer.js";
 
@@ -34,22 +35,26 @@ export default function Musializer() {
     const initialOffset = circumference;
     const [offset, setOffset] = useState(initialOffset);
 
-    const waveIdRef = useRef<HTMLDivElement>(null);
+    // const waveIdRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        if (waveIdRef.current) {
-            const wavesurfer = WaveSurfer.create({
-                container: waveIdRef.current,
-                // waveColor: '#ddd',
-                waveColor : [
-                    getComputedStyle(document.documentElement).getPropertyValue(
-                        "--particle-color"),],
-                progressColor: 'rgba(204,204,204,0.1)',
-                url: currentSong.file,
-                height:70
-            })
-        }
-    }, [currentSong]);
+    // useEffect(() => {
+    //     if (waveIdRef.current) {
+
+    //         let audio = new Audio
+    //         audio.src = URL.createObjectURL(new Blob([currentSong.file], {type: 'audio/mpeg'}));
+
+    //         const wavesurfer = WaveSurfer.create({
+    //             container: waveIdRef.current,
+    //             // waveColor: '#ddd',
+    //             waveColor : [
+    //                 getComputedStyle(document.documentElement).getPropertyValue(
+    //                     "--particle-color"),],
+    //             progressColor: 'rgba(204,204,204,0.1)',
+    //             url: currentSong.file,
+    //             height:70
+    //         })
+    //     }
+    // }, [currentSong]);
 
 
 
@@ -471,7 +476,7 @@ export default function Musializer() {
                 </div>
 
 
-                <div style={{width:'200px'}} ref={waveIdRef} />
+                {/* <div style={{width:'200px'}} ref={waveIdRef} /> */}
 
 
                     {/* Sliders */}
