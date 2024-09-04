@@ -17,7 +17,8 @@ const electron_1 = __webpack_require__(/*! electron */ "electron");
 const node_path_1 = __importDefault(__webpack_require__(/*! node:path */ "node:path"));
 function createWindow() {
     const mainWindow = new electron_1.BrowserWindow({
-        width: 800,
+        // width: 900,
+        width: 850,
         height: 600,
         webPreferences: {
             preload: node_path_1.default.join(__dirname, 'preload.js')

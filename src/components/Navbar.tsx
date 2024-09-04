@@ -88,7 +88,8 @@ const Navbar: React.FC<NavbarProps> = ({ activePage }) => {
 
           <button className={activePage === 'Musializer' ? "navbarButton active" : "navbarButton"} id="musializerpageButton">
             <span className="material-symbols-outlined">
-              pause_circle
+              {/* pause_circle */}
+              music_note
             </span>
           </button>
 
