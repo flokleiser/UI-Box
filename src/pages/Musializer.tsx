@@ -5,6 +5,8 @@ import { music} from "../components/Music";
 import Overlay from "../components/Overlay";
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
 
+import WaveSurfer from "wavesurfer.js";
+
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
     const [volume, setVolume] = useState(50);
@@ -31,6 +33,25 @@ export default function Musializer() {
     const circumference = 2 * Math.PI * radius/2;
     const initialOffset = circumference;
     const [offset, setOffset] = useState(initialOffset);
+
+    const waveIdRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (waveIdRef.current) {
+            const wavesurfer = WaveSurfer.create({
+                container: waveIdRef.current,
+                // waveColor: '#ddd',
+                waveColor : [
+                    getComputedStyle(document.documentElement).getPropertyValue(
+                        "--particle-color"),],
+                progressColor: 'rgba(204,204,204,0.1)',
+                url: currentSong.file,
+                height:70
+            })
+        }
+    }, [currentSong]);
+
+
 
 
     //gui/equalizer
@@ -413,7 +434,7 @@ export default function Musializer() {
             <div
                 style={{display: "flex",flexDirection: "row",justifyContent: "space-between",alignItems: "center",}}>
                 <div style={{position: "relative",display: "flex",flexDirection: "column",justifyContent: "center",alignItems:"flex-start"}}>
-                    <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"15px"}}>
+                    <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"15px", marginRight:'15px'}}>
                     {/* Playbutton */}
                     <motion.button
                         className="playButton"
@@ -447,9 +468,13 @@ export default function Musializer() {
                         />
                     </motion.svg>
                     </div>
-
                 </div>
 
+
+                <div style={{width:'200px'}} ref={waveIdRef} />
+
+
+                    {/* Sliders */}
                 <div style={{ display: "flex", flexDirection: "column"}} >
                     <Slider value={volume} set={setVolume} 
                     >

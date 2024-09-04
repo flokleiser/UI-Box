@@ -431,7 +431,7 @@ nav{
   position:relative;
   align-items: center;
   display: flex;
-  width:300px;
+  /* width:300px; */
   justify-content:flex-end;
 }
 .volumeSlider{
