@@ -5,8 +5,6 @@ import { music} from "../components/Music";
 import Overlay from "../components/Overlay";
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
 
-import WaveSurfer from "wavesurfer.js";
-
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
     const [volume, setVolume] = useState(50);
@@ -28,23 +26,24 @@ export default function Musializer() {
     const [isEqualizer, setIsEqualizer] = useState(false);  
     const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
 
-    // const radius = 100;
     const radius = 85;
     const circumference = 2 * Math.PI * radius/2;
     const initialOffset = circumference;
     const [offset, setOffset] = useState(initialOffset);
-
     const [progress, setProgress] = useState(0);
 
     //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
 
+        // if (isEqualizer) {
+        //     analyzer.destroy();
+        // }
+
         setTimeout(() => {
             resetScene()
         },100)
     }
-
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true)
     }
@@ -56,7 +55,6 @@ export default function Musializer() {
         setOverlayVisible(false);
     };
 
-
     //song selection
     useEffect(() => {
         if (audioRef.current) {
@@ -64,15 +62,6 @@ export default function Musializer() {
             audioRef.current.src = currentSong.file;
             audioRef.current.load();
         }
-
-        if (currentSong.file === music[0].file) {
-            audioRef.current!.currentTime = 20;
-        }
-
-        if (currentSong.file === music[2].file) {
-            audioRef.current!.currentTime = 49;
-        }
-
     }, [currentSong]);
 
     //reset canvas to center it
@@ -98,7 +87,6 @@ export default function Musializer() {
             }
         };
     }, []);
-
 
     //audio duration and time
     useEffect(() => {
@@ -323,7 +311,6 @@ export default function Musializer() {
     function resetScene() {
         setResetTrigger((prev) => prev + 1);
     }
-
     const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newTime = (parseFloat(e.target.value) / 100) * duration;
         if (audioRef.current) {
@@ -333,8 +320,11 @@ export default function Musializer() {
 
     //new audiomotion-analyzer
     useEffect(() => {
+        // let analyzer: React.SetStateAction<AudioMotionAnalyzer | null>
+        let analyzer: AudioMotionAnalyzer | null;
         if (audioRef.current && divRef.current && !audioMotion) {
-            const analyzer = new AudioMotionAnalyzer(divRef.current, {
+            // const analyzer = new AudioMotionAnalyzer(divRef.current, {
+            analyzer = new AudioMotionAnalyzer(divRef.current, {
                 source: audioRef.current,
                 showScaleX: false,
                 showPeaks:false,
@@ -351,10 +341,16 @@ export default function Musializer() {
                 gradient: 'prism',
                 colorMode: 'bar-level',
                 linearAmplitude: true,
-                linearBoost: 1.5
+                linearBoost: 1.5,
             });
             setAudioMotion(analyzer);
         }
+        // return () => {
+        //     if (analyzer) {
+        //         analyzer.destroy();
+        //         console.log('analyzer destroyed')
+        //     }
+        // }
     }, [audioRef.current, divRef.current, audioMotion]);
 
 
@@ -362,15 +358,6 @@ export default function Musializer() {
         <div className="bodyCenter">
             <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
                 <motion.h1>Musializer</motion.h1>
-
-                {/* <div style={{textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center",alignItems: "flex-start"}} >
-                    <h3 style={{display:"flex", width:'150px',justifyContent:'center'}}>
-                        <span className="material-symbols-outlined">
-                            music_note
-                        </span>
-                            {currentSong.name}
-                    </h3> 
-                </div> */}
 
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                 {/* analyzer switch */}
@@ -450,16 +437,20 @@ export default function Musializer() {
                 </div>
 
 
-                {/* <div className="volumeSlider" style={{ width: '200px', marginTop: '10px', marginBottom: '10px', color:'#ddd' }}>
-                    <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={progress}
-                        onChange={handleSeek}
-                        style={{ width: '100%' }}
-                    />
-                </div> */}
+
+                <div style={{width:'150px', height:'75px', display:'flex', justifyContent:'center', alignItems:'center'}}>
+                <div style={{textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center",alignItems: "flex-start"}} >
+                    <h3 style={{display:"flex", width:'150px',justifyContent:'center'}}>
+                        <span className="material-symbols-outlined">
+                            music_note
+                        </span>
+                            {currentSong.name}
+                    </h3> 
+                </div>
+                </div>
+
+
+
 
                     {/* Sliders */}
                 <div style={{ display: "flex", flexDirection: "column"}} >
@@ -490,7 +481,8 @@ export default function Musializer() {
                         type="range"
                         min="0"
                         max="100"
-                        value={progress}
+                        // value={progress}
+                        value={isNaN(progress) ? 0 : progress}
                         onChange={handleSeek}
                         style={{ width: '100%' }}
                     />
