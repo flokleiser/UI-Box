@@ -9,7 +9,7 @@
     - [ ] Progress bar
     --> https://codepen.io/saransh1399/pen/XWMyRxG
     --> https://codepen.io/yondmn/pen/wOYYvd
-    - [-] Maybe add wavesurfer.js?
+    - [ ] Maybe add wavesurfer.js?
 
     - audioanalyzer waveform is broken after second switch
     - [ ] Canvas is broken after switch back
