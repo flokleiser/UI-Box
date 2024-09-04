@@ -1,6 +1,9 @@
 import React from 'react'
 import {motion} from 'framer-motion'
 import icon from '../media/icon.png';
+// import Lottie from 'react-lottie-player';
+// import { LottiePlayer } from '@lottiefiles/lottie-player';
+
 
 export default function Home() {
 
@@ -35,6 +38,7 @@ export default function Home() {
           <div className="logo">
             <img className='logoImg' src={icon} />
           </div>
+
         </div>
       </div>
     );

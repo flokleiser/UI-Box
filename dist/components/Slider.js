@@ -8,5 +8,5 @@ const react_1 = __importDefault(require("react"));
 function Slider({ value, children, set, min = 0, max = 100 }) {
     return (react_1.default.createElement("div", { className: "volumeSliderDiv" },
         react_1.default.createElement("input", { className: "volumeSlider", value: value, type: "range", min: min, max: max, onChange: (e) => set(parseFloat(e.target.value)) }),
-        react_1.default.createElement("h2", { className: "volumeSlider", style: { width: '100px', marginLeft: '25px' } }, children)));
+        react_1.default.createElement("h2", { className: "volumeSlider", style: { width: '40px', marginLeft: '5px' } }, children)));
 }
