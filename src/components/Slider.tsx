@@ -1,7 +1,8 @@
 import React from "react";
 
 interface SliderProps{
-    children: string;
+    // children: string;
+    children: React.ReactNode;
     value: number;
     set: (newValue: number) => void;
     min?: number;
@@ -24,7 +25,7 @@ interface SliderProps{
           max={max}
           onChange={(e) => set(parseFloat(e.target.value))}
         />
-        <h2 className="volumeSlider" style={{width:'100px', marginLeft:'25px'}}>{children}</h2>
+        <h2 className="volumeSlider" style={{width:'40px', marginLeft:'5px'}}>{children}</h2>
         </div>
     );
   }
