@@ -34,25 +34,7 @@ export default function Musializer() {
     const initialOffset = circumference;
     const [offset, setOffset] = useState(initialOffset);
 
-    const waveIdRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (waveIdRef.current) {
-            const wavesurfer = WaveSurfer.create({
-                container: waveIdRef.current,
-                // waveColor: '#ddd',
-                waveColor : [
-                    getComputedStyle(document.documentElement).getPropertyValue(
-                        "--particle-color"),],
-                progressColor: 'rgba(204,204,204,0.1)',
-                url: currentSong.file,
-                height:70
-            })
-        }
-    }, [currentSong]);
-
-
-
+    const [progress, setProgress] = useState(0);
 
     //gui/equalizer
     const handleEqualizerClick = () => {
@@ -75,29 +57,23 @@ export default function Musializer() {
     };
 
 
-    //song selection and duration
+    //song selection
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.pause();
             audioRef.current.src = currentSong.file;
             audioRef.current.load();
         }
-    }, [currentSong]);
-    useEffect(() => {
-        const audio = audioRef.current;
-        const updateAudioDuration = () => {
-            setDuration(audio!.duration);
+
+        if (currentSong.file === music[0].file) {
+            audioRef.current!.currentTime = 20;
         }
 
-        if (audio) {
-            audio.addEventListener('loadedmetadata', updateAudioDuration);
+        if (currentSong.file === music[2].file) {
+            audioRef.current!.currentTime = 49;
         }
-        return () => {  
-            if (audio) {
-            audio?.removeEventListener('loadedmetadata', updateAudioDuration);
-            }
-        }
-    })
+
+    }, [currentSong]);
 
     //reset canvas to center it
     useEffect(() => {
@@ -134,10 +110,9 @@ export default function Musializer() {
         };
         const setAudioTime = () => {
             setCurrentTime(audio.currentTime);
-            const offset =
-                circumference - (currentTime / duration) * circumference;
-            setOffset(offset);
+            setProgress((audio.currentTime / audio.duration) * 100);
         };
+
         audio.addEventListener("durationchange", setAudioDuration);
         audio.addEventListener("timeupdate", setAudioTime);
 
@@ -349,6 +324,13 @@ export default function Musializer() {
         setResetTrigger((prev) => prev + 1);
     }
 
+    const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newTime = (parseFloat(e.target.value) / 100) * duration;
+        if (audioRef.current) {
+            audioRef.current.currentTime = newTime;
+        }
+    };
+
     //new audiomotion-analyzer
     useEffect(() => {
         if (audioRef.current && divRef.current && !audioMotion) {
@@ -451,8 +433,6 @@ export default function Musializer() {
                     {/* circle thingy */}
                     <motion.svg
                         style={{ position: "absolute", zIndex: -10, }}
-                        // width="150"
-                        // height="150"
                         width="200"
                         height="200"
                     >
@@ -462,7 +442,6 @@ export default function Musializer() {
                             strokeWidth= {bass ? "5" : "0" }
                             fill="rgba(255,255,255,0.1)"
                             r={radius/2}
-                            // r={radius}
                             cx="100"
                             cy="100"
                         />
@@ -471,8 +450,16 @@ export default function Musializer() {
                 </div>
 
 
-                <div style={{width:'200px'}} ref={waveIdRef} />
-
+                {/* <div className="volumeSlider" style={{ width: '200px', marginTop: '10px', marginBottom: '10px', color:'#ddd' }}>
+                    <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={progress}
+                        onChange={handleSeek}
+                        style={{ width: '100%' }}
+                    />
+                </div> */}
 
                     {/* Sliders */}
                 <div style={{ display: "flex", flexDirection: "column"}} >
@@ -494,14 +481,28 @@ export default function Musializer() {
                     </Slider>
 
                 </div>
+
+
             </div>
 
+            <div className="volumeSlider" style={{ width:'100%', marginTop: '15px', color:'#ddd' }}>
+                    <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={progress}
+                        onChange={handleSeek}
+                        style={{ width: '100%' }}
+                    />
+                </div>
 
-            <div style={{ padding: "20px" }} />
+
+            {/* <div style={{ padding: "20px" }} /> */}
+            <div style={{ padding: "10px" }} />
 
             <div id="canvasDiv" className="canvasDiv"> 
                 {isEqualizer ? (
-                <div id="canvasDiv" className="canvasDiv" ref={divRef}>
+                <div id="canvasDiv" className="canvasDiv" style={{border:0}}ref={divRef}>
                     <audio ref={audioRef} style={{width:"100%"}}>
                         <source src={currentSong.file} type="audio/mpeg" />
                     </audio>

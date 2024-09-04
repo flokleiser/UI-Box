@@ -458,23 +458,13 @@ nav{
    border-radius:5px 
 }
 
-#progress {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  transform: rotate(-90deg);
-}
-
-#progress .indicator {
-  stroke: #ddd;
-}
-
 
 .bar {
   flex: 1;
   margin: 0 1px;
   background: #ddd;
 }
+
 
 .overlay {
   position: fixed;
@@ -526,27 +516,6 @@ nav{
   display: flex;
   align-items: center;
   width:100%;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 10px;
-  background-color: #333;
-  cursor: pointer;
-  position: relative;
-  border: 2px solid #ddd;
-  border-radius: 3px;
-}
-
-.progress {
-  height: 100%;
-  background-color: #ddd;
-  width: 0;
-}
-
-.time-display {
-  margin-left: 10px;
-  font-family: Arial, sans-serif;
 }
 
 
