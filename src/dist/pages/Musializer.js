@@ -57,18 +57,14 @@ function Musializer() {
     const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[0]);
     const [isEqualizer, setIsEqualizer] = (0, react_1.useState)(false);
     const [audioMotion, setAudioMotion] = (0, react_1.useState)(null);
-    // const nextSong = () => {
-    //     setCurrentSongIndex((currentSongIndex + 1) % music.length);
-    // }
-    // useEffect(() => {
-    //     if (audioRef.current && canvasRef.current && !audioMotion && isEqualizer) {
-    //         console.log('init')
-    //         const analyzer = new AudioMotionAnalyzer(canvasRef.current, {
-    //           source: audioRef.current,
-    //         });
-    //         setAudioMotion(analyzer);
-    //       }
-    //     }, [audioRef.current, canvasRef.current, audioMotion]);
+    const logScale = (index, total) => {
+        const minp = 0;
+        const maxp = Math.log10(total);
+        const minv = Math.log10(1);
+        const maxv = Math.log10(total);
+        const scale = (maxv - minv) / (maxp - minp);
+        return Math.log10(index + 1) * scale;
+    };
     //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
@@ -317,9 +313,21 @@ function Musializer() {
     }
     const handleProgressClick = (e) => {
         if (audioRef.current) {
+            //     const progressBar = e.target;
+            //     const newTime = (e.nativeEvent.offsetX / (progressBar as HTMLDivElement).offsetWidth) * duration;
+            //     audioRef.current.currentTime = newTime;
+            // }
             const progressBar = e.target;
-            const newTime = (e.nativeEvent.offsetX / progressBar.offsetWidth) * duration;
-            audioRef.current.currentTime = newTime;
+            const clickPosition = e.nativeEvent.offsetX;
+            const progressBarWidth = progressBar.offsetWidth;
+            const newTime = (clickPosition / progressBarWidth) * duration;
+            console.log('Click position:', clickPosition);
+            console.log('Progress bar width:', progressBarWidth);
+            console.log('Duration:', duration);
+            console.log('New time:', newTime);
+            if (!isNaN(newTime) && newTime >= 0 && newTime <= duration) {
+                audioRef.current.currentTime = newTime;
+            }
         }
     };
     return (react_1.default.createElement("div", { className: "bodyCenter" },
@@ -350,11 +358,14 @@ function Musializer() {
             react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column" } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume }, "Volume"),
                 react_1.default.createElement(Slider_1.Slider, { value: bounceRadiusIntensity, set: setBounceRadiusIntensity, min: 0, max: 3 }, "Intensity"),
-                react_1.default.createElement("div", { className: "custom-audio-controls", style: { marginTop: "10px", marginBottom: "5px" } },
+                react_1.default.createElement("div", { className: "custom-audio-controls", style: { marginTop: "10px", marginBottom: "5px", width: '100%' } },
                     react_1.default.createElement("div", { className: "progress-bar", onClick: handleProgressClick },
                         react_1.default.createElement("div", { className: "progress", style: { width: `${(currentTime / duration) * 100}%` } }))))),
         react_1.default.createElement("div", { style: { padding: "5px" } }),
         react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" }, isEqualizer ? (react_1.default.createElement("div", { className: "visualizer" }, Array.from(audioData).slice(0, 64).map((value, index) => {
-            return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0.5 }, animate: { height: value }, transition: { duration: 0.05 } }));
+            const logValue = value * logScale(index, 64);
+            return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0.5 }, animate: { height: value }, 
+                // animate={{ height: logValue }}
+                transition: { duration: 0.05 } }));
         }))) : (react_1.default.createElement("canvas", { ref: canvasRef, style: { position: "absolute", marginLeft: "-3px", marginTop: "-3px", } })))));
 }
