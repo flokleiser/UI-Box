@@ -119,7 +119,17 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
           onClick={() => onNavigate('Musializer')} 
           >
             <span className="material-symbols-outlined">
-              pause_circle
+              {/* pause_circle */}
+              music_note
+            </span>
+          </button>
+
+          <button className={activePage === 'Lock' ? "navbarButton active" : "navbarButton"} id="lockpageButton"
+          onClick={() => onNavigate('Lock')} 
+          >
+            <span className="material-symbols-outlined">
+              {/* pause_circle */}
+              lock_reset
             </span>
           </button>
 

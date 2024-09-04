@@ -27,7 +27,7 @@ const isDebug =  true || 0;
 const createWindow = () => {
     mainWindow = new electron_1.BrowserWindow({
         show: false,
-        width: 800,
+        width: 850,
         height: 600,
         webPreferences: {
             preload: path_1.default.join(__dirname, 'preload.js'),

@@ -21,7 +21,7 @@ const isDebug =
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     show: false,
-    width: 800,
+    width: 850,
     height: 600,
     webPreferences: {
         preload: path.join(__dirname, 'preload.js'),
