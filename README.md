@@ -3,6 +3,14 @@
 ### Todo:
 - [ ] Musializer
 
+
+    - [ ] Implement switch case for different visualizers + unhook them correctly
+    - [ ] Check issues with music playing while switching
+    - [ ] Add indicator of which visualizer is active (css :active)
+    - [ ] Gradient on audioMotion-analyzer
+    - [ ] 
+    
+
     - [x] Clean up GUI
     - [x] Replace "Volume" & "Intensity" with material symbols
     - [x] Progress bar

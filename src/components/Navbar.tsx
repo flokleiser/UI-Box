@@ -124,14 +124,13 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
             </span>
           </button>
 
-          <button className={activePage === 'Lock' ? "navbarButton active" : "navbarButton"} id="lockpageButton"
+          {/* <button className={activePage === 'Lock' ? "navbarButton active" : "navbarButton"} id="lockpageButton"
           onClick={() => onNavigate('Lock')} 
           >
             <span className="material-symbols-outlined">
-              {/* pause_circle */}
               lock_reset
             </span>
-          </button>
+          </button> */}
 
           </div>
 

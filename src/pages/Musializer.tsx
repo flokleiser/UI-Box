@@ -40,7 +40,11 @@ export default function Musializer() {
     const buttonRef = useRef<HTMLButtonElement>(null)
     const buttonRefSmall1 = useRef<HTMLButtonElement>(null)
     const buttonRefSmall2 = useRef<HTMLButtonElement>(null)
+    const buttonRefSmall3 = useRef<HTMLButtonElement>(null)
+    const buttonRefSmall4 = useRef<HTMLButtonElement>(null)
     const outlineRef = useRef<SVGCircleElement>(null)
+    const volumeRef = useRef<HTMLSpanElement>(null)
+    const intensityRef = useRef<HTMLSpanElement>(null)
 
     const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(5);
 
@@ -413,15 +417,28 @@ export default function Musializer() {
             const animate = () => {
                 if (analyzer) {
                     const bassEnergy = analyzer.getEnergy(20, 250);
+                    const hiHatEnergy = analyzer.getEnergy(1000, 2000); 
                     if (bassEnergy !== null) { // Add null check for bassEnergy
-                        const scale = 1 + bassEnergy;
-                        if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current) {
+                        const scale = 1 + (bassEnergy * 2);
+                        if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current && buttonRefSmall3.current && buttonRefSmall4.current && volumeRef.current && intensityRef.current) {
                             buttonRef.current.style.transform = `scale(${scale})`;
                             buttonRefSmall1.current.style.transform = `scale(${scale})`;
                             buttonRefSmall2.current.style.transform = `scale(${scale})`;
+                            buttonRefSmall3.current.style.transform = `scale(${scale})`;
+                            buttonRefSmall4.current.style.transform = `scale(${scale})`;
                             outlineRef.current.style.strokeWidth = `${0 + (bassEnergy) * 5}px`;
+                            // volumeRef.current.style.transform = `scale(${1 + bassEnergy})`;
+                            // intensityRef.current.style.transform = `scale(${1 + bassEnergy})`;
                         }
                     }
+                    if (hiHatEnergy !== null) { 
+                        const hiHatScale = 1 + (hiHatEnergy* 5);
+                        if (volumeRef.current && intensityRef.current) {
+                            volumeRef.current.style.transform = `scale(${hiHatScale})`;
+                            intensityRef.current.style.transform = `scale(${hiHatScale})`;
+                    } 
+                }
+
                 }
                 setAnimationFrameId(requestAnimationFrame(animate));
             };
@@ -472,7 +489,7 @@ export default function Musializer() {
                         </span>
                 </motion.button>
                 <motion.button className="navbarButton"
-                ref = {buttonRefSmall1}
+                ref = {buttonRefSmall3}
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
                 // onClick={handleEqualizerClick}
                 onClick={() => setEqualizerType("audioMotion")}
@@ -485,7 +502,7 @@ export default function Musializer() {
                     </span>
                 </motion.button>
                 <motion.button className="navbarButton"
-                ref = {buttonRefSmall1}
+                ref = {buttonRefSmall4}
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
                 // onClick={handleEqualizerClick}
                 onClick={() => setEqualizerType("old")}
@@ -584,7 +601,7 @@ export default function Musializer() {
                 <div style={{ display: "flex", flexDirection: "column"}} >
                     <Slider value={volume} set={setVolume} 
                     >
-                        <span className="material-symbols-outlined" style={{ fontSize: "35px" }}>
+                        <span className="material-symbols-outlined" style={{ fontSize: "35px" }} ref={volumeRef}>
                             {volume > 66 ? "volume_up" : volume > 33 ? "volume_down" : volume > 0 ? "volume_mute" : "no_sound"}
                         </span>
                     </Slider>
@@ -595,7 +612,7 @@ export default function Musializer() {
                         min={0}
                         max={10}
                     >
-                        <span className="material-symbols-outlined" style={{ fontSize: "35px" }}>
+                        <span className="material-symbols-outlined" style={{ fontSize: "35px" }} ref={intensityRef}>
                             earthquake
                         </span>
                     </Slider>
