@@ -372,7 +372,7 @@ export default function Musializer() {
                 reflexAlpha: 1,
                 reflexRatio: 0.5,
                 // gradient: 'prism',
-                gradient: 'test',
+                // gradient: 'test',
                 // colorMode: 'bar-level',
                 linearAmplitude: true,
                 linearBoost: 1.5,
