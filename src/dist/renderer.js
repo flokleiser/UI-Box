@@ -154,9 +154,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }], ['steelblue', {
       bgColor: '#222c35',
       colorStops: ['SteelBlue']
-    }],['test', {
-    bgColor: '#333',
-    colorStops: ['#333','#ddd']
     }]];
 
   // settings defaults
