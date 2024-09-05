@@ -17,7 +17,6 @@ export default function Musializer() {
     const analyserRef = useRef<AnalyserNode | null>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
     const [resetTrigger, setResetTrigger] = useState(0);
-    const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(1);
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [isOverlayVisible, setOverlayVisible] = useState(false);
@@ -43,6 +42,13 @@ export default function Musializer() {
     const buttonRefSmall1 = useRef<HTMLButtonElement>(null)
     const buttonRefSmall2 = useRef<HTMLButtonElement>(null)
     const outlineRef = useRef<SVGCircleElement>(null)
+
+    const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(5);
+
+    const normalizeBounceRadiusIntensity = (value:number) => {
+        return (value / 10) * 2; // Normalize from 0-9 to 0-2
+    };
+
 
     //gui/equalizer
     const handleEqualizerClick = () => {
@@ -292,7 +298,13 @@ export default function Musializer() {
                 // const bass = intensity > bassThreshold
          
                 setBass(bass);
-                bounceRadius = bass ? 1.5 : 0;
+                // bounceRadius = bass ? 1.5 : 0;
+
+                const normalizedBounceRadiusIntensity = normalizeBounceRadiusIntensity(bounceRadiusIntensity);
+                const baseBounceRadius = bass ? 1.5 : 0;
+                // bounceRadius = baseBounceRadius * bounceRadiusIntensity
+                bounceRadius = baseBounceRadius * normalizedBounceRadiusIntensity; 
+                
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -314,7 +326,7 @@ export default function Musializer() {
             cancelAnimationFrame(animationFrameId);
         };
     // }, [resetTrigger,initSceneCount]);
-    }, [resetTrigger]);
+    }, [resetTrigger, bounceRadiusIntensity]);
 
     //handle keys
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -416,17 +428,7 @@ export default function Musializer() {
                     </span>
                 </motion.button>
 
-                {/* music library */}
-                {/* <motion.button className="navbarButton"
-                ref = {buttonRefSmall2}
-                style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-                onClick={handleMusicLibraryClick}
-                whileHover={{scale: 1.1}}
-                animate={{ scale: bass ? 1.5 : 1 }}
-                transition={{ type: "spring", duration: 0.2 }}
-                >
-                    <span className="material-symbols-outlined">library_music</span>
-                </motion.button> */}
+             
                 <Overlay isVisible={isOverlayVisible} onClose={handleCloseOverlay}>
                     <h3>
                     <div>
@@ -522,8 +524,9 @@ export default function Musializer() {
                     <Slider
                         value={bounceRadiusIntensity}
                         set={setBounceRadiusIntensity}
+                        // set={handleSliderChange}
                         min={0}
-                        max={3}
+                        max={10}
                     >
                         <span className="material-symbols-outlined" style={{ fontSize: "35px" }}>
                             earthquake
