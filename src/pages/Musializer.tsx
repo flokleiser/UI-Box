@@ -253,8 +253,6 @@ export default function Musializer() {
 
         const initScene = () => {
 
-            // setTimeout(() => {
-
             const rect = canvasDiv.getBoundingClientRect();
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
@@ -270,7 +268,6 @@ export default function Musializer() {
                     particles.push(new Particle(centerX + x, centerY + y));
                 }
             }
-        // }, 1000)
         };
 
 
