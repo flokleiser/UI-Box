@@ -474,7 +474,6 @@ export default function Musializer() {
                             className="progressCircle"
                             stroke="#ddd"
                             strokeWidth= {bass ? "5" : "0" }
-                            // fill="rgba(255,255,255,0.1)"
                             r={radius/2}
                             cx="100"
                             cy="100"
@@ -491,9 +490,6 @@ export default function Musializer() {
                 <div style={{width:'150px', height:'75px', display:'flex', justifyContent:'center', alignItems:'center'}}>
                 <div style={{textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center",alignItems: "center"}} >
                     <h2 style={{display:"flex", flexDirection:"row", width:'150px',justifyContent:'center',alignItems:'flex-end'}}>
-                        {/* <span className="material-symbols-outlined">
-                            music_note
-                        </span> */}
                         <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", justifyContent:"center"}}>
                             {currentSong.name}
                         </div>
