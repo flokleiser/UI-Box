@@ -33,7 +33,6 @@ const Slider_1 = require("../components/Slider");
 const Music_1 = require("../components/Music");
 const Overlay_1 = __importDefault(require("../components/Overlay"));
 const audiomotion_analyzer_1 = __importDefault(require("audiomotion-analyzer"));
-// import AudioMotionAnalyzer from '../components/audioMotion-analyzer.js';
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);

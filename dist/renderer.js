@@ -51417,7 +51417,6 @@ const Slider_1 = __webpack_require__(/*! ../components/Slider */ "./src/componen
 const Music_1 = __webpack_require__(/*! ../components/Music */ "./src/components/Music.tsx");
 const Overlay_1 = __importDefault(__webpack_require__(/*! ../components/Overlay */ "./src/components/Overlay.tsx"));
 const audiomotion_analyzer_1 = __importDefault(__webpack_require__(/*! audiomotion-analyzer */ "./node_modules/audiomotion-analyzer/dist/index.js"));
-// import AudioMotionAnalyzer from '../components/audioMotion-analyzer.js';
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);
