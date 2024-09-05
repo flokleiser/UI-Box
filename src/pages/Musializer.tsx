@@ -3,8 +3,7 @@ import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
 import { music} from "../components/Music";
 import Overlay from "../components/Overlay";
-// import AudioMotionAnalyzer from 'audiomotion-analyzer';
-import AudioMotionAnalyzer from '../components/audioMotion-analyzer.js';
+import AudioMotionAnalyzer from 'audiomotion-analyzer';
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -371,15 +370,11 @@ export default function Musializer() {
                 mirror: 0,
                 reflexAlpha: 1,
                 reflexRatio: 0.5,
-                // gradient: 'prism',
-                // gradient: 'test',
-                // colorMode: 'bar-level',
                 linearAmplitude: true,
                 linearBoost: 1.5,
+                // gradient: 'white-gray',
             });
 ;
-
-      
 
             // analyzer.registerGradient('white-gray', {
             //     bgColor: '#111', // Optional background color
