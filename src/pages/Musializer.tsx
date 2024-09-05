@@ -20,13 +20,13 @@ export default function Musializer() {
     const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(1);
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
-    const [bassIntensity, setBassIntensity] = useState(0);
     const [isOverlayVisible, setOverlayVisible] = useState(false);
     const [currentSong, setCurrentSong] = useState(music[2]);
     const [isEqualizer, setIsEqualizer] = useState(false);  
     const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
     const [initSceneCount, setInitSceneCount] = useState(0);
 
+    // const [bassIntensity, setBassIntensity] = useState(0);
 
     const radius = 85;
     const circumference = 2 * Math.PI * radius/2;
@@ -34,15 +34,14 @@ export default function Musializer() {
     const [offset, setOffset] = useState(initialOffset);
     const [progress, setProgress] = useState(0);
 
-    let analyzer: AudioMotionAnalyzer | null;
+    let smoothedIntensity = 0;
 
-    // const [animationFrameId, setAnimationFrameId] = useState<number | null>(null);
+    let analyzer: AudioMotionAnalyzer | null;
     const [animationFrameId, setAnimationFrameId] = useState<number | null>(0);
 
     const buttonRef = useRef<HTMLButtonElement>(null)
     const buttonRefSmall1 = useRef<HTMLButtonElement>(null)
     const buttonRefSmall2 = useRef<HTMLButtonElement>(null)
-    // const outlineRef = useRef<HTMLDivElement>(null)
     const outlineRef = useRef<SVGCircleElement>(null)
 
     //gui/equalizer
@@ -282,10 +281,16 @@ export default function Musializer() {
 
                 const bassRange = dataArray.slice(0, 2);
                 const intensity = bassRange.reduce(
-                    (sum, value) => sum + value,
-                    0
-                );
-                const bass = intensity > 509;
+                    (sum, value) => sum + value,0);
+
+                const smoothingFactor = 0.1;
+                smoothedIntensity += (intensity - smoothedIntensity) * smoothingFactor;
+
+                const bassThreshold = 500
+                const bass = smoothedIntensity > bassThreshold
+
+                // const bass = intensity > bassThreshold
+         
                 setBass(bass);
                 bounceRadius = bass ? 1.5 : 0;
             }
@@ -412,7 +417,7 @@ export default function Musializer() {
                 </motion.button>
 
                 {/* music library */}
-                <motion.button className="navbarButton"
+                {/* <motion.button className="navbarButton"
                 ref = {buttonRefSmall2}
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
                 onClick={handleMusicLibraryClick}
@@ -421,7 +426,7 @@ export default function Musializer() {
                 transition={{ type: "spring", duration: 0.2 }}
                 >
                     <span className="material-symbols-outlined">library_music</span>
-                </motion.button>
+                </motion.button> */}
                 <Overlay isVisible={isOverlayVisible} onClose={handleCloseOverlay}>
                     <h3>
                     <div>
@@ -440,7 +445,7 @@ export default function Musializer() {
             {/* GUI */}
             <div
                 style={{display: "flex",flexDirection: "row",justifyContent: "space-between",alignItems: "center",}}>
-                <div style={{position: "relative",display: "flex",flexDirection: "column",justifyContent: "center",alignItems:"flex-start"}}>
+                <div style={{position: "relative",display: "flex",flexDirection: "column",justifyContent: "center",alignItems:"center"}}>
                     <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"15px", marginRight:'15px'}}>
                     {/* Playbutton */}
                     <motion.button
@@ -467,7 +472,7 @@ export default function Musializer() {
                             className="progressCircle"
                             stroke="#ddd"
                             strokeWidth= {bass ? "5" : "0" }
-                            fill="rgba(255,255,255,0.1)"
+                            // fill="rgba(255,255,255,0.1)"
                             r={radius/2}
                             cx="100"
                             cy="100"
@@ -476,17 +481,35 @@ export default function Musializer() {
                     </div>
                 </div>
 
-                    {/* Music selection */}
+                <motion.div className='musicTextDiv' 
+                    style={{width:325, transition:'0.3s',height:'50px', justifyItems:'center', marginLeft:'25px', marginRight:'25px'}} 
+                >
+
+                    {/*Song display*/}
                 <div style={{width:'150px', height:'75px', display:'flex', justifyContent:'center', alignItems:'center'}}>
-                <div style={{textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center",alignItems: "flex-start"}} >
-                    <h3 style={{display:"flex", width:'150px',justifyContent:'center'}}>
-                        <span className="material-symbols-outlined">
+                <div style={{textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center",alignItems: "center"}} >
+                    <h2 style={{display:"flex", flexDirection:"row", width:'150px',justifyContent:'center',alignItems:'flex-end'}}>
+                        {/* <span className="material-symbols-outlined">
                             music_note
-                        </span>
+                        </span> */}
+                        <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", justifyContent:"center"}}>
                             {currentSong.name}
-                    </h3> 
+                        </div>
+                    </h2> 
+                    <motion.button className="navbarButton"
+                        ref = {buttonRefSmall2}
+                        style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+                        onClick={handleMusicLibraryClick}
+                        whileHover={{scale: 1.1}}
+                        animate={{ scale: bass ? 1.5 : 1 }}
+                        transition={{ type: "spring", duration: 0.2 }}
+                        >
+                            <span className="material-symbols-outlined">library_music</span>
+                </motion.button>
+                    {/* <h4 style={{display:"flex", flexDirection:"row"}}>{currentSong.artist}</h4> */}
                 </div>
                 </div>
+                </motion.div>
 
                     {/* Sliders */}
                 <div style={{ display: "flex", flexDirection: "column"}} >
