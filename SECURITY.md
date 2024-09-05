@@ -18,7 +18,8 @@ ___
     - [x] Volume slider --> range/progress bar
     - [x] Lenght of music visualized --> progress bar
 
-    - [ ] Adjustable bassIntensity (bounceRadiusIntensity) thingy
+    --> musializer todo is moved over to dev branch
+
 
 
     - [x] **Particles instead of waveform**
