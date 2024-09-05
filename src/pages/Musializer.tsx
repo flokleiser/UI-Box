@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { Slider } from "../components/Slider";
 import { music} from "../components/Music";
 import Overlay from "../components/Overlay";
-import AudioMotionAnalyzer from 'audiomotion-analyzer';
+// import AudioMotionAnalyzer from 'audiomotion-analyzer';
+import AudioMotionAnalyzer from '../components/audioMotion-analyzer.js';
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -24,8 +25,6 @@ export default function Musializer() {
     const [isEqualizer, setIsEqualizer] = useState(false);  
     const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
     const [initSceneCount, setInitSceneCount] = useState(0);
-
-    // const [bassIntensity, setBassIntensity] = useState(0);
 
     const radius = 85;
     const circumference = 2 * Math.PI * radius/2;
@@ -356,9 +355,8 @@ export default function Musializer() {
 
     //new audiomotion-analyzer
     useEffect(() => {
-        // let analyzer: AudioMotionAnalyzer | null;
         if (audioRef.current && divRef.current && !audioMotion) {
-            // console.log('new equalizer')
+
             analyzer = new AudioMotionAnalyzer(divRef.current, {
                 source: audioRef.current,
                 showScaleX: false,
@@ -373,28 +371,45 @@ export default function Musializer() {
                 mirror: 0,
                 reflexAlpha: 1,
                 reflexRatio: 0.5,
-                gradient: 'prism',
-                colorMode: 'bar-level',
+                // gradient: 'prism',
+                gradient: 'test',
+                // colorMode: 'bar-level',
                 linearAmplitude: true,
                 linearBoost: 1.5,
             });
+;
+
+      
+
+            // analyzer.registerGradient('white-gray', {
+            //     bgColor: '#111', // Optional background color
+            //     dir: 'h', // Horizontal gradient
+            //     colorStops: [
+            //         'white', // Start color
+            //         'gray'   // End color
+            //     ]
+            // });
+
             setAudioMotion(analyzer);
+
+            
 
             const animate = () => {
                 if (analyzer) {
-                    const bassEnergy = analyzer.getEnergy("bass");
+                    const bassEnergy = analyzer.getEnergy(20, 250);
+                    if (bassEnergy !== null) { // Add null check for bassEnergy
+                        const scale = 1 + bassEnergy;
                         if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current) {
-                            // const scale = 1 + bassEnergy * 0.5;
-                            const scale = 1 + bassEnergy;
                             buttonRef.current.style.transform = `scale(${scale})`;
                             buttonRefSmall1.current.style.transform = `scale(${scale})`;
                             buttonRefSmall2.current.style.transform = `scale(${scale})`;
                             outlineRef.current.style.strokeWidth = `${0 + (bassEnergy) * 5}px`;
                         }
+                    }
                 }
                 setAnimationFrameId(requestAnimationFrame(animate));
             };
-    
+
             animate();
         }
     
@@ -474,6 +489,7 @@ export default function Musializer() {
                             className="progressCircle"
                             stroke="#ddd"
                             strokeWidth= {bass ? "5" : "0" }
+                            // fill="rgba(255,255,255,0.1)"
                             r={radius/2}
                             cx="100"
                             cy="100"
@@ -490,6 +506,9 @@ export default function Musializer() {
                 <div style={{width:'150px', height:'75px', display:'flex', justifyContent:'center', alignItems:'center'}}>
                 <div style={{textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center",alignItems: "center"}} >
                     <h2 style={{display:"flex", flexDirection:"row", width:'150px',justifyContent:'center',alignItems:'flex-end'}}>
+                        {/* <span className="material-symbols-outlined">
+                            music_note
+                        </span> */}
                         <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", justifyContent:"center"}}>
                             {currentSong.name}
                         </div>
