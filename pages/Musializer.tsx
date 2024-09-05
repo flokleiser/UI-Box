@@ -17,16 +17,15 @@ export default function Musializer() {
     const analyserRef = useRef<AnalyserNode | null>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
     const [resetTrigger, setResetTrigger] = useState(0);
-    const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(1);
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
-    const [bassIntensity, setBassIntensity] = useState(0);
     const [isOverlayVisible, setOverlayVisible] = useState(false);
-    const [currentSong, setCurrentSong] = useState(music[1]);
+    const [currentSong, setCurrentSong] = useState(music[2]);
     const [isEqualizer, setIsEqualizer] = useState(false);  
     const [audioMotion, setAudioMotion] = useState<AudioMotionAnalyzer | null>(null);
     const [initSceneCount, setInitSceneCount] = useState(0);
 
+    // const [bassIntensity, setBassIntensity] = useState(0);
 
     const radius = 85;
     const circumference = 2 * Math.PI * radius/2;
@@ -34,13 +33,38 @@ export default function Musializer() {
     const [offset, setOffset] = useState(initialOffset);
     const [progress, setProgress] = useState(0);
 
+    let smoothedIntensity = 0;
+
+    let analyzer: AudioMotionAnalyzer | null;
+    const [animationFrameId, setAnimationFrameId] = useState<number | null>(0);
+
+    const buttonRef = useRef<HTMLButtonElement>(null)
+    const buttonRefSmall1 = useRef<HTMLButtonElement>(null)
+    const buttonRefSmall2 = useRef<HTMLButtonElement>(null)
+    const outlineRef = useRef<SVGCircleElement>(null)
+
+    const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(5);
+
+    const normalizeBounceRadiusIntensity = (value:number) => {
+        return (value / 10) * 2; // Normalize from 0-9 to 0-2
+    };
+
+
     //gui/equalizer
     const handleEqualizerClick = () => {
         setIsEqualizer(!isEqualizer);
-        console.log('init thing')
-        setInitSceneCount(count => count + 1);
-    }
 
+        if (audioMotion) {
+            audioMotion.destroy();
+            setAudioMotion(null);
+        }
+        if (!isEqualizer) {
+            console.log('init equalizer')
+        }
+        else {
+            resetScene();
+        }
+    }
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true)
     }
@@ -143,7 +167,6 @@ export default function Musializer() {
         let animationFrameId: number;
         let particles: Particle[] = [];
         let bounceCenter = { x: canvas.width/ 2, y: canvas.height/ 2 };
-        console.log("BounceCenter: ",bounceCenter.x, bounceCenter.y, "Should be here: ", rect.width/2, rect.height/2);
         let bounceRadius = 1;
 
         const color = [
@@ -264,12 +287,24 @@ export default function Musializer() {
 
                 const bassRange = dataArray.slice(0, 2);
                 const intensity = bassRange.reduce(
-                    (sum, value) => sum + value,
-                    0
-                );
-                const bass = intensity > 509;
+                    (sum, value) => sum + value,0);
+
+                const smoothingFactor = 0.1;
+                smoothedIntensity += (intensity - smoothedIntensity) * smoothingFactor;
+
+                const bassThreshold = 500
+                const bass = smoothedIntensity > bassThreshold
+
+                // const bass = intensity > bassThreshold
+         
                 setBass(bass);
-                bounceRadius = bass ? 1.5 : 0;
+                // bounceRadius = bass ? 1.5 : 0;
+
+                const normalizedBounceRadiusIntensity = normalizeBounceRadiusIntensity(bounceRadiusIntensity);
+                const baseBounceRadius = bass ? 1.5 : 0;
+                // bounceRadius = baseBounceRadius * bounceRadiusIntensity
+                bounceRadius = baseBounceRadius * normalizedBounceRadiusIntensity; 
+                
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -290,7 +325,8 @@ export default function Musializer() {
             window.removeEventListener("resize", resizeCanvas);
             cancelAnimationFrame(animationFrameId);
         };
-    }, [resetTrigger,initSceneCount]);
+    // }, [resetTrigger,initSceneCount]);
+    }, [resetTrigger, bounceRadiusIntensity]);
 
     //handle keys
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -320,10 +356,9 @@ export default function Musializer() {
 
     //new audiomotion-analyzer
     useEffect(() => {
-        // let analyzer: React.SetStateAction<AudioMotionAnalyzer | null>
-        let analyzer: AudioMotionAnalyzer | null;
+        // let analyzer: AudioMotionAnalyzer | null;
         if (audioRef.current && divRef.current && !audioMotion) {
-            // const analyzer = new AudioMotionAnalyzer(divRef.current, {
+            // console.log('new equalizer')
             analyzer = new AudioMotionAnalyzer(divRef.current, {
                 source: audioRef.current,
                 showScaleX: false,
@@ -344,13 +379,31 @@ export default function Musializer() {
                 linearBoost: 1.5,
             });
             setAudioMotion(analyzer);
+
+            const animate = () => {
+                if (analyzer) {
+                    const bassEnergy = analyzer.getEnergy("bass");
+                        if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current) {
+                            // const scale = 1 + bassEnergy * 0.5;
+                            const scale = 1 + bassEnergy;
+                            buttonRef.current.style.transform = `scale(${scale})`;
+                            buttonRefSmall1.current.style.transform = `scale(${scale})`;
+                            buttonRefSmall2.current.style.transform = `scale(${scale})`;
+                            outlineRef.current.style.strokeWidth = `${0 + (bassEnergy) * 5}px`;
+                        }
+                }
+                setAnimationFrameId(requestAnimationFrame(animate));
+            };
+    
+            animate();
         }
-        // return () => {
-        //     if (analyzer) {
-        //         analyzer.destroy();
-        //         console.log('analyzer destroyed')
-        //     }
-        // }
+    
+        return () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        }
+    
     }, [audioRef.current, divRef.current, audioMotion]);
 
 
@@ -362,6 +415,7 @@ export default function Musializer() {
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                 {/* analyzer switch */}
                 <motion.button className="navbarButton"
+                ref = {buttonRefSmall1}
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
                 onClick={handleEqualizerClick}
                 whileHover={{scale: 1.1}}
@@ -374,16 +428,7 @@ export default function Musializer() {
                     </span>
                 </motion.button>
 
-                {/* music library */}
-                <motion.button className="navbarButton"
-                style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-                onClick={handleMusicLibraryClick}
-                whileHover={{scale: 1.1}}
-                animate={{ scale: bass ? 1.5 : 1 }}
-                transition={{ type: "spring", duration: 0.2 }}
-                >
-                    <span className="material-symbols-outlined">library_music</span>
-                </motion.button>
+             
                 <Overlay isVisible={isOverlayVisible} onClose={handleCloseOverlay}>
                     <h3>
                     <div>
@@ -402,10 +447,11 @@ export default function Musializer() {
             {/* GUI */}
             <div
                 style={{display: "flex",flexDirection: "row",justifyContent: "space-between",alignItems: "center",}}>
-                <div style={{position: "relative",display: "flex",flexDirection: "column",justifyContent: "center",alignItems:"flex-start"}}>
+                <div style={{position: "relative",display: "flex",flexDirection: "column",justifyContent: "center",alignItems:"center"}}>
                     <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"15px", marginRight:'15px'}}>
                     {/* Playbutton */}
                     <motion.button
+                        ref={buttonRef}
                         className="playButton"
                         style={{ display: "flex", justifyContent: "center", alignItems: "center", }}
                         onMouseDown={handlePlayClick}
@@ -424,10 +470,10 @@ export default function Musializer() {
                         height="200"
                     >
                         <motion.circle
+                            ref = {outlineRef}
                             className="progressCircle"
                             stroke="#ddd"
                             strokeWidth= {bass ? "5" : "0" }
-                            fill="rgba(255,255,255,0.1)"
                             r={radius/2}
                             cx="100"
                             cy="100"
@@ -436,21 +482,32 @@ export default function Musializer() {
                     </div>
                 </div>
 
+                <motion.div className='musicTextDiv' 
+                    style={{width:325, transition:'0.3s',height:'50px', justifyItems:'center', marginLeft:'25px', marginRight:'25px'}} 
+                >
 
-
+                    {/*Song display*/}
                 <div style={{width:'150px', height:'75px', display:'flex', justifyContent:'center', alignItems:'center'}}>
-                <div style={{textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center",alignItems: "flex-start"}} >
-                    <h3 style={{display:"flex", width:'150px',justifyContent:'center'}}>
-                        <span className="material-symbols-outlined">
-                            music_note
-                        </span>
+                <div style={{textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center",alignItems: "center"}} >
+                    <h2 style={{display:"flex", flexDirection:"row", width:'150px',justifyContent:'center',alignItems:'flex-end'}}>
+                        <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", justifyContent:"center"}}>
                             {currentSong.name}
-                    </h3> 
+                        </div>
+                    </h2> 
+                    <motion.button className="navbarButton"
+                        ref = {buttonRefSmall2}
+                        style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+                        onClick={handleMusicLibraryClick}
+                        whileHover={{scale: 1.1}}
+                        animate={{ scale: bass ? 1.5 : 1 }}
+                        transition={{ type: "spring", duration: 0.2 }}
+                        >
+                            <span className="material-symbols-outlined">library_music</span>
+                </motion.button>
+                    {/* <h4 style={{display:"flex", flexDirection:"row"}}>{currentSong.artist}</h4> */}
                 </div>
                 </div>
-
-
-
+                </motion.div>
 
                     {/* Sliders */}
                 <div style={{ display: "flex", flexDirection: "column"}} >
@@ -463,8 +520,9 @@ export default function Musializer() {
                     <Slider
                         value={bounceRadiusIntensity}
                         set={setBounceRadiusIntensity}
+                        // set={handleSliderChange}
                         min={0}
-                        max={3}
+                        max={10}
                     >
                         <span className="material-symbols-outlined" style={{ fontSize: "35px" }}>
                             earthquake
@@ -472,10 +530,10 @@ export default function Musializer() {
                     </Slider>
 
                 </div>
-
-
             </div>
 
+
+            {/* Progress bar */}
             <div className="volumeSlider" style={{ width:'100%', marginTop: '15px', color:'#ddd' }}>
                     <input
                         type="range"
@@ -488,10 +546,9 @@ export default function Musializer() {
                     />
                 </div>
 
-
-            {/* <div style={{ padding: "20px" }} /> */}
             <div style={{ padding: "10px" }} />
 
+            {/* Canvas */}
             <div id="canvasDiv" className="canvasDiv"> 
                 {isEqualizer ? (
                 <div id="canvasDiv" className="canvasDiv" style={{border:0}}ref={divRef}>
