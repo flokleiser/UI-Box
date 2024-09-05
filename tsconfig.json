@@ -8,7 +8,8 @@
     "jsx":"react",
     "outDir": "./src/dist",
     "rootDir": "./src",
-    "checkJs": true
+    "checkJs": true,
+    // "lib": ["ESNext"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules"]

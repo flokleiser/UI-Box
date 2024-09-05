@@ -51430,7 +51430,7 @@ const Slider_1 = __webpack_require__(/*! ../components/Slider */ "./src/componen
 const Music_1 = __webpack_require__(/*! ../components/Music */ "./src/components/Music.tsx");
 const Overlay_1 = __importDefault(__webpack_require__(/*! ../components/Overlay */ "./src/components/Overlay.tsx"));
 const audiomotion_analyzer_1 = __importDefault(__webpack_require__(/*! audiomotion-analyzer */ "./node_modules/audiomotion-analyzer/dist/index.js"));
-// import AudioMotionAnalyzer from '../components/audiomotion-analyzer/src/index';
+// import AudioMotionAnalyzer from "../components/audioMotion-analyzer";
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);
@@ -51719,20 +51719,10 @@ function Musializer() {
                 reflexAlpha: 1,
                 reflexRatio: 0.5,
                 // gradient: 'prism',
-                // gradient: 'test',
-                // colorMode: 'bar-level',
+                gradient: 'test',
                 linearAmplitude: true,
                 linearBoost: 1.5,
             });
-            ;
-            // analyzer.registerGradient('white-gray', {
-            //     bgColor: '#111', // Optional background color
-            //     dir: 'h', // Horizontal gradient
-            //     colorStops: [
-            //         'white', // Start color
-            //         'gray'   // End color
-            //     ]
-            // });
             setAudioMotion(analyzer);
             const animate = () => {
                 if (analyzer) {

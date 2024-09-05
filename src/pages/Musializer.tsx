@@ -4,7 +4,7 @@ import { Slider } from "../components/Slider";
 import { music} from "../components/Music";
 import Overlay from "../components/Overlay";
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
-// import AudioMotionAnalyzer from '../components/audiomotion-analyzer/src/index';
+// import AudioMotionAnalyzer from "../components/audioMotion-analyzer";
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -372,7 +372,7 @@ export default function Musializer() {
                 reflexAlpha: 1,
                 reflexRatio: 0.5,
                 // gradient: 'prism',
-                // gradient: 'test',
+                gradient: 'test',
                 linearAmplitude: true,
                 linearBoost: 1.5,
             });
