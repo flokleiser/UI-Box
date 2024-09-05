@@ -51417,6 +51417,7 @@ const Slider_1 = __webpack_require__(/*! ../components/Slider */ "./src/componen
 const Music_1 = __webpack_require__(/*! ../components/Music */ "./src/components/Music.tsx");
 const Overlay_1 = __importDefault(__webpack_require__(/*! ../components/Overlay */ "./src/components/Overlay.tsx"));
 const audiomotion_analyzer_1 = __importDefault(__webpack_require__(/*! audiomotion-analyzer */ "./node_modules/audiomotion-analyzer/dist/index.js"));
+// import AudioMotionAnalyzer from '../components/audiomotion-analyzer/src/index';
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);
@@ -51436,7 +51437,6 @@ function Musializer() {
     const [isEqualizer, setIsEqualizer] = (0, react_1.useState)(false);
     const [audioMotion, setAudioMotion] = (0, react_1.useState)(null);
     const [initSceneCount, setInitSceneCount] = (0, react_1.useState)(0);
-    // const [bassIntensity, setBassIntensity] = useState(0);
     const radius = 85;
     const circumference = 2 * Math.PI * radius / 2;
     const initialOffset = circumference;
@@ -51690,9 +51690,7 @@ function Musializer() {
     };
     //new audiomotion-analyzer
     (0, react_1.useEffect)(() => {
-        // let analyzer: AudioMotionAnalyzer | null;
         if (audioRef.current && divRef.current && !audioMotion) {
-            // console.log('new equalizer')
             analyzer = new audiomotion_analyzer_1.default(divRef.current, {
                 source: audioRef.current,
                 showScaleX: false,
@@ -51707,22 +51705,23 @@ function Musializer() {
                 mirror: 0,
                 reflexAlpha: 1,
                 reflexRatio: 0.5,
-                gradient: 'prism',
-                colorMode: 'bar-level',
+                // gradient: 'prism',
+                // gradient: 'test',
                 linearAmplitude: true,
                 linearBoost: 1.5,
             });
             setAudioMotion(analyzer);
             const animate = () => {
                 if (analyzer) {
-                    const bassEnergy = analyzer.getEnergy("bass");
-                    if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current) {
-                        // const scale = 1 + bassEnergy * 0.5;
+                    const bassEnergy = analyzer.getEnergy(20, 250);
+                    if (bassEnergy !== null) { // Add null check for bassEnergy
                         const scale = 1 + bassEnergy;
-                        buttonRef.current.style.transform = `scale(${scale})`;
-                        buttonRefSmall1.current.style.transform = `scale(${scale})`;
-                        buttonRefSmall2.current.style.transform = `scale(${scale})`;
-                        outlineRef.current.style.strokeWidth = `${0 + (bassEnergy) * 5}px`;
+                        if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current) {
+                            buttonRef.current.style.transform = `scale(${scale})`;
+                            buttonRefSmall1.current.style.transform = `scale(${scale})`;
+                            buttonRefSmall2.current.style.transform = `scale(${scale})`;
+                            outlineRef.current.style.strokeWidth = `${0 + (bassEnergy) * 5}px`;
+                        }
                     }
                 }
                 setAnimationFrameId(requestAnimationFrame(animate));
@@ -51753,7 +51752,9 @@ function Musializer() {
                     react_1.default.createElement(framer_motion_1.motion.button, { ref: buttonRef, className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "35px" } }, isPlaying ? "play_arrow" : "pause")),
                     react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { ref: outlineRef, className: "progressCircle", stroke: "#ddd", strokeWidth: bass ? "5" : "0", r: radius / 2, cx: "100", cy: "100" })))),
+                        react_1.default.createElement(framer_motion_1.motion.circle, { ref: outlineRef, className: "progressCircle", stroke: "#ddd", strokeWidth: bass ? "5" : "0", 
+                            // fill="rgba(255,255,255,0.1)"
+                            r: radius / 2, cx: "100", cy: "100" })))),
             react_1.default.createElement(framer_motion_1.motion.div, { className: 'musicTextDiv', style: { width: 325, transition: '0.3s', height: '50px', justifyItems: 'center', marginLeft: '25px', marginRight: '25px' } },
                 react_1.default.createElement("div", { style: { width: '150px', height: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center' } },
                     react_1.default.createElement("div", { style: { textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
