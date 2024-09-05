@@ -15,3 +15,7 @@
     - [x] Way to click around the song
     - [ ] Figure out gradient on musializer
         --> kinda working when adding it in the module (but not on website)
+
+
+    - [ ] Get buttons to work
+    - [ ] Fix cleanup of audiomotion-analyzer (again)

@@ -4,6 +4,7 @@ import { Slider } from "../components/Slider";
 import { music} from "../components/Music";
 import Overlay from "../components/Overlay";
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
+import { equal } from "assert";
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -47,6 +48,28 @@ export default function Musializer() {
         return (value / 10) * 2; // Normalize from 0-9 to 0-2
     };
 
+    const [equalizerType, setEqualizerType] = useState("particles");
+
+        //Old visualizer audio-updates
+    // if (isEqualizer) {
+        useEffect(() => {
+            if (equalizerType === "old") {
+                console.log('init old')
+            const updateAudioData = () => {
+              if (analyserRef.current) {
+                const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+                analyserRef.current.getByteFrequencyData(dataArray);
+                setAudioData(dataArray);
+                // const bassRange = dataArray.slice(0, 2);
+                // const intensity = bassRange.reduce((sum, value) => sum + value, 0);
+                // setBassIntensity(intensity);
+              }
+              requestAnimationFrame(updateAudioData);
+            };
+            updateAudioData();
+            }
+          }, []);
+        // }
 
     //gui/equalizer
     const handleEqualizerClick = () => {
@@ -284,6 +307,8 @@ export default function Musializer() {
                 const intensity = bassRange.reduce(
                     (sum, value) => sum + value,0);
 
+                // const hiHatRange = dataArray.slice(3, 10);
+
                 const smoothingFactor = 0.1;
                 smoothedIntensity += (intensity - smoothedIntensity) * smoothingFactor;
 
@@ -371,7 +396,6 @@ export default function Musializer() {
                 linearBoost: 1.5,
                 // gradient: 'white-gray',
             });
-;
 
             // analyzer.registerGradient('white-gray', {
             //     bgColor: '#111', // Optional background color
@@ -421,7 +445,7 @@ export default function Musializer() {
 
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                 {/* analyzer switch */}
-                <motion.button className="navbarButton"
+                {/* <motion.button className="navbarButton"
                 ref = {buttonRefSmall1}
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
                 onClick={handleEqualizerClick}
@@ -430,8 +454,47 @@ export default function Musializer() {
                 transition={{ type: "spring", duration: 0.2 }}
                 >
                     <span className="material-symbols-outlined">
-                        {/* equalizer */}
                         {isEqualizer ? "snowing" : "equalizer"}
+                    </span>
+                </motion.button> */}
+
+                <motion.button className="navbarButton"
+                    ref = {buttonRefSmall1}
+                    style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+                    // onClick={handleEqualizerClick}
+                    onClick={() => setEqualizerType("particles")}
+                    whileHover={{scale: 1.1}}
+                    animate={{ scale: bass ? 1.5 : 1 }}
+                    transition={{ type: "spring", duration: 0.2 }}
+                    >
+                        <span className="material-symbols-outlined">
+                           snowing 
+                        </span>
+                </motion.button>
+                <motion.button className="navbarButton"
+                ref = {buttonRefSmall1}
+                style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+                // onClick={handleEqualizerClick}
+                onClick={() => setEqualizerType("audioMotion")}
+                whileHover={{scale: 1.1}}
+                animate={{ scale: bass ? 1.5 : 1 }}
+                transition={{ type: "spring", duration: 0.2 }}
+                >
+                    <span className="material-symbols-outlined">
+                        earthquake
+                    </span>
+                </motion.button>
+                <motion.button className="navbarButton"
+                ref = {buttonRefSmall1}
+                style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+                // onClick={handleEqualizerClick}
+                onClick={() => setEqualizerType("old")}
+                whileHover={{scale: 1.1}}
+                animate={{ scale: bass ? 1.5 : 1 }}
+                transition={{ type: "spring", duration: 0.2 }}
+                >
+                    <span className="material-symbols-outlined">
+                        equalizer
                     </span>
                 </motion.button>
 
@@ -498,9 +561,6 @@ export default function Musializer() {
                 <div style={{width:'150px', height:'75px', display:'flex', justifyContent:'center', alignItems:'center'}}>
                 <div style={{textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center",alignItems: "center"}} >
                     <h2 style={{display:"flex", flexDirection:"row", width:'150px',justifyContent:'center',alignItems:'flex-end'}}>
-                        {/* <span className="material-symbols-outlined">
-                            music_note
-                        </span> */}
                         <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", justifyContent:"center"}}>
                             {currentSong.name}
                         </div>
@@ -561,7 +621,38 @@ export default function Musializer() {
 
             {/* Canvas */}
             <div id="canvasDiv" className="canvasDiv"> 
-                {isEqualizer ? (
+
+                {equalizerType === "particles" && (
+                    <canvas ref={canvasRef} 
+                        style={{ position: "absolute", marginLeft: "-3px", marginTop: "-3px", }}>
+                    </canvas>
+                )}
+
+                {equalizerType === "audioMotion" && (
+                    <div id="canvasDiv" className="canvasDiv" style={{border:0}}ref={divRef}>
+                        <audio ref={audioRef} style={{width:"100%"}}>
+                            <source src={currentSong.file} type="audio/mpeg" />
+                        </audio>
+                   </div>
+                    )}
+
+                {equalizerType === "old" && (
+                    // Array.from(audioData).slice(0, 64).map((value: any, index: React.Key | null | undefined) => (
+                    Array.from(audioData).slice(0, 64).map((value, index) => {
+                        return (
+                            <motion.div
+                                key={index}
+                                className="bar"
+                                initial={{ height: 0 }}
+                                animate={{ height: value }}
+                                transition={{ duration: 0.05 }}
+                            />
+                        );
+                    }) 
+                )}
+                    
+
+                {/* {isEqualizer ? (
                 <div id="canvasDiv" className="canvasDiv" style={{border:0}}ref={divRef}>
                     <audio ref={audioRef} style={{width:"100%"}}>
                         <source src={currentSong.file} type="audio/mpeg" />
@@ -569,7 +660,7 @@ export default function Musializer() {
                 </div>
                 ):(
                     <canvas ref={canvasRef} style={{ position: "absolute", marginLeft: "-3px", marginTop: "-3px", }}></canvas>
-                )}
+                )} */}
             </div>
 
 
