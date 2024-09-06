@@ -3,6 +3,11 @@
 ### Todo:
 - [ ] Musializer
 
+    - [ ] Potential problem for the future --> main/renderer/preload not getting transpiled on "start"
+
+    - [ ] Equalizer functionality
+        - [ ] Fix bass value being way too jumpy
+
     - [x] Equalizer buttons:
         - [x] Implement switch case for different visualizers
         - [x] Fix cleanup of audiomotion-analyzer (again)
@@ -12,6 +17,7 @@
     - [ ] Less important graphical stuff
         - [ ] Gradient on audioMotion-analyzer
             --> kinda working when adding it in the module? (but not on website)
+        - [ ] Fix outline/border of circle sometimes not working
         - [x] Add indicator of which visualizer is active (css :active)
     
 
