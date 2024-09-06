@@ -586,8 +586,6 @@ export default function Musializer() {
                             stroke="#ddd"
                             // strokeWidth={0}
                             strokeWidth= {bassButtons ? "5" : "0" }
-                            // strokeWidth= {hiHatButtons? "5" : "0" }
-                            // fill="rgba(255,255,255,0.1)"
                             r={radius/2}
                             cx="100"
                             cy="100"
