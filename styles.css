@@ -693,6 +693,10 @@ nav{
     stroke:#333;
 }
 
+.bar {
+    background: #333;
+  }
+
 
   :root {
     --particle-color: var(--particle-color-dark);

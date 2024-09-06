@@ -41,6 +41,7 @@ function Musializer() {
     const [hiHatButtons, setHiHatButtons] = (0, react_1.useState)(false);
     const [audioData, setAudioData] = (0, react_1.useState)(new Uint8Array(0));
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
+    const [darkMode, setDarkMode] = (0, react_1.useState)(true);
     const [duration, setDuration] = (0, react_1.useState)(0);
     const [currentTime, setCurrentTime] = (0, react_1.useState)(0);
     const [isOverlayVisible, setOverlayVisible] = (0, react_1.useState)(false);
@@ -123,7 +124,12 @@ function Musializer() {
     }, [currentSong]);
     //reset canvas on theme change
     (0, react_1.useEffect)(() => {
-        const handleThemeToggle = () => resetScene();
+        const handleThemeToggle = () => {
+            resetScene(),
+                // setDarkMode(!darkMode)
+                setDarkMode(prevDarkMode => !prevDarkMode);
+            console.log('darkmode', darkMode);
+        };
         setTimeout(() => {
             const darkmodeToggleButton = document.getElementById("darkmodeToggleButton");
             if (darkmodeToggleButton) {
@@ -360,23 +366,26 @@ function Musializer() {
                 reflexRatio: 0.5,
                 linearAmplitude: true,
                 linearBoost: 1.5,
-                // gradient: 'white-gray',
             });
-            // analyzer.registerGradient('white-gray', {
-            //     bgColor: '#111', // Optional background color
-            //     dir: 'h', // Horizontal gradient
-            //     colorStops: [
-            //         'white', // Start color
-            //         'gray'   // End color
-            //     ]
-            // });
+            const gradientColor = [
+                getComputedStyle(document.documentElement).getPropertyValue("--particle-color"),
+            ];
+            analyzer.registerGradient('test', {
+                bgColor: '#101',
+                colorStops: [
+                    { pos: 0, color: '#333' },
+                    { pos: 0.5, color: '#999999' },
+                    { pos: 1, color: '#fff' }
+                ]
+            });
+            analyzer.gradient = 'test';
             setAudioMotion(analyzer);
             const animate = () => {
                 if (analyzer) {
                     const bassEnergy = analyzer.getEnergy(20, 250);
                     const hiHatEnergy = analyzer.getEnergy(1000, 2000);
                     if (bassEnergy !== null) { // Add null check for bassEnergy
-                        const scale = 1 + (bassEnergy * 2);
+                        const scale = 1 + (bassEnergy * 1.25);
                         if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current && buttonRefSmall3.current && buttonRefSmall4.current && volumeRef.current && intensityRef.current) {
                             buttonRef.current.style.transform = `scale(${scale})`;
                             buttonRefSmall1.current.style.transform = `scale(${scale})`;
@@ -387,7 +396,7 @@ function Musializer() {
                         }
                     }
                     if (hiHatEnergy !== null) {
-                        const hiHatScale = 1 + (hiHatEnergy * 5);
+                        const hiHatScale = 1 + (hiHatEnergy * 2);
                         if (volumeRef.current && intensityRef.current) {
                             volumeRef.current.style.transform = `scale(${hiHatScale})`;
                             intensityRef.current.style.transform = `scale(${hiHatScale})`;
@@ -430,10 +439,7 @@ function Musializer() {
                     react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
                         react_1.default.createElement(framer_motion_1.motion.circle, { ref: outlineRef, className: "progressCircle", stroke: "#ddd", 
                             // strokeWidth={0}
-                            strokeWidth: bassButtons ? "5" : "0", 
-                            // strokeWidth= {hiHatButtons? "5" : "0" }
-                            // fill="rgba(255,255,255,0.1)"
-                            r: radius / 2, cx: "100", cy: "100" })))),
+                            strokeWidth: bassButtons ? "5" : "0", r: radius / 2, cx: "100", cy: "100" })))),
             react_1.default.createElement(framer_motion_1.motion.div, { className: 'musicTextDiv', style: { width: 325, transition: '0.3s', height: '50px', justifyItems: 'center', marginLeft: '25px', marginRight: '25px' } },
                 react_1.default.createElement("div", { style: { width: '150px', height: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center' } },
                     react_1.default.createElement("div", { style: { textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
@@ -459,22 +465,3 @@ function Musializer() {
                 return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0 }, animate: { height: value }, transition: { duration: 0.05 } }));
             }))))));
 }
-//old smooth function:
-// const customBassEnergy = getCustomEnergy(dataArray, 20, 250, analyserRef.current.fftSize);
-// const customHiHatEnergy = getCustomEnergy(dataArray, 1000, 2000, analyserRef.current.fftSize);
-// const normalizedBassEnergy = customBassEnergy / 255;
-// const normalizedHiHatEnergy = customHiHatEnergy / 255;
-// const customBassScale = 1 + (normalizedBassEnergy);
-//     if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current && buttonRefSmall3.current && buttonRefSmall4.current && volumeRef.current && intensityRef.current) {
-//         buttonRef.current.style.transform = `scale(${customBassScale})`;
-//         buttonRefSmall1.current.style.transform = `scale(${customBassScale})`;
-//         buttonRefSmall2.current.style.transform = `scale(${customBassScale})`;
-//         buttonRefSmall3.current.style.transform = `scale(${customBassScale})`;
-//         buttonRefSmall4.current.style.transform = `scale(${customBassScale})`;
-//         outlineRef.current.style.strokeWidth = `${0 + (normalizedBassEnergy) * 5}px`;
-//     } else {console.log('buttons are missing')}
-// const customHiHatScale = 1 + (normalizedHiHatEnergy);
-//     if (volumeRef.current && intensityRef.current) {
-//         volumeRef.current.style.transform = `scale(${customHiHatScale})`;
-//         intensityRef.current.style.transform = `scale(${customHiHatScale})`;
-//     } 
