@@ -9,5 +9,4 @@ Built with Typescript, React and Electron.
 ___
 
 ![preview](/src/media/uibox-preview.png)
-<!-- ![preview](/src/media/icon2.png) -->
 
