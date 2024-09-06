@@ -51426,14 +51426,10 @@ const audiomotion_analyzer_1 = __importDefault(__webpack_require__(/*! audiomoti
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);
-    const [bass, setBass] = (0, react_1.useState)(false);
-    const [test, setTest] = (0, react_1.useState)(0);
+    const [bassParticles, setBassParticles] = (0, react_1.useState)(false);
+    const [bassButtons, setBassButtons] = (0, react_1.useState)(false);
+    const [hiHatButtons, setHiHatButtons] = (0, react_1.useState)(false);
     const [audioData, setAudioData] = (0, react_1.useState)(new Uint8Array(0));
-    const canvasRef = (0, react_1.useRef)(null);
-    const divRef = (0, react_1.useRef)(null);
-    const audioRef = (0, react_1.useRef)(null);
-    const analyserRef = (0, react_1.useRef)(null);
-    const audioContextRef = (0, react_1.useRef)(null);
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     const [duration, setDuration] = (0, react_1.useState)(0);
     const [currentTime, setCurrentTime] = (0, react_1.useState)(0);
@@ -51442,11 +51438,16 @@ function Musializer() {
     const [isEqualizer, setIsEqualizer] = (0, react_1.useState)(false);
     const [audioMotion, setAudioMotion] = (0, react_1.useState)(null);
     const [initSceneCount, setInitSceneCount] = (0, react_1.useState)(0);
-    const radius = 85;
-    const [progress, setProgress] = (0, react_1.useState)(0);
-    let smoothedIntensity = 0;
-    let analyzer;
     const [animationFrameId, setAnimationFrameId] = (0, react_1.useState)(0);
+    const [bounceRadiusIntensity, setBounceRadiusIntensity] = (0, react_1.useState)(5);
+    const [equalizerType, setEqualizerType] = (0, react_1.useState)("particles");
+    const [activeEqualizer, setActiveEqualizer] = (0, react_1.useState)(null);
+    const [progress, setProgress] = (0, react_1.useState)(0);
+    const canvasRef = (0, react_1.useRef)(null);
+    const divRef = (0, react_1.useRef)(null);
+    const audioRef = (0, react_1.useRef)(null);
+    const analyserRef = (0, react_1.useRef)(null);
+    const audioContextRef = (0, react_1.useRef)(null);
     const buttonRef = (0, react_1.useRef)(null);
     const buttonRefSmall1 = (0, react_1.useRef)(null);
     const buttonRefSmall2 = (0, react_1.useRef)(null);
@@ -51455,9 +51456,10 @@ function Musializer() {
     const outlineRef = (0, react_1.useRef)(null);
     const volumeRef = (0, react_1.useRef)(null);
     const intensityRef = (0, react_1.useRef)(null);
-    const [bounceRadiusIntensity, setBounceRadiusIntensity] = (0, react_1.useState)(5);
-    const [equalizerType, setEqualizerType] = (0, react_1.useState)("particles");
-    const [activeEqualizer, setActiveEqualizer] = (0, react_1.useState)(null);
+    const radius = 85;
+    let smoothedIntensity = 0;
+    let smoothedHiHatIntensity = 0;
+    let analyzer;
     const normalizeBounceRadiusIntensity = (value) => {
         return (value / 10) * 2;
     };
@@ -51478,20 +51480,18 @@ function Musializer() {
         };
         cleanup();
         setActiveEqualizer(equalizerType);
-        // switch (equalizerType) {
-        //     case "particles":
-        //         console.log('particles')
-        //         break;
-        //     case "audioMotion":
-        //         console.log('audiomotion')
-        //         break;
-        //     case "old":
-        //         console.log('old')
-        //         break;
-        //     default:
-        //         break;
-        // }
     }, [equalizerType]);
+    //custom energy? needs fixing
+    const getCustomEnergy = (dataArray, startFreq, endFreq, fftSize) => {
+        const startBin = Math.floor((startFreq / 44100) * fftSize);
+        const endBin = endFreq ? Math.floor((endFreq / 44100) * fftSize) : startBin;
+        let energy = 0;
+        for (let i = startBin; i <= endBin; i++) {
+            energy += dataArray[i];
+        }
+        // console.log(energy)
+        return energy / (endBin - startBin + 1);
+    };
     //gui
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true);
@@ -51560,6 +51560,28 @@ function Musializer() {
             const bufferLength = analyserRef.current.frequencyBinCount;
             setAudioData(new Uint8Array(bufferLength));
         }
+        const updateAudioData = () => {
+            if (analyserRef.current) {
+                const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+                analyserRef.current.getByteFrequencyData(dataArray);
+                setAudioData(dataArray);
+                const hiHatRange = dataArray.slice(17, 47);
+                const hiHatIntensity = hiHatRange.reduce((sum, value) => sum + value, 0);
+                smoothedHiHatIntensity += (hiHatIntensity - smoothedHiHatIntensity) * 0.2;
+                const hiHatThreshold = 500;
+                const hiHatButtons = smoothedIntensity > hiHatThreshold;
+                setHiHatButtons(hiHatButtons);
+                const bassRange = dataArray.slice(0, 2);
+                const intensity = bassRange.reduce((sum, value) => sum + value, 0);
+                const smoothingFactor = 0.1;
+                smoothedIntensity += (intensity - smoothedIntensity) * smoothingFactor;
+                const bassThreshold = 490;
+                const bassButtons = smoothedIntensity > bassThreshold;
+                setBassButtons(bassButtons);
+            }
+            requestAnimationFrame(updateAudioData);
+        };
+        updateAudioData();
         if (audioRef.current) {
             audioRef.current.volume = volume / 100;
         }
@@ -51657,17 +51679,13 @@ function Musializer() {
                 setAudioData(dataArray);
                 const bassRange = dataArray.slice(0, 2);
                 const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-                // const hiHatRange = dataArray.slice(3, 10);
                 const smoothingFactor = 0.1;
                 smoothedIntensity += (intensity - smoothedIntensity) * smoothingFactor;
                 const bassThreshold = 500;
                 const bass = smoothedIntensity > bassThreshold;
-                // const bass = intensity > bassThreshold
-                setBass(bass);
-                // bounceRadius = bass ? 1.5 : 0;
+                setBassParticles(bass);
                 const normalizedBounceRadiusIntensity = normalizeBounceRadiusIntensity(bounceRadiusIntensity);
                 const baseBounceRadius = bass ? 1.5 : 0;
-                // bounceRadius = baseBounceRadius * bounceRadiusIntensity
                 bounceRadius = baseBounceRadius * normalizedBounceRadiusIntensity;
             }
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -51755,9 +51773,7 @@ function Musializer() {
                             buttonRefSmall2.current.style.transform = `scale(${scale})`;
                             buttonRefSmall3.current.style.transform = `scale(${scale})`;
                             buttonRefSmall4.current.style.transform = `scale(${scale})`;
-                            outlineRef.current.style.strokeWidth = `${0 + (bassEnergy) * 5}px`;
-                            // volumeRef.current.style.transform = `scale(${1 + bassEnergy})`;
-                            // intensityRef.current.style.transform = `scale(${1 + bassEnergy})`;
+                            outlineRef.current.style.strokeWidth = `${0 + (bassEnergy) * 15}px`;
                         }
                     }
                     if (hiHatEnergy !== null) {
@@ -51778,44 +51794,15 @@ function Musializer() {
             }
         };
     }, [audioRef.current, divRef.current, audioMotion]);
-    //old equlaizer
-    (0, react_1.useEffect)(() => {
-        if (equalizerType === "old") {
-            console.log('init old');
-            const updateAudioData = () => {
-                if (analyserRef.current) {
-                    const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-                    analyserRef.current.getByteFrequencyData(dataArray);
-                    setAudioData(dataArray);
-                    const bassRange = dataArray.slice(0, 2);
-                    const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-                }
-                requestAnimationFrame(updateAudioData);
-            };
-            updateAudioData();
-        }
-    }, []);
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
-                react_1.default.createElement(framer_motion_1.motion.button
-                // className={`navbarButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`}
-                , { 
-                    // className={`navbarButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`}
-                    className: `equalizerButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`, ref: buttonRefSmall1, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("particles"), whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                react_1.default.createElement(framer_motion_1.motion.button, { className: `equalizerButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`, ref: buttonRefSmall1, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("particles"), whileHover: { scale: 1.1 }, animate: { scale: bassButtons ? 1.25 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "snowing")),
-                react_1.default.createElement(framer_motion_1.motion.button
-                // className={`navbarButton ${activeEqualizer === "audioMotion" ? "equalizerActive" : ""}`}
-                , { 
-                    // className={`navbarButton ${activeEqualizer === "audioMotion" ? "equalizerActive" : ""}`}
-                    className: `equalizerButton ${activeEqualizer === "audioMotion" ? "equalizerActive" : ""}`, ref: buttonRefSmall3, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("audioMotion"), whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                react_1.default.createElement(framer_motion_1.motion.button, { className: `equalizerButton ${activeEqualizer === "audioMotion" ? "equalizerActive" : ""}`, ref: buttonRefSmall3, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("audioMotion"), whileHover: { scale: 1.1 }, animate: { scale: bassButtons ? 1.25 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "earthquake")),
-                react_1.default.createElement(framer_motion_1.motion.button
-                // className={`navbarButton ${activeEqualizer === "old" ? "equalizerActive" : ""}`}
-                , { 
-                    // className={`navbarButton ${activeEqualizer === "old" ? "equalizerActive" : ""}`}
-                    className: `equalizerButton ${activeEqualizer === "old" ? "equalizerActive" : ""}`, ref: buttonRefSmall4, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("old"), whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                react_1.default.createElement(framer_motion_1.motion.button, { className: `equalizerButton ${activeEqualizer === "old" ? "equalizerActive" : ""}`, ref: buttonRefSmall4, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("old"), whileHover: { scale: 1.1 }, animate: { scale: bassButtons ? 1.25 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "equalizer")),
                 react_1.default.createElement(Overlay_1.default, { isVisible: isOverlayVisible, onClose: handleCloseOverlay },
                     react_1.default.createElement("h3", null,
@@ -51826,10 +51813,15 @@ function Musializer() {
         react_1.default.createElement("div", { style: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", } },
             react_1.default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" } },
                 react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "15px", marginRight: '15px' } },
-                    react_1.default.createElement(framer_motion_1.motion.button, { ref: buttonRef, className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { ref: buttonRef, className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bassButtons ? 1.25 : 1 }, 
+                        // animate={{ scale: hiHatButtons ? 1.25 : 1 }}
+                        transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "35px" } }, isPlaying ? "play_arrow" : "pause")),
                     react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { ref: outlineRef, className: "progressCircle", stroke: "#ddd", strokeWidth: bass ? "5" : "0", 
+                        react_1.default.createElement(framer_motion_1.motion.circle, { ref: outlineRef, className: "progressCircle", stroke: "#ddd", 
+                            // strokeWidth={0}
+                            strokeWidth: bassButtons ? "5" : "0", 
+                            // strokeWidth= {hiHatButtons? "5" : "0" }
                             // fill="rgba(255,255,255,0.1)"
                             r: radius / 2, cx: "100", cy: "100" })))),
             react_1.default.createElement(framer_motion_1.motion.div, { className: 'musicTextDiv', style: { width: 325, transition: '0.3s', height: '50px', justifyItems: 'center', marginLeft: '25px', marginRight: '25px' } },
@@ -51837,7 +51829,7 @@ function Musializer() {
                     react_1.default.createElement("div", { style: { textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
                         react_1.default.createElement("h2", { style: { display: "flex", flexDirection: "row", width: '150px', justifyContent: 'center', alignItems: 'flex-end' } },
                             react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "flex-end", justifyContent: "center" } }, currentSong.name)),
-                        react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", ref: buttonRefSmall2, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: handleMusicLibraryClick, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                        react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", ref: buttonRefSmall2, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: handleMusicLibraryClick, whileHover: { scale: 1.1 }, animate: { scale: bassButtons ? 1.25 : 1 }, transition: { type: "spring", duration: 0.2 } },
                             react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music"))))),
             react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column" } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume },
@@ -51857,6 +51849,25 @@ function Musializer() {
                 return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0 }, animate: { height: value }, transition: { duration: 0.05 } }));
             }))))));
 }
+//old smooth function:
+// const customBassEnergy = getCustomEnergy(dataArray, 20, 250, analyserRef.current.fftSize);
+// const customHiHatEnergy = getCustomEnergy(dataArray, 1000, 2000, analyserRef.current.fftSize);
+// const normalizedBassEnergy = customBassEnergy / 255;
+// const normalizedHiHatEnergy = customHiHatEnergy / 255;
+// const customBassScale = 1 + (normalizedBassEnergy);
+//     if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current && buttonRefSmall3.current && buttonRefSmall4.current && volumeRef.current && intensityRef.current) {
+//         buttonRef.current.style.transform = `scale(${customBassScale})`;
+//         buttonRefSmall1.current.style.transform = `scale(${customBassScale})`;
+//         buttonRefSmall2.current.style.transform = `scale(${customBassScale})`;
+//         buttonRefSmall3.current.style.transform = `scale(${customBassScale})`;
+//         buttonRefSmall4.current.style.transform = `scale(${customBassScale})`;
+//         outlineRef.current.style.strokeWidth = `${0 + (normalizedBassEnergy) * 5}px`;
+//     } else {console.log('buttons are missing')}
+// const customHiHatScale = 1 + (normalizedHiHatEnergy);
+//     if (volumeRef.current && intensityRef.current) {
+//         volumeRef.current.style.transform = `scale(${customHiHatScale})`;
+//         intensityRef.current.style.transform = `scale(${customHiHatScale})`;
+//     } 
 
 
 /***/ }),
