@@ -4,7 +4,6 @@ import { Slider } from "../components/Slider";
 import { music} from "../components/Music";
 import Overlay from "../components/Overlay";
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
-import { equal } from "assert";
 
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
@@ -27,9 +26,6 @@ export default function Musializer() {
     const [initSceneCount, setInitSceneCount] = useState(0);
 
     const radius = 85;
-    const circumference = 2 * Math.PI * radius/2;
-    const initialOffset = circumference;
-    const [offset, setOffset] = useState(initialOffset);
     const [progress, setProgress] = useState(0);
 
     let smoothedIntensity = 0;
@@ -47,49 +43,54 @@ export default function Musializer() {
     const intensityRef = useRef<HTMLSpanElement>(null)
 
     const [bounceRadiusIntensity, setBounceRadiusIntensity] = useState(5);
-
-    const normalizeBounceRadiusIntensity = (value:number) => {
-        return (value / 10) * 2; // Normalize from 0-9 to 0-2
-    };
-
     const [equalizerType, setEqualizerType] = useState("particles");
 
-        //Old visualizer audio-updates
-    // if (isEqualizer) {
-        useEffect(() => {
-            if (equalizerType === "old") {
-                console.log('init old')
-            const updateAudioData = () => {
-              if (analyserRef.current) {
-                const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-                analyserRef.current.getByteFrequencyData(dataArray);
-                setAudioData(dataArray);
-                // const bassRange = dataArray.slice(0, 2);
-                // const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-                // setBassIntensity(intensity);
-              }
-              requestAnimationFrame(updateAudioData);
-            };
-            updateAudioData();
+    const [activeEqualizer, setActiveEqualizer] = useState<string | null>(null);
+
+    const normalizeBounceRadiusIntensity = (value:number) => {
+        return (value / 10) * 2;
+    };
+
+    //switching equalizers & cleanup
+    useEffect(() => {
+        const cleanup = () => {
+            if (equalizerType === "audioMotion" && audioMotion) {
+                audioMotion.destroy();
+                setAudioMotion(null);
+                console.log('unhook audiomotion')
             }
-          }, []);
-        // }
+            if (equalizerType === "particles") {
+                resetScene();
 
-    //gui/equalizer
-    const handleEqualizerClick = () => {
-        setIsEqualizer(!isEqualizer);
+            }
+            else if (equalizerType === "old") {
+                console.log('test old')
+            }
+        }
 
-        if (audioMotion) {
-            audioMotion.destroy();
-            setAudioMotion(null);
-        }
-        if (!isEqualizer) {
-            console.log('init equalizer')
-        }
-        else {
-            resetScene();
-        }
-    }
+        cleanup()
+        setActiveEqualizer(equalizerType);
+
+            // switch (equalizerType) {
+            //     case "particles":
+            //         console.log('particles')
+            //         break;
+            //     case "audioMotion":
+            //         console.log('audiomotion')
+            //         break;
+            //     case "old":
+            //         console.log('old')
+            //         break;
+            //     default:
+            //         break;
+            // }
+
+
+    }, [equalizerType]);
+
+
+
+    //gui
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true)
     }
@@ -454,31 +455,40 @@ export default function Musializer() {
     
     }, [audioRef.current, divRef.current, audioMotion]);
 
+    //old equlaizer
+    useEffect(() => {
+        if (equalizerType === "old") {
+            console.log('init old')
+        const updateAudioData = () => {
+          if (analyserRef.current) {
+            const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+            analyserRef.current.getByteFrequencyData(dataArray);
+            setAudioData(dataArray);
+            const bassRange = dataArray.slice(0, 2);
+            const intensity = bassRange.reduce((sum, value) => sum + value, 0);
+          }
+          requestAnimationFrame(updateAudioData);
+        };
+        updateAudioData();
+        }
+      }, []);
+
 
     return (
         <div className="bodyCenter">
+
+            {/* Title & Equalizer buttons */}
             <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
                 <motion.h1>Musializer</motion.h1>
 
+                {/* Equalizer buttons*/}
                 <div style={{display: 'flex', flexDirection: 'row'}}>
-                {/* analyzer switch */}
-                {/* <motion.button className="navbarButton"
-                ref = {buttonRefSmall1}
-                style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-                onClick={handleEqualizerClick}
-                whileHover={{scale: 1.1}}
-                animate={{ scale: bass ? 1.5 : 1 }}
-                transition={{ type: "spring", duration: 0.2 }}
-                >
-                    <span className="material-symbols-outlined">
-                        {isEqualizer ? "snowing" : "equalizer"}
-                    </span>
-                </motion.button> */}
-
-                <motion.button className="navbarButton"
+                    
+                <motion.button 
+                // className={`navbarButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`}
+                className={`equalizerButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`}
                     ref = {buttonRefSmall1}
                     style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-                    // onClick={handleEqualizerClick}
                     onClick={() => setEqualizerType("particles")}
                     whileHover={{scale: 1.1}}
                     animate={{ scale: bass ? 1.5 : 1 }}
@@ -488,10 +498,11 @@ export default function Musializer() {
                            snowing 
                         </span>
                 </motion.button>
-                <motion.button className="navbarButton"
+                <motion.button 
+                // className={`navbarButton ${activeEqualizer === "audioMotion" ? "equalizerActive" : ""}`}
+                className={`equalizerButton ${activeEqualizer === "audioMotion" ? "equalizerActive" : ""}`}
                 ref = {buttonRefSmall3}
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-                // onClick={handleEqualizerClick}
                 onClick={() => setEqualizerType("audioMotion")}
                 whileHover={{scale: 1.1}}
                 animate={{ scale: bass ? 1.5 : 1 }}
@@ -501,10 +512,11 @@ export default function Musializer() {
                         earthquake
                     </span>
                 </motion.button>
-                <motion.button className="navbarButton"
+                <motion.button 
+                // className={`navbarButton ${activeEqualizer === "old" ? "equalizerActive" : ""}`}
+                className={`equalizerButton ${activeEqualizer === "old" ? "equalizerActive" : ""}`}
                 ref = {buttonRefSmall4}
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-                // onClick={handleEqualizerClick}
                 onClick={() => setEqualizerType("old")}
                 whileHover={{scale: 1.1}}
                 animate={{ scale: bass ? 1.5 : 1 }}
@@ -514,8 +526,8 @@ export default function Musializer() {
                         equalizer
                     </span>
                 </motion.button>
-
              
+                {/* Overlay */}
                 <Overlay isVisible={isOverlayVisible} onClose={handleCloseOverlay}>
                     <h3>
                     <div>
@@ -527,13 +539,12 @@ export default function Musializer() {
                     </div>
                     </h3>
                 </Overlay>
+
                 </div>
             </div>
 
-
-            {/* GUI */}
-            <div
-                style={{display: "flex",flexDirection: "row",justifyContent: "space-between",alignItems: "center",}}>
+            {/* GUI (play, song display, sliders) */}
+            <div style={{display: "flex",flexDirection: "row",justifyContent: "space-between",alignItems: "center",}}>
                 <div style={{position: "relative",display: "flex",flexDirection: "column",justifyContent: "center",alignItems:"center"}}>
                     <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center",marginLeft:"15px", marginRight:'15px'}}>
                     {/* Playbutton */}
@@ -619,24 +630,20 @@ export default function Musializer() {
 
                 </div>
             </div>
-
-
             {/* Progress bar */}
-            <div className="volumeSlider" style={{ width:'100%', marginTop: '15px', color:'#ddd' }}>
+            <div className="volumeSlider" style={{ width:'100%', marginTop: '15px', color:'#ddd', paddingBottom:'10px', marginBottom:'10px'}}>
                     <input
                         type="range"
                         min="0"
                         max="100"
-                        // value={progress}
                         value={isNaN(progress) ? 0 : progress}
                         onChange={handleSeek}
                         style={{ width: '100%' }}
                     />
-                </div>
+            </div>
 
-            <div style={{ padding: "10px" }} />
 
-            {/* Canvas */}
+            {/* Equalizer display logic */}
             <div id="canvasDiv" className="canvasDiv"> 
 
                 {equalizerType === "particles" && (
@@ -654,8 +661,8 @@ export default function Musializer() {
                     )}
 
                 {equalizerType === "old" && (
-                    // Array.from(audioData).slice(0, 64).map((value: any, index: React.Key | null | undefined) => (
-                    Array.from(audioData).slice(0, 64).map((value, index) => {
+                    <div className="visualizer">
+                    {Array.from(audioData).slice(0, 64).map((value, index) => {
                         return (
                             <motion.div
                                 key={index}
@@ -665,19 +672,9 @@ export default function Musializer() {
                                 transition={{ duration: 0.05 }}
                             />
                         );
-                    }) 
+                    })} 
+                    </div>
                 )}
-                    
-
-                {/* {isEqualizer ? (
-                <div id="canvasDiv" className="canvasDiv" style={{border:0}}ref={divRef}>
-                    <audio ref={audioRef} style={{width:"100%"}}>
-                        <source src={currentSong.file} type="audio/mpeg" />
-                    </audio>
-                </div>
-                ):(
-                    <canvas ref={canvasRef} style={{ position: "absolute", marginLeft: "-3px", marginTop: "-3px", }}></canvas>
-                )} */}
             </div>
 
 
