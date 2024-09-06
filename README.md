@@ -33,3 +33,5 @@
     - [x] old equalizer
         - [x] Get it back to work on the testing page
 
+    - [ ] Potential problem for the future --> main/renderer/preload not getting transpiled on "start"
+
