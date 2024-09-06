@@ -8,7 +8,9 @@ import AudioMotionAnalyzer from 'audiomotion-analyzer';
 export default function Musializer() {
     const [isPlaying, setIsPlaying] = useState(true);
     const [volume, setVolume] = useState(50);
-    const [bass, setBass] = useState(false);
+    const [bassParticles, setBassParticles] = useState(false);
+    const [bassButtons, setBassButtons] = useState(false);
+    const [hiHatButtons, setHiHatButtons] = useState(false);
     const [audioData, setAudioData] = useState<Uint8Array>(new Uint8Array(0));
     const [resetTrigger, setResetTrigger] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -40,6 +42,7 @@ export default function Musializer() {
 
     const radius = 85;
     let smoothedIntensity = 0;
+    let smoothedHiHatIntensity = 0;
     let analyzer: AudioMotionAnalyzer | null;
 
 
@@ -78,9 +81,8 @@ export default function Musializer() {
         for (let i = startBin; i <= endBin; i++) {
             energy += dataArray[i];
         }
-        console.log(energy)
+        // console.log(energy)
         return energy / (endBin - startBin + 1);
-
     }
 
     //gui
@@ -160,6 +162,36 @@ export default function Musializer() {
             const bufferLength = analyserRef.current.frequencyBinCount;
             setAudioData(new Uint8Array(bufferLength));
         }
+
+        const updateAudioData = () => {
+          if (analyserRef.current) {
+            const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+            analyserRef.current.getByteFrequencyData(dataArray);
+            setAudioData(dataArray);
+
+            const hiHatRange = dataArray.slice(17, 47);
+            const hiHatIntensity = hiHatRange.reduce(
+                (sum, value) => sum + value,0);
+            smoothedHiHatIntensity += (hiHatIntensity - smoothedHiHatIntensity) * 0.2;
+            const hiHatThreshold= 500
+            const hiHatButtons = smoothedIntensity > hiHatThreshold 
+            setHiHatButtons(hiHatButtons);
+
+            const bassRange = dataArray.slice(0, 2);
+            const intensity = bassRange.reduce(
+                (sum, value) => sum + value,0);
+            const smoothingFactor = 0.1;
+            smoothedIntensity += (intensity - smoothedIntensity) * smoothingFactor;
+            const bassThreshold = 490 
+            const bassButtons = smoothedIntensity > bassThreshold
+        
+            setBassButtons(bassButtons);
+                }
+          requestAnimationFrame(updateAudioData);
+        };
+        updateAudioData();
+
+
         if (audioRef.current) {
             audioRef.current.volume = volume / 100;
         }
@@ -311,7 +343,7 @@ export default function Musializer() {
                 const bassThreshold = 500
                 const bass = smoothedIntensity > bassThreshold
          
-                setBass(bass);
+                setBassParticles(bass);
 
                 const normalizedBounceRadiusIntensity = normalizeBounceRadiusIntensity(bounceRadiusIntensity);
                 const baseBounceRadius = bass ? 1.5 : 0;
@@ -414,9 +446,7 @@ export default function Musializer() {
                             buttonRefSmall2.current.style.transform = `scale(${scale})`;
                             buttonRefSmall3.current.style.transform = `scale(${scale})`;
                             buttonRefSmall4.current.style.transform = `scale(${scale})`;
-                            outlineRef.current.style.strokeWidth = `${0 + (bassEnergy) * 5}px`;
-                            // volumeRef.current.style.transform = `scale(${1 + bassEnergy})`;
-                            // intensityRef.current.style.transform = `scale(${1 + bassEnergy})`;
+                            outlineRef.current.style.strokeWidth = `${0 + (bassEnergy) * 15}px`;
                         }
                     }
                     if (hiHatEnergy !== null) { 
@@ -442,49 +472,6 @@ export default function Musializer() {
     
     }, [audioRef.current, divRef.current, audioMotion]);
 
-    //old equlaizer
-    useEffect(() => {
-        if (equalizerType === "old") {
-            console.log('init old')
-        const updateAudioData = () => {
-          if (analyserRef.current) {
-            const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-            analyserRef.current.getByteFrequencyData(dataArray);
-            setAudioData(dataArray);
-            // const bassRange = dataArray.slice(0, 2);
-            // const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-
-            const customBassEnergy = getCustomEnergy(dataArray, 20, 250, analyserRef.current.fftSize);
-            const customHiHatEnergy = getCustomEnergy(dataArray, 1000, 2000, analyserRef.current.fftSize);
-
-            const normalizedBassEnergy = customBassEnergy / 255;
-            const normalizedHiHatEnergy = customHiHatEnergy / 255;
-
-            const customBassScale = 1 + (normalizedBassEnergy);
-            if (normalizedBassEnergy!== null) {
-                if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current && buttonRefSmall3.current && buttonRefSmall4.current && volumeRef.current && intensityRef.current) {
-                    buttonRef.current.style.transform = `scale(${customBassScale})`;
-                    buttonRefSmall1.current.style.transform = `scale(${customBassScale})`;
-                    buttonRefSmall2.current.style.transform = `scale(${customBassScale})`;
-                    buttonRefSmall3.current.style.transform = `scale(${customBassScale})`;
-                    buttonRefSmall4.current.style.transform = `scale(${customBassScale})`;
-                    outlineRef.current.style.strokeWidth = `${0 + (normalizedBassEnergy) * 5}px`;
-                }
-            }
-            if (normalizedHiHatEnergy!== null) { 
-                const customHiHatScale = 1 + (normalizedHiHatEnergy);
-                if (volumeRef.current && intensityRef.current) {
-                    volumeRef.current.style.transform = `scale(${customHiHatScale})`;
-                    intensityRef.current.style.transform = `scale(${customHiHatScale})`;
-                } 
-            }
-          }
-          requestAnimationFrame(updateAudioData);
-        };
-        updateAudioData();
-        }
-      }, []);
-
     return (
         <div className="bodyCenter">
 
@@ -501,7 +488,7 @@ export default function Musializer() {
                     style={{ backgroundColor: 'rgba(0,0,0,0)' }}
                     onClick={() => setEqualizerType("particles")}
                     whileHover={{scale: 1.1}}
-                    animate={{ scale: bass ? 1.25 : 1 }}
+                    animate={{ scale: bassButtons ? 1.25 : 1 }}
                     transition={{ type: "spring", duration: 0.2 }}
                     >
                         <span className="material-symbols-outlined">
@@ -514,7 +501,7 @@ export default function Musializer() {
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
                 onClick={() => setEqualizerType("audioMotion")}
                 whileHover={{scale: 1.1}}
-                animate={{ scale: bass ? 1.25 : 1 }}
+                animate={{ scale: bassButtons ? 1.25 : 1 }}
                 transition={{ type: "spring", duration: 0.2 }}
                 >
                     <span className="material-symbols-outlined">
@@ -527,7 +514,7 @@ export default function Musializer() {
                 style={{ backgroundColor: 'rgba(0,0,0,0)' }}
                 onClick={() => setEqualizerType("old")}
                 whileHover={{scale: 1.1}}
-                animate={{ scale: bass ? 1.25 : 1 }}
+                animate={{ scale: bassButtons ? 1.25 : 1 }}
                 transition={{ type: "spring", duration: 0.2 }}
                 >
                     <span className="material-symbols-outlined">
@@ -561,7 +548,8 @@ export default function Musializer() {
                         className="playButton"
                         style={{ display: "flex", justifyContent: "center", alignItems: "center", }}
                         onMouseDown={handlePlayClick}
-                        animate={{ scale: bass ? 1.25 : 1 }}
+                        animate={{ scale: bassButtons ? 1.25 : 1 }}
+                        // animate={{ scale: hiHatButtons ? 1.25 : 1 }}
                         transition={{ type: "spring", duration: 0.2 }}
                     >
                         <span className="material-symbols-outlined" style={{ fontSize: "35px" }} >
@@ -579,7 +567,9 @@ export default function Musializer() {
                             ref = {outlineRef}
                             className="progressCircle"
                             stroke="#ddd"
-                            strokeWidth= {bass ? "5" : "0" }
+                            // strokeWidth={0}
+                            strokeWidth= {bassButtons ? "5" : "0" }
+                            // strokeWidth= {hiHatButtons? "5" : "0" }
                             // fill="rgba(255,255,255,0.1)"
                             r={radius/2}
                             cx="100"
@@ -606,7 +596,7 @@ export default function Musializer() {
                         style={{ backgroundColor: 'rgba(0,0,0,0)' }}
                         onClick={handleMusicLibraryClick}
                         whileHover={{scale: 1.1}}
-                        animate={{ scale: bass ? 1.25 : 1 }}
+                        animate={{ scale: bassButtons ? 1.25 : 1 }}
                         transition={{ type: "spring", duration: 0.2 }}
                         >
                             <span className="material-symbols-outlined">library_music</span>
@@ -685,3 +675,33 @@ export default function Musializer() {
         </div>
     );
 }
+
+
+
+
+
+
+
+
+
+//old smooth function:
+    // const customBassEnergy = getCustomEnergy(dataArray, 20, 250, analyserRef.current.fftSize);
+    // const customHiHatEnergy = getCustomEnergy(dataArray, 1000, 2000, analyserRef.current.fftSize);
+
+    // const normalizedBassEnergy = customBassEnergy / 255;
+    // const normalizedHiHatEnergy = customHiHatEnergy / 255;
+
+    // const customBassScale = 1 + (normalizedBassEnergy);
+    //     if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current && buttonRefSmall3.current && buttonRefSmall4.current && volumeRef.current && intensityRef.current) {
+    //         buttonRef.current.style.transform = `scale(${customBassScale})`;
+    //         buttonRefSmall1.current.style.transform = `scale(${customBassScale})`;
+    //         buttonRefSmall2.current.style.transform = `scale(${customBassScale})`;
+    //         buttonRefSmall3.current.style.transform = `scale(${customBassScale})`;
+    //         buttonRefSmall4.current.style.transform = `scale(${customBassScale})`;
+    //         outlineRef.current.style.strokeWidth = `${0 + (normalizedBassEnergy) * 5}px`;
+    //     } else {console.log('buttons are missing')}
+    // const customHiHatScale = 1 + (normalizedHiHatEnergy);
+    //     if (volumeRef.current && intensityRef.current) {
+    //         volumeRef.current.style.transform = `scale(${customHiHatScale})`;
+    //         intensityRef.current.style.transform = `scale(${customHiHatScale})`;
+    //     } 
