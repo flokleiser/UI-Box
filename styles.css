@@ -76,7 +76,6 @@ nav{
   background-color:rgba(83, 83, 83);
 }
 
-
 .navbarButton.active{
   background-color:#333;
   color:rgba(255, 255, 255);
@@ -85,6 +84,37 @@ nav{
   margin-bottom:-10px;
   z-index: 1;
 }
+
+.navbarButton.equalizerActive{
+    scale:1.25;
+    border: 1px solid rgba(255,255,255,0.1)
+}
+
+.equalizerButton {
+    display:flex;
+    margin-left:auto;
+    color:rgba(221, 221, 221,0.9);
+    padding-top: 3px;
+    padding-bottom:3px;
+    padding-left:7px;
+    padding-right:7px;
+    border-radius: 3px;
+    border:0;
+    background-color: rgb(107, 107, 107);
+}
+.equalizerButton:hover {
+    border: 1px solid rgba(255,255,255,0.1);
+    color:rgba(150, 150, 150,0.7);
+    background-color:rgba(83, 83, 83);
+}
+.equalizerButton.equalizerActive{
+    /* scale:1.25; */
+    border: 1px solid rgba(255,255,255,0.5);
+    color:rgba(150, 150, 150,0.7);
+    background-color:rgba(83, 83, 83);
+}
+
+
 
 .navbarButton.active:after,
 .navbarButton.active:before{
@@ -477,13 +507,11 @@ nav{
    border-radius:5px 
 }
 
-
 .bar {
   flex: 1;
   margin: 0 1px;
   background: #ddd;
 }
-
 
 .overlay {
   position: fixed;
@@ -537,7 +565,6 @@ nav{
   width:100%;
 }
 
-
 @media (prefers-color-scheme: dark) {
   body { background: #333; color: white; }
   :root {
@@ -558,6 +585,17 @@ nav{
   }
 
   #navbarRoot {background-color:#c3c3c3} 
+
+  .equalizerButton {background:rgba(51,51,51,0.1);color: rgba(51,51,51,0.8);}
+  .equalizerButton.equalizerActive{background:#ddd;color:#333;border:1px solid rgba(51,51,51,0.5);}
+
+  .equalizerButton:hover{
+    display:flex;
+    margin-left:auto;
+    color:rgba(51,51,51,0.5);
+    background-color: rgba(200, 200, 200,0.5);
+    border:1px solid rgba(51,51,51,0.1);
+  }
 
   .navbarButton {background:rgba(51,51,51,0.1);color: rgba(51,51,51,0.8);}
   .navbarButton.active {background:#ddd;color:#333}
