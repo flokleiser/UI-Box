@@ -25,7 +25,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Joystick;
-const framer_motion_1 = require("framer-motion");
 const react_1 = __importStar(require("react"));
 // import
 function Joystick() {
@@ -170,15 +169,15 @@ function Joystick() {
             wh = canvasKeyboard.height = window.innerHeight;
             // centerX = ww / 2;
             centerX = (ww / 2) - 135;
-            // centerY = wh / 2;
-            centerY = wh / 1.5;
+            centerY = wh / 2;
+            // centerY = wh / 1.5;
             circleX = centerX;
             circleY = centerY;
             vx = 0;
             vy = 0;
             centerX2 = (ww / 2) + 135;
-            // centerY2 = wh / 2;
-            centerY2 = wh / 1.5;
+            centerY2 = wh / 2;
+            // centerY2 = wh / 1.5;
             circleX2 = centerX2;
             circleY2 = centerY2;
             vx2 = 0;
@@ -342,9 +341,7 @@ function Joystick() {
                 justifyContent: 'start',
                 alignItems: 'center',
             } },
-            react_1.default.createElement("h1", null, " Joystick "),
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, whileHover: { scale: 1.1 } },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toys"))),
+            react_1.default.createElement("h1", null, " Joystick ")),
         react_1.default.createElement("canvas", { style: {
                 width: '100vw',
                 height: '100vh',

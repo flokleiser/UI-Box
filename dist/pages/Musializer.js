@@ -125,10 +125,10 @@ function Musializer() {
     //reset canvas on theme change
     (0, react_1.useEffect)(() => {
         const handleThemeToggle = () => {
-            resetScene(),
-                // setDarkMode(!darkMode)
-                setDarkMode(prevDarkMode => !prevDarkMode);
-            console.log('darkmode', darkMode);
+            resetScene();
+            // setDarkMode(!darkMode)
+            // setDarkMode(prevDarkMode => !prevDarkMode);
+            // console.log('darkmode', darkMode)
         };
         setTimeout(() => {
             const darkmodeToggleButton = document.getElementById("darkmodeToggleButton");
@@ -341,6 +341,10 @@ function Musializer() {
         setResetTrigger((prev) => prev + 1);
         setInitSceneCount(count => count + 1);
     }
+    function checkDarkMode() {
+        setDarkMode(!darkMode);
+        // setDarkMode(false)
+    }
     const handleSeek = (e) => {
         const newTime = (parseFloat(e.target.value) / 100) * duration;
         if (audioRef.current) {
@@ -367,15 +371,21 @@ function Musializer() {
                 linearAmplitude: true,
                 linearBoost: 1.5,
             });
-            const gradientColor = [
-                getComputedStyle(document.documentElement).getPropertyValue("--particle-color"),
-            ];
+            // const gradientColor = [
+            //     getComputedStyle(document.documentElement).getPropertyValue(
+            //         "--particle-color"
+            //     ),
+            // ];
+            // const gradientColor = {isDark ? color: '#fff'};
             analyzer.registerGradient('test', {
                 bgColor: '#101',
                 colorStops: [
                     { pos: 0, color: '#333' },
                     { pos: 0.5, color: '#999999' },
                     { pos: 1, color: '#fff' }
+                    // {pos:0, color: gradientColor}, 
+                    // {pos:0.5, color: gradientColor},
+                    // {pos:1, color: gradientColor}
                 ]
             });
             analyzer.gradient = 'test';
@@ -416,6 +426,7 @@ function Musializer() {
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
+            "src/dist/ce9e9dc140ab5f5fea27.png",
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
                 react_1.default.createElement(framer_motion_1.motion.button, { className: `equalizerButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`, ref: buttonRefSmall1, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("particles"), whileHover: { scale: 1.1 }, animate: { scale: bassButtons ? 1.25 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "snowing")),
@@ -439,7 +450,10 @@ function Musializer() {
                     react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
                         react_1.default.createElement(framer_motion_1.motion.circle, { ref: outlineRef, className: "progressCircle", stroke: "#ddd", 
                             // strokeWidth={0}
-                            strokeWidth: bassButtons ? "5" : "0", r: radius / 2, cx: "100", cy: "100" })))),
+                            strokeWidth: bassButtons ? "5" : "0", 
+                            // strokeWidth= {hiHatButtons? "5" : "0" }
+                            // fill="rgba(255,255,255,0.1)"
+                            r: radius / 2, cx: "100", cy: "100" })))),
             react_1.default.createElement(framer_motion_1.motion.div, { className: 'musicTextDiv', style: { width: 325, transition: '0.3s', height: '50px', justifyItems: 'center', marginLeft: '25px', marginRight: '25px' } },
                 react_1.default.createElement("div", { style: { width: '150px', height: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center' } },
                     react_1.default.createElement("div", { style: { textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
