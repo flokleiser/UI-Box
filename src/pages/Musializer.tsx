@@ -506,7 +506,7 @@ export default function Musializer() {
             {/* Title & Equalizer buttons */}
             <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
                 <motion.h1>Musializer</motion.h1>
-
+src/dist/ce9e9dc140ab5f5fea27.png
                 {/* Equalizer buttons*/}
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                     

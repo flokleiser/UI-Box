@@ -50316,7 +50316,7 @@ function Slider({ value, children, set, min = 0, max = 100 }) {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.startPage = void 0;
-exports.startPage = "Musializer";
+exports.startPage = "Ball";
 const setActivePage = (page) => {
     console.log('setActivePage', page);
     const event = new CustomEvent('pageChange', { detail: { page } });
@@ -50363,11 +50363,13 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Ball;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
+const Window_1 = __webpack_require__(/*! ../components/Window */ "./src/components/Window.tsx");
 function Ball() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
+    const canvasRef = (0, react_1.useRef)(null);
     const navbar = document.querySelector('#navbarRoot');
     (0, react_1.useEffect)(() => {
-        const canvasBall = document.querySelector("#sceneBall");
+        const canvasBall = canvasRef.current;
         const ctx = canvasBall.getContext("2d", { willReadFrequently: true });
         const mouse = { x: 0, y: 0 };
         const radius = 25;
@@ -50381,16 +50383,16 @@ function Ball() {
         let ballY = centerY;
         let vx = 0;
         let vy = 0;
-        let clicks = 0;
+        let clicks = Window_1.startPage === 'Ball' ? 1 : 0;
         const damping = 0.7;
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3;
+        const randomizerButton = document.getElementById('randomizerButton');
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
-        function IncreaseClicks() {
-            clicks += 1;
-            console.log(clicks);
-        }
+        const hoopButton = document.getElementById('hoopButton');
+        let hoop = false;
+        let animationFrameId;
         class Hoop {
             constructor(centerX, centerY, width, height, color) {
                 this.centerX = centerX;
@@ -50406,7 +50408,6 @@ function Ball() {
                 ctx.fill();
             }
         }
-        // const hoop = new Hoop( ((canvasBall.width / 4) * 3), (canvasBall.height / 3), 100, 50, 5, color);
         const hoopLeft = new Hoop(((canvasBall.width / 4) * 3), canvasBall.height / 3, 10, 50, color);
         const hoopRight = new Hoop(((canvasBall.width / 4) * 3), canvasBall.height / 3, 10, 50, color);
         const hoopBottom = new Hoop(((canvasBall.width / 4) * 3), (canvasBall.height / 3) + 50, 100, 10, color);
@@ -50429,6 +50430,7 @@ function Ball() {
             const dy = distY - rect.height / 2;
             return (dx * dx + dy * dy <= (radius * radius));
         }
+        //mouse events
         const onMouseMove = (e) => {
             if (clicks > 1) {
                 if (isDragging) {
@@ -50462,12 +50464,10 @@ function Ball() {
                 if (e.clientY + radius > wh || e.clientY - radius < 0 + navbar.offsetHeight) {
                     ballX = ww / 2;
                     ballY = wh / 2;
-                    console.log('test inside area');
                 }
                 else {
                     ballX = centerX;
                     ballY = centerY;
-                    console.log('test outside area');
                 }
             }
             vx = 0;
@@ -50487,6 +50487,7 @@ function Ball() {
                 }
             }
         };
+        //init scene
         const initscene = () => {
             ww = canvasBall.width = window.innerWidth;
             wh = canvasBall.height = window.innerHeight;
@@ -50500,7 +50501,6 @@ function Ball() {
             hoopLeft.centerY = wh / 3;
             hoopRight.centerX = ((ww / 4) * 3) - 45;
             hoopRight.centerY = wh / 3;
-            // hoopBottom.centerX = (ww / 4) * 3;
             hoopBottom.centerX = ((ww / 4) * 3) - 45;
             hoopBottom.centerY = (wh / 3) + 50;
             vx = 0;
@@ -50523,7 +50523,25 @@ function Ball() {
             hoopBottom.centerX = ((ww / 4) * 3) - 45;
             hoopBottom.centerY = (wh / 3) + 50;
         };
-        let animationFrameId;
+        const randomizeHoop = () => {
+            console.log('test');
+            // hoopLeft.centerX = ((ww / 4) * 3) + 45;
+            // hoopLeft.centerY = wh / 3;
+            // hoopRight.centerX = ((ww / 4) * 3) - 45;
+            // hoopRight.centerY = wh / 3;
+            // hoopBottom.centerX = ((ww / 4) * 3) - 45;
+            // hoopBottom.centerY = (wh / 3) + 50;
+            hoopLeft.centerX = ((ww / 2) + 45);
+            hoopLeft.centerY = wh / 3;
+            hoopRight.centerX = ((ww / 2) - 45);
+            hoopRight.centerY = wh / 3;
+            hoopBottom.centerX = ((ww / 2) - 45);
+            hoopBottom.centerY = (wh / 3) + 50;
+        };
+        const toggleHoop = () => {
+            hoop = !hoop;
+            console.log('hoop', hoop);
+        };
         const render = () => {
             if (!isDragging) {
                 if (!isReleased) {
@@ -50541,35 +50559,37 @@ function Ball() {
                 }
                 ballX += vx;
                 ballY += vy;
-                if (checkCollision(ballX, ballY, radius, hoopLeft)) {
-                    if (ballX < hoopLeft.centerX) {
-                        ballX = hoopLeft.centerX - radius;
-                        vx *= -damping;
+                if (hoop) {
+                    if (checkCollision(ballX, ballY, radius, hoopLeft)) {
+                        if (ballX < hoopLeft.centerX) {
+                            ballX = hoopLeft.centerX - radius;
+                            vx *= -damping;
+                        }
+                        else {
+                            ballX = hoopLeft.centerX + hoopLeft.width + radius;
+                            vx *= -damping;
+                        }
                     }
-                    else {
-                        ballX = hoopLeft.centerX + hoopLeft.width + radius;
-                        vx *= -damping;
+                    if (checkCollision(ballX, ballY, radius, hoopRight)) {
+                        if (ballX < hoopRight.centerX) {
+                            ballX = hoopRight.centerX - radius;
+                            vx *= -damping;
+                        }
+                        else {
+                            ballX = hoopRight.centerX + hoopRight.width + radius;
+                            vx *= -damping;
+                        }
                     }
-                }
-                if (checkCollision(ballX, ballY, radius, hoopRight)) {
-                    if (ballX < hoopRight.centerX) {
-                        ballX = hoopRight.centerX - radius;
-                        vx *= -damping;
-                    }
-                    else {
-                        ballX = hoopRight.centerX + hoopRight.width + radius;
-                        vx *= -damping;
-                    }
-                }
-                if (checkCollision(ballX, ballY, radius, hoopBottom)) {
-                    if (ballY < hoopBottom.centerY) {
-                        ballY = hoopBottom.centerY - radius;
-                        vy *= -damping;
-                    }
-                    else {
-                        ballY = hoopBottom.centerY + hoopBottom.height + radius;
-                        // ballY = hoopBottom.centerY + radius;
-                        vy *= -damping;
+                    if (checkCollision(ballX, ballY, radius, hoopBottom)) {
+                        if (ballY < hoopBottom.centerY) {
+                            ballY = hoopBottom.centerY - radius;
+                            vy *= -damping;
+                        }
+                        else {
+                            ballY = hoopBottom.centerY + hoopBottom.height + radius;
+                            // ballY = hoopBottom.centerY + radius;
+                            vy *= -damping;
+                        }
                     }
                 }
                 //canvascollision
@@ -50632,15 +50652,30 @@ function Ball() {
             ctx.beginPath();
             ctx.arc(ballX, ballY, radius, 0, Math.PI * 2);
             ctx.fill();
-            hoopLeft.draw(ctx);
-            hoopRight.draw(ctx);
-            hoopBottom.draw(ctx);
+            // hoopLeft.draw(ctx);
+            // hoopRight.draw(ctx)
+            // hoopBottom.draw(ctx);
+            if (hoop) {
+                hoopLeft.draw(ctx);
+                hoopRight.draw(ctx);
+                hoopBottom.draw(ctx);
+            }
             animationFrameId = requestAnimationFrame(render);
         };
         const handleThemeToggle = () => { resetScene(); };
         window.addEventListener("resize", resizeScene);
+        function IncreaseClicks() {
+            clicks += 1;
+        }
+        //buttons
+        if (randomizerButton) {
+            randomizerButton.addEventListener('click', randomizeHoop);
+        }
         if (darkmodeToggleButton) {
             darkmodeToggleButton.addEventListener('click', handleThemeToggle);
+        }
+        if (hoopButton) {
+            hoopButton.addEventListener('click', toggleHoop);
         }
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("touchmove", onTouchMove);
@@ -50652,6 +50687,12 @@ function Ball() {
             window.removeEventListener("resize", resizeScene);
             if (darkmodeToggleButton) {
                 darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
+            }
+            if (randomizerButton) {
+                randomizerButton.removeEventListener('click', randomizeHoop);
+            }
+            if (hoopButton) {
+                hoopButton.removeEventListener('click', randomizeHoop);
             }
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
@@ -50666,11 +50707,14 @@ function Ball() {
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
                 react_1.default.createElement("h1", null, "Ball"),
-                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "randomizerButton", whileHover: { rotate: 180 } },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "swap_horiz"))),
-            react_1.default.createElement("canvas", { style: {
+                react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "randomizerButton", whileHover: { rotate: 180 } },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "swap_horiz")),
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "hoopButton", whileHover: { rotate: 180 } },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "orders")))),
+            react_1.default.createElement("canvas", { ref: canvasRef, style: {
                     width: '100vw',
                     height: '100vh',
                     position: 'absolute',
@@ -51057,7 +51101,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Joystick;
-const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 // import
 function Joystick() {
@@ -51202,15 +51245,15 @@ function Joystick() {
             wh = canvasKeyboard.height = window.innerHeight;
             // centerX = ww / 2;
             centerX = (ww / 2) - 135;
-            // centerY = wh / 2;
-            centerY = wh / 1.5;
+            centerY = wh / 2;
+            // centerY = wh / 1.5;
             circleX = centerX;
             circleY = centerY;
             vx = 0;
             vy = 0;
             centerX2 = (ww / 2) + 135;
-            // centerY2 = wh / 2;
-            centerY2 = wh / 1.5;
+            centerY2 = wh / 2;
+            // centerY2 = wh / 1.5;
             circleX2 = centerX2;
             circleY2 = centerY2;
             vx2 = 0;
@@ -51374,9 +51417,7 @@ function Joystick() {
                 justifyContent: 'start',
                 alignItems: 'center',
             } },
-            react_1.default.createElement("h1", null, " Joystick "),
-            react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, whileHover: { scale: 1.1 } },
-                react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toys"))),
+            react_1.default.createElement("h1", null, " Joystick ")),
         react_1.default.createElement("canvas", { style: {
                 width: '100vw',
                 height: '100vh',
@@ -51436,15 +51477,12 @@ const audiomotion_analyzer_1 = __importDefault(__webpack_require__(/*! audiomoti
 function Musializer() {
     const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
     const [volume, setVolume] = (0, react_1.useState)(50);
-    const [bass, setBass] = (0, react_1.useState)(false);
-    const [test, setTest] = (0, react_1.useState)(0);
+    const [bassParticles, setBassParticles] = (0, react_1.useState)(false);
+    const [bassButtons, setBassButtons] = (0, react_1.useState)(false);
+    const [hiHatButtons, setHiHatButtons] = (0, react_1.useState)(false);
     const [audioData, setAudioData] = (0, react_1.useState)(new Uint8Array(0));
-    const canvasRef = (0, react_1.useRef)(null);
-    const divRef = (0, react_1.useRef)(null);
-    const audioRef = (0, react_1.useRef)(null);
-    const analyserRef = (0, react_1.useRef)(null);
-    const audioContextRef = (0, react_1.useRef)(null);
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
+    const [darkMode, setDarkMode] = (0, react_1.useState)(true);
     const [duration, setDuration] = (0, react_1.useState)(0);
     const [currentTime, setCurrentTime] = (0, react_1.useState)(0);
     const [isOverlayVisible, setOverlayVisible] = (0, react_1.useState)(false);
@@ -51452,11 +51490,16 @@ function Musializer() {
     const [isEqualizer, setIsEqualizer] = (0, react_1.useState)(false);
     const [audioMotion, setAudioMotion] = (0, react_1.useState)(null);
     const [initSceneCount, setInitSceneCount] = (0, react_1.useState)(0);
-    const radius = 85;
-    const [progress, setProgress] = (0, react_1.useState)(0);
-    let smoothedIntensity = 0;
-    let analyzer;
     const [animationFrameId, setAnimationFrameId] = (0, react_1.useState)(0);
+    const [bounceRadiusIntensity, setBounceRadiusIntensity] = (0, react_1.useState)(5);
+    const [equalizerType, setEqualizerType] = (0, react_1.useState)("particles");
+    const [activeEqualizer, setActiveEqualizer] = (0, react_1.useState)(null);
+    const [progress, setProgress] = (0, react_1.useState)(0);
+    const canvasRef = (0, react_1.useRef)(null);
+    const divRef = (0, react_1.useRef)(null);
+    const audioRef = (0, react_1.useRef)(null);
+    const analyserRef = (0, react_1.useRef)(null);
+    const audioContextRef = (0, react_1.useRef)(null);
     const buttonRef = (0, react_1.useRef)(null);
     const buttonRefSmall1 = (0, react_1.useRef)(null);
     const buttonRefSmall2 = (0, react_1.useRef)(null);
@@ -51465,9 +51508,10 @@ function Musializer() {
     const outlineRef = (0, react_1.useRef)(null);
     const volumeRef = (0, react_1.useRef)(null);
     const intensityRef = (0, react_1.useRef)(null);
-    const [bounceRadiusIntensity, setBounceRadiusIntensity] = (0, react_1.useState)(5);
-    const [equalizerType, setEqualizerType] = (0, react_1.useState)("particles");
-    const [activeEqualizer, setActiveEqualizer] = (0, react_1.useState)(null);
+    const radius = 85;
+    let smoothedIntensity = 0;
+    let smoothedHiHatIntensity = 0;
+    let analyzer;
     const normalizeBounceRadiusIntensity = (value) => {
         return (value / 10) * 2;
     };
@@ -51488,20 +51532,18 @@ function Musializer() {
         };
         cleanup();
         setActiveEqualizer(equalizerType);
-        // switch (equalizerType) {
-        //     case "particles":
-        //         console.log('particles')
-        //         break;
-        //     case "audioMotion":
-        //         console.log('audiomotion')
-        //         break;
-        //     case "old":
-        //         console.log('old')
-        //         break;
-        //     default:
-        //         break;
-        // }
     }, [equalizerType]);
+    //custom energy? needs fixing
+    const getCustomEnergy = (dataArray, startFreq, endFreq, fftSize) => {
+        const startBin = Math.floor((startFreq / 44100) * fftSize);
+        const endBin = endFreq ? Math.floor((endFreq / 44100) * fftSize) : startBin;
+        let energy = 0;
+        for (let i = startBin; i <= endBin; i++) {
+            energy += dataArray[i];
+        }
+        // console.log(energy)
+        return energy / (endBin - startBin + 1);
+    };
     //gui
     const handleMusicLibraryClick = () => {
         setOverlayVisible(true);
@@ -51523,7 +51565,12 @@ function Musializer() {
     }, [currentSong]);
     //reset canvas on theme change
     (0, react_1.useEffect)(() => {
-        const handleThemeToggle = () => resetScene();
+        const handleThemeToggle = () => {
+            resetScene();
+            // setDarkMode(!darkMode)
+            // setDarkMode(prevDarkMode => !prevDarkMode);
+            // console.log('darkmode', darkMode)
+        };
         setTimeout(() => {
             const darkmodeToggleButton = document.getElementById("darkmodeToggleButton");
             if (darkmodeToggleButton) {
@@ -51570,6 +51617,28 @@ function Musializer() {
             const bufferLength = analyserRef.current.frequencyBinCount;
             setAudioData(new Uint8Array(bufferLength));
         }
+        const updateAudioData = () => {
+            if (analyserRef.current) {
+                const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+                analyserRef.current.getByteFrequencyData(dataArray);
+                setAudioData(dataArray);
+                const hiHatRange = dataArray.slice(17, 47);
+                const hiHatIntensity = hiHatRange.reduce((sum, value) => sum + value, 0);
+                smoothedHiHatIntensity += (hiHatIntensity - smoothedHiHatIntensity) * 0.2;
+                const hiHatThreshold = 500;
+                const hiHatButtons = smoothedIntensity > hiHatThreshold;
+                setHiHatButtons(hiHatButtons);
+                const bassRange = dataArray.slice(0, 2);
+                const intensity = bassRange.reduce((sum, value) => sum + value, 0);
+                const smoothingFactor = 0.1;
+                smoothedIntensity += (intensity - smoothedIntensity) * smoothingFactor;
+                const bassThreshold = 490;
+                const bassButtons = smoothedIntensity > bassThreshold;
+                setBassButtons(bassButtons);
+            }
+            requestAnimationFrame(updateAudioData);
+        };
+        updateAudioData();
         if (audioRef.current) {
             audioRef.current.volume = volume / 100;
         }
@@ -51667,17 +51736,13 @@ function Musializer() {
                 setAudioData(dataArray);
                 const bassRange = dataArray.slice(0, 2);
                 const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-                // const hiHatRange = dataArray.slice(3, 10);
                 const smoothingFactor = 0.1;
                 smoothedIntensity += (intensity - smoothedIntensity) * smoothingFactor;
                 const bassThreshold = 500;
                 const bass = smoothedIntensity > bassThreshold;
-                // const bass = intensity > bassThreshold
-                setBass(bass);
-                // bounceRadius = bass ? 1.5 : 0;
+                setBassParticles(bass);
                 const normalizedBounceRadiusIntensity = normalizeBounceRadiusIntensity(bounceRadiusIntensity);
                 const baseBounceRadius = bass ? 1.5 : 0;
-                // bounceRadius = baseBounceRadius * bounceRadiusIntensity
                 bounceRadius = baseBounceRadius * normalizedBounceRadiusIntensity;
             }
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -51717,6 +51782,10 @@ function Musializer() {
         setResetTrigger((prev) => prev + 1);
         setInitSceneCount(count => count + 1);
     }
+    function checkDarkMode() {
+        setDarkMode(!darkMode);
+        // setDarkMode(false)
+    }
     const handleSeek = (e) => {
         const newTime = (parseFloat(e.target.value) / 100) * duration;
         if (audioRef.current) {
@@ -51742,36 +51811,43 @@ function Musializer() {
                 reflexRatio: 0.5,
                 linearAmplitude: true,
                 linearBoost: 1.5,
-                // gradient: 'white-gray',
             });
-            // analyzer.registerGradient('white-gray', {
-            //     bgColor: '#111', // Optional background color
-            //     dir: 'h', // Horizontal gradient
-            //     colorStops: [
-            //         'white', // Start color
-            //         'gray'   // End color
-            //     ]
-            // });
+            // const gradientColor = [
+            //     getComputedStyle(document.documentElement).getPropertyValue(
+            //         "--particle-color"
+            //     ),
+            // ];
+            // const gradientColor = {isDark ? color: '#fff'};
+            analyzer.registerGradient('test', {
+                bgColor: '#101',
+                colorStops: [
+                    { pos: 0, color: '#333' },
+                    { pos: 0.5, color: '#999999' },
+                    { pos: 1, color: '#fff' }
+                    // {pos:0, color: gradientColor}, 
+                    // {pos:0.5, color: gradientColor},
+                    // {pos:1, color: gradientColor}
+                ]
+            });
+            analyzer.gradient = 'test';
             setAudioMotion(analyzer);
             const animate = () => {
                 if (analyzer) {
                     const bassEnergy = analyzer.getEnergy(20, 250);
                     const hiHatEnergy = analyzer.getEnergy(1000, 2000);
                     if (bassEnergy !== null) { // Add null check for bassEnergy
-                        const scale = 1 + (bassEnergy * 2);
+                        const scale = 1 + (bassEnergy * 1.25);
                         if (buttonRef.current && buttonRefSmall1.current && buttonRefSmall2.current && outlineRef.current && buttonRefSmall3.current && buttonRefSmall4.current && volumeRef.current && intensityRef.current) {
                             buttonRef.current.style.transform = `scale(${scale})`;
                             buttonRefSmall1.current.style.transform = `scale(${scale})`;
                             buttonRefSmall2.current.style.transform = `scale(${scale})`;
                             buttonRefSmall3.current.style.transform = `scale(${scale})`;
                             buttonRefSmall4.current.style.transform = `scale(${scale})`;
-                            outlineRef.current.style.strokeWidth = `${0 + (bassEnergy) * 5}px`;
-                            // volumeRef.current.style.transform = `scale(${1 + bassEnergy})`;
-                            // intensityRef.current.style.transform = `scale(${1 + bassEnergy})`;
+                            outlineRef.current.style.strokeWidth = `${0 + (bassEnergy) * 15}px`;
                         }
                     }
                     if (hiHatEnergy !== null) {
-                        const hiHatScale = 1 + (hiHatEnergy * 5);
+                        const hiHatScale = 1 + (hiHatEnergy * 2);
                         if (volumeRef.current && intensityRef.current) {
                             volumeRef.current.style.transform = `scale(${hiHatScale})`;
                             intensityRef.current.style.transform = `scale(${hiHatScale})`;
@@ -51788,44 +51864,15 @@ function Musializer() {
             }
         };
     }, [audioRef.current, divRef.current, audioMotion]);
-    //old equlaizer
-    (0, react_1.useEffect)(() => {
-        if (equalizerType === "old") {
-            console.log('init old');
-            const updateAudioData = () => {
-                if (analyserRef.current) {
-                    const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-                    analyserRef.current.getByteFrequencyData(dataArray);
-                    setAudioData(dataArray);
-                    const bassRange = dataArray.slice(0, 2);
-                    const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-                }
-                requestAnimationFrame(updateAudioData);
-            };
-            updateAudioData();
-        }
-    }, []);
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
-                react_1.default.createElement(framer_motion_1.motion.button
-                // className={`navbarButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`}
-                , { 
-                    // className={`navbarButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`}
-                    className: `equalizerButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`, ref: buttonRefSmall1, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("particles"), whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                react_1.default.createElement(framer_motion_1.motion.button, { className: `equalizerButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`, ref: buttonRefSmall1, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("particles"), whileHover: { scale: 1.1 }, animate: { scale: bassButtons ? 1.25 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "snowing")),
-                react_1.default.createElement(framer_motion_1.motion.button
-                // className={`navbarButton ${activeEqualizer === "audioMotion" ? "equalizerActive" : ""}`}
-                , { 
-                    // className={`navbarButton ${activeEqualizer === "audioMotion" ? "equalizerActive" : ""}`}
-                    className: `equalizerButton ${activeEqualizer === "audioMotion" ? "equalizerActive" : ""}`, ref: buttonRefSmall3, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("audioMotion"), whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                react_1.default.createElement(framer_motion_1.motion.button, { className: `equalizerButton ${activeEqualizer === "audioMotion" ? "equalizerActive" : ""}`, ref: buttonRefSmall3, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("audioMotion"), whileHover: { scale: 1.1 }, animate: { scale: bassButtons ? 1.25 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "earthquake")),
-                react_1.default.createElement(framer_motion_1.motion.button
-                // className={`navbarButton ${activeEqualizer === "old" ? "equalizerActive" : ""}`}
-                , { 
-                    // className={`navbarButton ${activeEqualizer === "old" ? "equalizerActive" : ""}`}
-                    className: `equalizerButton ${activeEqualizer === "old" ? "equalizerActive" : ""}`, ref: buttonRefSmall4, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("old"), whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                react_1.default.createElement(framer_motion_1.motion.button, { className: `equalizerButton ${activeEqualizer === "old" ? "equalizerActive" : ""}`, ref: buttonRefSmall4, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("old"), whileHover: { scale: 1.1 }, animate: { scale: bassButtons ? 1.25 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "equalizer")),
                 react_1.default.createElement(Overlay_1.default, { isVisible: isOverlayVisible, onClose: handleCloseOverlay },
                     react_1.default.createElement("h3", null,
@@ -51836,10 +51883,15 @@ function Musializer() {
         react_1.default.createElement("div", { style: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", } },
             react_1.default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" } },
                 react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "15px", marginRight: '15px' } },
-                    react_1.default.createElement(framer_motion_1.motion.button, { ref: buttonRef, className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { ref: buttonRef, className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bassButtons ? 1.25 : 1 }, 
+                        // animate={{ scale: hiHatButtons ? 1.25 : 1 }}
+                        transition: { type: "spring", duration: 0.2 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "35px" } }, isPlaying ? "play_arrow" : "pause")),
                     react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { ref: outlineRef, className: "progressCircle", stroke: "#ddd", strokeWidth: bass ? "5" : "0", 
+                        react_1.default.createElement(framer_motion_1.motion.circle, { ref: outlineRef, className: "progressCircle", stroke: "#ddd", 
+                            // strokeWidth={0}
+                            strokeWidth: bassButtons ? "5" : "0", 
+                            // strokeWidth= {hiHatButtons? "5" : "0" }
                             // fill="rgba(255,255,255,0.1)"
                             r: radius / 2, cx: "100", cy: "100" })))),
             react_1.default.createElement(framer_motion_1.motion.div, { className: 'musicTextDiv', style: { width: 325, transition: '0.3s', height: '50px', justifyItems: 'center', marginLeft: '25px', marginRight: '25px' } },
@@ -51847,7 +51899,7 @@ function Musializer() {
                     react_1.default.createElement("div", { style: { textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
                         react_1.default.createElement("h2", { style: { display: "flex", flexDirection: "row", width: '150px', justifyContent: 'center', alignItems: 'flex-end' } },
                             react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "flex-end", justifyContent: "center" } }, currentSong.name)),
-                        react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", ref: buttonRefSmall2, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: handleMusicLibraryClick, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
+                        react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", ref: buttonRefSmall2, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: handleMusicLibraryClick, whileHover: { scale: 1.1 }, animate: { scale: bassButtons ? 1.25 : 1 }, transition: { type: "spring", duration: 0.2 } },
                             react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music"))))),
             react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column" } },
                 react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume },
