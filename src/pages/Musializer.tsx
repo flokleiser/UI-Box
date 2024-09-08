@@ -110,10 +110,10 @@ export default function Musializer() {
     //reset canvas on theme change
     useEffect(() => {
         const handleThemeToggle = () => {
-            resetScene(),
+            resetScene()
             // setDarkMode(!darkMode)
-            setDarkMode(prevDarkMode => !prevDarkMode);
-            console.log('darkmode', darkMode)
+            // setDarkMode(prevDarkMode => !prevDarkMode);
+            // console.log('darkmode', darkMode)
         };
 
         setTimeout(() => {
@@ -130,6 +130,7 @@ export default function Musializer() {
             }
         };
     }, []);
+
 
     //audio duration and time
     useEffect(() => {
@@ -398,6 +399,10 @@ export default function Musializer() {
         setResetTrigger((prev) => prev + 1);
         setInitSceneCount(count => count + 1);
     }
+    function checkDarkMode() {
+        setDarkMode(!darkMode);
+        // setDarkMode(false)
+    }
     const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newTime = (parseFloat(e.target.value) / 100) * duration;
         if (audioRef.current) {
@@ -427,11 +432,13 @@ export default function Musializer() {
                 linearBoost: 1.5,
             });
 
-            const gradientColor = [
-                getComputedStyle(document.documentElement).getPropertyValue(
-                    "--particle-color"
-                ),
-            ];
+            // const gradientColor = [
+            //     getComputedStyle(document.documentElement).getPropertyValue(
+            //         "--particle-color"
+            //     ),
+            // ];
+
+            // const gradientColor = {isDark ? color: '#fff'};
 
             analyzer.registerGradient( 'test', {
                 bgColor: '#101',
@@ -440,6 +447,10 @@ export default function Musializer() {
                 {pos:0, color: '#333'}, 
                 {pos:0.5, color: '#999999'},
                 {pos:1, color: '#fff'}
+
+                // {pos:0, color: gradientColor}, 
+                // {pos:0.5, color: gradientColor},
+                // {pos:1, color: gradientColor}
 
                 ]
               });
@@ -586,6 +597,8 @@ export default function Musializer() {
                             stroke="#ddd"
                             // strokeWidth={0}
                             strokeWidth= {bassButtons ? "5" : "0" }
+                            // strokeWidth= {hiHatButtons? "5" : "0" }
+                            // fill="rgba(255,255,255,0.1)"
                             r={radius/2}
                             cx="100"
                             cy="100"

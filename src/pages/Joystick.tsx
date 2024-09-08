@@ -173,16 +173,16 @@ export default function Joystick() {
             wh = canvasKeyboard.height = window.innerHeight;
             // centerX = ww / 2;
             centerX = (ww / 2) - 135; 
-            // centerY = wh / 2;
-            centerY = wh / 1.5;
+            centerY = wh / 2;
+            // centerY = wh / 1.5;
             circleX = centerX;
             circleY = centerY;
             vx = 0;
             vy = 0;
 
             centerX2 = (ww / 2) + 135; 
-            // centerY2 = wh / 2;
-            centerY2 = wh / 1.5;
+            centerY2 = wh / 2;
+            // centerY2 = wh / 1.5;
             circleX2 = centerX2;
             circleY2 = centerY2;
             vx2 = 0;
@@ -380,7 +380,7 @@ export default function Joystick() {
             }}
           >
             <h1> Joystick </h1>
-
+{/* 
             <motion.button
               className="navbarButton"
               style={{ backgroundColor: 'rgba(0,0,0,0)' }}
@@ -388,7 +388,7 @@ export default function Joystick() {
             // onClick={handleCarToggle}
             >
               <span className="material-symbols-outlined">toys</span>
-            </motion.button>
+            </motion.button> */}
           </div>
             <canvas
                 style={{
