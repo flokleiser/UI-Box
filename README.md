@@ -1,9 +1,16 @@
 # Dev branch with hot reloading:
 
 ### Todo:
-- [ ] Musializer
+- Ball
+    - [ ] "timer" for ball being in the net
+    - [ ] new random net position after timer runs out
 
-    - [ ] Potential problem for the future --> main/renderer/preload not getting transpiled on "start"
+- Tether
+    - [ ] 
+
+___
+
+- Musializer:
 
     - [ ] Equalizer functionality
         - [ ] Fix bass value being way too jumpy
