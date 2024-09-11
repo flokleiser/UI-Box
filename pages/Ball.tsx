@@ -24,7 +24,7 @@ export default function Ball() {
         let vx = 0; 
         let vy = 0; 
         // let clicks = startPage === 'Ball' ? 1 : 0;
-        let clicks = 0
+        let clicks = 1 
         const damping = 0.7; 
         const stiffness = 0.4; 
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
@@ -51,13 +51,13 @@ export default function Ball() {
         }
 
         const hoopCoordinates= [
-            {x: ww/2, y: wh/2},
+            {x: ww/1.5, y: wh/3},
             {x: ww/3, y: wh/3},
             {x: ww/1.5, y: wh/1.5},
             {x: ww/3, y: wh/1.5},
-            {x: ww/1.5, y: wh/3},
-            {x:ww/3, y: wh/2},
             {x:ww/1.5, y: wh/2},
+            {x:ww/3, y: wh/2},
+            {x: ww/2, y: wh/2},
         ]
         const randomOrSequential = (mode: 'sequential' | 'random') => {
             let coords;
@@ -205,7 +205,7 @@ export default function Ball() {
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            randomizeHoop('random')
+            randomizeHoop('sequential')
 
 
             vx = 0;
@@ -318,7 +318,7 @@ export default function Ball() {
                         console.log('test')
                         resetHoopCounter()
 
-                        randomizeHoop('random') 
+                        randomizeHoop('sequential') 
 
                     }
 
@@ -410,7 +410,7 @@ export default function Ball() {
         //buttons
         if (randomizerButton) {
             randomizerButton.addEventListener('click', () => {
-                randomizeHoop('random')
+                randomizeHoop('sequential')
             })
         }
         if (darkmodeToggleButton) {
@@ -436,7 +436,7 @@ export default function Ball() {
             }
             if (randomizerButton) {
                 randomizerButton.removeEventListener('click', () => {
-                    randomizeHoop('random')
+                    randomizeHoop('sequential')
                 })
             }
             if (hoopButton) {

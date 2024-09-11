@@ -50184,20 +50184,20 @@ const Navbar = ({ activePage }) => {
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home")),
                 react_1.default.createElement("button", { className: activePage === 'Buttons' ? "navbarButton active" : "navbarButton", id: "buttonspageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps")),
+                react_1.default.createElement("button", { className: activePage === 'Switches' ? "navbarButton active" : "navbarButton", id: "switchespageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
+                react_1.default.createElement("button", { className: activePage === 'Cube' ? "navbarButton active" : "navbarButton", id: "cubepageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "deployed_code")),
                 react_1.default.createElement("button", { className: activePage === 'Spinner' ? "navbarButton active" : "navbarButton", id: "spinnerpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node")),
                 react_1.default.createElement("button", { className: activePage === 'Particles' ? "navbarButton active" : "navbarButton", id: "particlespageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur")),
-                react_1.default.createElement("button", { className: activePage === 'Switches' ? "navbarButton active" : "navbarButton", id: "switchespageButton" },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
-                react_1.default.createElement("button", { className: activePage === 'Tether' ? "navbarButton active" : "navbarButton", id: "tetherpageButton" },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
                 react_1.default.createElement("button", { className: activePage === 'Ball' ? "navbarButton active" : "navbarButton", id: "ballpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
+                react_1.default.createElement("button", { className: activePage === 'Tether' ? "navbarButton active" : "navbarButton", id: "tetherpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
                 react_1.default.createElement("button", { className: activePage === 'Joystick' ? "navbarButton active" : "navbarButton", id: "joystickpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
-                react_1.default.createElement("button", { className: activePage === 'Cube' ? "navbarButton active" : "navbarButton", id: "cubepageButton" },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "deployed_code")),
                 react_1.default.createElement("button", { className: activePage === 'Musializer' ? "navbarButton active" : "navbarButton", id: "musializerpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "music_note"))),
             react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
@@ -50373,7 +50373,7 @@ function Ball() {
         let vx = 0;
         let vy = 0;
         // let clicks = startPage === 'Ball' ? 1 : 0;
-        let clicks = 0;
+        let clicks = 1;
         const damping = 0.7;
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
@@ -50394,13 +50394,13 @@ function Ball() {
             insideHoopCounter = 0;
         }
         const hoopCoordinates = [
-            { x: ww / 2, y: wh / 2 },
+            { x: ww / 1.5, y: wh / 3 },
             { x: ww / 3, y: wh / 3 },
             { x: ww / 1.5, y: wh / 1.5 },
             { x: ww / 3, y: wh / 1.5 },
-            { x: ww / 1.5, y: wh / 3 },
-            { x: ww / 3, y: wh / 2 },
             { x: ww / 1.5, y: wh / 2 },
+            { x: ww / 3, y: wh / 2 },
+            { x: ww / 2, y: wh / 2 },
         ];
         const randomOrSequential = (mode) => {
             let coords;
@@ -50531,7 +50531,7 @@ function Ball() {
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            randomizeHoop('random');
+            randomizeHoop('sequential');
             vx = 0;
             vy = 0;
             render();
@@ -50627,7 +50627,7 @@ function Ball() {
                     if (insideHoopCounter > 100) {
                         console.log('test');
                         resetHoopCounter();
-                        randomizeHoop('random');
+                        randomizeHoop('sequential');
                     }
                 }
                 //canvascollision
@@ -50705,7 +50705,7 @@ function Ball() {
         //buttons
         if (randomizerButton) {
             randomizerButton.addEventListener('click', () => {
-                randomizeHoop('random');
+                randomizeHoop('sequential');
             });
         }
         if (darkmodeToggleButton) {
@@ -50727,7 +50727,7 @@ function Ball() {
             }
             if (randomizerButton) {
                 randomizerButton.removeEventListener('click', () => {
-                    randomizeHoop('random');
+                    randomizeHoop('sequential');
                 });
             }
             if (hoopButton) {
@@ -52855,9 +52855,6 @@ function Tether() {
         let particleY2 = centerY2;
         let vx2 = 0;
         let vy2 = 0;
-        let colorChange1 = false;
-        let colorChange2 = false;
-        let colorChange3 = false;
         let particleX3 = centerX3;
         let particleY3 = centerY3;
         let vx3 = 0;
@@ -52989,26 +52986,14 @@ function Tether() {
             const distToCenter1 = Math.hypot(particleX1 - centerX, particleY1 - centerY);
             const distToCenter2 = Math.hypot(centerX2 - particleX2, centerY2 - particleY2);
             const distToCenter3 = Math.hypot(centerX3 - particleX3, centerY3 - particleY3);
-            if (distToCenter1 > 150) {
-                colorChange1 = true;
-                // setColorChange(true)
-            }
-            else {
-                colorChange1 = false;
-                // setColorChange(false)
-            }
-            if (distToCenter2 > 150) {
-                colorChange2 = true;
-            }
-            else {
-                colorChange2 = false;
-            }
-            if (distToCenter3 > 150) {
-                colorChange3 = true;
-            }
-            else {
-                colorChange3 = false;
-            }
+            const maxDist = 350;
+            const minOpacity = 0.1;
+            let opacity1 = Math.max(minOpacity, 1 - distToCenter1 / maxDist);
+            let opacity2 = Math.max(minOpacity, 1 - distToCenter2 / maxDist);
+            let opacity3 = Math.max(minOpacity, 1 - distToCenter3 / maxDist);
+            const rgbaColor1 = `rgba(255, 255, 255, ${opacity1})`;
+            const rgbaColor2 = `rgba(255, 255, 255, ${opacity2})`;
+            const rgbaColor3 = `rgba(255, 255, 255, ${opacity3})`;
             if (!isDragging) {
                 const dx = centerX - particleX1;
                 const dy = centerY - particleY1;
@@ -53080,24 +53065,18 @@ function Tether() {
             ctx.moveTo(centerX3, centerY3);
             ctx.lineTo(particleX3, particleY3);
             ctx.stroke();
-            //ball
-            // ctx.fillStyle = color;
-            // ctx.fillStyle = colorChange1? '#666':color;
-            ctx.fillStyle = colorChange1 ? canvasElementColor : color;
+            ctx.fillStyle = rgbaColor1;
             ctx.beginPath();
             ctx.arc(particleX1, particleY1, radius, 0, Math.PI * 2);
             ctx.fill();
-            ctx.fillStyle = color;
-            // ctx2.fillStyle = colorChange2? '#666': '#fffff';
+            ctx.fillStyle = rgbaColor2;
             ctx.beginPath();
             ctx.arc(particleX2, particleY2, radius2, 0, Math.PI * 2);
             ctx.fill();
-            ctx.fillStyle = color;
-            // ctx3.fillStyle = colorChange3? '#666': '#fffff';
+            ctx.fillStyle = rgbaColor3;
             ctx.beginPath();
             ctx.arc(particleX3, particleY3, radius3, 0, Math.PI * 2);
             ctx.fill();
-            // requestAnimationFrame(render);
             animationFrameId = requestAnimationFrame(render);
         };
         const handleThemeToggle = () => { resetScene(); };
