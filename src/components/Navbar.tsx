@@ -81,14 +81,6 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
             </span>
           </button>
 
-          <button className={activePage === 'Joystick' ? "navbarButton active" : "navbarButton"} id="joystickpageButton"
-          onClick={() => onNavigate('Joystick')} 
-          >
-            <span className="material-symbols-outlined">
-              joystick 
-            </span>
-          </button>
-
           <button className={activePage === 'Particles' ? "navbarButton active" : "navbarButton"} id="particlespageButton"
           onClick={() => onNavigate('Particles')}           
           >
@@ -113,6 +105,14 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
             </span>
           </button>
 
+          <button className={activePage === 'Joystick' ? "navbarButton active" : "navbarButton"} id="joystickpageButton"
+          onClick={() => onNavigate('Joystick')} 
+          >
+            <span className="material-symbols-outlined">
+              joystick 
+            </span>
+          </button>
+
 
           <button className={activePage === 'Musializer' ? "navbarButton active" : "navbarButton"} id="musializerpageButton"
           onClick={() => onNavigate('Musializer')} 
@@ -123,13 +123,13 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
             </span>
           </button>
 
-          {/* <button className={activePage === 'Lock' ? "navbarButton active" : "navbarButton"} id="lockpageButton"
+          <button className={activePage === 'Lock' ? "navbarButton active" : "navbarButton"} id="lockpageButton"
           onClick={() => onNavigate('Lock')} 
           >
             <span className="material-symbols-outlined">
               lock_reset
             </span>
-          </button> */}
+          </button>
 
           </div>
 
