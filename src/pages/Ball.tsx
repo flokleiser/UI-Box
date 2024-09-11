@@ -58,7 +58,6 @@ export default function Ball() {
             {x:ww/3, y: wh/2},
             {x:ww/1.5, y: wh/2},
         ]
-
         const randomOrSequential = (mode: 'sequential' | 'random') => {
             let coords;
         
