@@ -205,7 +205,7 @@ export default function Ball() {
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            randomizeHoop('random')
+            randomizeHoop('sequential')
 
 
             vx = 0;
@@ -318,7 +318,7 @@ export default function Ball() {
                         console.log('test')
                         resetHoopCounter()
 
-                        randomizeHoop('random') 
+                        randomizeHoop('sequential') 
 
                     }
 
@@ -410,7 +410,7 @@ export default function Ball() {
         //buttons
         if (randomizerButton) {
             randomizerButton.addEventListener('click', () => {
-                randomizeHoop('random')
+                randomizeHoop('sequential')
             })
         }
         if (darkmodeToggleButton) {
@@ -436,7 +436,7 @@ export default function Ball() {
             }
             if (randomizerButton) {
                 randomizerButton.removeEventListener('click', () => {
-                    randomizeHoop('random')
+                    randomizeHoop('sequential')
                 })
             }
             if (hoopButton) {

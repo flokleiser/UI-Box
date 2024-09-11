@@ -37,9 +37,6 @@ export default function Tether() {
         let particleY2 = centerY2;
         let vx2 = 0; 
         let vy2 = 0; 
-        let colorChange1 = false;
-        let colorChange2 = false;
-        let colorChange3 = false;
         let particleX3 = centerX3;
         let particleY3 = centerY3;
         let vx3 = 0; 
@@ -53,7 +50,7 @@ export default function Tether() {
 
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color');
         const canvasElementColor = getComputedStyle(document.documentElement).getPropertyValue('--canvas-colorelement') || 'black';
-        
+
         //mouse movements
         const onMouseMove = (e:MouseEvent) => {
             if (isDragging) {
@@ -193,26 +190,17 @@ export default function Tether() {
             const distToCenter2 = Math.hypot(centerX2-particleX2, centerY2-particleY2);
             const distToCenter3 = Math.hypot(centerX3-particleX3, centerY3-particleY3);
 
-            if (distToCenter1 > 150) {
-                colorChange1 = true
-                // setColorChange(true)
-            }
-            else {
-                colorChange1 = false;
-                // setColorChange(false)
-            }
-            if (distToCenter2 > 150) {
-                colorChange2 = true
-            }
-            else {
-                colorChange2 = false;
-            }
-            if (distToCenter3 > 150) {
-                colorChange3 = true
-            }
-            else {
-                colorChange3 = false;
-            }
+            const maxDist = 350;
+            const minOpacity = 0.1
+
+            let opacity1 = Math.max(minOpacity, 1 - distToCenter1 / maxDist);
+            let opacity2 = Math.max(minOpacity, 1 - distToCenter2 / maxDist);
+            let opacity3 = Math.max(minOpacity, 1 - distToCenter3 / maxDist);
+
+            const rgbaColor1 = `rgba(255, 255, 255, ${opacity1})`
+            const rgbaColor2 = `rgba(255, 255, 255, ${opacity2})`
+            const rgbaColor3 = `rgba(255, 255, 255, ${opacity3})`
+
 
             if (!isDragging) {
                 const dx = centerX - particleX1;
@@ -289,27 +277,21 @@ export default function Tether() {
             ctx.lineTo(particleX3, particleY3);
             ctx.stroke();
 
-            //ball
-            // ctx.fillStyle = color;
-            // ctx.fillStyle = colorChange1? '#666':color;
-            ctx.fillStyle = colorChange1? canvasElementColor : color;
+            ctx.fillStyle = rgbaColor1
             ctx.beginPath();
             ctx.arc(particleX1, particleY1, radius, 0, Math.PI * 2);
             ctx.fill();
 
-            ctx.fillStyle = color;
-            // ctx2.fillStyle = colorChange2? '#666': '#fffff';
+            ctx.fillStyle = rgbaColor2;
             ctx.beginPath();
             ctx.arc(particleX2, particleY2, radius2, 0, Math.PI * 2);
             ctx.fill();
 
-            ctx.fillStyle = color;
-            // ctx3.fillStyle = colorChange3? '#666': '#fffff';
+            ctx.fillStyle = rgbaColor3;
             ctx.beginPath();
             ctx.arc(particleX3, particleY3, radius3, 0, Math.PI * 2);
             ctx.fill();
 
-            // requestAnimationFrame(render);
             animationFrameId = requestAnimationFrame(render);
         };
 
