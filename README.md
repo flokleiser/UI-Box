@@ -2,14 +2,13 @@
 
 ### Todo:
 - Ball
-    - [ ] "timer" for ball being in the net
-    - [ ] new random net position after timer runs out
+    - [x] "timer" for ball being in the net
+    - [x] new random net position after timer runs out
 
 - Tether
     - [ ] 
 
 ___
-
 - Musializer:
 
     - [ ] Equalizer functionality
@@ -22,11 +21,10 @@ ___
         - [ ] Check issues with music playing while switching --> probably not that important (?)
 
     - [ ] Less important graphical stuff
-        - [ ] Gradient on audioMotion-analyzer
+        - [x] Gradient on audioMotion-analyzer
             --> kinda working when adding it in the module? (but not on website)
         - [ ] Fix outline/border of circle sometimes not working
         - [x] Add indicator of which visualizer is active (css :active)
-    
 
     - [x] Clean up GUI
     - [x] Replace "Volume" & "Intensity" with material symbols

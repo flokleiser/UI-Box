@@ -42,8 +42,6 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
             onNavigate('Home');
           }} 
           >
-            {/* <span className="material-symbols-outlined"> */}
-            {/* <span className="material-symbols-outlined"> */}
             <span className="material-symbols-outlined">
               home
             </span>
@@ -59,22 +57,6 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
             </span>
           </button>
 
-          <button className={activePage === 'Spinner' ? "navbarButton active" : "navbarButton"} id="spinnerpageButton"
-          onClick={() => onNavigate('Spinner')}  
-          >
-            <span className="material-symbols-outlined">
-              network_node
-            </span>
-          </button>
-
-          <button className={activePage === 'Particles' ? "navbarButton active" : "navbarButton"} id="particlespageButton"
-          onClick={() => onNavigate('Particles')}           
-          >
-            <span className="material-symbols-outlined">
-              lens_blur
-            </span>
-          </button>
-
           <button className={activePage === 'Switches' ? "navbarButton active" : "navbarButton"} id="switchespageButton"
           onClick={() => onNavigate('Switches')}           
           >
@@ -83,19 +65,19 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
             </span>
           </button>
 
-          <button className={activePage === 'Tether' ? "navbarButton active" : "navbarButton"} id="tetherpageButton"
-          onClick={() => onNavigate('Tether')} 
+          <button className={activePage === 'Cube' ? "navbarButton active" : "navbarButton"} id="cubepageButton"
+          onClick={() => onNavigate('Cube')} 
           >
             <span className="material-symbols-outlined">
-              tenancy
+              deployed_code
             </span>
           </button>
 
-          <button className={activePage === 'Ball' ? "navbarButton active" : "navbarButton"} id="ballpageButton"
-          onClick={() => onNavigate('Ball')} 
+          <button className={activePage === 'Spinner' ? "navbarButton active" : "navbarButton"} id="spinnerpageButton"
+          onClick={() => onNavigate('Spinner')}  
           >
             <span className="material-symbols-outlined">
-              airline_stops
+              network_node
             </span>
           </button>
 
@@ -107,13 +89,30 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
             </span>
           </button>
 
-          <button className={activePage === 'Cube' ? "navbarButton active" : "navbarButton"} id="cubepageButton"
-          onClick={() => onNavigate('Cube')} 
+          <button className={activePage === 'Particles' ? "navbarButton active" : "navbarButton"} id="particlespageButton"
+          onClick={() => onNavigate('Particles')}           
           >
             <span className="material-symbols-outlined">
-              deployed_code
+              lens_blur
             </span>
           </button>
+
+          <button className={activePage === 'Ball' ? "navbarButton active" : "navbarButton"} id="ballpageButton"
+          onClick={() => onNavigate('Ball')} 
+          >
+            <span className="material-symbols-outlined">
+              airline_stops
+            </span>
+          </button>
+
+          <button className={activePage === 'Tether' ? "navbarButton active" : "navbarButton"} id="tetherpageButton"
+          onClick={() => onNavigate('Tether')} 
+          >
+            <span className="material-symbols-outlined">
+              tenancy
+            </span>
+          </button>
+
 
           <button className={activePage === 'Musializer' ? "navbarButton active" : "navbarButton"} id="musializerpageButton"
           onClick={() => onNavigate('Musializer')} 
