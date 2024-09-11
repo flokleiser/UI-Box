@@ -3,8 +3,6 @@ ___
 
 - ### Currently working on
 
-- [x] Remove "focus" blue border
-
 ___
 
 - **Pages + Functionality**
