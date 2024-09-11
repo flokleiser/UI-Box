@@ -33,6 +33,18 @@ const Navbar: React.FC<NavbarProps> = ({ activePage }) => {
             </span>
           </button>
 
+          <button className={activePage === 'Switches' ? "navbarButton active" : "navbarButton"} id="switchespageButton">
+            <span className="material-symbols-outlined">
+              toggle_on 
+            </span>
+          </button>
+
+          <button className={activePage === 'Cube' ? "navbarButton active" : "navbarButton"} id="cubepageButton">
+            <span className="material-symbols-outlined">
+              deployed_code
+            </span>
+          </button>
+
           <button className={activePage === 'Spinner' ? "navbarButton active" : "navbarButton"} id="spinnerpageButton">
             <span className="material-symbols-outlined">
               network_node
@@ -45,9 +57,9 @@ const Navbar: React.FC<NavbarProps> = ({ activePage }) => {
             </span>
           </button>
 
-          <button className={activePage === 'Switches' ? "navbarButton active" : "navbarButton"} id="switchespageButton">
+          <button className={activePage === 'Ball' ? "navbarButton active" : "navbarButton"} id="ballpageButton">
             <span className="material-symbols-outlined">
-              toggle_on 
+              airline_stops
             </span>
           </button>
 
@@ -57,32 +69,9 @@ const Navbar: React.FC<NavbarProps> = ({ activePage }) => {
             </span>
           </button>
 
-          <button className={activePage === 'Ball' ? "navbarButton active" : "navbarButton"} id="ballpageButton">
-            <span className="material-symbols-outlined">
-              airline_stops
-            </span>
-          </button>
-
           <button className={activePage === 'Joystick' ? "navbarButton active" : "navbarButton"} id="joystickpageButton">
             <span className="material-symbols-outlined">
               joystick 
-            </span>
-          </button>
-
-          {/* <button className="navbarButton" id="lockpageButton">
-            <span className="material-symbols-outlined">
-                refresh
-            </span>
-          </button> */}
-
-          {/* <button className={activePage === 'Test' ? "navbarButton active" : "navbarButton"} id="testpageButton">
-            <span className="material-symbols-outlined">
-              quiz
-            </span>
-          </button> */}
-          <button className={activePage === 'Cube' ? "navbarButton active" : "navbarButton"} id="cubepageButton">
-            <span className="material-symbols-outlined">
-              deployed_code
             </span>
           </button>
 
