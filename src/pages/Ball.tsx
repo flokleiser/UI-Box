@@ -5,7 +5,6 @@ import { startPage } from '../components/Window';
 export default function Ball() {
 
     const [resetTrigger, setResetTrigger] = useState(0);
-
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const navbar = document.querySelector('#navbarRoot') as HTMLElement;
     useEffect(() => {
@@ -34,7 +33,32 @@ export default function Ball() {
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
         const hoopButton = document.getElementById('hoopButton');
 
-        let hoop = false;
+        // const hoopTestCoords = [{x: ww/2, y: ww/2}] 
+        const hoopCoordinates= [
+            // {x: ww/2, y: wh/2},
+            {x: ww/3, y: wh/3},
+            {x: (ww/4 * 3), y: ww/3},
+            {x:(ww/5)*3, y: ww/1.5}
+        ]
+
+        let currentIndex = 0
+
+        const randomOrSequential = (mode: 'sequential' | 'random') => {
+            let coords;
+        
+            if (mode === 'sequential') {
+                coords = hoopCoordinates[currentIndex];
+                currentIndex = (currentIndex + 1) % hoopCoordinates.length;
+            } else {
+                const randomIndex = Math.floor(Math.random() * hoopCoordinates.length);
+                coords = hoopCoordinates[randomIndex];
+            }
+        
+            return coords;
+        };
+
+        // let hoop = false;
+        let hoop = true;
 
         let animationFrameId: number;
 
@@ -65,8 +89,6 @@ export default function Ball() {
         const hoopRight= new Hoop(((canvasBall.width/4)*3), canvasBall.height /3, 10,50, color);
         const hoopBottom = new Hoop(((canvasBall.width/4)*3), (canvasBall.height /3) + 50, 100,10, color);
 
-
-
         function checkCollision(ballX:number,ballY:number,radius:number,rect:Hoop): boolean {
           const distX = Math.abs(ballX - rect.centerX - rect.width / 2);
           const distY = Math.abs(ballY - rect.centerY - rect.height / 2);
@@ -81,8 +103,6 @@ export default function Ball() {
           const dy = distY - rect.height / 2;
           return (dx * dx + dy * dy <= (radius * radius));
         }
-
-
 
         //mouse events
         const onMouseMove = (e:MouseEvent) => {
@@ -185,22 +205,31 @@ export default function Ball() {
             hoopBottom.centerY = (wh / 3) + 50;
 
         }
+        // const randomizeHoop = () => {
+        //     console.log('randomizing hoop')
+        //     hoopLeft.centerX = hoopTestCoords.x + 45;
+        //     hoopLeft.centerY = hoopTestCoords.y 
 
-        const randomizeHoop = () => {
-            console.log('test')
-            // hoopLeft.centerX = ((ww / 4) * 3) + 45;
-            // hoopLeft.centerY = wh / 3;
-            // hoopRight.centerX = ((ww / 4) * 3) - 45;
-            // hoopRight.centerY = wh / 3;
-            // hoopBottom.centerX = ((ww / 4) * 3) - 45;
-            // hoopBottom.centerY = (wh / 3) + 50;
-            hoopLeft.centerX = ((ww / 2) + 45);
-            hoopLeft.centerY = wh / 3;
-            hoopRight.centerX = ((ww / 2) - 45);
-            hoopRight.centerY = wh / 3;
-            hoopBottom.centerX = ((ww / 2) - 45);
-            hoopBottom.centerY = (wh / 3) + 50;
-        }
+        //     hoopRight.centerX = hoopTestCoords.x - 45;
+        //     hoopRight.centerY = hoopTestCoords.y
+
+        //     hoopBottom.centerX = hoopTestCoords.x - 45;
+        //     hoopBottom.centerY = hoopTestCoords.y + 50;
+        // }
+
+        const randomizeHoop = (mode: 'sequential' | 'random') => {
+            console.log('randomizing hoop');
+            const { x, y } = randomOrSequential(mode);
+        
+            hoopLeft.centerX = x + 45;
+            hoopLeft.centerY = y;
+        
+            hoopRight.centerX = x - 45;
+            hoopRight.centerY = y;
+        
+            hoopBottom.centerX = x - 45;
+            hoopBottom.centerY = y + 50;
+        };
 
         const toggleHoop = () => {
             hoop = !hoop;
@@ -256,10 +285,21 @@ export default function Ball() {
                       vy *= -damping;
                   } else {
                       ballY = hoopBottom.centerY + hoopBottom.height + radius;
-                      // ballY = hoopBottom.centerY + radius;
                       vy *= -damping;
                   }
               }
+            }
+
+            if (
+                ballX + radius > hoopRight.centerX 
+                && ballX - radius < hoopLeft.centerX
+                // && ballY + radius < hoopBottom.centerY
+                && ballY + radius < hoopBottom.centerY + hoopBottom.height
+                && ballY + radius > hoopBottom.centerY - hoopRight.height 
+                ) {
+                vx *= 0.9
+                vy *= 0.98
+                // console.log('basket')
             }
 
                 //canvascollision
@@ -349,8 +389,10 @@ export default function Ball() {
 
         //buttons
         if (randomizerButton) {
-            randomizerButton.addEventListener('click', randomizeHoop);
-        }  
+            randomizerButton.addEventListener('click', () => {
+                randomizeHoop('sequential')
+            })
+        }
         if (darkmodeToggleButton) {
             darkmodeToggleButton.addEventListener('click', handleThemeToggle);
         }
@@ -373,10 +415,13 @@ export default function Ball() {
                 darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
             }
             if (randomizerButton) {
-                randomizerButton.removeEventListener('click', randomizeHoop);
+                // randomizerButton.removeEventListener('click', randomizeHoop);
+                randomizerButton.removeEventListener('click', () => {
+                    randomizeHoop('sequential')
+                })
             }
             if (hoopButton) {
-                hoopButton.removeEventListener('click', randomizeHoop);
+                hoopButton.removeEventListener('click', toggleHoop);
             }
 
             window.removeEventListener("mousemove", onMouseMove);
