@@ -29,10 +29,7 @@ export default function Ball() {
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3; 
         let currentIndex = 0
-        // let insideHoop = false;
-
         let hoop = true;
-        // let hoop = false;
         let animationFrameId: number;
 
         const randomizerButton = document.getElementById('randomizerButton');
