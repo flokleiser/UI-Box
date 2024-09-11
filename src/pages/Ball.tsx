@@ -45,11 +45,6 @@ export default function Ball() {
 
         let insideHoopCounter = 0;
 
-        // function setInsideHoop() {
-        //     // insideHoop = true
-        //     insideHoop = !insideHoop
-        // }
-
         function resetHoopCounter() {
             insideHoopCounter = 0
         }
