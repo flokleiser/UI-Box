@@ -29,9 +29,10 @@ export default function Ball() {
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3; 
         let currentIndex = 0
+        // let insideHoop = false;
 
-        // let hoop = true;
-        let hoop = false;
+        let hoop = true;
+        // let hoop = false;
         let animationFrameId: number;
 
         const randomizerButton = document.getElementById('randomizerButton');
@@ -39,17 +40,19 @@ export default function Ball() {
         const hoopButton = document.getElementById('hoopButton');
 
         const buttonDiv = document.getElementById('buttonDeadZone') as HTMLDivElement
-            const buttonDivRect = buttonDiv.getBoundingClientRect()
-            const deadZonePadding = 0
+        const buttonDivRect = buttonDiv.getBoundingClientRect()
+        const deadZonePadding = 0
 
-            const buttonDeadZone = {
-                left: buttonDivRect.left - deadZonePadding,
-                right: buttonDivRect.right + deadZonePadding,
-                top: buttonDivRect.top - deadZonePadding,
-                bottom: buttonDivRect.bottom + deadZonePadding
-            }
+        let insideHoopCounter = 0;
+
+        // function setInsideHoop() {
+        //     // insideHoop = true
+        //     insideHoop = !insideHoop
         // }
 
+        function resetHoopCounter() {
+            insideHoopCounter = 0
+        }
 
         const hoopCoordinates= [
             {x: ww/2, y: wh/2},
@@ -231,7 +234,6 @@ export default function Ball() {
             hoopBottom.centerY = (wh / 3) + 50;
 
         }
-
         const randomizeHoop = (mode: 'sequential' | 'random') => {
             console.log('randomizing hoop');
             const { x, y } = randomOrSequential(mode);
@@ -245,7 +247,6 @@ export default function Ball() {
             hoopBottom.centerX = x - 45;
             hoopBottom.centerY = y + 50;
         };
-
         const toggleHoop = () => {
             hoop = !hoop;
             console.log('hoop', hoop)
@@ -310,11 +311,23 @@ export default function Ball() {
             if (ballX + radius > hoopRight.centerX && ballX - radius < hoopLeft.centerX && 
                 ballY + radius < hoopBottom.centerY + hoopBottom.height
                 && ballY + radius > hoopBottom.centerY - hoopRight.height) {
+
+                    // setInsideHoop()
+                    // console.log('inside hoop', insideHoop)
+                    insideHoopCounter += 1
+
                     vx *= 0.9
                     vy *= 0.98
-                    setTimeout(() => {
-                        console.log('time in hoop')
-                    }, 5000)
+
+                    if (insideHoopCounter > 100) {
+                        console.log('test')
+                        resetHoopCounter()
+
+                        randomizeHoop('random') 
+
+                    }
+
+
             }
 
                 //canvascollision
