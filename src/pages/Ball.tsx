@@ -23,13 +23,17 @@ export default function Ball() {
         let ballY = centerY;
         let vx = 0; 
         let vy = 0; 
-        let clicks = startPage === 'Ball' ? 1 : 0;
+        // let clicks = startPage === 'Ball' ? 1 : 0;
+        let clicks = 0
         const damping = 0.7; 
         const stiffness = 0.4; 
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3; 
         let currentIndex = 0
+        // let insideHoop = false;
+
         let hoop = true;
+        // let hoop = false;
         let animationFrameId: number;
 
         const randomizerButton = document.getElementById('randomizerButton');
