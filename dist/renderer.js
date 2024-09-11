@@ -50378,11 +50378,47 @@ function Ball() {
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3;
+        let currentIndex = 0;
+        // let insideHoop = false;
+        let hoop = true;
+        // let hoop = false;
+        let animationFrameId;
         const randomizerButton = document.getElementById('randomizerButton');
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
         const hoopButton = document.getElementById('hoopButton');
-        let hoop = false;
-        let animationFrameId;
+        const buttonDiv = document.getElementById('buttonDeadZone');
+        const buttonDivRect = buttonDiv.getBoundingClientRect();
+        const deadZonePadding = 0;
+        let insideHoopCounter = 0;
+        // function setInsideHoop() {
+        //     // insideHoop = true
+        //     insideHoop = !insideHoop
+        // }
+        function resetHoopCounter() {
+            insideHoopCounter = 0;
+        }
+        const hoopCoordinates = [
+            { x: ww / 2, y: wh / 2 },
+            { x: ww / 3, y: wh / 3 },
+            { x: ww / 1.5, y: wh / 1.5 },
+            { x: ww / 3, y: wh / 1.5 },
+            { x: ww / 1.5, y: wh / 3 },
+            { x: ww / 3, y: wh / 2 },
+            { x: ww / 1.5, y: wh / 2 },
+        ];
+        const randomOrSequential = (mode) => {
+            let coords;
+            if (mode === 'sequential') {
+                coords = hoopCoordinates[currentIndex];
+                currentIndex = (currentIndex + 1) % hoopCoordinates.length;
+            }
+            else {
+                const randomIndex = Math.floor(Math.random() * hoopCoordinates.length);
+                coords = hoopCoordinates[randomIndex];
+            }
+            return coords;
+        };
+        // let hoop = false;
         class Hoop {
             constructor(centerX, centerY, width, height, color) {
                 this.centerX = centerX;
@@ -50422,6 +50458,11 @@ function Ball() {
         }
         //mouse events
         const onMouseMove = (e) => {
+            const target = e.target;
+            if (buttonDiv === null || buttonDiv === void 0 ? void 0 : buttonDiv.contains(target)) {
+                // console.log('deadzone onMouseMove')
+                return;
+            }
             if (clicks > 1) {
                 if (isDragging) {
                     mouse.x = e.clientX;
@@ -50447,9 +50488,16 @@ function Ball() {
             }
         };
         const onMouseDown = (e) => {
+            const target = e.target;
+            if (buttonDiv === null || buttonDiv === void 0 ? void 0 : buttonDiv.contains(target)) {
+                return;
+            }
             centerX = e.clientX;
             centerY = e.clientY;
             IncreaseClicks();
+            // if (clicks < 1) {
+            // console.log('first click')
+            // }
             if (clicks > 1) {
                 if (e.clientY + radius > wh || e.clientY - radius < 0 + navbar.offsetHeight) {
                     ballX = ww / 2;
@@ -50487,12 +50535,7 @@ function Ball() {
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            hoopLeft.centerX = ((ww / 4) * 3) + 45;
-            hoopLeft.centerY = wh / 3;
-            hoopRight.centerX = ((ww / 4) * 3) - 45;
-            hoopRight.centerY = wh / 3;
-            hoopBottom.centerX = ((ww / 4) * 3) - 45;
-            hoopBottom.centerY = (wh / 3) + 50;
+            randomizeHoop('random');
             vx = 0;
             vy = 0;
             render();
@@ -50513,20 +50556,15 @@ function Ball() {
             hoopBottom.centerX = ((ww / 4) * 3) - 45;
             hoopBottom.centerY = (wh / 3) + 50;
         };
-        const randomizeHoop = () => {
-            console.log('test');
-            // hoopLeft.centerX = ((ww / 4) * 3) + 45;
-            // hoopLeft.centerY = wh / 3;
-            // hoopRight.centerX = ((ww / 4) * 3) - 45;
-            // hoopRight.centerY = wh / 3;
-            // hoopBottom.centerX = ((ww / 4) * 3) - 45;
-            // hoopBottom.centerY = (wh / 3) + 50;
-            hoopLeft.centerX = ((ww / 2) + 45);
-            hoopLeft.centerY = wh / 3;
-            hoopRight.centerX = ((ww / 2) - 45);
-            hoopRight.centerY = wh / 3;
-            hoopBottom.centerX = ((ww / 2) - 45);
-            hoopBottom.centerY = (wh / 3) + 50;
+        const randomizeHoop = (mode) => {
+            console.log('randomizing hoop');
+            const { x, y } = randomOrSequential(mode);
+            hoopLeft.centerX = x + 45;
+            hoopLeft.centerY = y;
+            hoopRight.centerX = x - 45;
+            hoopRight.centerY = y;
+            hoopBottom.centerX = x - 45;
+            hoopBottom.centerY = y + 50;
         };
         const toggleHoop = () => {
             hoop = !hoop;
@@ -50577,9 +50615,23 @@ function Ball() {
                         }
                         else {
                             ballY = hoopBottom.centerY + hoopBottom.height + radius;
-                            // ballY = hoopBottom.centerY + radius;
                             vy *= -damping;
                         }
+                    }
+                }
+                //inside hoop check
+                if (ballX + radius > hoopRight.centerX && ballX - radius < hoopLeft.centerX &&
+                    ballY + radius < hoopBottom.centerY + hoopBottom.height
+                    && ballY + radius > hoopBottom.centerY - hoopRight.height) {
+                    // setInsideHoop()
+                    // console.log('inside hoop', insideHoop)
+                    insideHoopCounter += 1;
+                    vx *= 0.9;
+                    vy *= 0.98;
+                    if (insideHoopCounter > 100) {
+                        console.log('test');
+                        resetHoopCounter();
+                        randomizeHoop('random');
                     }
                 }
                 //canvascollision
@@ -50642,9 +50694,6 @@ function Ball() {
             ctx.beginPath();
             ctx.arc(ballX, ballY, radius, 0, Math.PI * 2);
             ctx.fill();
-            // hoopLeft.draw(ctx);
-            // hoopRight.draw(ctx)
-            // hoopBottom.draw(ctx);
             if (hoop) {
                 hoopLeft.draw(ctx);
                 hoopRight.draw(ctx);
@@ -50659,7 +50708,9 @@ function Ball() {
         }
         //buttons
         if (randomizerButton) {
-            randomizerButton.addEventListener('click', randomizeHoop);
+            randomizerButton.addEventListener('click', () => {
+                randomizeHoop('random');
+            });
         }
         if (darkmodeToggleButton) {
             darkmodeToggleButton.addEventListener('click', handleThemeToggle);
@@ -50679,10 +50730,12 @@ function Ball() {
                 darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
             }
             if (randomizerButton) {
-                randomizerButton.removeEventListener('click', randomizeHoop);
+                randomizerButton.removeEventListener('click', () => {
+                    randomizeHoop('random');
+                });
             }
             if (hoopButton) {
-                hoopButton.removeEventListener('click', randomizeHoop);
+                hoopButton.removeEventListener('click', toggleHoop);
             }
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("touchmove", onTouchMove);
@@ -50699,10 +50752,14 @@ function Ball() {
         react_1.default.createElement("div", null,
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
                 react_1.default.createElement("h1", null, "Ball"),
-                react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
-                    react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "randomizerButton", whileHover: { rotate: 180 } },
+                react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' }, id: 'buttonDeadZone' },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)',
+                            // padding:'15px'
+                        }, id: "randomizerButton", whileHover: { rotate: 180 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined" }, "swap_horiz")),
-                    react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, id: "hoopButton", whileHover: { rotate: 180 } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)',
+                            // padding:'15px'
+                        }, id: "hoopButton", whileHover: { rotate: 180 } },
                         react_1.default.createElement("span", { className: "material-symbols-outlined" }, "orders")))),
             react_1.default.createElement("canvas", { ref: canvasRef, style: {
                     width: '100vw',
@@ -51857,7 +51914,6 @@ function Musializer() {
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
             react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
-            "src/dist/ce9e9dc140ab5f5fea27.png",
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
                 react_1.default.createElement(framer_motion_1.motion.button, { className: `equalizerButton ${activeEqualizer === "particles" ? "equalizerActive" : ""}`, ref: buttonRefSmall1, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: () => setEqualizerType("particles"), whileHover: { scale: 1.1 }, animate: { scale: bassButtons ? 1.25 : 1 }, transition: { type: "spring", duration: 0.2 } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "snowing")),

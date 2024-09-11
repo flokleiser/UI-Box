@@ -5,7 +5,6 @@ import { startPage } from '../components/Window';
 export default function Ball() {
 
     const [resetTrigger, setResetTrigger] = useState(0);
-
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const navbar = document.querySelector('#navbarRoot') as HTMLElement;
     useEffect(() => {
@@ -29,14 +28,57 @@ export default function Ball() {
         const stiffness = 0.4; 
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3; 
+        let currentIndex = 0
+        // let insideHoop = false;
+
+        let hoop = true;
+        // let hoop = false;
+        let animationFrameId: number;
 
         const randomizerButton = document.getElementById('randomizerButton');
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
         const hoopButton = document.getElementById('hoopButton');
 
-        let hoop = false;
+        const buttonDiv = document.getElementById('buttonDeadZone') as HTMLDivElement
+        const buttonDivRect = buttonDiv.getBoundingClientRect()
+        const deadZonePadding = 0
 
-        let animationFrameId: number;
+        let insideHoopCounter = 0;
+
+        // function setInsideHoop() {
+        //     // insideHoop = true
+        //     insideHoop = !insideHoop
+        // }
+
+        function resetHoopCounter() {
+            insideHoopCounter = 0
+        }
+
+        const hoopCoordinates= [
+            {x: ww/2, y: wh/2},
+            {x: ww/3, y: wh/3},
+            {x: ww/1.5, y: wh/1.5},
+            {x: ww/3, y: wh/1.5},
+            {x: ww/1.5, y: wh/3},
+            {x:ww/3, y: wh/2},
+            {x:ww/1.5, y: wh/2},
+        ]
+
+        const randomOrSequential = (mode: 'sequential' | 'random') => {
+            let coords;
+        
+            if (mode === 'sequential') {
+                coords = hoopCoordinates[currentIndex];
+                currentIndex = (currentIndex + 1) % hoopCoordinates.length;
+            } else {
+                const randomIndex = Math.floor(Math.random() * hoopCoordinates.length);
+                coords = hoopCoordinates[randomIndex];
+            }
+        
+            return coords;
+        };
+
+        // let hoop = false;
 
         class Hoop {
             centerX: number;
@@ -65,8 +107,6 @@ export default function Ball() {
         const hoopRight= new Hoop(((canvasBall.width/4)*3), canvasBall.height /3, 10,50, color);
         const hoopBottom = new Hoop(((canvasBall.width/4)*3), (canvasBall.height /3) + 50, 100,10, color);
 
-
-
         function checkCollision(ballX:number,ballY:number,radius:number,rect:Hoop): boolean {
           const distX = Math.abs(ballX - rect.centerX - rect.width / 2);
           const distY = Math.abs(ballY - rect.centerY - rect.height / 2);
@@ -82,10 +122,14 @@ export default function Ball() {
           return (dx * dx + dy * dy <= (radius * radius));
         }
 
-
-
         //mouse events
         const onMouseMove = (e:MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (buttonDiv?.contains(target) 
+            ) {
+                // console.log('deadzone onMouseMove')
+                return
+            }
             if (clicks > 1) {
                 if (isDragging) {
                     mouse.x = e.clientX;
@@ -112,16 +156,25 @@ export default function Ball() {
             }
         };
         const onMouseDown = (e:MouseEvent) => {
+
+            const target = e.target as HTMLElement;
+            if (buttonDiv?.contains(target)) {
+                return
+            }
             centerX = e.clientX
             centerY = e.clientY
             IncreaseClicks()
 
+            // if (clicks < 1) {
+                // console.log('first click')
+            // }
 
             if (clicks > 1) {
                 if (e.clientY + radius > wh|| e.clientY- radius < 0 + navbar.offsetHeight) {
                     ballX = ww/2
                     ballY = wh/2
-                } else {
+                }
+                else {
                     ballX = centerX
                     ballY = centerY
                 }
@@ -135,6 +188,7 @@ export default function Ball() {
         };
         const onMouseUp = (e:MouseEvent) => {
             if (clicks > 1) {
+             
                 if (isDragging) {
                     isDragging = false;
                     const dx = ballX - centerX;
@@ -156,12 +210,7 @@ export default function Ball() {
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            hoopLeft.centerX = ((ww / 4) * 3) + 45;
-            hoopLeft.centerY = wh / 3;
-            hoopRight.centerX = ((ww / 4) * 3) - 45;
-            hoopRight.centerY = wh / 3;
-            hoopBottom.centerX = ((ww / 4) * 3) - 45;
-            hoopBottom.centerY = (wh / 3) + 50;
+            randomizeHoop('random')
 
 
             vx = 0;
@@ -185,23 +234,19 @@ export default function Ball() {
             hoopBottom.centerY = (wh / 3) + 50;
 
         }
-
-        const randomizeHoop = () => {
-            console.log('test')
-            // hoopLeft.centerX = ((ww / 4) * 3) + 45;
-            // hoopLeft.centerY = wh / 3;
-            // hoopRight.centerX = ((ww / 4) * 3) - 45;
-            // hoopRight.centerY = wh / 3;
-            // hoopBottom.centerX = ((ww / 4) * 3) - 45;
-            // hoopBottom.centerY = (wh / 3) + 50;
-            hoopLeft.centerX = ((ww / 2) + 45);
-            hoopLeft.centerY = wh / 3;
-            hoopRight.centerX = ((ww / 2) - 45);
-            hoopRight.centerY = wh / 3;
-            hoopBottom.centerX = ((ww / 2) - 45);
-            hoopBottom.centerY = (wh / 3) + 50;
-        }
-
+        const randomizeHoop = (mode: 'sequential' | 'random') => {
+            console.log('randomizing hoop');
+            const { x, y } = randomOrSequential(mode);
+        
+            hoopLeft.centerX = x + 45;
+            hoopLeft.centerY = y;
+        
+            hoopRight.centerX = x - 45;
+            hoopRight.centerY = y;
+        
+            hoopBottom.centerX = x - 45;
+            hoopBottom.centerY = y + 50;
+        };
         const toggleHoop = () => {
             hoop = !hoop;
             console.log('hoop', hoop)
@@ -256,10 +301,33 @@ export default function Ball() {
                       vy *= -damping;
                   } else {
                       ballY = hoopBottom.centerY + hoopBottom.height + radius;
-                      // ballY = hoopBottom.centerY + radius;
                       vy *= -damping;
                   }
               }
+            }
+
+
+            //inside hoop check
+            if (ballX + radius > hoopRight.centerX && ballX - radius < hoopLeft.centerX && 
+                ballY + radius < hoopBottom.centerY + hoopBottom.height
+                && ballY + radius > hoopBottom.centerY - hoopRight.height) {
+
+                    // setInsideHoop()
+                    // console.log('inside hoop', insideHoop)
+                    insideHoopCounter += 1
+
+                    vx *= 0.9
+                    vy *= 0.98
+
+                    if (insideHoopCounter > 100) {
+                        console.log('test')
+                        resetHoopCounter()
+
+                        randomizeHoop('random') 
+
+                    }
+
+
             }
 
                 //canvascollision
@@ -326,9 +394,6 @@ export default function Ball() {
             ctx.beginPath();
             ctx.arc(ballX, ballY, radius, 0, Math.PI * 2);
             ctx.fill();
-            // hoopLeft.draw(ctx);
-            // hoopRight.draw(ctx)
-            // hoopBottom.draw(ctx);
 
             if (hoop) {
                 hoopLeft.draw(ctx);
@@ -349,8 +414,10 @@ export default function Ball() {
 
         //buttons
         if (randomizerButton) {
-            randomizerButton.addEventListener('click', randomizeHoop);
-        }  
+            randomizerButton.addEventListener('click', () => {
+                randomizeHoop('random')
+            })
+        }
         if (darkmodeToggleButton) {
             darkmodeToggleButton.addEventListener('click', handleThemeToggle);
         }
@@ -373,10 +440,12 @@ export default function Ball() {
                 darkmodeToggleButton.removeEventListener('click', handleThemeToggle);
             }
             if (randomizerButton) {
-                randomizerButton.removeEventListener('click', randomizeHoop);
+                randomizerButton.removeEventListener('click', () => {
+                    randomizeHoop('random')
+                })
             }
             if (hoopButton) {
-                hoopButton.removeEventListener('click', randomizeHoop);
+                hoopButton.removeEventListener('click', toggleHoop);
             }
 
             window.removeEventListener("mousemove", onMouseMove);
@@ -399,14 +468,14 @@ export default function Ball() {
         <div className="bodyCenter">
         <div>
 
-        {/* <div style={{display:'flex',flexDirection:'row',justifyContent:'start', alignItems:'center'}}>  */}
         <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
             <h1>Ball</h1>
 
+            <div style={{display: 'flex', flexDirection: 'row'}} id='buttonDeadZone'>
 
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-
-            <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} 
+            <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)', 
+            // padding:'15px'
+            }} 
             id="randomizerButton" 
             whileHover={{rotate:180}}
             >
@@ -415,7 +484,9 @@ export default function Ball() {
                 </span>
             </motion.button>
 
-            <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} 
+            <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)', 
+            // padding:'15px'
+        }} 
             id="hoopButton" 
             whileHover={{rotate:180}}
             >
@@ -423,9 +494,6 @@ export default function Ball() {
                     orders
                 </span>
             </motion.button>
-
-
-
 
             </div>
             </div>
