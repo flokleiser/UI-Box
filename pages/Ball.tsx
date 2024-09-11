@@ -29,10 +29,7 @@ export default function Ball() {
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3; 
         let currentIndex = 0
-        // let insideHoop = false;
-
         let hoop = true;
-        // let hoop = false;
         let animationFrameId: number;
 
         const randomizerButton = document.getElementById('randomizerButton');
@@ -44,11 +41,6 @@ export default function Ball() {
         const deadZonePadding = 0
 
         let insideHoopCounter = 0;
-
-        // function setInsideHoop() {
-        //     // insideHoop = true
-        //     insideHoop = !insideHoop
-        // }
 
         function resetHoopCounter() {
             insideHoopCounter = 0
@@ -63,7 +55,6 @@ export default function Ball() {
             {x:ww/3, y: wh/2},
             {x:ww/1.5, y: wh/2},
         ]
-
         const randomOrSequential = (mode: 'sequential' | 'random') => {
             let coords;
         

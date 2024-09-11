@@ -52,9 +52,7 @@ function Ball() {
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3;
         let currentIndex = 0;
-        // let insideHoop = false;
         let hoop = true;
-        // let hoop = false;
         let animationFrameId;
         const randomizerButton = document.getElementById('randomizerButton');
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
@@ -63,10 +61,6 @@ function Ball() {
         const buttonDivRect = buttonDiv.getBoundingClientRect();
         const deadZonePadding = 0;
         let insideHoopCounter = 0;
-        // function setInsideHoop() {
-        //     // insideHoop = true
-        //     insideHoop = !insideHoop
-        // }
         function resetHoopCounter() {
             insideHoopCounter = 0;
         }
