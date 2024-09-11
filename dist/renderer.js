@@ -50306,7 +50306,7 @@ function Slider({ value, children, set, min = 0, max = 100 }) {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.startPage = void 0;
-exports.startPage = "Ball";
+exports.startPage = "Tether";
 const setActivePage = (page) => {
     console.log('setActivePage', page);
     const event = new CustomEvent('pageChange', { detail: { page } });
@@ -50353,7 +50353,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = Ball;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
-const Window_1 = __webpack_require__(/*! ../components/Window */ "./src/components/Window.tsx");
 function Ball() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     const canvasRef = (0, react_1.useRef)(null);
@@ -50373,13 +50372,16 @@ function Ball() {
         let ballY = centerY;
         let vx = 0;
         let vy = 0;
-        let clicks = Window_1.startPage === 'Ball' ? 1 : 0;
+        // let clicks = startPage === 'Ball' ? 1 : 0;
+        let clicks = 0;
         const damping = 0.7;
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3;
         let currentIndex = 0;
+        // let insideHoop = false;
         let hoop = true;
+        // let hoop = false;
         let animationFrameId;
         const randomizerButton = document.getElementById('randomizerButton');
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
@@ -52826,12 +52828,10 @@ exports["default"] = Tether;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function Tether() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
-    // const [colorChange, setColorChange] = useState(false)
+    const [colorChange, setColorChange] = (0, react_1.useState)(false);
     (0, react_1.useEffect)(() => {
         const canvasTether = document.querySelector("#sceneTether");
         const ctx = canvasTether.getContext("2d", { willReadFrequently: true });
-        // const ctx2 = canvasTether.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
-        // const ctx3 = canvasTether.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
         const mouse = { x: 0, y: 0 };
         const radius = 50;
         const radius2 = 25;
@@ -52863,12 +52863,12 @@ function Tether() {
         let vx3 = 0;
         let vy3 = 0;
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
-        // const damping = 0.9; 
-        // const stiffness = 0.1; 
+        let animationFrameId;
         const damping = 0.8;
-        // const stiffness = 0.05; 
         const stiffness = 0.1;
-        const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
+        const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color');
+        const canvasElementColor = getComputedStyle(document.documentElement).getPropertyValue('--canvas-colorelement') || 'black';
+        //mouse movements
         const onMouseMove = (e) => {
             if (isDragging) {
                 mouse.x = e.clientX;
@@ -52939,11 +52939,10 @@ function Tether() {
                 isDragging3 = false;
             }
         };
+        //init and resize
         const initscene = () => {
             ww = canvasTether.width = window.innerWidth;
             wh = canvasTether.height = window.innerHeight;
-            // centerX = ww / 2;
-            // centerY = wh / 2;
             centerX = ww / 2;
             centerY = (wh / 3) * 2;
             particleX1 = centerX;
@@ -52967,8 +52966,6 @@ function Tether() {
         const resizeScene = () => {
             ww = canvasTether.width = window.innerWidth;
             wh = canvasTether.height = window.innerHeight;
-            // centerX = ww / 2;
-            // centerY = wh / 2;
             centerX = ww / 2;
             centerY = (wh / 3) * 2;
             particleX1 = centerX;
@@ -52988,16 +52985,17 @@ function Tether() {
             vx3 = 0;
             vy3 = 0;
         };
-        let animationFrameId;
         const render = () => {
             const distToCenter1 = Math.hypot(particleX1 - centerX, particleY1 - centerY);
             const distToCenter2 = Math.hypot(centerX2 - particleX2, centerY2 - particleY2);
             const distToCenter3 = Math.hypot(centerX3 - particleX3, centerY3 - particleY3);
             if (distToCenter1 > 150) {
                 colorChange1 = true;
+                // setColorChange(true)
             }
             else {
                 colorChange1 = false;
+                // setColorChange(false)
             }
             if (distToCenter2 > 150) {
                 colorChange2 = true;
@@ -53084,7 +53082,8 @@ function Tether() {
             ctx.stroke();
             //ball
             // ctx.fillStyle = color;
-            ctx.fillStyle = colorChange1 ? '#666' : color;
+            // ctx.fillStyle = colorChange1? '#666':color;
+            ctx.fillStyle = colorChange1 ? canvasElementColor : color;
             ctx.beginPath();
             ctx.arc(particleX1, particleY1, radius, 0, Math.PI * 2);
             ctx.fill();
@@ -53138,7 +53137,8 @@ function Tether() {
                     top: 0,
                     left: 0,
                     overflow: 'hidden',
-                    zIndex: -10
+                    // zIndex: -10
+                    zIndex: 100
                 }, id: "sceneTether" }))));
 }
 

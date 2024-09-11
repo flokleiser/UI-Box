@@ -26,7 +26,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Ball;
 const react_1 = __importStar(require("react"));
 const framer_motion_1 = require("framer-motion");
-const Window_1 = require("../components/Window");
 function Ball() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     const canvasRef = (0, react_1.useRef)(null);
@@ -46,13 +45,16 @@ function Ball() {
         let ballY = centerY;
         let vx = 0;
         let vy = 0;
-        let clicks = Window_1.startPage === 'Ball' ? 1 : 0;
+        // let clicks = startPage === 'Ball' ? 1 : 0;
+        let clicks = 0;
         const damping = 0.7;
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
         const gravity = 0.3;
         let currentIndex = 0;
+        // let insideHoop = false;
         let hoop = true;
+        // let hoop = false;
         let animationFrameId;
         const randomizerButton = document.getElementById('randomizerButton');
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');

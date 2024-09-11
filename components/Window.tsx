@@ -1,6 +1,6 @@
 export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Test' | 'Cube' | 'Musializer' | 'Lock';
 
-export const startPage = "Ball"
+export const startPage = "Tether"
 
 declare global {
   interface Window {

@@ -3,13 +3,11 @@ import React, { useEffect, useState } from 'react';
 export default function Tether() {
 
     const [resetTrigger, setResetTrigger] = useState(0);
-    // const [colorChange, setColorChange] = useState(false)
+    const [colorChange, setColorChange] = useState(false)
 
     useEffect(() => {
         const canvasTether = document.querySelector("#sceneTether") as HTMLCanvasElement;
         const ctx = canvasTether.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
-        // const ctx2 = canvasTether.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
-        // const ctx3 = canvasTether.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
         const mouse = { x: 0, y: 0 };
         const radius = 50;
         const radius2 = 25;
@@ -35,33 +33,28 @@ export default function Tether() {
         let particleY1 = centerY;
         let vx1 = 0; 
         let vy1 = 0; 
-
         let particleX2 = centerX2;
         let particleY2 = centerY2;
         let vx2 = 0; 
         let vy2 = 0; 
-
         let colorChange1 = false;
         let colorChange2 = false;
         let colorChange3 = false;
-
         let particleX3 = centerX3;
         let particleY3 = centerY3;
         let vx3 = 0; 
         let vy3 = 0; 
-
-
-
         const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
 
+        let animationFrameId: number;
 
-        // const damping = 0.9; 
-        // const stiffness = 0.1; 
         const damping = 0.8; 
-        // const stiffness = 0.05; 
         const stiffness = 0.1; 
-        const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
+
+        const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color');
+        const canvasElementColor = getComputedStyle(document.documentElement).getPropertyValue('--canvas-colorelement') || 'black';
         
+        //mouse movements
         const onMouseMove = (e:MouseEvent) => {
             if (isDragging) {
                 mouse.x = e.clientX;
@@ -85,7 +78,6 @@ export default function Tether() {
             }
 
         };
-
         const onTouchMove = (e:TouchEvent) => {
             if (e.touches.length > 0 && isDragging) {
                 particleX1 = mouse.x;
@@ -103,7 +95,6 @@ export default function Tether() {
             }
 
         };
-
         const onTouchEnd = () => {
             if (isDragging) {
                 isDragging = false;
@@ -115,7 +106,6 @@ export default function Tether() {
                 isDragging3 = false;
             }
         };
-
         const onMouseDown = (e:MouseEvent) => {
             const dist = Math.hypot(e.clientX - particleX1, e.clientY - particleY1);
 
@@ -133,7 +123,6 @@ export default function Tether() {
                 isDragging3 = true;
             }
         };
-
         const onMouseUp = () => {
             if (isDragging) {
                 isDragging = false;
@@ -146,11 +135,10 @@ export default function Tether() {
             }
         };
 
+        //init and resize
         const initscene = () => {
             ww = canvasTether.width = window.innerWidth;
             wh = canvasTether.height = window.innerHeight;
-            // centerX = ww / 2;
-            // centerY = wh / 2;
             centerX = ww / 2; 
             centerY = (wh / 3)* 2;
             particleX1 = centerX;
@@ -174,12 +162,9 @@ export default function Tether() {
 
             render();
         };
-
         const resizeScene = () => {
             ww = canvasTether.width = window.innerWidth;
             wh = canvasTether.height = window.innerHeight;
-            // centerX = ww / 2;
-            // centerY = wh / 2;
             centerX = ww / 2; 
             centerY = (wh / 3)* 2;
             particleX1 = centerX;
@@ -202,8 +187,6 @@ export default function Tether() {
             vy3 = 0; 
         }
 
-        let animationFrameId: number;
-
         const render = () => {
 
             const distToCenter1 = Math.hypot(particleX1-centerX, particleY1-centerY);
@@ -212,9 +195,11 @@ export default function Tether() {
 
             if (distToCenter1 > 150) {
                 colorChange1 = true
+                // setColorChange(true)
             }
             else {
                 colorChange1 = false;
+                // setColorChange(false)
             }
             if (distToCenter2 > 150) {
                 colorChange2 = true
@@ -244,7 +229,6 @@ export default function Tether() {
                 vx1 = 0;
                 vy1 = 0;
             }
-
 
             if (!isDragging2) {
                 const dx2 = centerX2 - particleX2;
@@ -305,12 +289,10 @@ export default function Tether() {
             ctx.lineTo(particleX3, particleY3);
             ctx.stroke();
 
-
-        
-
             //ball
             // ctx.fillStyle = color;
-            ctx.fillStyle = colorChange1? '#666':color;
+            // ctx.fillStyle = colorChange1? '#666':color;
+            ctx.fillStyle = colorChange1? canvasElementColor : color;
             ctx.beginPath();
             ctx.arc(particleX1, particleY1, radius, 0, Math.PI * 2);
             ctx.fill();
@@ -343,7 +325,6 @@ export default function Tether() {
         window.addEventListener("mouseup", onMouseUp);
         window.addEventListener("touchend", onTouchEnd);
         initscene();
-
         return () => {
 
             if (darkmodeToggleButton) {
@@ -375,7 +356,8 @@ export default function Tether() {
                     top: 0,
                     left: 0,
                     overflow: 'hidden',
-                    zIndex: -10
+                    // zIndex: -10
+                    zIndex: 100
                 }}
                 id="sceneTether">
             </canvas>

@@ -4,6 +4,7 @@
   --particle-color-light: #ddd; 
   --canvas-colorelement-dark: #ddd;
   --canvas-colorelement-light: #333;
+
 }
 
 * {
@@ -68,6 +69,7 @@ nav{
   border-radius: 3px;
   border:0;
   background-color: rgb(107, 107, 107);
+  z-index: 101;
 }
 .navbarButton:hover{
   display:flex;
