@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.startPage = void 0;
-exports.startPage = "Ball";
+exports.startPage = "Tether";
 const setActivePage = (page) => {
     console.log('setActivePage', page);
     const event = new CustomEvent('pageChange', { detail: { page } });
