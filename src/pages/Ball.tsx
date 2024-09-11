@@ -23,7 +23,8 @@ export default function Ball() {
         let ballY = centerY;
         let vx = 0; 
         let vy = 0; 
-        let clicks = startPage === 'Ball' ? 1 : 0;
+        // let clicks = startPage === 'Ball' ? 1 : 0;
+        let clicks = 0
         const damping = 0.7; 
         const stiffness = 0.4; 
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
