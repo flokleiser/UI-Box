@@ -16,11 +16,6 @@ export default function Lock() {
     let animationFrameId:number;
     let resetAnimationFrameId:number;
 
-    // const [filledCircle, setFilledCircle] = useState(0);
-    // const [filledCircle1, setFilledCircle1] = useState(false);
-    // const [filledCircle2, setFilledCircle2] = useState(false);
-    // const [filledCircle3, setFilledCircle3] = useState(false);
-    // const [filledCircle4, setFilledCircle4] = useState(false);
     const [filledCircleCount, setFilledCircleCount] = useState(0); // Change to state
 
     useEffect(() => {
@@ -48,9 +43,7 @@ export default function Lock() {
             }
         };
     }, [isDragging]); 
-
     useEffect(() => {
-        // let animationFrameId:number;
         const updateRotation = () => {
             setVelocity((prevVelocity) => {
                 const newVelocity = prevVelocity * friction;
@@ -73,7 +66,6 @@ export default function Lock() {
             window.removeEventListener('mouseup', handleMouseUp);
         };
     }, [isDragging, dragStartAngle, initialRotation]);
-
     const calculateAngle = (x:number, y:number) => {
         if (!lockRef.current) return 0;
         const rect = lockRef.current.getBoundingClientRect();
@@ -82,7 +74,6 @@ export default function Lock() {
 
         return Math.atan2(y - lockY, x - lockX) * (180 / Math.PI);
     };
-
     const fillCircles = () => {
         setFilledCircleCount((prevCount) => {
             if (prevCount < 4) {
@@ -91,8 +82,6 @@ export default function Lock() {
                 return 0
             }})
     }
-
-
     const handleMouseDown = (e:React.MouseEvent<HTMLDivElement>) => {
         setIsDragging(true);
         const angle = calculateAngle(e.clientX, e.clientY);
@@ -100,7 +89,6 @@ export default function Lock() {
         setDragStartAngle(angle);
         setInitialRotation(rotation);
     };
-
     const handleMouseMove = (e:MouseEvent) => {
         if (isDragging) {
             const currentAngle = calculateAngle(e.clientX, e.clientY);
@@ -126,19 +114,15 @@ export default function Lock() {
 
         <div style={{display: 'flex', flexDirection: 'row'}}>
             <div className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)', }} >
-                {/* <span className="material-symbols-outlined"> {filledCircle1 ? 'radio_button_unchecked' : 'radio_button_checked'} </span> */}
                 <span className="material-symbols-outlined"> {filledCircleCount >= 1? 'radio_button_checked' : 'radio_button_unchecked'} </span>
             </div>
             <div className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)', }} >
-                {/* <span className="material-symbols-outlined"> radio_button_unchecked </span> */}
                 <span className="material-symbols-outlined"> {filledCircleCount >= 2? 'radio_button_checked' : 'radio_button_unchecked'} </span>
             </div>
             <div className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)', }} >
-                {/* <span className="material-symbols-outlined"> radio_button_unchecked </span> */}
                 <span className="material-symbols-outlined"> {filledCircleCount >= 3? 'radio_button_checked' : 'radio_button_unchecked'} </span>
             </div>
             <div className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)', }} >
-                {/* <span className="material-symbols-outlined"> radio_button_unchecked </span> */}
                 <span className="material-symbols-outlined"> {filledCircleCount === 4? 'radio_button_checked' : 'radio_button_unchecked'} </span>
             </div>
         </div>
@@ -180,7 +164,6 @@ export default function Lock() {
             }} 
             onMouseOver={() =>  {isDragging? fillCircles() :' ' }}
             />
-
             <div className="lockText" style={{ top: '50%', left: '85%', pointerEvents:'none'}} >
                1 
             </div>
