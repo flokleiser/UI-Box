@@ -3,7 +3,6 @@ import {motion} from 'framer-motion'
 import { startPage } from '../components/Window';
 
 export default function Ball() {
-
     const [resetTrigger, setResetTrigger] = useState(0);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const navbar = document.querySelector('#navbarRoot') as HTMLElement;

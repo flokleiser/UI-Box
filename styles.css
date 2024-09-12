@@ -567,6 +567,62 @@ nav{
   width:100%;
 }
 
+
+.lockDiv {
+    position:relative;
+    width:425px;
+    height:425px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.lock {
+    position:absolute;
+    width:425px;
+    height:425px;
+    border-radius: 50%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.lockCenter1{
+    position:absolute;
+    width:410px;
+    height:410px;
+    background-color: #333;
+    transform:translate(-50%,-50%);
+    border-radius: 50%;
+}
+.lockCenter2{
+    position:absolute;
+    width:180px;
+    height:180px;
+    background-color: #ddd;
+    transform:translate(-50%,-50%);
+    border-radius: 50%;
+}
+.smallerLockCircle {
+    position:absolute;
+    width:70px;
+    height:70px;
+    background-color: #ddd;
+    transform:translate(-50%,-50%);
+    border-radius: 50%;
+}
+.smallerLockCircleInvert {
+    position:absolute;
+    width:125px;
+    height:125px;
+    background-color: #333;
+    /* background-color: #ddd; */
+    transform:translate(-50%,-50%);
+}
+
 @media (prefers-color-scheme: dark) {
   body { background: #333; color: white; }
   :root {
@@ -578,6 +634,30 @@ nav{
 
 @media (prefers-color-scheme: light) {
   body { background: #ddd; color: #333; }
+
+  .lockDiv {
+    background-color: #333
+  }
+  .lock {
+    background-color: #333
+  }
+  .lockCenter1{
+    background-color: #ddd 
+  }
+  .lockCenter2{
+    background-color: #333
+  }
+  .smallerLock {
+    /* background-color: #ddd; */
+    background-color: #333
+    /* background-color: #ddd */
+  }
+  .smallerLockCircle {
+    background-color: #333
+  }
+  .smallerLockCircleInvert {
+    background-color: #ddd;
+  }
 
   .navbarButton:hover{
     display:flex;
