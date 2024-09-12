@@ -625,14 +625,12 @@ nav{
 }
 .lockText {
     position:absolute;
-    /* width:125px;
-    height:125px; */
     color: #333;
     transform:translate(-50%,-50%); 
-    /* font-size: 2.5rem; */
     font-size: 2rem;
     justify-self: 'center';
     opacity:0.5;
+    font-weight: 700;
 
 }
 
