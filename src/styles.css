@@ -614,6 +614,9 @@ nav{
     transform:translate(-50%,-50%);
     border-radius: 50%;
 }
+.smallerLockCircle:hover {
+    background-color: rgba(255, 255, 255,0.5);
+}
 .smallerLockCircleInvert {
     position:absolute;
     width:125px;
