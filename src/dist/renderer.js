@@ -51543,11 +51543,6 @@ function Lock() {
     const friction = 0.1;
     let animationFrameId;
     let resetAnimationFrameId;
-    // const [filledCircle, setFilledCircle] = useState(0);
-    // const [filledCircle1, setFilledCircle1] = useState(false);
-    // const [filledCircle2, setFilledCircle2] = useState(false);
-    // const [filledCircle3, setFilledCircle3] = useState(false);
-    // const [filledCircle4, setFilledCircle4] = useState(false);
     const [filledCircleCount, setFilledCircleCount] = (0, react_1.useState)(0); // Change to state
     (0, react_1.useEffect)(() => {
         if (!isDragging && rotation !== 0) {
@@ -51576,7 +51571,6 @@ function Lock() {
         };
     }, [isDragging]);
     (0, react_1.useEffect)(() => {
-        // let animationFrameId:number;
         const updateRotation = () => {
             setVelocity((prevVelocity) => {
                 const newVelocity = prevVelocity * friction;
