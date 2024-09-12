@@ -18,6 +18,13 @@ export default function Cube() {
     const tiltX = useTransform(y, [0, 400], [15, -15]);
     const tiltY = useTransform(x, [0, 400], [-15, 15]);
 
+    const [is3d, setIs3d] = useState(false);
+
+    const x3d = useMotionValue(0)
+    const y3d = useMotionValue(0)
+    const rotateX3d = useTransform(y3d, [-100, 100], [60, -60])
+    const rotateY3d = useTransform(x3d, [-100, 100], [-60, 60])
+
 
     const compositeRotateX = useTransform(() => rotateX.get() + tiltX.get());
     const compositeRotateY = useTransform(() => rotateY.get() + tiltY.get());
@@ -47,6 +54,11 @@ export default function Cube() {
     }
 
 
+    const handle3dClick = () => {   
+        setIs3d(!is3d);
+        console.log('3d', is3d)
+    }
+
 
     function animateRotation(newRotateX:number, newRotateY:number) {
         return new Promise<void>((resolve) => {
@@ -56,15 +68,6 @@ export default function Cube() {
             ]).then(() => resolve())
         });
     }
-
-    // function animateDiagonalRotation() {
-    //     const diagonalAxis = {x:1, y:1, z:0}
-    //     // const angle = 90;
-    //     const angle = 180;
-
-    //     animate(rotateX, angle * diagonalAxis.x, {duration:0.5});
-    //     animate(rotateY, angle * diagonalAxis.y, {duration:0.5});
-    // }
 
 
     async function gridClick(event: React.MouseEvent<HTMLDivElement>) {
@@ -148,14 +151,23 @@ export default function Cube() {
     return (
         <div className="bodyCenter">
             <div>
-            <div style={{display:'flex',flexDirection:'row',justifyContent:'start', alignItems:'center'}}> 
+            {/* <div style={{display:'flex',flexDirection:'row',justifyContent:'start', alignItems:'center'}}>  */}
+            <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
                 <h1>Cube</h1>
 
+                <div style={{display: 'flex', flexDirection: 'row'}}>
                 <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} onMouseDown={handleSwitchClick}>
                         <span className="material-symbols-outlined">
                         {isSwitched? "web_traffic" : "drag_pan"} 
                         </span>
                     </motion.button>
+
+                <motion.button className="navbarButton" style={{backgroundColor:'rgba(0,0,0,0)'}} onMouseDown={handle3dClick}>
+                    <span className="material-symbols-outlined">
+                        view_in_ar
+                    </span>
+                </motion.button>
+                </div>
 
             </div>
 
@@ -166,7 +178,7 @@ export default function Cube() {
 
                     <motion.div className="cubeContainer" id="cubeContainer"
 
-                        style={{
+                        style={{ 
                             width: 400,
                             height: 400,
                             display: "grid",
@@ -180,6 +192,8 @@ export default function Cube() {
                         onMouseMove={handleMouse}
                         onMouseLeave={handleMouseLeave}
                     >
+
+
                         {["top-left", 
                         "top-center", 
                         "top-right", 
@@ -197,19 +211,23 @@ export default function Cube() {
                         <motion.div className='cube'
                             style={{
                                 display:"flex",
-
                                 justifyContent:"flex-start",
                                 alignItems:"flex-start",
                                 rotateX: compositeRotateX,
                                 rotateY: compositeRotateY,
                                 position:'absolute',
-                                transform:"translate(-50%,-50%)"
+                                transform:"translate(-50%,-50%)",
 
+                                x: x3d,
+                                y: y3d,
+                                // rotateX: rotateX3d,
+                                // rotateY: rotateY3d,
                             }}
-                            // onClick={animateDiagonalRotation}
                             whileTap={{scale:0.95}}
+                            drag
+                            dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                            dragElastic={0.6}
                         >
-
 
                         <motion.div className="cube"
                             drag

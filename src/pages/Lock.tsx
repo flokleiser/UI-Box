@@ -1,5 +1,6 @@
 //https://github.com/bobboteck/JoyStick?tab=readme-ov-file
 import React, { useEffect, useState, useRef } from 'react';
+import {motion, useSpring, useTransform, useAnimation, useDragControls, useMotionValue} from "framer-motion"
 
 
 export default function Lock() {
@@ -12,43 +13,13 @@ export default function Lock() {
     const [initialRotation, setInitialRotation] = useState(0);
 
     const [velocity, setVelocity] = useState(0);
-    const friction = 0.99;
+    const friction = 0.5;
 
     const [lastTime, setLastTime] = useState(0);
     const maxSpeed = 15
-    let direction = 0
-
-    let prevSide:string | null = null;
 
 
-const handleWheel = (event:WheelEvent) => {
-    // const scrollAmount = event.deltaY;
-    let scrollAmount = event.deltaY;
-    const rotationIncrement = 20;
-
-    const currentSide = event.clientX < window.innerWidth / 2 ? 'left' : 'right';
-
-
-    if (prevSide !==null && prevSide !== currentSide) {
-        setVelocity(velocity * friction);
-        direction = 0
-    }
-
-    if (prevSide === 'left') {
-        direction = scrollAmount < 0 ? 1:-1
-    }
-    else {
-        direction = scrollAmount < 0 ? -1:1
-    }
-
-
-    const newVelocity = Math.min(maxSpeed, Math.max(-maxSpeed, velocity + direction * rotationIncrement));
-    setVelocity(newVelocity)
-
-    prevSide = currentSide
-};
-
-
+    //old mouse logic
 useEffect(() => {
     let animationFrameId:number;
     const updateRotation = () => {
@@ -67,15 +38,6 @@ useEffect(() => {
         cancelAnimationFrame(animationFrameId);
     };
 }, []);
-
-useEffect(() => {
-    window.addEventListener('wheel', handleWheel);
-
-    return () => {
-        window.removeEventListener('wheel', handleWheel);
-    };
-}, []);
-
 const calculateAngle = (x:number, y:number) => {
     if (!lockRef.current) return 0;
     const rect = lockRef.current.getBoundingClientRect();
@@ -84,7 +46,6 @@ const calculateAngle = (x:number, y:number) => {
 
     return Math.atan2(y - spinnerY, x - spinnerX) * (180 / Math.PI);
 };
-
 const handleMouseDown = (e:React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     const angle = calculateAngle(e.clientX, e.clientY);
@@ -93,7 +54,6 @@ const handleMouseDown = (e:React.MouseEvent<HTMLDivElement>) => {
     setInitialRotation(rotation);
     setLastTime(Date.now());
 };
-
 const handleMouseMove = (e:MouseEvent) => {
     if (isDragging) {
         const currentAngle = calculateAngle(e.clientX, e.clientY);
@@ -111,24 +71,14 @@ const handleMouseMove = (e:MouseEvent) => {
 
         if (timeDiff > 0) {
             const newVelocity = Math.min(maxSpeed, Math.max(-maxSpeed, angleDiff / timeDiff));
-            setVelocity(newVelocity);
+            setVelocity((newVelocity)/4);
         }
         setLastTime(currentTime);
     }
 };
-
 const handleMouseUp = () => {
     setIsDragging(false);
 };
-
-useEffect(() => {
-    window.addEventListener('wheel', handleWheel);
-
-    return () => {
-        window.removeEventListener('wheel', handleWheel);
-    };
-}, []);
-
 useEffect(() => {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
@@ -144,31 +94,42 @@ useEffect(() => {
             <h1>Lock</h1>
         </div>
 
+
         <div style={{justifyContent:'center', alignItems:'center', display:'flex'}}>
-        <div className="lock"
+        <div className='lockDiv'>
+        <motion.div className="lock"
             ref={lockRef}
             onMouseDown={handleMouseDown}
             style={{ transform: `rotate(${rotation}deg)` }}
         >
 
-        <div className="smallerLock" style={{ top: '50%', left: '50%' }}></div>
+            <div className="lockCenter1" style={{ top: '50%', left: '50%' }}></div>
+            <div className="smallerLockCircle" style={{top: '74.75%', left : '74.75%', borderRadius:'0 0 230px 0',width:200,height:200}} />
 
-            {/* <div className="smallerLockCircle" style={{ top: '0%', left: '50%' }}></div>
-            <div className="smallerLockCircle" style={{ top: '100%', left: '50%' }}></div>
-            <div className="smallerLockCircle" style={{ top: '25%', left: '93.5%' }}></div>
-            <div className="smallerLockCircle" style={{ top: '25%', left: '6.5%' }}></div>
-            <div className="smallerLockCircle" style={{ top: '75%', left: '6.5%' }}></div>
-            <div className="smallerLockCircle" style={{ top: '75%', left: '93.5%' }}></div> */}
+            <div className="smallerLockCircleInvert" style={{ top: '57%', left: '84.75%',  width:115,height:57.5, borderRadius:'0px 0px 57.5px 57.5px'}} />
+            <div className="smallerLockCircleInvert" style={{ top: '84.75%', left: '57%', height:115,width:57.5, borderRadius:'0px 57.5px 57.5px 0px'}} />
 
-            <div className="smallerLockCircle" style={{ top: '15%', left: '50%' }}></div>
-            <div className="smallerLockCircle" style={{ top: '85%', left: '50%' }}></div>
-            <div className="smallerLockCircle" style={{ top: '32.5%', left: '80%' }}></div>
-            <div className="smallerLockCircle" style={{ top: '32.5%', left: '20%' }}></div>
-            <div className="smallerLockCircle" style={{ top: '67.5%', left: '20%' }}></div>
-            <div className="smallerLockCircle" style={{ top: '67.5%', left: '80%' }}></div>
+            <div className="lockCenter2" style={{top: '50%', left: '50%'}}></div>
+            <div className="lockCenter1" style={{width:165,height:165,top: '50%', left: '50%' }}></div>
+
+            <div className="smallerLockCircle" style={{ top: '50%', left: '15%' }} />
+            <div className="smallerLockCircle" style={{ top: '15%', left: '50%' }} />
+
+            <div className="smallerLockCircle" style={{ top: '50%', left: '85%' }} />
+            <div className="smallerLockCircle" style={{ top: '85%', left: '50%' }} />
+
+            <div className="smallerLockCircle" style={{ top: '32.5%', left: '80%' }} />
+            <div className="smallerLockCircle" style={{ top: '67.5%', left: '20%' }} />
+            <div className="smallerLockCircle" style={{ top: '32.5%', left: '20%' }} />
+            <div className="smallerLockCircle" style={{ top: '19.5%', left: '32.5%' }} />
+            <div className="smallerLockCircle" style={{ top: '80.5%', left: '32.5%' }} />
+            <div className="smallerLockCircle" style={{ top: '19.5%', left: '67.5%' }} />
+
+
+
+        </motion.div>
 
         </div>
-
         </div>
 
         </div>
