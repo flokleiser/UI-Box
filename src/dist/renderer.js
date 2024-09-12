@@ -50044,6 +50044,7 @@ const Joystick_1 = __importDefault(__webpack_require__(/*! ../pages/Joystick */ 
 const Cube_1 = __importDefault(__webpack_require__(/*! ../pages/Cube */ "./src/pages/Cube.tsx"));
 const Test_1 = __importDefault(__webpack_require__(/*! ../pages/Test */ "./src/pages/Test.tsx"));
 const Musializer_1 = __importDefault(__webpack_require__(/*! ../pages/Musializer */ "./src/pages/Musializer.tsx"));
+const Lock_1 = __importDefault(__webpack_require__(/*! ../pages/Lock */ "./src/pages/Lock.tsx"));
 const Window_1 = __webpack_require__(/*! ./Window */ "./src/components/Window.tsx");
 function App() {
     const [page, setPage] = (0, react_1.useState)(Window_1.startPage);
@@ -50085,6 +50086,9 @@ function App() {
             break;
         case 'Musializer':
             CurrentPage = Musializer_1.default;
+            break;
+        case 'Lock':
+            CurrentPage = Lock_1.default;
             break;
         default:
             CurrentPage = Home_1.default;
@@ -50194,22 +50198,24 @@ const Navbar = ({ activePage }) => {
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "home")),
                 react_1.default.createElement("button", { className: activePage === 'Buttons' ? "navbarButton active" : "navbarButton", id: "buttonspageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "apps")),
+                react_1.default.createElement("button", { className: activePage === 'Switches' ? "navbarButton active" : "navbarButton", id: "switchespageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
+                react_1.default.createElement("button", { className: activePage === 'Cube' ? "navbarButton active" : "navbarButton", id: "cubepageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "deployed_code")),
                 react_1.default.createElement("button", { className: activePage === 'Spinner' ? "navbarButton active" : "navbarButton", id: "spinnerpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "network_node")),
                 react_1.default.createElement("button", { className: activePage === 'Particles' ? "navbarButton active" : "navbarButton", id: "particlespageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lens_blur")),
-                react_1.default.createElement("button", { className: activePage === 'Switches' ? "navbarButton active" : "navbarButton", id: "switchespageButton" },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "toggle_on")),
-                react_1.default.createElement("button", { className: activePage === 'Tether' ? "navbarButton active" : "navbarButton", id: "tetherpageButton" },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
                 react_1.default.createElement("button", { className: activePage === 'Ball' ? "navbarButton active" : "navbarButton", id: "ballpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "airline_stops")),
+                react_1.default.createElement("button", { className: activePage === 'Tether' ? "navbarButton active" : "navbarButton", id: "tetherpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "tenancy")),
                 react_1.default.createElement("button", { className: activePage === 'Joystick' ? "navbarButton active" : "navbarButton", id: "joystickpageButton" },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" }, "joystick")),
-                react_1.default.createElement("button", { className: activePage === 'Cube' ? "navbarButton active" : "navbarButton", id: "cubepageButton" },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "deployed_code")),
                 react_1.default.createElement("button", { className: activePage === 'Musializer' ? "navbarButton active" : "navbarButton", id: "musializerpageButton" },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "music_note"))),
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "music_note")),
+                react_1.default.createElement("button", { className: activePage === 'Lock' ? "navbarButton active" : "navbarButton", id: "lockpageButton" },
+                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, "lock"))),
             react_1.default.createElement("button", { className: "settingsButton", id: "darkmodeToggleButton", onMouseDown: toggleIcon },
                 react_1.default.createElement("span", { className: "material-symbols-outlined", 
                     // whileHover={{rotate:180}}
@@ -50316,7 +50322,7 @@ function Slider({ value, children, set, min = 0, max = 100 }) {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.startPage = void 0;
-exports.startPage = "Tether";
+exports.startPage = "Home";
 const setActivePage = (page) => {
     console.log('setActivePage', page);
     const event = new CustomEvent('pageChange', { detail: { page } });
@@ -50383,7 +50389,7 @@ function Ball() {
         let vx = 0;
         let vy = 0;
         // let clicks = startPage === 'Ball' ? 1 : 0;
-        let clicks = 0;
+        let clicks = 1;
         const damping = 0.7;
         const stiffness = 0.4;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
@@ -50404,13 +50410,13 @@ function Ball() {
             insideHoopCounter = 0;
         }
         const hoopCoordinates = [
-            { x: ww / 2, y: wh / 2 },
+            { x: ww / 1.5, y: wh / 3 },
             { x: ww / 3, y: wh / 3 },
             { x: ww / 1.5, y: wh / 1.5 },
             { x: ww / 3, y: wh / 1.5 },
-            { x: ww / 1.5, y: wh / 3 },
-            { x: ww / 3, y: wh / 2 },
             { x: ww / 1.5, y: wh / 2 },
+            { x: ww / 3, y: wh / 2 },
+            { x: ww / 2, y: wh / 2 },
         ];
         const randomOrSequential = (mode) => {
             let coords;
@@ -50541,7 +50547,7 @@ function Ball() {
             centerY = (wh / 5) * 3;
             ballX = centerX;
             ballY = centerY;
-            randomizeHoop('random');
+            randomizeHoop('sequential');
             vx = 0;
             vy = 0;
             render();
@@ -50637,7 +50643,7 @@ function Ball() {
                     if (insideHoopCounter > 100) {
                         console.log('test');
                         resetHoopCounter();
-                        randomizeHoop('random');
+                        randomizeHoop('sequential');
                     }
                 }
                 //canvascollision
@@ -50715,7 +50721,7 @@ function Ball() {
         //buttons
         if (randomizerButton) {
             randomizerButton.addEventListener('click', () => {
-                randomizeHoop('random');
+                randomizeHoop('sequential');
             });
         }
         if (darkmodeToggleButton) {
@@ -50737,7 +50743,7 @@ function Ball() {
             }
             if (randomizerButton) {
                 randomizerButton.removeEventListener('click', () => {
-                    randomizeHoop('random');
+                    randomizeHoop('sequential');
                 });
             }
             if (hoopButton) {
@@ -50917,6 +50923,11 @@ function Cube() {
     // const tiltY = useTransform(x, [0, 400], [-45, 45]);
     const tiltX = (0, framer_motion_1.useTransform)(y, [0, 400], [15, -15]);
     const tiltY = (0, framer_motion_1.useTransform)(x, [0, 400], [-15, 15]);
+    const [is3d, setIs3d] = (0, react_1.useState)(false);
+    const x3d = (0, framer_motion_1.useMotionValue)(0);
+    const y3d = (0, framer_motion_1.useMotionValue)(0);
+    const rotateX3d = (0, framer_motion_1.useTransform)(y3d, [-100, 100], [60, -60]);
+    const rotateY3d = (0, framer_motion_1.useTransform)(x3d, [-100, 100], [-60, 60]);
     const compositeRotateX = (0, framer_motion_1.useTransform)(() => rotateX.get() + tiltX.get());
     const compositeRotateY = (0, framer_motion_1.useTransform)(() => rotateY.get() + tiltY.get());
     function handleSwitchClick() {
@@ -50940,6 +50951,10 @@ function Cube() {
         x.set(200);
         y.set(200);
     }
+    const handle3dClick = () => {
+        setIs3d(!is3d);
+        console.log('3d', is3d);
+    };
     function animateRotation(newRotateX, newRotateY) {
         return new Promise((resolve) => {
             Promise.all([
@@ -50948,13 +50963,6 @@ function Cube() {
             ]).then(() => resolve());
         });
     }
-    // function animateDiagonalRotation() {
-    //     const diagonalAxis = {x:1, y:1, z:0}
-    //     // const angle = 90;
-    //     const angle = 180;
-    //     animate(rotateX, angle * diagonalAxis.x, {duration:0.5});
-    //     animate(rotateY, angle * diagonalAxis.y, {duration:0.5});
-    // }
     function gridClick(event) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!isSwitched) {
@@ -51033,10 +51041,13 @@ function Cube() {
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
                 react_1.default.createElement("h1", null, "Cube"),
-                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: handleSwitchClick },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, isSwitched ? "web_traffic" : "drag_pan"))),
+                react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: handleSwitchClick },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, isSwitched ? "web_traffic" : "drag_pan")),
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: handle3dClick },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "view_in_ar")))),
             react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'center' } },
                 react_1.default.createElement("div", { style: { position: "absolute", opacity: 0.1, width: 400, height: 400 } }),
                 react_1.default.createElement(framer_motion_1.motion.div, { className: "cubeContainer", id: "cubeContainer", style: {
@@ -51066,10 +51077,12 @@ function Cube() {
                             rotateX: compositeRotateX,
                             rotateY: compositeRotateY,
                             position: 'absolute',
-                            transform: "translate(-50%,-50%)"
-                        }, 
-                        // onClick={animateDiagonalRotation}
-                        whileTap: { scale: 0.95 } },
+                            transform: "translate(-50%,-50%)",
+                            x: x3d,
+                            y: y3d,
+                            // rotateX: rotateX3d,
+                            // rotateY: rotateY3d,
+                        }, whileTap: { scale: 0.95 }, drag: true, dragConstraints: { top: 0, right: 0, bottom: 0, left: 0 }, dragElastic: 0.6 },
                         react_1.default.createElement(framer_motion_1.motion.div, { className: "cube", drag: true, dragConstraints: { left: 0, right: 0, top: 0, bottom: 0 }, onDragEnd: handleDragEnd, style: {
                                 position: 'absolute',
                                 justifySelf: "center",
@@ -51480,6 +51493,144 @@ function Joystick() {
                 overflow: 'hidden',
                 zIndex: -10
             }, id: "canvasKeyboard" })));
+}
+
+
+/***/ }),
+
+/***/ "./src/pages/Lock.tsx":
+/*!****************************!*\
+  !*** ./src/pages/Lock.tsx ***!
+  \****************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports["default"] = Lock;
+//https://github.com/bobboteck/JoyStick?tab=readme-ov-file
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
+function Lock() {
+    const lockRef = (0, react_1.useRef)(null);
+    const [isDragging, setIsDragging] = (0, react_1.useState)(false);
+    const [rotation, setRotation] = (0, react_1.useState)(0);
+    const [dragStartAngle, setDragStartAngle] = (0, react_1.useState)(0);
+    const [initialRotation, setInitialRotation] = (0, react_1.useState)(0);
+    const [velocity, setVelocity] = (0, react_1.useState)(0);
+    const friction = 0.5;
+    const [lastTime, setLastTime] = (0, react_1.useState)(0);
+    const maxSpeed = 15;
+    //old mouse logic
+    (0, react_1.useEffect)(() => {
+        let animationFrameId;
+        const updateRotation = () => {
+            setVelocity((prevVelocity) => {
+                const newVelocity = prevVelocity * friction;
+                if (Math.abs(newVelocity) < 0.001) {
+                    return 0;
+                }
+                setRotation((prevRotation) => prevRotation + newVelocity);
+                return newVelocity;
+            });
+            animationFrameId = requestAnimationFrame(updateRotation);
+        };
+        updateRotation();
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+        };
+    }, []);
+    const calculateAngle = (x, y) => {
+        if (!lockRef.current)
+            return 0;
+        const rect = lockRef.current.getBoundingClientRect();
+        const spinnerX = rect.left + rect.width / 2;
+        const spinnerY = rect.top + rect.height / 2;
+        return Math.atan2(y - spinnerY, x - spinnerX) * (180 / Math.PI);
+    };
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        const angle = calculateAngle(e.clientX, e.clientY);
+        setDragStartAngle(angle);
+        setInitialRotation(rotation);
+        setLastTime(Date.now());
+    };
+    const handleMouseMove = (e) => {
+        if (isDragging) {
+            const currentAngle = calculateAngle(e.clientX, e.clientY);
+            let angleDiff = currentAngle - dragStartAngle;
+            const currentTime = Date.now();
+            const timeDiff = (currentTime - lastTime);
+            if (e.clientX < window.innerWidth / 2) {
+                angleDiff = -angleDiff;
+                setRotation(initialRotation - angleDiff);
+            }
+            else {
+                setRotation(initialRotation + angleDiff);
+            }
+            if (timeDiff > 0) {
+                const newVelocity = Math.min(maxSpeed, Math.max(-maxSpeed, angleDiff / timeDiff));
+                setVelocity((newVelocity) / 4);
+            }
+            setLastTime(currentTime);
+        }
+    };
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+    (0, react_1.useEffect)(() => {
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isDragging, dragStartAngle, initialRotation, lastTime]);
+    return (react_1.default.createElement("div", { className: "bodyCenter" },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("h1", null, "Lock")),
+        react_1.default.createElement("div", { style: { justifyContent: 'center', alignItems: 'center', display: 'flex' } },
+            react_1.default.createElement("div", { className: 'lockDiv' },
+                react_1.default.createElement(framer_motion_1.motion.div, { className: "lock", ref: lockRef, onMouseDown: handleMouseDown, style: { transform: `rotate(${rotation}deg)` } },
+                    react_1.default.createElement("div", { className: "lockCenter1", style: { top: '50%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '74.75%', left: '74.75%', borderRadius: '0 0 230px 0', width: 200, height: 200 } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircleInvert", style: { top: '57%', left: '84.75%', width: 115, height: 57.5, borderRadius: '0px 0px 57.5px 57.5px' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircleInvert", style: { top: '84.75%', left: '57%', height: 115, width: 57.5, borderRadius: '0px 57.5px 57.5px 0px' } }),
+                    react_1.default.createElement("div", { className: "lockCenter2", style: { top: '50%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "lockCenter1", style: { width: 165, height: 165, top: '50%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '50%', left: '15%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '15%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '50%', left: '85%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '85%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '32.5%', left: '80%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '67.5%', left: '20%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '32.5%', left: '20%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '19.5%', left: '32.5%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '80.5%', left: '32.5%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '19.5%', left: '67.5%' } }))))));
 }
 
 
@@ -52572,231 +52723,95 @@ function Switches() {
 
 "use strict";
 
-// import React, { useState, useEffect, useRef } from "react";
-// import { motion } from "framer-motion";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+// // import React, { useState, useEffect, useRef } from "react";
+// // import { motion, useMotionValue, useTransform } from "framer-motion";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports["default"] = Musializer;
+exports["default"] = Test;
 // export default function Test() {
+//     const x = useMotionValue(0)
+//     const y = useMotionValue(0)
+//     const rotateX = useTransform(y, [-100, 100], [60, -60])
+//     const rotateY = useTransform(x, [-100, 100], [-60, 60])
 //     return (
 //         <div className="bodyCenter">
 //             <div style={{display: 'flex',flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
 //                 <h1>Test</h1>
 //             </div>
-//             <div className="music-progress">
-//                 <div className="progress-bar">
-//                     <span className="progress-line"></span>
-//                     <input type='range' min='0' max='100' value='0' className="progress" id="progress"/>
-//                 </div>
-//                 <div className="duration">
-//                     <span className="current-time">00:00</span>
-//                     <span className="duration-time">00:00</span>
-//                 </div>
+//             <div>
+//             <div
+//                 style={{
+//                     width: 100,
+//                     height: 100,
+//                     borderRadius: "50%",
+//                     background: `radial-gradient(rgba(255,255,255,0),
+//                         rgba(255,255,255,0.3))`,
+//                     perspective: 800,
+//                 }}
+//             >
+//                 <motion.div
+//                     style={{
+//                         width: 150,
+//                         height: 150,
+//                         borderRadius: 30,
+//                         backgroundColor: "#fff",
+//                         left: -25,
+//                         top: -25,
+//                         position: "relative",
+//                         x,
+//                         y,
+//                         rotateX,
+//                         rotateY,
+//                         cursor: "grab",
+//                     }}
+//                     drag
+//                     dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
+//                     dragElastic={0.6}
+//                     whileTap={{ cursor: "grabbing" }}
+//                 />
 //             </div>
+//         </div>
 //         </div>
 //     );
 // }
-const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
-const Slider_1 = __webpack_require__(/*! ../components/Slider */ "./src/components/Slider.tsx");
-const Music_1 = __webpack_require__(/*! ../components/Music */ "./src/components/Music.tsx");
-const Overlay_1 = __importDefault(__webpack_require__(/*! ../components/Overlay */ "./src/components/Overlay.tsx"));
-function Musializer() {
-    const [isPlaying, setIsPlaying] = (0, react_1.useState)(true);
-    const [volume, setVolume] = (0, react_1.useState)(50);
-    const [bass, setBass] = (0, react_1.useState)(false);
-    const [audioData, setAudioData] = (0, react_1.useState)(new Uint8Array(0));
-    const audioRef = (0, react_1.useRef)(null);
-    const analyserRef = (0, react_1.useRef)(null);
-    const audioContextRef = (0, react_1.useRef)(null);
-    const [duration, setDuration] = (0, react_1.useState)(0);
-    const [currentTime, setCurrentTime] = (0, react_1.useState)(0);
-    const [isOverlayVisible, setOverlayVisible] = (0, react_1.useState)(false);
-    const [currentSong, setCurrentSong] = (0, react_1.useState)(Music_1.music[2]);
-    const radius = 85;
-    const circumference = 2 * Math.PI * radius / 2;
-    const initialOffset = circumference;
-    const [offset, setOffset] = (0, react_1.useState)(initialOffset);
-    const [progress, setProgress] = (0, react_1.useState)(0);
-    let smoothedIntensity = 0;
-    const buttonRef = (0, react_1.useRef)(null);
-    const buttonRefSmall1 = (0, react_1.useRef)(null);
-    const buttonRefSmall2 = (0, react_1.useRef)(null);
-    const buttonRefSmall3 = (0, react_1.useRef)(null);
-    const buttonRefSmall4 = (0, react_1.useRef)(null);
-    const outlineRef = (0, react_1.useRef)(null);
-    const volumeRef = (0, react_1.useRef)(null);
-    const intensityRef = (0, react_1.useRef)(null);
-    const [bounceRadiusIntensity, setBounceRadiusIntensity] = (0, react_1.useState)(5);
-    const normalizeBounceRadiusIntensity = (value) => {
-        return (value / 10) * 2; // Normalize from 0-9 to 0-2
-    };
-    // if (isEqualizer) {
-    (0, react_1.useEffect)(() => {
-        console.log('init old');
-        const updateAudioData = () => {
-            if (analyserRef.current) {
-                const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-                analyserRef.current.getByteFrequencyData(dataArray);
-                setAudioData(dataArray);
-                const bassRange = dataArray.slice(0, 2);
-                const intensity = bassRange.reduce((sum, value) => sum + value, 0);
-            }
-            requestAnimationFrame(updateAudioData);
-        };
-        updateAudioData();
-    }, []);
-    // }
-    //gui/equalizer
-    const handleMusicLibraryClick = () => {
-        setOverlayVisible(true);
-    };
-    const handleCloseOverlay = () => {
-        setOverlayVisible(false);
-    };
-    const handleSongSelect = (song) => {
-        setCurrentSong(song);
-        setOverlayVisible(false);
-    };
-    //song selection
-    (0, react_1.useEffect)(() => {
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.src = currentSong.file;
-            audioRef.current.load();
-        }
-    }, [currentSong]);
-    //audio duration and time
-    (0, react_1.useEffect)(() => {
-        let audio = audioRef.current;
-        if (!audio)
-            return;
-        const setAudioDuration = () => {
-            setDuration(audio.duration);
-        };
-        const setAudioTime = () => {
-            setCurrentTime(audio.currentTime);
-            setProgress((audio.currentTime / audio.duration) * 100);
-        };
-        audio.addEventListener("durationchange", setAudioDuration);
-        audio.addEventListener("timeupdate", setAudioTime);
-        return () => {
-            audio.removeEventListener("durationchange", setAudioDuration);
-            audio.removeEventListener("timeupdate", setAudioTime);
-        };
-    });
-    //audio setup
-    (0, react_1.useEffect)(() => {
-        if (!audioRef.current) {
-            audioRef.current = new Audio(currentSong.file);
-            audioContextRef.current = new (window.AudioContext ||
-                window.webkitAudioContext)();
-            const source = audioContextRef.current.createMediaElementSource(audioRef.current);
-            analyserRef.current = audioContextRef.current.createAnalyser();
-            source.connect(analyserRef.current);
-            analyserRef.current.connect(audioContextRef.current.destination);
-            analyserRef.current.fftSize = 256;
-            const bufferLength = analyserRef.current.frequencyBinCount;
-            setAudioData(new Uint8Array(bufferLength));
-        }
-        if (audioRef.current) {
-            audioRef.current.volume = volume / 100;
-        }
-        document.addEventListener("keydown", handleKeyDown);
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-        };
-    }, [volume, isPlaying, audioRef.current]);
-    //handle keys
-    const handleKeyDown = (event) => {
-        if (event.code === "Space") {
-            event.preventDefault();
-            handlePlayClick();
-        }
-    };
-    const handlePlayClick = () => {
-        var _a, _b;
-        setIsPlaying(!isPlaying);
-        if (isPlaying) {
-            (_a = audioRef.current) === null || _a === void 0 ? void 0 : _a.play();
-        }
-        else {
-            (_b = audioRef.current) === null || _b === void 0 ? void 0 : _b.pause();
-        }
-    };
-    const handleSeek = (e) => {
-        const newTime = (parseFloat(e.target.value) / 100) * duration;
-        if (audioRef.current) {
-            audioRef.current.currentTime = newTime;
-        }
-    };
+function Test() {
+    const x = (0, framer_motion_1.useMotionValue)(0);
+    const y = (0, framer_motion_1.useMotionValue)(0);
+    const rotateX = (0, framer_motion_1.useTransform)(y, [-100, 100], [60, -60]);
+    const rotateY = (0, framer_motion_1.useTransform)(x, [-100, 100], [-60, 60]);
     return (react_1.default.createElement("div", { className: "bodyCenter" },
-        react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
-            react_1.default.createElement(framer_motion_1.motion.h1, null, "Musializer"),
-            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
-                react_1.default.createElement(Overlay_1.default, { isVisible: isOverlayVisible, onClose: handleCloseOverlay },
-                    react_1.default.createElement("h3", null,
-                        react_1.default.createElement("div", null, Music_1.music.map((song, index) => (react_1.default.createElement("div", { className: "overlayContent", style: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }, key: index, onClick: () => handleSongSelect(song) },
-                            song.name,
-                            " - ",
-                            song.artist)))))))),
-        react_1.default.createElement("div", { style: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", } },
-            react_1.default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" } },
-                react_1.default.createElement("div", { style: { position: "relative", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "15px", marginRight: '15px' } },
-                    react_1.default.createElement(framer_motion_1.motion.button, { ref: buttonRef, className: "playButton", style: { display: "flex", justifyContent: "center", alignItems: "center", }, onMouseDown: handlePlayClick, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
-                        react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "35px" } }, isPlaying ? "play_arrow" : "pause")),
-                    react_1.default.createElement(framer_motion_1.motion.svg, { style: { position: "absolute", zIndex: -10, }, width: "200", height: "200" },
-                        react_1.default.createElement(framer_motion_1.motion.circle, { ref: outlineRef, className: "progressCircle", stroke: "#ddd", strokeWidth: bass ? "5" : "0", 
-                            // fill="rgba(255,255,255,0.1)"
-                            r: radius / 2, cx: "100", cy: "100" })))),
-            react_1.default.createElement(framer_motion_1.motion.div, { className: 'musicTextDiv', style: { width: 325, transition: '0.3s', height: '50px', justifyItems: 'center', marginLeft: '25px', marginRight: '25px' } },
-                react_1.default.createElement("div", { style: { width: '150px', height: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center' } },
-                    react_1.default.createElement("div", { style: { textAlign: "center", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" } },
-                        react_1.default.createElement("h2", { style: { display: "flex", flexDirection: "row", width: '150px', justifyContent: 'center', alignItems: 'flex-end' } },
-                            react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "flex-end", justifyContent: "center" } }, currentSong.name)),
-                        react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", ref: buttonRefSmall2, style: { backgroundColor: 'rgba(0,0,0,0)' }, onClick: handleMusicLibraryClick, whileHover: { scale: 1.1 }, animate: { scale: bass ? 1.5 : 1 }, transition: { type: "spring", duration: 0.2 } },
-                            react_1.default.createElement("span", { className: "material-symbols-outlined" }, "library_music"))))),
-            react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column" } },
-                react_1.default.createElement(Slider_1.Slider, { value: volume, set: setVolume },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "35px" }, ref: volumeRef }, volume > 66 ? "volume_up" : volume > 33 ? "volume_down" : volume > 0 ? "volume_mute" : "no_sound")),
-                react_1.default.createElement(Slider_1.Slider, { value: bounceRadiusIntensity, set: setBounceRadiusIntensity, 
-                    // set={handleSliderChange}
-                    min: 0, max: 10 },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined", style: { fontSize: "35px" }, ref: intensityRef }, "earthquake")))),
-        react_1.default.createElement("div", { className: "volumeSlider", style: { width: '100%', marginTop: '15px', color: '#ddd' } },
-            react_1.default.createElement("input", { type: "range", min: "0", max: "100", 
-                // value={progress}
-                value: isNaN(progress) ? 0 : progress, onChange: handleSeek, style: { width: '100%' } })),
-        react_1.default.createElement("div", { style: { padding: "10px" } }),
-        react_1.default.createElement("div", { id: "canvasDiv", className: "canvasDiv" },
-            react_1.default.createElement("div", { className: "visualizer" }, Array.from(audioData).slice(0, 64).map((value, index) => {
-                return (react_1.default.createElement(framer_motion_1.motion.div, { key: index, className: "bar", initial: { height: 0 }, animate: { height: value }, transition: { duration: 0.05 } }));
-            })))));
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
+                react_1.default.createElement("h1", null, "Cube")),
+            react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'center' } },
+                react_1.default.createElement("div", { style: { position: "absolute", opacity: 0.1, width: 400, height: 400 } }),
+                react_1.default.createElement(framer_motion_1.motion.div, { className: "cubeContainer", id: "cubeContainer", style: {
+                        width: 400,
+                        height: 400,
+                        display: "grid",
+                        placeItems: "center",
+                        placeContent: "center",
+                        borderRadius: 30,
+                        // perspective: 400,
+                        perspective: '1000px',
+                        position: 'relative',
+                    } },
+                    react_1.default.createElement(framer_motion_1.motion.div, { className: 'cube', style: {
+                            width: 150,
+                            height: 150,
+                            borderRadius: 30,
+                            backgroundColor: "#fff",
+                            position: "absolute",
+                            x,
+                            y,
+                            rotateX,
+                            rotateY,
+                            cursor: "grab",
+                        }, drag: true, dragConstraints: { top: 0, right: 0, bottom: 0, left: 0 }, dragElastic: 0.6, whileTap: { cursor: "grabbing" } }))))));
 }
 
 
@@ -52865,9 +52880,6 @@ function Tether() {
         let particleY2 = centerY2;
         let vx2 = 0;
         let vy2 = 0;
-        let colorChange1 = false;
-        let colorChange2 = false;
-        let colorChange3 = false;
         let particleX3 = centerX3;
         let particleY3 = centerY3;
         let vx3 = 0;
@@ -52999,26 +53011,14 @@ function Tether() {
             const distToCenter1 = Math.hypot(particleX1 - centerX, particleY1 - centerY);
             const distToCenter2 = Math.hypot(centerX2 - particleX2, centerY2 - particleY2);
             const distToCenter3 = Math.hypot(centerX3 - particleX3, centerY3 - particleY3);
-            if (distToCenter1 > 150) {
-                colorChange1 = true;
-                // setColorChange(true)
-            }
-            else {
-                colorChange1 = false;
-                // setColorChange(false)
-            }
-            if (distToCenter2 > 150) {
-                colorChange2 = true;
-            }
-            else {
-                colorChange2 = false;
-            }
-            if (distToCenter3 > 150) {
-                colorChange3 = true;
-            }
-            else {
-                colorChange3 = false;
-            }
+            const maxDist = 350;
+            const minOpacity = 0.1;
+            let opacity1 = Math.max(minOpacity, 1 - distToCenter1 / maxDist);
+            let opacity2 = Math.max(minOpacity, 1 - distToCenter2 / maxDist);
+            let opacity3 = Math.max(minOpacity, 1 - distToCenter3 / maxDist);
+            const rgbaColor1 = `rgba(255, 255, 255, ${opacity1})`;
+            const rgbaColor2 = `rgba(255, 255, 255, ${opacity2})`;
+            const rgbaColor3 = `rgba(255, 255, 255, ${opacity3})`;
             if (!isDragging) {
                 const dx = centerX - particleX1;
                 const dy = centerY - particleY1;
@@ -53090,24 +53090,18 @@ function Tether() {
             ctx.moveTo(centerX3, centerY3);
             ctx.lineTo(particleX3, particleY3);
             ctx.stroke();
-            //ball
-            // ctx.fillStyle = color;
-            // ctx.fillStyle = colorChange1? '#666':color;
-            ctx.fillStyle = colorChange1 ? canvasElementColor : color;
+            ctx.fillStyle = rgbaColor1;
             ctx.beginPath();
             ctx.arc(particleX1, particleY1, radius, 0, Math.PI * 2);
             ctx.fill();
-            ctx.fillStyle = color;
-            // ctx2.fillStyle = colorChange2? '#666': '#fffff';
+            ctx.fillStyle = rgbaColor2;
             ctx.beginPath();
             ctx.arc(particleX2, particleY2, radius2, 0, Math.PI * 2);
             ctx.fill();
-            ctx.fillStyle = color;
-            // ctx3.fillStyle = colorChange3? '#666': '#fffff';
+            ctx.fillStyle = rgbaColor3;
             ctx.beginPath();
             ctx.arc(particleX3, particleY3, radius3, 0, Math.PI * 2);
             ctx.fill();
-            // requestAnimationFrame(render);
             animationFrameId = requestAnimationFrame(render);
         };
         const handleThemeToggle = () => { resetScene(); };
@@ -53187,6 +53181,7 @@ const attachEventListeners = () => {
         'testpageButton': 'Test',
         'cubepageButton': 'Cube',
         'musializerpageButton': 'Musializer',
+        'lockpageButton': 'Lock',
     };
     const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
     Object.entries(buttons).forEach(([buttonId, pageName]) => {

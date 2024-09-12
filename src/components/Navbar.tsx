@@ -82,6 +82,12 @@ const Navbar: React.FC<NavbarProps> = ({ activePage }) => {
             </span>
           </button>
 
+          <button className={activePage === 'Lock' ? "navbarButton active" : "navbarButton"} id="lockpageButton">
+            <span className="material-symbols-outlined">
+                lock
+            </span>
+          </button>
+
           </div>
 
             <button className="settingsButton" id="darkmodeToggleButton"

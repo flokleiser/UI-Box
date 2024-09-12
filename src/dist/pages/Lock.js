@@ -1,5 +1,4 @@
 "use strict";
-//https://github.com/bobboteck/JoyStick?tab=readme-ov-file
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -25,107 +24,104 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Lock;
+//https://github.com/bobboteck/JoyStick?tab=readme-ov-file
 const react_1 = __importStar(require("react"));
+const framer_motion_1 = require("framer-motion");
 function Lock() {
+    const lockRef = (0, react_1.useRef)(null);
+    const [isDragging, setIsDragging] = (0, react_1.useState)(false);
+    const [rotation, setRotation] = (0, react_1.useState)(0);
+    const [dragStartAngle, setDragStartAngle] = (0, react_1.useState)(0);
+    const [initialRotation, setInitialRotation] = (0, react_1.useState)(0);
+    const [velocity, setVelocity] = (0, react_1.useState)(0);
+    const friction = 0.5;
+    const [lastTime, setLastTime] = (0, react_1.useState)(0);
+    const maxSpeed = 15;
+    //old mouse logic
     (0, react_1.useEffect)(() => {
-        const canvasLock = document.querySelector("#canvasLock");
-        const ctx = canvasLock.getContext("2d", { willReadFrequently: true });
-        const mouse = { x: 0, y: 0 };
-        const radius = 175;
-        let isDragging = false;
-        let maxDistance = 80;
-        let isMovingKeys = false;
-        let ww = window.innerWidth;
-        let wh = window.innerHeight;
-        let centerX = ww / 2;
-        let centerY = wh / 2;
-        let circleX = centerX;
-        let circleY = centerY;
-        let vx = 0;
-        let vy = 0;
-        const damping = 0.8;
-        const stiffness = 0.05;
-        const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || 'black';
-        const initscene = () => {
-            ww = canvasLock.width = window.innerWidth;
-            wh = canvasLock.height = window.innerHeight;
-            centerX = ww / 2;
-            centerY = wh / 2;
-            circleX = centerX;
-            circleY = centerY;
-            vx = 0;
-            vy = 0;
-            render();
-        };
-        const resizeScene = () => {
-            ww = canvasLock.width = window.innerWidth;
-            wh = canvasLock.height = window.innerHeight;
-            centerX = ww / 2;
-            centerY = wh / 2;
-            circleX = centerX;
-            circleY = centerY;
-            vx = 0;
-            vy = 0;
-        };
         let animationFrameId;
-        const render = () => {
-            const distToCenter = Math.hypot(circleX - centerX, circleY - centerY);
-            if (!isDragging && !isMovingKeys) {
-                const dx = centerX - circleX;
-                const dy = centerY - circleY;
-                const ax = dx * stiffness;
-                const ay = dy * stiffness;
-                vx += ax;
-                vy += ay;
-                vx *= damping;
-                vy *= damping;
-                circleX += vx;
-                circleY += vy;
-            }
-            // if (distToCenter > maxDistance) {
-            //     const angle = Math.atan2(circleY - centerY, circleX - centerX);
-            //     circleX = centerX + maxDistance * Math.cos(angle);
-            //     circleY = centerY + maxDistance * Math.sin(angle);
-            // }
-            else {
-                vx = 0;
-                vy = 0;
-            }
-            ctx.clearRect(0, 0, canvasLock.width, canvasLock.height);
-            //ball
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(circleX, circleY, radius, 0, Math.PI * 2);
-            ctx.fill();
-            animationFrameId = requestAnimationFrame(render);
+        const updateRotation = () => {
+            setVelocity((prevVelocity) => {
+                const newVelocity = prevVelocity * friction;
+                if (Math.abs(newVelocity) < 0.001) {
+                    return 0;
+                }
+                setRotation((prevRotation) => prevRotation + newVelocity);
+                return newVelocity;
+            });
+            animationFrameId = requestAnimationFrame(updateRotation);
         };
-        window.addEventListener("resize", resizeScene);
-        // window.addEventListener("mousemove", onMouseMove);
-        // window.addEventListener("touchmove", onTouchMove);
-        // window.addEventListener("mousedown", onMouseDown);
-        // window.addEventListener("mouseup", onMouseUp);
-        // window.addEventListener("touchend", onTouchEnd);
-        initscene();
+        updateRotation();
         return () => {
-            window.removeEventListener("resize", resizeScene);
-            // window.removeEventListener("mousemove", onMouseMove);
-            // window.removeEventListener("touchmove", onTouchMove);
-            // window.removeEventListener("mousedown", onMouseDown);
-            // window.removeEventListener("mouseup", onMouseUp);
-            // window.removeEventListener("touchend", onTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
     }, []);
+    const calculateAngle = (x, y) => {
+        if (!lockRef.current)
+            return 0;
+        const rect = lockRef.current.getBoundingClientRect();
+        const spinnerX = rect.left + rect.width / 2;
+        const spinnerY = rect.top + rect.height / 2;
+        return Math.atan2(y - spinnerY, x - spinnerX) * (180 / Math.PI);
+    };
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        const angle = calculateAngle(e.clientX, e.clientY);
+        setDragStartAngle(angle);
+        setInitialRotation(rotation);
+        setLastTime(Date.now());
+    };
+    const handleMouseMove = (e) => {
+        if (isDragging) {
+            const currentAngle = calculateAngle(e.clientX, e.clientY);
+            let angleDiff = currentAngle - dragStartAngle;
+            const currentTime = Date.now();
+            const timeDiff = (currentTime - lastTime);
+            if (e.clientX < window.innerWidth / 2) {
+                angleDiff = -angleDiff;
+                setRotation(initialRotation - angleDiff);
+            }
+            else {
+                setRotation(initialRotation + angleDiff);
+            }
+            if (timeDiff > 0) {
+                const newVelocity = Math.min(maxSpeed, Math.max(-maxSpeed, angleDiff / timeDiff));
+                setVelocity((newVelocity) / 4);
+            }
+            setLastTime(currentTime);
+        }
+    };
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+    (0, react_1.useEffect)(() => {
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isDragging, dragStartAngle, initialRotation, lastTime]);
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("h1", null, "Lock (WIP)"),
-            react_1.default.createElement("canvas", { style: {
-                    width: '100vw',
-                    height: '100vh',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    overflow: 'hidden',
-                    zIndex: -10
-                }, id: "canvasLock" }))));
+            react_1.default.createElement("h1", null, "Lock")),
+        react_1.default.createElement("div", { style: { justifyContent: 'center', alignItems: 'center', display: 'flex' } },
+            react_1.default.createElement("div", { className: 'lockDiv' },
+                react_1.default.createElement(framer_motion_1.motion.div, { className: "lock", ref: lockRef, onMouseDown: handleMouseDown, style: { transform: `rotate(${rotation}deg)` } },
+                    react_1.default.createElement("div", { className: "lockCenter1", style: { top: '50%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '74.75%', left: '74.75%', borderRadius: '0 0 230px 0', width: 200, height: 200 } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircleInvert", style: { top: '57%', left: '84.75%', width: 115, height: 57.5, borderRadius: '0px 0px 57.5px 57.5px' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircleInvert", style: { top: '84.75%', left: '57%', height: 115, width: 57.5, borderRadius: '0px 57.5px 57.5px 0px' } }),
+                    react_1.default.createElement("div", { className: "lockCenter2", style: { top: '50%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "lockCenter1", style: { width: 165, height: 165, top: '50%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '50%', left: '15%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '15%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '50%', left: '85%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '85%', left: '50%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '32.5%', left: '80%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '67.5%', left: '20%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '32.5%', left: '20%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '19.5%', left: '32.5%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '80.5%', left: '32.5%' } }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '19.5%', left: '67.5%' } }))))));
 }

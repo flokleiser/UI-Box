@@ -40,6 +40,7 @@ const Joystick_1 = __importDefault(require("../pages/Joystick"));
 const Cube_1 = __importDefault(require("../pages/Cube"));
 const Test_1 = __importDefault(require("../pages/Test"));
 const Musializer_1 = __importDefault(require("../pages/Musializer"));
+const Lock_1 = __importDefault(require("../pages/Lock"));
 const Window_1 = require("./Window");
 function App() {
     const [page, setPage] = (0, react_1.useState)(Window_1.startPage);
@@ -81,6 +82,9 @@ function App() {
             break;
         case 'Musializer':
             CurrentPage = Musializer_1.default;
+            break;
+        case 'Lock':
+            CurrentPage = Lock_1.default;
             break;
         default:
             CurrentPage = Home_1.default;

@@ -47,6 +47,11 @@ function Cube() {
     // const tiltY = useTransform(x, [0, 400], [-45, 45]);
     const tiltX = (0, framer_motion_1.useTransform)(y, [0, 400], [15, -15]);
     const tiltY = (0, framer_motion_1.useTransform)(x, [0, 400], [-15, 15]);
+    const [is3d, setIs3d] = (0, react_1.useState)(false);
+    const x3d = (0, framer_motion_1.useMotionValue)(0);
+    const y3d = (0, framer_motion_1.useMotionValue)(0);
+    const rotateX3d = (0, framer_motion_1.useTransform)(y3d, [-100, 100], [60, -60]);
+    const rotateY3d = (0, framer_motion_1.useTransform)(x3d, [-100, 100], [-60, 60]);
     const compositeRotateX = (0, framer_motion_1.useTransform)(() => rotateX.get() + tiltX.get());
     const compositeRotateY = (0, framer_motion_1.useTransform)(() => rotateY.get() + tiltY.get());
     function handleSwitchClick() {
@@ -70,6 +75,10 @@ function Cube() {
         x.set(200);
         y.set(200);
     }
+    const handle3dClick = () => {
+        setIs3d(!is3d);
+        console.log('3d', is3d);
+    };
     function animateRotation(newRotateX, newRotateY) {
         return new Promise((resolve) => {
             Promise.all([
@@ -78,13 +87,6 @@ function Cube() {
             ]).then(() => resolve());
         });
     }
-    // function animateDiagonalRotation() {
-    //     const diagonalAxis = {x:1, y:1, z:0}
-    //     // const angle = 90;
-    //     const angle = 180;
-    //     animate(rotateX, angle * diagonalAxis.x, {duration:0.5});
-    //     animate(rotateY, angle * diagonalAxis.y, {duration:0.5});
-    // }
     function gridClick(event) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!isSwitched) {
@@ -163,10 +165,13 @@ function Cube() {
     }
     return (react_1.default.createElement("div", { className: "bodyCenter" },
         react_1.default.createElement("div", null,
-            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'center' } },
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
                 react_1.default.createElement("h1", null, "Cube"),
-                react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: handleSwitchClick },
-                    react_1.default.createElement("span", { className: "material-symbols-outlined" }, isSwitched ? "web_traffic" : "drag_pan"))),
+                react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: handleSwitchClick },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, isSwitched ? "web_traffic" : "drag_pan")),
+                    react_1.default.createElement(framer_motion_1.motion.button, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)' }, onMouseDown: handle3dClick },
+                        react_1.default.createElement("span", { className: "material-symbols-outlined" }, "view_in_ar")))),
             react_1.default.createElement("div", { style: { display: 'flex', justifyContent: 'center' } },
                 react_1.default.createElement("div", { style: { position: "absolute", opacity: 0.1, width: 400, height: 400 } }),
                 react_1.default.createElement(framer_motion_1.motion.div, { className: "cubeContainer", id: "cubeContainer", style: {
@@ -196,10 +201,12 @@ function Cube() {
                             rotateX: compositeRotateX,
                             rotateY: compositeRotateY,
                             position: 'absolute',
-                            transform: "translate(-50%,-50%)"
-                        }, 
-                        // onClick={animateDiagonalRotation}
-                        whileTap: { scale: 0.95 } },
+                            transform: "translate(-50%,-50%)",
+                            x: x3d,
+                            y: y3d,
+                            // rotateX: rotateX3d,
+                            // rotateY: rotateY3d,
+                        }, whileTap: { scale: 0.95 }, drag: true, dragConstraints: { top: 0, right: 0, bottom: 0, left: 0 }, dragElastic: 0.6 },
                         react_1.default.createElement(framer_motion_1.motion.div, { className: "cube", drag: true, dragConstraints: { left: 0, right: 0, top: 0, bottom: 0 }, onDragEnd: handleDragEnd, style: {
                                 position: 'absolute',
                                 justifySelf: "center",

@@ -12,6 +12,7 @@ import Joystick from '../pages/Joystick'
 import Cube from '../pages/Cube'
 import Test from '../pages/Test'
 import Musializer from '../pages/Musializer';
+import Lock from '../pages/Lock'; 
 
 import {Page} from './Window'
 import { startPage } from './Window';
@@ -59,6 +60,9 @@ export default function App() {
             break;
         case 'Musializer':
             CurrentPage = Musializer 
+            break;
+        case 'Lock':
+            CurrentPage = Lock 
             break;
         default:
             CurrentPage = Home;
