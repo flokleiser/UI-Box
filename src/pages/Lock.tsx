@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {motion, useSpring, useTransform, useAnimation, useDragControls, useMotionValue} from "framer-motion"
-
+import {motion, useSpring, useTransform, useAnimation, useDragControls, useMotionValue, animate} from "framer-motion"
 
 export default function Lock() {
     const lockRef= useRef<HTMLDivElement>(null);
@@ -12,14 +11,39 @@ export default function Lock() {
     const [initialRotation, setInitialRotation] = useState(0);
 
     const [velocity, setVelocity] = useState(0);
-    const friction = 0.8;
+    const friction = 0.1;
 
-    const [lastTime, setLastTime] = useState(0);
-    const maxSpeed = 15
+    let animationFrameId:number;
+    let resetAnimationFrameId:number;
 
+    useEffect(() => {
+        if (!isDragging && rotation !== 0) {
+            const resetRotation = () => {
+                setRotation((prevRotation) => {
+                    let newRotation = prevRotation - 4;
+                    if (newRotation < -360) {
+                        newRotation += 360;
+                    }
+                    if (Math.abs(newRotation) < 5 && Math.abs(newRotation) > -5) {
+                        return 0;
+                    }
+                    resetAnimationFrameId = requestAnimationFrame(resetRotation);
+                    return newRotation;
+                });
+            };
+            resetRotation();
+        } else if (resetAnimationFrameId) {
+            cancelAnimationFrame(resetAnimationFrameId);
+        }
+        return () => {
+            if (resetAnimationFrameId) {
+                cancelAnimationFrame(resetAnimationFrameId);
+            }
+        };
+    }, [isDragging]); 
 
 useEffect(() => {
-    let animationFrameId:number;
+    // let animationFrameId:number;
     const updateRotation = () => {
         setVelocity((prevVelocity) => {
             const newVelocity = prevVelocity * friction;
@@ -29,63 +53,53 @@ useEffect(() => {
             setRotation((prevRotation) => prevRotation + newVelocity);
             return newVelocity;
         });
+
         animationFrameId = requestAnimationFrame(updateRotation);
     };
     updateRotation();
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
     return () => {
         cancelAnimationFrame(animationFrameId);
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mouseup', handleMouseUp);
     };
-}, []);
+}, [isDragging, dragStartAngle, initialRotation]);
 
 const calculateAngle = (x:number, y:number) => {
     if (!lockRef.current) return 0;
     const rect = lockRef.current.getBoundingClientRect();
-    const spinnerX = rect.left + rect.width / 2;
-    const spinnerY = rect.top + rect.height / 2;
+    const lockX = rect.left + rect.width / 2;
+    const lockY = rect.top + rect.height / 2;
 
-    return Math.atan2(y - spinnerY, x - spinnerX) * (180 / Math.PI);
+    return Math.atan2(y - lockY, x - lockX) * (180 / Math.PI);
 };
+
 const handleMouseDown = (e:React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     const angle = calculateAngle(e.clientX, e.clientY);
 
     setDragStartAngle(angle);
     setInitialRotation(rotation);
-    setLastTime(Date.now());
 };
+
 const handleMouseMove = (e:MouseEvent) => {
     if (isDragging) {
         const currentAngle = calculateAngle(e.clientX, e.clientY);
         let angleDiff = currentAngle - dragStartAngle;
-        const currentTime = Date.now();
-        const timeDiff = (currentTime - lastTime); 
-
-
+        // let newRotation = initialRotation + angleDiff;
         if (e.clientX < window.innerWidth / 2) {
             angleDiff = -angleDiff
             setRotation(initialRotation - angleDiff);
         } else {
             setRotation(initialRotation + angleDiff);
         }
-
-        if (timeDiff > 0) {
-            const newVelocity = Math.min(maxSpeed, Math.max(-maxSpeed, angleDiff / timeDiff));
-            setVelocity((newVelocity)/4);
-        }
-        setLastTime(currentTime);
     }
 };
 const handleMouseUp = () => {
     setIsDragging(false);
 };
-useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-    return () => {
-    window.removeEventListener('mousemove', handleMouseMove);
-    window.removeEventListener('mouseup', handleMouseUp);
-    };
-}, [isDragging, dragStartAngle, initialRotation, lastTime]);
 
     return (
         <div className="bodyCenter">
@@ -95,6 +109,7 @@ useEffect(() => {
 
 
         <div style={{justifyContent:'center', alignItems:'center', display:'flex'}}>
+
         <div className='lockDiv'>
         <motion.div className="lock"
             ref={lockRef}
@@ -122,7 +137,6 @@ useEffect(() => {
             <div className="smallerLockCircle" style={{ top: '80.5%', left: '32.5%' }} />
             <div className="smallerLockCircle" style={{ top: '19.5%', left: '67.5%' }} />
 
-            {/* <div className="smallerLockCircleInvert" style={{top: '75%', left : '75%', width:70,height:70, borderRadius:'50%'}} /> */}
         </motion.div>
 
             <div className="smallerLockCircleInvert" style={{top: '75%', left : '75%', width:55,height:55, borderRadius:'50%', pointerEvents:'none'}}/>
@@ -130,45 +144,36 @@ useEffect(() => {
             <div className="lockText" style={{ top: '50%', left: '15%',pointerEvents:'none'}}>
                 4
             </div>
-
             <div className="lockText" style={{ top: '15%', left: '50%', pointerEvents:'none'}} >
                7 
             </div>
-
             <div className="lockText" style={{ top: '50%', left: '85%', pointerEvents:'none'}} >
                0 
             </div>
-
             <div className="lockText" style={{ top: '85%', left: '50%', pointerEvents:'none'}} >
                 1 
             </div>
-
             <div className="lockText" style={{ top: '32.5%', left: '80%',pointerEvents:'none'}} >
                 9 
             </div>
-
             <div className="lockText" style={{ top: '67.5%', left: '20%',pointerEvents:'none'}} >
                 3
             </div>
-
             <div className="lockText" style={{ top: '32.5%', left: '20%',pointerEvents:'none'}} >
                 5
             </div>
-
             <div className="lockText" style={{ top: '19.5%', left: '32.5%',pointerEvents:'none'}} >
                6 
             </div>
-
             <div className="lockText" style={{ top: '80.5%', left: '32.5%',pointerEvents:'none'}} >
                 2
             </div>
-
             <div className="lockText" style={{ top: '19.5%', left: '67.5%',pointerEvents:'none'}} >
                8 
             </div>
 
-
         </div>
+
         </div>
 
         </div>
