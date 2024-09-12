@@ -1,4 +1,3 @@
-//https://github.com/bobboteck/JoyStick?tab=readme-ov-file
 import React, { useEffect, useState, useRef } from 'react';
 import {motion, useSpring, useTransform, useAnimation, useDragControls, useMotionValue} from "framer-motion"
 
@@ -13,13 +12,12 @@ export default function Lock() {
     const [initialRotation, setInitialRotation] = useState(0);
 
     const [velocity, setVelocity] = useState(0);
-    const friction = 0.5;
+    const friction = 0.8;
 
     const [lastTime, setLastTime] = useState(0);
     const maxSpeed = 15
 
 
-    //old mouse logic
 useEffect(() => {
     let animationFrameId:number;
     const updateRotation = () => {
@@ -38,6 +36,7 @@ useEffect(() => {
         cancelAnimationFrame(animationFrameId);
     };
 }, []);
+
 const calculateAngle = (x:number, y:number) => {
     if (!lockRef.current) return 0;
     const rect = lockRef.current.getBoundingClientRect();
@@ -114,10 +113,8 @@ useEffect(() => {
 
             <div className="smallerLockCircle" style={{ top: '50%', left: '15%' }} />
             <div className="smallerLockCircle" style={{ top: '15%', left: '50%' }} />
-
             <div className="smallerLockCircle" style={{ top: '50%', left: '85%' }} />
             <div className="smallerLockCircle" style={{ top: '85%', left: '50%' }} />
-
             <div className="smallerLockCircle" style={{ top: '32.5%', left: '80%' }} />
             <div className="smallerLockCircle" style={{ top: '67.5%', left: '20%' }} />
             <div className="smallerLockCircle" style={{ top: '32.5%', left: '20%' }} />
@@ -125,9 +122,51 @@ useEffect(() => {
             <div className="smallerLockCircle" style={{ top: '80.5%', left: '32.5%' }} />
             <div className="smallerLockCircle" style={{ top: '19.5%', left: '67.5%' }} />
 
-
-
+            {/* <div className="smallerLockCircleInvert" style={{top: '75%', left : '75%', width:70,height:70, borderRadius:'50%'}} /> */}
         </motion.div>
+
+            <div className="smallerLockCircleInvert" style={{top: '75%', left : '75%', width:55,height:55, borderRadius:'50%', pointerEvents:'none'}}/>
+
+            <div className="lockText" style={{ top: '50%', left: '15%',pointerEvents:'none'}}>
+                4
+            </div>
+
+            <div className="lockText" style={{ top: '15%', left: '50%', pointerEvents:'none'}} >
+               7 
+            </div>
+
+            <div className="lockText" style={{ top: '50%', left: '85%', pointerEvents:'none'}} >
+               0 
+            </div>
+
+            <div className="lockText" style={{ top: '85%', left: '50%', pointerEvents:'none'}} >
+                1 
+            </div>
+
+            <div className="lockText" style={{ top: '32.5%', left: '80%',pointerEvents:'none'}} >
+                9 
+            </div>
+
+            <div className="lockText" style={{ top: '67.5%', left: '20%',pointerEvents:'none'}} >
+                3
+            </div>
+
+            <div className="lockText" style={{ top: '32.5%', left: '20%',pointerEvents:'none'}} >
+                5
+            </div>
+
+            <div className="lockText" style={{ top: '19.5%', left: '32.5%',pointerEvents:'none'}} >
+               6 
+            </div>
+
+            <div className="lockText" style={{ top: '80.5%', left: '32.5%',pointerEvents:'none'}} >
+                2
+            </div>
+
+            <div className="lockText" style={{ top: '19.5%', left: '67.5%',pointerEvents:'none'}} >
+               8 
+            </div>
+
 
         </div>
         </div>

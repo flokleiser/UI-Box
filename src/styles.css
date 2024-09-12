@@ -621,6 +621,19 @@ nav{
     background-color: #333;
     /* background-color: #ddd; */
     transform:translate(-50%,-50%);
+    color: #333
+}
+.lockText {
+    position:absolute;
+    /* width:125px;
+    height:125px; */
+    color: #333;
+    transform:translate(-50%,-50%); 
+    /* font-size: 2.5rem; */
+    font-size: 2rem;
+    justify-self: 'center';
+    opacity:0.5;
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -657,6 +670,9 @@ nav{
   }
   .smallerLockCircleInvert {
     background-color: #ddd;
+  }
+  .lockText{
+    color: #ddd
   }
 
   .navbarButton:hover{
