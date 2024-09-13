@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import {motion, useSpring, useTransform, useAnimation, useDragControls, useMotionValue, animate, Easing} from "framer-motion"
-import { gsap } from 'gsap';
-
 
 export default function Lock() {
 
@@ -34,34 +32,18 @@ export default function Lock() {
 
 //old
 
-                // setRotation((prevRotation) => {
-                //     let newRotation = prevRotation - 4;
+                setRotation((prevRotation) => {
+                    let newRotation = prevRotation - 10;
 
-                //     if (newRotation < -360) {
-                //         newRotation += 360;
-                //     }
-                //     if (Math.abs(newRotation) < 5 && Math.abs(newRotation) > -5) {
-                //         return 0;
-                //     }
-                //     resetAnimationFrameId = requestAnimationFrame(resetRotation);
-                //     return newRotation;
-                // });
-
-
-//gsap
-                gsap.to({value: rotation}, {
-                    // duration: 1,
-                    duration: 0.75,
-                    value: 0,
-                    // ease: "bounce.out",
-                    ease: "elastic.out",
-                    onUpdate: function() {
-                        setRotation(this.targets()[0].value);
-                    },
-                    onComplete: () => {
-                        console.log('complete')
+                    if (newRotation < -360) {
+                        newRotation += 360;
                     }
-                })
+                    if (Math.abs(newRotation) < 11 && Math.abs(newRotation) > -11) {
+                        return 0;
+                    }
+                    resetAnimationFrameId = requestAnimationFrame(resetRotation);
+                    return newRotation;
+                });
 
 
             };
@@ -156,7 +138,6 @@ export default function Lock() {
         const angle = calculateAngle(e.clientX, e.clientY);
         setDragStartAngle(angle);
         setInitialRotation(rotation);
-        // console.log(rotation)
     };
 
     const handleMouseMove = (e:MouseEvent) => {
@@ -166,12 +147,9 @@ export default function Lock() {
 
             let newRotation = initialRotation + angleDiff;
             if (newRotation < 0 && newRotation > -45) {
-                console.log('check')
-                newRotation = -45;
-            } else if (newRotation > 360) {
-                console.log('other check')
+                    newRotation = -45;
             }
-            console.log(newRotation)
+            // console.log(newRotation)
             setRotation(newRotation)
 
         }
