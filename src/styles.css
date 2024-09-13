@@ -605,7 +605,7 @@ nav{
     background-color: #ddd;
 }
 .smallerLockCircle:active{
-    background-color: rgba(255, 255, 255,0.5);
+    background-color: rgba(255, 255, 255,0.6);
 }
 .smallerLockCircleInvert {
     width:125px;
@@ -638,32 +638,18 @@ nav{
 @media (prefers-color-scheme: light) {
   body { background: #ddd; color: #333; }
 
-  .lockDiv {
+  .lockDiv, .lock, .smallerLockCircle, .smallerLock, .lockCenter2 {
     background-color: #333
   }
-  .lock {
-    background-color: #333
-  }
-  .lockCenter1{
-    background-color: #ddd 
-  }
-  .lockCenter2{
-    background-color: #333
-  }
-  .smallerLock {
-    /* background-color: #ddd; */
-    background-color: #333
-    /* background-color: #ddd */
-  }
-  .smallerLockCircle {
-    background-color: #333
-  }
-  .smallerLockCircleInvert {
+  .smallerLockCircleInvert, .lockCenter1 {
     background-color: #ddd;
   }
   .lockText{
     color: #ddd
   }
+  .smallerLockCircle:active{
+    background-color: rgba(51, 51, 51,0.6);
+}
 
   .navbarButton:hover{
     display:flex;
@@ -708,13 +694,10 @@ nav{
       border-radius: 0 0 0 10px;
       right:-10px;
   }
-
-
-
-
   .settingsButton{background:rgba(51,51,51,0.1); color: #333}
 
-  .tab.active .tab-box{background-color:#ddd}
+  .tab.active, .tab-box, .switcherCircleVerticalOutline, .dividerLine{background-color:#ddd}
+  .switcherCircleVerticalFill, .cube, .tetherCircle {background-color: #333}
 
   .spinnerCircle {background-color: #333;}
   .spinnerCircleCenter {background-color: rgb(51, 51, 51);}
@@ -725,20 +708,23 @@ nav{
   .switcherDivFill {border:0}
   .switcherDivHalf{border-radius: 0 20px 20px 0 ;}
 
-  .switcherCircleVerticalFill {background-color: #333}
+  /* .switcherCircleVerticalFill {background-color: #333} */
   .switcherCircleVerticalFillAlt {background-color: #ddd; border:3px solid #333}
   .switcherDivVerticalLineFilled {background-color: #333;  border: 3px solid #333;}
   .switcherDivVerticalLine {border:3px solid #333 }
-  .switcherCircleVerticalOutline {background-color: #ddd;}
+  /* .switcherCircleVerticalOutline {background-color: #ddd;} */
 
   .switcherCircleHorizontal {background-color:#333}
 
   .button1 {background:#333; border: 0px solid #333;}
-  .button1:active{background: #ddd; border: 2px solid #333;} 
+  /* .button1:active{background: #ddd; border: 2px solid #333;}  */
+
+  .button1:active, .button2toggled{background: #ddd; border: 2px solid #333;} 
 
   .button2{background:#333; border:0px solid}
-  .button2toggled {background:#ddd; border:2px solid #333}
-  .tetherCircle{background-color: #333333;}
+
+  /* .button2toggled {background:#ddd; border:2px solid #333} */
+  /* .tetherCircle{background-color: #333333;} */
   .playButton {
     background:rgba(51,51,51);
     color: white
@@ -752,9 +738,9 @@ nav{
     accent-color: #333;
   }
 
-  .dividerLine {background-color:#ddd ;}
+  /* .dividerLine {background-color:#ddd ;} */
 
-  .cube {background-color: #333;}
+  /* .cube {background-color: #333;} */
   .cubeContainer {background-color:rgba(51,51,51,0.2)}
 
   .overlay-div{

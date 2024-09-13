@@ -30,6 +30,7 @@ const attachEventListeners = () => {
     testpageButton: 'Test',
     cubepageButton: 'Cube',
     musializerpageButton: 'Musializer',
+    lockpageButton: 'Lock', 
   };
   const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
 
