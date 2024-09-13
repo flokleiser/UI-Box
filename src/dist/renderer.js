@@ -51506,6 +51506,7 @@ function Joystick() {
 
 "use strict";
 
+//Todo: shaking animation after 4th input
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -51543,7 +51544,8 @@ function Lock() {
     const friction = 0.1;
     let animationFrameId;
     let resetAnimationFrameId;
-    const [filledCircleCount, setFilledCircleCount] = (0, react_1.useState)(0); // Change to state
+    const [filledCircleCount, setFilledCircleCount] = (0, react_1.useState)(0);
+    const [isUnfilling, setIsUnfilling] = (0, react_1.useState)(false);
     (0, react_1.useEffect)(() => {
         if (!isDragging && rotation !== 0) {
             const resetRotation = () => {
@@ -51600,15 +51602,63 @@ function Lock() {
         return Math.atan2(y - lockY, x - lockX) * (180 / Math.PI);
     };
     const fillCircles = () => {
+        if (isUnfilling)
+            return;
         setFilledCircleCount((prevCount) => {
-            if (prevCount < 4) {
-                return prevCount + 1;
+            if (prevCount <= 4) {
+                if (prevCount < 4) {
+                    prevCount = prevCount + 1;
+                }
+                if (prevCount === 4) {
+                    setIsUnfilling(true);
+                    setTimeout(() => {
+                        emptyCircles();
+                    }, 500);
+                }
             }
             else {
                 return 0;
             }
+            return prevCount;
         });
     };
+    const emptyCircles = () => {
+        setFilledCircleCount((prevCount) => {
+            if (prevCount > 0) {
+                setTimeout(() => {
+                    emptyCircles();
+                }, 100);
+                return prevCount - 1;
+            }
+            else {
+                setIsUnfilling(false);
+                return prevCount;
+            }
+        });
+    };
+    // const fillCircles = () => {
+    //     if (!isUnfilling && filledCircleCount < 4) {
+    //         setFilledCircleCount(filledCircleCount + 1);
+    //     }
+    // }
+    // const emptyCircles = () => {
+    //     if (filledCircleCount > 0) {
+    //         setTimeout(() => {
+    //             setFilledCircleCount(filledCircleCount - 1);
+    //             if(filledCircleCount -1 === 0) {
+    //                 setIsUnfilling(false);
+    //             }else{
+    //                 setTimeout(emptyCircles, 500)
+    //             }
+    //         },500)
+    //     }
+    // }
+    // useEffect(() => {
+    //     if (filledCircleCount === 4) {
+    //         setIsUnfilling(true);
+    //         setTimeout(emptyCircles,1000)
+    //     }
+    // },[filledCircleCount])
     const handleMouseDown = (e) => {
         setIsDragging(true);
         const angle = calculateAngle(e.clientX, e.clientY);
