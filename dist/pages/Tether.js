@@ -28,6 +28,7 @@ const react_1 = __importStar(require("react"));
 function Tether() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     const [colorChange, setColorChange] = (0, react_1.useState)(false);
+    // const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
     (0, react_1.useEffect)(() => {
         const canvasTether = document.querySelector("#sceneTether");
         const ctx = canvasTether.getContext("2d", { willReadFrequently: true });
@@ -315,7 +316,8 @@ function Tether() {
                     top: 0,
                     left: 0,
                     overflow: 'hidden',
-                    // zIndex: -10
-                    zIndex: 100
+                    zIndex: -10
+                    // zIndex:0
+                    // zIndex: 100
                 }, id: "sceneTether" }))));
 }

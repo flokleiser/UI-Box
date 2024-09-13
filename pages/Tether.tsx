@@ -4,6 +4,7 @@ export default function Tether() {
 
     const [resetTrigger, setResetTrigger] = useState(0);
     const [colorChange, setColorChange] = useState(false)
+    // const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
 
     useEffect(() => {
         const canvasTether = document.querySelector("#sceneTether") as HTMLCanvasElement;
@@ -338,8 +339,9 @@ export default function Tether() {
                     top: 0,
                     left: 0,
                     overflow: 'hidden',
-                    // zIndex: -10
-                    zIndex: 100
+                    zIndex: -10
+                    // zIndex:0
+                    // zIndex: 100
                 }}
                 id="sceneTether">
             </canvas>

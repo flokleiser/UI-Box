@@ -51525,6 +51525,7 @@ exports["default"] = Lock;
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const framer_motion_1 = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/cjs/index.js");
 function Lock() {
+    const [activeNumber, setActiveNumber] = (0, react_1.useState)(null);
     const lockRef = (0, react_1.useRef)(null);
     const [isDragging, setIsDragging] = (0, react_1.useState)(false);
     const [rotation, setRotation] = (0, react_1.useState)(0);
@@ -51539,12 +51540,13 @@ function Lock() {
     (0, react_1.useEffect)(() => {
         if (!isDragging && rotation !== 0) {
             const resetRotation = () => {
+                //old
                 setRotation((prevRotation) => {
-                    let newRotation = prevRotation - 4;
+                    let newRotation = prevRotation - 10;
                     if (newRotation < -360) {
                         newRotation += 360;
                     }
-                    if (Math.abs(newRotation) < 5 && Math.abs(newRotation) > -5) {
+                    if (Math.abs(newRotation) < 11 && Math.abs(newRotation) > -11) {
                         return 0;
                     }
                     resetAnimationFrameId = requestAnimationFrame(resetRotation);
@@ -51582,14 +51584,17 @@ function Lock() {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
         };
-    }, [isDragging, dragStartAngle, initialRotation]);
+    }, [isDragging, dragStartAngle,
+        //  initialRotation
+    ]);
     const calculateAngle = (x, y) => {
         if (!lockRef.current)
             return 0;
         const rect = lockRef.current.getBoundingClientRect();
         const lockX = rect.left + rect.width / 2;
         const lockY = rect.top + rect.height / 2;
-        return Math.atan2(y - lockY, x - lockX) * (180 / Math.PI);
+        // return Math.atan2(y - lockY, x - lockX) * (180 / Math.PI);
+        return (Math.atan2(y - lockY, x - lockX) * (180 / Math.PI) + 360) % 360;
     };
     const fillCircles = () => {
         if (isUnfilling)
@@ -51615,6 +51620,7 @@ function Lock() {
     const emptyCircles = () => {
         setFilledCircleCount((prevCount) => {
             if (prevCount > 0) {
+                // setIsShaking(true)
                 setTimeout(() => {
                     emptyCircles();
                 }, 100);
@@ -51622,33 +51628,11 @@ function Lock() {
             }
             else {
                 setIsUnfilling(false);
+                // setIsShaking(false)
                 return prevCount;
             }
         });
     };
-    // const fillCircles = () => {
-    //     if (!isUnfilling && filledCircleCount < 4) {
-    //         setFilledCircleCount(filledCircleCount + 1);
-    //     }
-    // }
-    // const emptyCircles = () => {
-    //     if (filledCircleCount > 0) {
-    //         setTimeout(() => {
-    //             setFilledCircleCount(filledCircleCount - 1);
-    //             if(filledCircleCount -1 === 0) {
-    //                 setIsUnfilling(false);
-    //             }else{
-    //                 setTimeout(emptyCircles, 500)
-    //             }
-    //         },500)
-    //     }
-    // }
-    // useEffect(() => {
-    //     if (filledCircleCount === 4) {
-    //         setIsUnfilling(true);
-    //         setTimeout(emptyCircles,1000)
-    //     }
-    // },[filledCircleCount])
     const handleMouseDown = (e) => {
         setIsDragging(true);
         const angle = calculateAngle(e.clientX, e.clientY);
@@ -51659,39 +51643,37 @@ function Lock() {
         if (isDragging) {
             const currentAngle = calculateAngle(e.clientX, e.clientY);
             let angleDiff = currentAngle - dragStartAngle;
-            // let newRotation = initialRotation + angleDiff;
-            if (e.clientX < window.innerWidth / 2) {
-                angleDiff = -angleDiff;
-                setRotation(initialRotation - angleDiff);
+            let newRotation = initialRotation + angleDiff;
+            if (newRotation < 0 && newRotation > -45) {
+                newRotation = -45;
             }
-            else {
-                setRotation(initialRotation + angleDiff);
-            }
+            // console.log(newRotation)
+            setRotation(newRotation);
         }
     };
     const handleMouseUp = () => {
         setIsDragging(false);
     };
-    return (react_1.default.createElement("div", { className: "bodyCenter" },
+    return (react_1.default.createElement("div", { className: "bodyCenter", onMouseUp: () => setActiveNumber(null) },
         react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' } },
             react_1.default.createElement("h1", null, "Lock"),
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'row' } },
-                react_1.default.createElement("div", { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)', } },
+                react_1.default.createElement(framer_motion_1.motion.div, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)', } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" },
                         " ",
                         filledCircleCount >= 1 ? 'radio_button_checked' : 'radio_button_unchecked',
                         " ")),
-                react_1.default.createElement("div", { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)', } },
+                react_1.default.createElement(framer_motion_1.motion.div, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)', } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" },
                         " ",
                         filledCircleCount >= 2 ? 'radio_button_checked' : 'radio_button_unchecked',
                         " ")),
-                react_1.default.createElement("div", { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)', } },
+                react_1.default.createElement(framer_motion_1.motion.div, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)', } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" },
                         " ",
                         filledCircleCount >= 3 ? 'radio_button_checked' : 'radio_button_unchecked',
                         " ")),
-                react_1.default.createElement("div", { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)', } },
+                react_1.default.createElement(framer_motion_1.motion.div, { className: "navbarButton", style: { backgroundColor: 'rgba(0,0,0,0)', } },
                     react_1.default.createElement("span", { className: "material-symbols-outlined" },
                         " ",
                         filledCircleCount === 4 ? 'radio_button_checked' : 'radio_button_unchecked',
@@ -51705,28 +51687,29 @@ function Lock() {
                     react_1.default.createElement("div", { className: "smallerLockCircleInvert", style: { top: '84.75%', left: '57%', height: 115, width: 57.5, borderRadius: '0px 57.5px 57.5px 0px' } }),
                     react_1.default.createElement("div", { className: "lockCenter2", style: { top: '50%', left: '50%' } }),
                     react_1.default.createElement("div", { className: "lockCenter1", style: { width: 165, height: 165, top: '50%', left: '50%' } }),
-                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '50%', left: '15%' } }),
-                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '15%', left: '50%' } }),
-                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '50%', left: '85%' } }),
-                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '85%', left: '50%' } }),
-                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '32.5%', left: '80%' } }),
-                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '67.5%', left: '20%' } }),
-                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '32.5%', left: '20%' } }),
-                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '19.5%', left: '32.5%' } }),
-                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '80.5%', left: '32.5%' } }),
-                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '19.5%', left: '67.5%' } })),
-                react_1.default.createElement("div", { className: "smallerLockCircleInvert", style: { top: '75%', left: '75%', width: 55, height: 55, borderRadius: '50%',
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '50%', left: '15%' }, id: "number7", onMouseDown: () => setActiveNumber(7) }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '15%', left: '50%' }, id: "number4", onMouseDown: () => setActiveNumber(4) }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '50%', left: '85%' }, id: "number1", onMouseDown: () => setActiveNumber(1) }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '85%', left: '50%' }, id: "number0", onMouseDown: () => setActiveNumber(0) }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '32.5%', left: '80%' }, id: "number2", onMouseDown: () => setActiveNumber(2) }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '67.5%', left: '20%' }, id: "number8", onMouseDown: () => setActiveNumber(8) }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '32.5%', left: '20%' }, id: "number6", onMouseDown: () => setActiveNumber(6) }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '19.5%', left: '32.5%' }, id: "number5", onMouseDown: () => setActiveNumber(5) }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '80.5%', left: '32.5%' }, id: "number9", onMouseDown: () => setActiveNumber(9) }),
+                    react_1.default.createElement("div", { className: "smallerLockCircle", style: { top: '19.5%', left: '67.5%' }, id: "number3", onMouseDown: () => setActiveNumber(3) })),
+                react_1.default.createElement("div", { className: "smallerLockCircleInvert", style: { top: '75%', left: '75%', width: 55, height: 55, borderRadius: '50%', } }),
+                react_1.default.createElement("div", { className: "smallerLockCircleInvert", style: { top: '75%', left: '75%', width: 100, height: 100, borderRadius: '50%', opacity: 0,
                     }, onMouseOver: () => { isDragging ? fillCircles() : ' '; } }),
-                react_1.default.createElement("div", { className: "lockText", style: { top: '50%', left: '85%', pointerEvents: 'none' } }, "1"),
-                react_1.default.createElement("div", { className: "lockText", style: { top: '85%', left: '50%', pointerEvents: 'none' } }, "0"),
-                react_1.default.createElement("div", { className: "lockText", style: { top: '80.5%', left: '32.5%', pointerEvents: 'none' } }, "9"),
-                react_1.default.createElement("div", { className: "lockText", style: { top: '67.5%', left: '20%', pointerEvents: 'none' } }, "8"),
-                react_1.default.createElement("div", { className: "lockText", style: { top: '50%', left: '15%', pointerEvents: 'none' } }, "7"),
-                react_1.default.createElement("div", { className: "lockText", style: { top: '32.5%', left: '20%', pointerEvents: 'none' } }, "6"),
-                react_1.default.createElement("div", { className: "lockText", style: { top: '19.5%', left: '32.5%', pointerEvents: 'none' } }, "5"),
-                react_1.default.createElement("div", { className: "lockText", style: { top: '15%', left: '50%', pointerEvents: 'none' } }, "4"),
-                react_1.default.createElement("div", { className: "lockText", style: { top: '19.5%', left: '67.5%', pointerEvents: 'none' } }, "3"),
-                react_1.default.createElement("div", { className: "lockText", style: { top: '32.5%', left: '80%', pointerEvents: 'none' } }, "2")))));
+                react_1.default.createElement("div", { className: "lockText", style: { top: '50%', left: '85%', pointerEvents: 'none', opacity: activeNumber === 1 ? 1 : 0.25 } }, "1"),
+                react_1.default.createElement("div", { className: "lockText", style: { top: '85%', left: '50%', pointerEvents: 'none', opacity: activeNumber === 0 ? 1 : 0.25 } }, "0"),
+                react_1.default.createElement("div", { className: "lockText", style: { top: '80.5%', left: '32.5%', pointerEvents: 'none', opacity: activeNumber === 9 ? 1 : 0.25 } }, "9"),
+                react_1.default.createElement("div", { className: "lockText", style: { top: '67.5%', left: '20%', pointerEvents: 'none', opacity: activeNumber === 8 ? 1 : 0.25 } }, "8"),
+                react_1.default.createElement("div", { className: "lockText", style: { top: '50%', left: '15%', pointerEvents: 'none', opacity: activeNumber === 7 ? 1 : 0.25 } }, "7"),
+                react_1.default.createElement("div", { className: "lockText", style: { top: '32.5%', left: '20%', pointerEvents: 'none', opacity: activeNumber === 6 ? 1 : 0.25 } }, "6"),
+                react_1.default.createElement("div", { className: "lockText", style: { top: '19.5%', left: '32.5%', pointerEvents: 'none', opacity: activeNumber === 5 ? 1 : 0.25 } }, "5"),
+                react_1.default.createElement("div", { className: "lockText", style: { top: '15%', left: '50%', pointerEvents: 'none', opacity: activeNumber === 4 ? 1 : 0.25 } }, "4"),
+                react_1.default.createElement("div", { className: "lockText", style: { top: '19.5%', left: '67.5%', pointerEvents: 'none', opacity: activeNumber === 3 ? 1 : 0.25 } }, "3"),
+                react_1.default.createElement("div", { className: "lockText", style: { top: '32.5%', left: '80%', pointerEvents: 'none', opacity: activeNumber === 2 ? 1 : 0.25 } }, "2")))));
 }
 
 
@@ -52950,6 +52933,7 @@ const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/re
 function Tether() {
     const [resetTrigger, setResetTrigger] = (0, react_1.useState)(0);
     const [colorChange, setColorChange] = (0, react_1.useState)(false);
+    // const darkmodeToggleButton = document.getElementById('darkmodeToggleButton');
     (0, react_1.useEffect)(() => {
         const canvasTether = document.querySelector("#sceneTether");
         const ctx = canvasTether.getContext("2d", { willReadFrequently: true });
@@ -53237,8 +53221,9 @@ function Tether() {
                     top: 0,
                     left: 0,
                     overflow: 'hidden',
-                    // zIndex: -10
-                    zIndex: 100
+                    zIndex: -10
+                    // zIndex:0
+                    // zIndex: 100
                 }, id: "sceneTether" }))));
 }
 
