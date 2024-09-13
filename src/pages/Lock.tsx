@@ -1,3 +1,5 @@
+//Todo: shaking animation after 4th input
+
 import React, { useEffect, useState, useRef } from 'react';
 import {motion, useSpring, useTransform, useAnimation, useDragControls, useMotionValue, animate} from "framer-motion"
 
