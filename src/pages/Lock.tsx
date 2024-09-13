@@ -10,13 +10,15 @@ export default function Lock() {
     const [dragStartAngle, setDragStartAngle] = useState(0);
     const [initialRotation, setInitialRotation] = useState(0);
 
+
     const [velocity, setVelocity] = useState(0);
     const friction = 0.1;
 
     let animationFrameId:number;
     let resetAnimationFrameId:number;
 
-    const [filledCircleCount, setFilledCircleCount] = useState(0); // Change to state
+    const [filledCircleCount, setFilledCircleCount] = useState(0);
+    const [isUnfilling, setIsUnfilling] = useState(false);
 
     useEffect(() => {
         if (!isDragging && rotation !== 0) {
@@ -43,6 +45,7 @@ export default function Lock() {
             }
         };
     }, [isDragging]); 
+
     useEffect(() => {
         const updateRotation = () => {
             setVelocity((prevVelocity) => {
@@ -66,6 +69,7 @@ export default function Lock() {
             window.removeEventListener('mouseup', handleMouseUp);
         };
     }, [isDragging, dragStartAngle, initialRotation]);
+
     const calculateAngle = (x:number, y:number) => {
         if (!lockRef.current) return 0;
         const rect = lockRef.current.getBoundingClientRect();
@@ -74,14 +78,72 @@ export default function Lock() {
 
         return Math.atan2(y - lockY, x - lockX) * (180 / Math.PI);
     };
+
+
     const fillCircles = () => {
+        if (isUnfilling) return;
         setFilledCircleCount((prevCount) => {
-            if (prevCount < 4) {
-                return prevCount + 1
-            }else {
+            if (prevCount <= 4) {
+                if (prevCount < 4) {
+                    prevCount = prevCount + 1;
+                }
+                if (prevCount === 4) {
+                    setIsUnfilling(true)
+                    setTimeout(() => {
+                        emptyCircles()
+                    }, 500)
+                }
+            }
+            else {
                 return 0
-            }})
+            }
+            return prevCount
+        });
+    };
+
+    const emptyCircles = () => {
+        setFilledCircleCount((prevCount) => {
+            if (prevCount > 0) {
+                setTimeout(() => {
+                    emptyCircles()
+                },100)
+                return prevCount - 1;
+            } else {
+                setIsUnfilling(false)
+                return prevCount
+            }
+        });
     }
+
+    // const fillCircles = () => {
+    //     if (!isUnfilling && filledCircleCount < 4) {
+    //         setFilledCircleCount(filledCircleCount + 1);
+    //     }
+    // }
+
+    // const emptyCircles = () => {
+    //     if (filledCircleCount > 0) {
+    //         setTimeout(() => {
+    //             setFilledCircleCount(filledCircleCount - 1);
+    //             if(filledCircleCount -1 === 0) {
+    //                 setIsUnfilling(false);
+    //             }else{
+    //                 setTimeout(emptyCircles, 500)
+    //             }
+    //         },500)
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     if (filledCircleCount === 4) {
+    //         setIsUnfilling(true);
+    //         setTimeout(emptyCircles,1000)
+    //     }
+    // },[filledCircleCount])
+
+
+
+
     const handleMouseDown = (e:React.MouseEvent<HTMLDivElement>) => {
         setIsDragging(true);
         const angle = calculateAngle(e.clientX, e.clientY);
