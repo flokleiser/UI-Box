@@ -48,8 +48,10 @@ nav{
 
   padding-top: 3px;
   padding-bottom:3px;
-  padding-left:7px;
-  padding-right:7px;
+  /* padding-left:7px;
+  padding-right:7px; */
+  padding-left:4.5px;
+  padding-right:4.5px;
   border:0;
 }
 
