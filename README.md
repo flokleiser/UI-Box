@@ -1,6 +1,13 @@
 # Dev branch with hot reloading:
 
 ### Todo:
+
+- Lights
+    - [ ] Prototype
+
+- Joystick
+    - [ ] Controllable thing
+
 - Ball
     - [x] "timer" for ball being in the net
     - [x] new random net position after timer runs out
