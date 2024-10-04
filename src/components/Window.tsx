@@ -1,4 +1,4 @@
-export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Test' | 'Cube' | 'Musializer' | 'Lock';
+export type Page = 'Home' | 'Settings' | 'Buttons' | 'Spinner' | 'Particles' | 'Switches' | 'Tether' | 'Ball' | 'Joystick' | 'Test' | 'Cube' | 'Musializer' | 'Lock' | 'Lights';
 
 export const startPage = "Lock"
 

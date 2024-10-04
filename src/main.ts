@@ -3,7 +3,6 @@ import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron';
 import { URL } from 'url';
 
 let mainWindow: BrowserWindow | null = null;
-// let mainWindow: BrowserWindow
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -13,11 +12,6 @@ if (process.env.NODE_ENV === 'production') {
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
-// if (isDebug) {
-//   require('electron-debug')();
-// }
-
-// const createWindow = async () => {
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     show: false,
@@ -80,6 +74,6 @@ function resolveHtmlPath(htmlFileName: string) {
     url.pathname = htmlFileName;
     return url.href;
   }
-//   return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
+
   return `file://${path.resolve(__dirname, '../', htmlFileName)}`;
 }

@@ -97,13 +97,13 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
             </span>
           </button>
 
-          <button className={activePage === 'Tether' ? "navbarButton active" : "navbarButton"} id="tetherpageButton"
+          {/* <button className={activePage === 'Tether' ? "navbarButton active" : "navbarButton"} id="tetherpageButton"
           onClick={() => onNavigate('Tether')} 
           >
             <span className="material-symbols-outlined">
               tenancy
             </span>
-          </button>
+          </button> */}
 
           <button className={activePage === 'Joystick' ? "navbarButton active" : "navbarButton"} id="joystickpageButton"
           onClick={() => onNavigate('Joystick')} 
@@ -128,6 +128,14 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate}) => {
           >
             <span className="material-symbols-outlined">
               lock_reset
+            </span>
+          </button>
+
+          <button className={activePage === 'Lights' ? "navbarButton active" : "navbarButton"} id="lightspageButton"
+          onClick={() => onNavigate('Lights')} 
+          >
+            <span className="material-symbols-outlined">
+             light 
             </span>
           </button>
 

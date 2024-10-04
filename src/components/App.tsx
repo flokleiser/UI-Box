@@ -15,6 +15,7 @@ import Cube from '../pages/Cube'
 import Test from '../pages/Test'
 import Musializer from '../pages/Musializer';
 import Lock from '../pages/Lock';
+import Lights from '../pages/Lights';
 
 import {Page} from './Window'
 import { startPage } from './Window';
@@ -78,6 +79,9 @@ function Content() {
             break;
         case 'Lock':
             CurrentPage = Lock;
+            break;
+        case 'Lights':
+            CurrentPage = Lights;
             break;
         default:
             CurrentPage = Home;
