@@ -8,7 +8,8 @@
 }
 
 * {
-  outline:none
+  /* outline: 1px solid white; */
+  outline: none 
 }
 
 body {
