@@ -2,6 +2,8 @@
 
 ### Todo:
 
+- [ ] Vim mode?
+
 - Lights
     - [ ] Prototype
 
